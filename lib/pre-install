@@ -1,0 +1,60 @@
+#!/bin/bash
+
+PHP=`which php`;
+
+if [ $? -ne 0 ]; then
+	read -p 'Could not find PHP. Path to php executable: ' PHP;
+fi
+
+if [ -z "${PHP}" ]; then
+	echo 'Could not install. No PHP found.';
+	exit -1;
+fi
+
+cd `dirname $0`;
+$PHP pre-install.php
+
+
+# install script dependencies as part of pre-install
+read -p 'Install mysql scripts? (y/n) [n]: ' INSTALL_MYSQL
+case $INSTALL_MYSQL in
+		""|n|N|no|NO|No*)
+		;;
+		*)
+			# path to mysql executable
+			MYSQL=`which mysql`
+			if [ -z "${MYSQL}" ]
+			then
+				read -p "Mysql not found on path, enter mysql command: " MYSQL
+			fi
+			# database to use, read from existing config
+			DBNAME=`egrep '^db_name = ' ../conf/config.ini | sed 's/^.*=//'`
+			# admin db username
+			read -p 'Mysql user with permission to run scripts: ' MYSQL_USER
+			if [ -z "${MYSQL_USER}" ]
+			then
+				echo 'No user entered, exiting';
+				exit 1;
+			fi
+			# admin db password
+			read -s -p "Password for mysql user '${MYSQL_USER}': " MYSQL_PASS
+			echo
+			if [ -z "${MYSQL_PASS}" ]
+			then
+				echo 'No password entered, exiting';
+				exit 1;
+			fi
+
+			# install scripts
+			echo "running getEventIdByFullEventId.sql"
+			$MYSQL -u $MYSQL_USER -p$MYSQL_PASS $DBNAME < sql/getEventIdByFullEventId.sql
+			echo "running currentProducts.sql"
+			$MYSQL -u $MYSQL_USER -p$MYSQL_PASS $DBNAME < sql/currentProducts.sql
+			echo "running auto_summary.sql"
+			$MYSQL -u $MYSQL_USER -p$MYSQL_PASS $DBNAME < sql/auto_summary.sql
+			echo "done"
+		;;
+esac;
+
+
+exit 0;

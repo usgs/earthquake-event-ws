@@ -1,0 +1,113 @@
+.todo {
+	display:block;
+	font-weight:bold;
+	color:#C00;
+}
+
+code {
+	font-family:Monaco, Courier, monospace;
+	display:block;
+	text-align:center;
+	color:#333;
+}
+code em {
+	font-style:italic;
+	color:#000;
+}
+code em:before {content:'<';}
+code em:after {content:'>';}
+
+.input-parameters {
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+
+.input-parameters li {
+	margin:0 0 4px 0;
+	padding:0;
+}
+
+.input-parameters .eg {
+	color:#666;
+	font-size:.9em;
+	font-style:italic;
+}
+.input-parameters .eg:before {
+	content: '(eg. ';
+	font-style:normal;
+}
+.input-parameters .eg:after {
+	content: ')';
+	font-style:normal;
+}
+
+pre.detailResponse {
+	background-color:#EEE;
+	padding:8px;
+	margin-top:16px;
+	font-size:.9em;
+	font-family:Monaco, Courier, monospace;
+}
+
+#typelist > dt {
+	color:#333;
+	font-weight:bold;
+	clear:left;
+}
+#typelist > dd {
+	float:left;
+}
+
+#typelist > dd > dl {
+	float:left;
+	width:784px;
+	padding-left:16px;
+	padding-bottom:8px;
+	border-bottom:1px solid #EEE;
+	margin-bottom:8px;
+}
+
+#typelist > dd > dl > dt {
+	display:block;
+	float:left;
+	clear:left;
+	width:128px;
+	margin-right:16px;
+	margin-top:2px;
+	color:#999;
+	font-weight:bold;
+}
+
+#typelist > dd > dl > dd {
+	float:left;
+	width:640px;
+}
+
+#typelist > dd > dl > dd > dl > dt {
+	color:#000;
+	font-weight:normal;
+	float:left;
+	margin-right:16px;
+}
+/* TODO :: Highlight this sublist "bullet-point" in a better way. */
+#typelist > dd > dl > dd > dl > dt:before {content: '\00bb ';}
+#typelist > dd > dl > dd > dl > dt:after {content: ':';}
+#typelist > dd > dl > dd > dl > dd {color:#666;}
+
+#typelist dd.datatype, .monospace {
+	font-family:Monaco, Courier, monospace;
+	font-family:.9em;
+}
+.meta { font-style:italic; }
+.small { font-size:.8em; padding-top:3px; }
+.csv, .html, .atom, .geojson, .kml {
+	background-color:#EEE;
+	border-left:5px solid #ccc;	
+	padding:8px;
+	text-align:left;
+	white-space:pre;
+	overflow-x: auto;
+	font-size:.9em;
+	margin:10px 0;
+}

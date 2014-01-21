@@ -1,0 +1,39 @@
+#feed-format h3 {
+	clear: both;
+	border-bottom:1px solid #000;
+	padding:0 0 5px 0;
+}
+
+#feed-format h4 {
+	clear: both;
+	font-size: 15px;
+}
+
+#feed-format h4 small {
+	display: block;
+	font-size: .8em;
+	color: gray;
+}
+
+#feed-format ul {
+	overflow: auto;
+}
+
+img.screenshot {
+  border: 1px solid #999;
+  display: block;
+  position: relative;
+  margin: 20px 0;
+  max-width: 542px;
+}
+
+dl.kml-description dt {
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+	
+dl.kml-description dd {
+	margin-bottom: 10px;
+}
+	
+
