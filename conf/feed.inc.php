@@ -85,7 +85,7 @@ if (strpos($HOST_URL_PREFIX, 'comcat') !== FALSE) {
 // create the ProductStorage instance with the absolute URL address
 $storage = new ProductStorage($storage_directory, $HOST_URL_PREFIX . $storage_url);
 
-// create the ProductIndex instance with the absolute URL addresss
+// create the ProductIndex instance with the absolute URL address
 $index = new ProductIndex( $HOST_URL_PREFIX . $CONFIG['EVENT_PATH']);
 $index->connect($CONFIG['db_hostname'],
 		$CONFIG['db_read_user'],
