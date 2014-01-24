@@ -1,16 +1,16 @@
 <?php
 /**
  * This is a loose port of Product Distribution's JDBCProductIndex. Since this runs on the application
- * servers which have read-only databases, this is a read-only search. None of the methods that 
+ * servers which have read-only databases, this is a read-only search. None of the methods that
  * change the database are ported.
  *
  * Typically to use this class, you need to build a ProductIndexQuery using user input from a form. Then
  * use the getEventSummaries() method to search the index using that query. This will return a list of
- * EventSummaries. 
+ * EventSummaries.
  *
- * You can get more detailed information about an event - its products, product properties, product links - 
- * by using the getEvent() method. This will return an Event, which has all the detailed information 
- * attached. 
+ * You can get more detailed information about an event - its products, product properties, product links -
+ * by using the getEvent() method. This will return an Event, which has all the detailed information
+ * attached.
  *
  * @see The Java version of the ProductIndex,  gov.usgs.earthquake.indexer.JDBCProductIndex
  * @see ProductIndexQuery
@@ -105,11 +105,11 @@ class ProductIndex {
 	public function __construct( $mountPath = '') {
 		$this->mountPath = $mountPath;
 		$this->setLinkPath($mountPath . "/%s"); //"/index.php?id=%s";
-	
-		$this->GET_SUMMARIES_BY_EVENT_INDEX_ID = sprintf("SELECT product.%s FROM %s product WHERE product.%s = ? ", 
+
+		$this->GET_SUMMARIES_BY_EVENT_INDEX_ID = sprintf("SELECT product.%s FROM %s product WHERE product.%s = ? ",
 			self::SUMMARY_PRODUCT_INDEX_ID, self::SUMMARY_TABLE, self::SUMMARY_EVENT_ID);
-		$this->GET_SUMMARY_BY_PRODUCT_INDEX_ID = sprintf("SELECT 
-			%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
+		$this->GET_SUMMARY_BY_PRODUCT_INDEX_ID = sprintf("SELECT
+			%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
 			%s, %s, %s, %s, %s, %s FROM %s WHERE %s = ?",
 			self::SUMMARY_PRODUCT_ID, self::SUMMARY_TYPE, self::SUMMARY_SOURCE,
 			self::SUMMARY_CODE, self::SUMMARY_UPDATE_TIME, self::SUMMARY_EVENT_SOURCE,
@@ -120,13 +120,13 @@ class ProductIndex {
 			self::SUMMARY_PREFERRED, self::SUMMARY_TABLE, self::SUMMARY_PRODUCT_INDEX_ID);
 
 				/** Query to get all the links for a product */
-		$this->GET_LINKS_BY_PRODUCT_INDEX_ID = sprintf("SELECT 
+		$this->GET_LINKS_BY_PRODUCT_INDEX_ID = sprintf("SELECT
 				%s, %s FROM %s WHERE %s = ?", self::SUMMARY_LINK_RELATION,
 				self::SUMMARY_LINK_URL, self::SUMMARY_LINK_TABLE, self::SUMMARY_LINK_ID);
 
 		/** Query to get all the properties for a product */
-		$this->GET_PROPS_BY_PRODUCT_INDEX_ID = sprintf("SELECT 
-				%s, %s FROM %s WHERE %s = ?", self::SUMMARY_PROPERTY_NAME, 
+		$this->GET_PROPS_BY_PRODUCT_INDEX_ID = sprintf("SELECT
+				%s, %s FROM %s WHERE %s = ?", self::SUMMARY_PROPERTY_NAME,
 				self::SUMMARY_PROPERTY_VALUE, self::SUMMARY_PROPERTY_TABLE, self::SUMMARY_PROPERTY_ID);
 
 	}
@@ -137,7 +137,7 @@ class ProductIndex {
 	}
 
 	/**
-	 * Connect to the database using a PDO object and create some prepared statements. 
+	 * Connect to the database using a PDO object and create some prepared statements.
 	 */
 	public function connect( $hostname, $user, $pass, $database, $driver = "mysql" ) {
 		$dsn = sprintf("%s:host=%s;dbname=%s", $driver, $hostname, $database);
@@ -145,7 +145,7 @@ class ProductIndex {
 			$this->connection = new PDO($dsn, $user, $pass);
 		} catch (PDOException $e) {
 			// Couldn't connect to database
-			print "Problem connecting to the database";	
+			print "Problem connecting to the database";
 		}
 
 		try {
@@ -154,9 +154,9 @@ class ProductIndex {
 			$this->getProductLinks = $this->connection->prepare($this->GET_LINKS_BY_PRODUCT_INDEX_ID);
 		} catch (PDOException $e) {
 			print "Problem creating prepared statements";
-		}	
+		}
 	}
-	
+
 	/**
 	 * Gets the count of an sql query
 	 * @param sql
@@ -177,24 +177,24 @@ class ProductIndex {
 
 		// If the productIndexQuery wanted to search on event properties, we're going to need
 		// to take a different approach, so we'll jump to another method.
-		
+
 		$events = array();
 		$sql = sprintf("
-			SELECT 
-				e.%s, 
-				e.%s, 
-				e.%s, 
-				e.%s, 
-				e.%s, 
-				e.%s, 
-				e.%s, 
-				e.%s, 
+			SELECT
+				e.%s,
+				e.%s,
+				e.%s,
+				e.%s,
+				e.%s,
+				e.%s,
+				e.%s,
+				e.%s,
 				e.%s,
 				es.%s,
 				es.%s,
-				es.%s, 
-				es.%s, 
-				es.%s, 
+				es.%s,
+				es.%s,
+				es.%s,
 				es.%s,
 				es.%s,
 				es.%s,
@@ -208,11 +208,11 @@ class ProductIndex {
 				es.%s,
 				es.%s,
 				es.%s
-			FROM 
+			FROM
 				%s e
 			INNER JOIN
 				%s es
-			ON 
+			ON
 				e.%s = es.%s
 			LEFT JOIN
 				%s product ON e.%s = product.%s
@@ -252,7 +252,7 @@ class ProductIndex {
 			self::SUMMARY_TABLE,
 			self::EVENT_INDEX_ID,
 			self::SUMMARY_EVENT_ID
-			);			
+			);
 
 		$clauses = $this->buildEventClauses($productIndexQuery);
 		// We'll do 2 different queries depending on if the search includes
@@ -269,22 +269,16 @@ class ProductIndex {
 		if( !$found ) {
 			// No clause references the productSummary table, so we dont need a join
 			$sql = sprintf("
-				SELECT 
-					e.%s, 
-					e.%s, 
-					e.%s, 
-					e.%s, 
-					e.%s, 
-					e.%s, 
-					e.%s, 
-					e.%s, 
-					e.%s, 
-					es.%s,
-					es.%s,
-					es.%s,
-					es.%s,
-					es.%s,
-					es.%s, 
+				SELECT
+					e.%s,
+					e.%s,
+					e.%s,
+					e.%s,
+					e.%s,
+					e.%s,
+					e.%s,
+					e.%s,
+					e.%s,
 					es.%s,
 					es.%s,
 					es.%s,
@@ -294,15 +288,21 @@ class ProductIndex {
 					es.%s,
 					es.%s,
 					es.%s,
-					es.%s,					
+					es.%s,
+					es.%s,
+					es.%s,
+					es.%s,
+					es.%s,
+					es.%s,
+					es.%s,
 					es.%s,
 					es.%s,
 					es.%s
-				FROM 
+				FROM
 					%s e
 				INNER JOIN
 					%s es
-				ON 
+				ON
 					e.%s = es.%s
 				",
 				self::EVENT_INDEX_ID,
@@ -341,13 +341,17 @@ class ProductIndex {
 		}
 		else {
 			// Some clause references the productSummary table, so we need to make sure
-			// the products we're searching for match the result type (CURRENT, SUPERSCEDED, etc).	
-			$clauses[] = $this->buildResultTypeClause( $productIndexQuery->getResultType() );
+			// the products we're searching for match the result type (CURRENT, SUPERSCEDED, etc).
+			$resultTypeClause = $this->buildResultTypeClause($productIndexQuery->getResultType());
+
+			if ($resultTypeClause !== false) {
+				$clauses[] = $resultTypeClause;
+			}
 
 		}
-		
-	
-		$first = true;	
+
+
+		$first = true;
 		foreach( $clauses as $clause ) {
 			if ($first == true) {
 				$sql .= " WHERE ";
@@ -378,7 +382,7 @@ class ProductIndex {
 			}
 		}
 
-		// We probably don't need to make this a prepared statement - we could just execute it - 
+		// We probably don't need to make this a prepared statement - we could just execute it -
 		// but meh, for the sake of consistency it'll be prepared.
 		$getSummariesStmt = $this->connection->prepare($sql);
 		$getSummariesStmt->execute();
@@ -388,7 +392,7 @@ class ProductIndex {
 			}
 		} else {
 			$event_rs = $getSummariesStmt->fetchAll(PDO::FETCH_ASSOC);
-	
+
 			foreach( $event_rs as $eventRow ) {
 				$event = $this->rsToEventSummary($eventRow);
 				$events[$event->getEventIndexId()] = $event;
@@ -396,7 +400,7 @@ class ProductIndex {
 			return $events;
 		}
 	}
-	
+
 	/**
 	 * Query the database looking for all events summaries that match the parameters specified
 	 * in the ProductIndexQuery. This doesn't return any products or product properties.
@@ -431,26 +435,26 @@ class ProductIndex {
 				es.%s,
 				es.%s,
 				es.%s,
-				es.%s,								
-				es.%s,			
+				es.%s,
+				es.%s,
 				es.%s,
 				es.%s,
 				es.%s,
 				es.%s,
 				es.%s
 			FROM
-				 %s as product 
-			LEFT OUTER JOIN %s as es ON (es.%s = product.%s) 
+				 %s as product
+			LEFT OUTER JOIN %s as es ON (es.%s = product.%s)
 			where product.%s = (
-				select max(%s) as created 
+				select max(%s) as created
 				from %s
 				where %s= product.%s
-				and %s= product.%s 
-				and %s= product.%s) 
+				and %s= product.%s
+				and %s= product.%s)
 			and product.%s = 'origin'
 			%s
 			",
-			
+
 			self::SUMMARY_EVENT_ID, self::EVENT_INDEX_ID,
 			self::SUMMARY_EVENT_SOURCE, self::EVENT_SOURCE,
 			self::SUMMARY_EVENT_SOURCE_CODE, self::EVENT_SOURCE_CODE,
@@ -478,7 +482,7 @@ class ProductIndex {
 			self::EVENT_SUMMARY_NUM_RESPONSES,
 			self::EVENT_SUMMARY_NUM_STATIONS_USED,
 			self::EVENT_SUMMARY_MINIMUM_DISTANCE,
-			self::EVENT_SUMMARY_STANDARD_ERROR,			
+			self::EVENT_SUMMARY_STANDARD_ERROR,
 			self::SUMMARY_TABLE,
 			self::EVENT_SUMMARY_TABLE,
 			self::EVENT_SUMMARY_EVENT_ID,
@@ -497,25 +501,29 @@ class ProductIndex {
 		);
 
 		$clauses = $this->buildProductSummaryClauses($productIndexQuery);
-		
+
 		// Some clause references the productSummary table, so we need to make sure
-		// the products we're searching for match the result type (CURRENT, SUPERSCEDED, etc).	
-		$clauses[] = $this->buildResultTypeClause( $productIndexQuery->getResultType() );
+		// the products we're searching for match the result type (CURRENT, SUPERSCEDED, etc).
+		$resultTypeClause = $this->buildResultTypeClause( $productIndexQuery->getResultType() );
+
+		if ($resultTypeClause !== false) {
+			$clauses[] = $resultTypeClause;
+		}
 
 
-		$first = true;	
+		$first = true;
 		foreach( $clauses as $clause ) {
 			$sql .= " AND " . $clause;
 		}
-		
+
 		$max = intval($productIndexQuery->getSearchMax());
 		if ($max) {
 			if ($this->getQueryCount($sql) > $max) {
 				throw new Exception('Search returned too many results.');
 			}
 		}
-		
-		// We probably don't need to make this a prepared statement - we could just execute it - 
+
+		// We probably don't need to make this a prepared statement - we could just execute it -
 		// but meh, for the sake of consistency it'll be prepared.
 		$getSummariesStmt = $this->connection->prepare($sql);
 		$getSummariesStmt->execute();
@@ -526,29 +534,29 @@ class ProductIndex {
 			}
 		} else {
 			$event_rs = $getSummariesStmt->fetchAll(PDO::FETCH_ASSOC);
-	
+
 			foreach( $event_rs as $eventRow ) {
 				$event = $this->rsToEventSummary($eventRow);
 				$events[$event->getEventIndexId()] = $event;
 			}
-	
+
 			return $events;
 		}
 	}
-	
+
 	protected function rsToEventSummary($eventRow) {
-		
+
 		$eventIndexId = $eventRow[self::EVENT_INDEX_ID];
 		$eventId = $eventRow[self::EVENT_SOURCE] . $eventRow[self::EVENT_SOURCE_CODE];
 		// Make a new event summary and add the attributes
 		$event = new EventSummary();
-		$event->setEventIndexId($eventIndexId);		
-		$event->setSource($eventRow[self::EVENT_SOURCE]);		
-		$event->setSourceCode($eventRow[self::EVENT_SOURCE_CODE]);		
-		$event->setTime($eventRow[self::EVENT_TIME]);		
-		$event->setLatitude($eventRow[self::EVENT_LATITUDE]);		
-		$event->setLongitude($eventRow[self::EVENT_LONGITUDE]);		
-		$event->setDepth($eventRow[self::EVENT_DEPTH]);		
+		$event->setEventIndexId($eventIndexId);
+		$event->setSource($eventRow[self::EVENT_SOURCE]);
+		$event->setSourceCode($eventRow[self::EVENT_SOURCE_CODE]);
+		$event->setTime($eventRow[self::EVENT_TIME]);
+		$event->setLatitude($eventRow[self::EVENT_LATITUDE]);
+		$event->setLongitude($eventRow[self::EVENT_LONGITUDE]);
+		$event->setDepth($eventRow[self::EVENT_DEPTH]);
 		$event->setMagnitude($eventRow[self::EVENT_MAGNITUDE]);
 		$event->setMagnitudeType($eventRow[self::EVENT_SUMMARY_MAG_TYPE]);
 		$event->setDetailLink( sprintf($this->linkPath, $eventId) );
@@ -560,7 +568,7 @@ class ProductIndex {
 		$event->setAzimuthalGap($eventRow[self::EVENT_SUMMARY_AZ_GAP]);
 		$event->setNumStationsUsed($eventRow[self::EVENT_SUMMARY_NUM_STATIONS_USED]);
 		$event->setMinimumDistance($eventRow[self::EVENT_SUMMARY_MINIMUM_DISTANCE]);
-		$event->setStandardError($eventRow[self::EVENT_SUMMARY_STANDARD_ERROR]);		
+		$event->setStandardError($eventRow[self::EVENT_SUMMARY_STANDARD_ERROR]);
 		$event->setProperty( self::EVENT_SUMMARY_MAXMMI,
 				$eventRow[self::EVENT_SUMMARY_MAXMMI]);
 		$event->setProperty( self::EVENT_SUMMARY_ALERT_LEVEL,
@@ -585,8 +593,8 @@ class ProductIndex {
 				$eventRow[self::EVENT_SUMMARY_EVENT_SOURCES]);
 		$event->setLastModified($eventRow[self::EVENT_SUMMARY_LASTMODIFIED]);
 		return $event;
-		
-		
+
+
 	}
 	/**
 	 * Wrapper function for getEvent($indexId) that allows you to use $eventId.
@@ -635,15 +643,15 @@ class ProductIndex {
 
 	/**
 	 * Query the database to get the event with the given event index id
-	 * 
+	 *
 	 * @param eventIndexId
-	 * @param resultType 
+	 * @param resultType
 	 * @return Event object
 	 */
 	public function getEvent( $indexId, $resultType = ProductIndexQuery::RESULT_TYPE_CURRENT ) {
 		$event = new Event($indexId);
 		// It should be fine to query each of the products individually
-		// because we only have 1 event. 
+		// because we only have 1 event.
 
 		$summaryIndexIds = $this->getSummaryIndexIds($indexId, $resultType);
 		if (count($summaryIndexIds) == 0) {
@@ -656,7 +664,7 @@ class ProductIndex {
 		}
 
 		return $event;
-		
+
 	}
 
 	protected function buildHavingClauses ($query) {
@@ -686,8 +694,8 @@ class ProductIndex {
 	 * event table. If the query doesn't set any properties, this
 	 * method will return an empty list. It is up to the calling methods to
 	 * check if the clause list is empty when they build their WHERE clause.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param query
 	 * @return Array containing clauses in the form: column="value"
 	 */
@@ -721,7 +729,7 @@ class ProductIndex {
 
 			// Loop over any remaining productIds and add them to clause
 			array_shift($productIds);
-			foreach($productIds as $pid ) { 
+			foreach($productIds as $pid ) {
 				$clause += "', '";
 				$clause += $pid;
 			}
@@ -753,15 +761,15 @@ class ProductIndex {
 		if ($eventSourceCode !== null) {
 			$clauseList[] = sprintf("e.%s=%s",
 					self::EVENT_SOURCE_CODE, $this->connection->quote($eventSourceCode));
-			
+
 			$eventSource = $query->getEventSource();
-			
+
 			if($eventSource !== null) {
 				$clauseList[] = sprintf("e.%s=%s",
 						self::EVENT_SOURCE, $this->connection->quote($eventSource));
 			}
 		}
-		
+
 		$minTime = $query->getMinEventTime();
 		if ($minTime !== null) {
 			$clauseList[] = sprintf("e.%s>=%s", self::EVENT_TIME,
@@ -814,11 +822,11 @@ class ProductIndex {
 			$clauseList[] = $lonClause;
 		} else {
 			if ($minLon !== null) {
-				$clauseList[] = sprintf("e.%s>=%s", self::EVENT_LONGITUDE, 
+				$clauseList[] = sprintf("e.%s>=%s", self::EVENT_LONGITUDE,
 					$this->connection->quote($minLon));
-			} 
+			}
 			if ($maxLon !== null) {
-				$clauseList[] = sprintf("e.%s<=%s", self::EVENT_LONGITUDE, 
+				$clauseList[] = sprintf("e.%s<=%s", self::EVENT_LONGITUDE,
 					$this->connection->quote($maxLon));
 			}
 		}
@@ -826,7 +834,7 @@ class ProductIndex {
 		//returns all events where status is not 'DELETE'
 		$showDeletedEvent = $query->getShowDeletedEvent();
 		if ($showDeletedEvent !== TRUE) {
-			$clauseList[] = sprintf("UPPER(e.%s)!=UPPER('%s')", self::EVENT_STATUS, 
+			$clauseList[] = sprintf("UPPER(e.%s)!=UPPER('%s')", self::EVENT_STATUS,
 					'DELETE');
 		}
 
@@ -846,7 +854,7 @@ class ProductIndex {
 /*
 		$source = $query->getProductSource();
 		if ($source !== null) {
-			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_SOURCE, 
+			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_SOURCE,
 					$this->connection->quote($source));
 		}
 */
@@ -862,29 +870,29 @@ class ProductIndex {
 				else {
 					$sourceClause .= ' OR ';
 				}
-				$sourceClause .= sprintf(" es.%s LIKE %s", self::EVENT_SUMMARY_PRODUCT_SOURCES, 
-					$this->connection->quote('%'.$source.'%') ); 
+				$sourceClause .= sprintf(" es.%s LIKE %s", self::EVENT_SUMMARY_PRODUCT_SOURCES,
+					$this->connection->quote('%'.$source.'%') );
 			}
 			$sourceClause .= ')';
-			
+
 			$clauseList[] = $sourceClause;
 		}
 
 		$code = $query->getProductCode();
 		if ($code !== null) {
-			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_CODE, 
+			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_CODE,
 					$this->connection->quote($code));
 		}
 
 		$version = $query->getProductVersion();
 		if ($version !== null) {
-			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_VERSION, 
+			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_VERSION,
 					$this->connection->quote($version));
 		}
 
 		$status = $query->getProductStatus();
 		if ($status !== null) {
-			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_STATUS, 
+			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_STATUS,
 					$this->connection->quote($status));
 		}
 
@@ -893,7 +901,7 @@ class ProductIndex {
 		// --------------------------------------------
 		$eventId = $query->getEventId();
 		if( $eventId !== null ) {
-			$clauseList[] = sprintf("es.%s LIKE %s", self::EVENT_SUMMARY_EVENTIDS, 
+			$clauseList[] = sprintf("es.%s LIKE %s", self::EVENT_SUMMARY_EVENTIDS,
 					$this->connection->quote('%,'.$eventId.',%'));
 		}
 
@@ -902,77 +910,77 @@ class ProductIndex {
 			$clauseList[] = sprintf("es.%s LIKE %s", self::EVENT_SUMMARY_EVENT_SOURCES,
 					$this->connection->quote('%,'.$eventSource.',%'));
 		}
-		
+
 		// TEMPORARY CHANGE -- EJH 6/26/2012
-		
-		/* Eventually the catalog search will be handled by the eventSource search.   
+
+		/* Eventually the catalog search will be handled by the eventSource search.
 		 * In order to search based on a catalog source I needed to modify the eventSource
 		 * search to remove the trailing comma ( '%cnss%' ).  This is necessary because
-		 * I included the network name in the eventSource while loading historic data. 
+		 * I included the network name in the eventSource while loading historic data.
 		 * This means the eventSource for the ANSS comoposite catalog is 'cnss_ak' not 'cnss'
 		 */
-		 
+
 		$catalogSource = $query->getCatalogSource();
 		if ($catalogSource !== null) {
 			$clauseList[] = sprintf("es.%s LIKE %s", self::EVENT_SUMMARY_EVENT_SOURCES,
 					$this->connection->quote('%,'.$catalogSource.'%'));
 		}
-		
+
 		$maxMaxmmi = $query->getMaxMaxMMI();
 		if ($maxMaxmmi !== null ) {
-			$clauseList[] = sprintf("es.%s<=%s", self::EVENT_SUMMARY_MAXMMI, 
+			$clauseList[] = sprintf("es.%s<=%s", self::EVENT_SUMMARY_MAXMMI,
 					$this->connection->quote($maxMaxmmi));
-		}	
-		
+		}
+
 		$minMaxmmi = $query->getMinMaxMMI();
 		if ($minMaxmmi !== null ) {
-			$clauseList[] = sprintf("es.%s>=%s", self::EVENT_SUMMARY_MAXMMI, 
+			$clauseList[] = sprintf("es.%s>=%s", self::EVENT_SUMMARY_MAXMMI,
 					$this->connection->quote($minMaxmmi));
-		}	
+		}
 
 		$alertlevel = $query->getAlertLevel();
 		if ($alertlevel !== null ) {
-			$clauseList[] = sprintf("es.%s=%s", self::EVENT_SUMMARY_ALERT_LEVEL, 
+			$clauseList[] = sprintf("es.%s=%s", self::EVENT_SUMMARY_ALERT_LEVEL,
 					$this->connection->quote($alertlevel));
-		}	
+		}
 
 		$review_status = $query->getReviewStatus();
 		if ($review_status !== null ) {
-			$clauseList[] = sprintf("es.%s=%s", self::EVENT_SUMMARY_REVIEW_STATUS, 
+			$clauseList[] = sprintf("es.%s=%s", self::EVENT_SUMMARY_REVIEW_STATUS,
 					$this->connection->quote($review_status));
-		}	
-		
+		}
+
 		$minAz_gap = $query->getMinAzimuthalGap();
 		if ($minAz_gap !== null ) {
-			$clauseList[] = sprintf("es.%s>=%s", self::EVENT_SUMMARY_AZ_GAP, 
+			$clauseList[] = sprintf("es.%s>=%s", self::EVENT_SUMMARY_AZ_GAP,
 					$this->connection->quote($minAz_gap));
-		}	
-		
+		}
+
 		$maxAz_gap = $query->getMaxAzimuthalGap();
 		if ($maxAz_gap !== null ) {
-			$clauseList[] = sprintf("es.%s<=%s", self::EVENT_SUMMARY_AZ_GAP, 
+			$clauseList[] = sprintf("es.%s<=%s", self::EVENT_SUMMARY_AZ_GAP,
 					$this->connection->quote($maxAz_gap));
-		}	
-		
+		}
+
 		$mag_type = $query->getMagnitudeType();
 		if ($mag_type !== null ) {
-			$clauseList[] = sprintf("es.%s=%s", self::EVENT_SUMMARY_MAG_TYPE, 
+			$clauseList[] = sprintf("es.%s=%s", self::EVENT_SUMMARY_MAG_TYPE,
 					$this->connection->quote($mag_type));
 		}
-		
+
 		$event_type = $query->getEventType();
 		if ($event_type !== null ) {
 			if ($event_type == 'earthquake') {
 				$clauseList[] = sprintf(
 					"es.%s=%s or es.%s is Null",
-					self::EVENT_SUMMARY_EVENT_TYPE, 
+					self::EVENT_SUMMARY_EVENT_TYPE,
 					$this->connection->quote($event_type),
 					self::EVENT_SUMMARY_EVENT_TYPE
 				);
 			} else {
 				$clauseList[] = sprintf(
 					"es.%s=%s",
-					self::EVENT_SUMMARY_EVENT_TYPE, 
+					self::EVENT_SUMMARY_EVENT_TYPE,
 					$this->connection->quote($event_type)
 				);
 			}
@@ -989,21 +997,21 @@ class ProductIndex {
 				else {
 					$typeClause .= ' AND ';
 				}
-				$typeClause .= sprintf(" es.%s LIKE %s", self::EVENT_SUMMARY_TYPES, 
+				$typeClause .= sprintf(" es.%s LIKE %s", self::EVENT_SUMMARY_TYPES,
 					$this->connection->quote('%'.$type.'%') );
 			}
 			$typeClause .= ')';
-			
+
 			$clauseList[] = $typeClause;
 		}
-		
+
 		return $clauseList;
 	}
 
 	/**
 	 * Look in the database for all the attributes, links, and properties associated with the given
 	 * product summary.
-	 * 
+	 *
 	 * @param summaryIndexId
 	 * @return Map of property name to property value
 	 */
@@ -1067,52 +1075,52 @@ class ProductIndex {
 
 		// Add summary property information
 		$summary->setProperties($this->getSummaryProperties($summaryIndexId));
-		
+
 		// Return our generated result. Note this is never null.
-		return $summary;	
+		return $summary;
 	}
 
 	/**
 	 * Use the event index id to get a list of all of the product summary ids
 	 * associated with that event
-	 * 
+	 *
 	 * @param eventIndexId
 	 * @return List of product index ids
 	 */
 	protected function getSummaryIndexIds( $eventIndexId, $resultType ) {
 		$summaryIndexIds = array();
-	
-		$query = $this->GET_SUMMARIES_BY_EVENT_INDEX_ID;  
-		$resultTypeClause = $this->buildResultTypeClause( $resultType, $query );
+
+		$query = $this->GET_SUMMARIES_BY_EVENT_INDEX_ID;
+		$resultTypeClause = $this->buildResultTypeClause($resultType, $query);
 		if( $resultTypeClause !== false ) {
 			$query .= ' AND ' . $resultTypeClause;
 		}
-		
+
 		$getSummariesStmt = $this->connection->prepare($query);
 
 		$getSummariesStmt->bindValue(1, $eventIndexId, PDO::PARAM_INT);
 		$getSummariesStmt->execute();
 		$results = $getSummariesStmt->fetchAll(PDO::FETCH_ASSOC);
-		
+
 		foreach( $results as $row ) {
 			$summaryIndexIds[] = $row[self::SUMMARY_PRODUCT_INDEX_ID];
 		}
-	
+
 		$getSummariesStmt->closeCursor();
-		return $summaryIndexIds;	
+		return $summaryIndexIds;
 	}
 
 	/**
 	 * Look in the database for all the properties associated with the given
 	 * product summary.
-	 * 
+	 *
 	 * @param summaryIndexId
 	 * @return Assoc array mapping property name to property value
 	 */
 	protected function getSummaryProperties( $summaryIndexId ) {
 		// Create our object to populate and return
 		$properties = array();
-		
+
 		$this->getProductProperties->bindValue(1, $summaryIndexId, PDO::PARAM_INT);
 		$this->getProductProperties->execute();
 		$results = $this->getProductProperties->fetchAll(PDO::FETCH_ASSOC);
@@ -1128,8 +1136,8 @@ class ProductIndex {
 		}
 
 		// must close result set to keep from blocking transaction
-		$this->getProductProperties->closeCursor();	
-	
+		$this->getProductProperties->closeCursor();
+
 		// Return our mapping of generated properties. Note this is never null
 		// but may be empty.
 		return $properties;
@@ -1138,7 +1146,7 @@ class ProductIndex {
 	/**
 	 * Look in the database for all the links associated with the given
 	 * product summary.
-	 * 
+	 *
 	 * @param summaryIndexId
 	 * @return Assoc array mapping link relation (link type) to URL
 	 */
@@ -1154,16 +1162,16 @@ class ProductIndex {
 			$uriStr = $row[self::SUMMARY_LINK_URL];
 
 			$l = null;
-			
+
 			// Only include valid properties
 			if ($relation != null && $uriStr != null) {
 				// Case when no links for this relation yet
 				if ($l == null) {
 					$l = array();
 				}
-	
+
 				$l[] = $uriStr;
-	
+
 				// Add this link back to the map of links
 				$links[$relation] = $l;
 			}
@@ -1188,55 +1196,97 @@ class ProductIndex {
 	 */
 	protected function buildResultTypeClause( $resultType ) {
 		$clause = false;
-		// They're trying to search on product attributes, so we have to make sure we're 
+		// They're trying to search on product attributes, so we have to make sure we're
 		// only searching for products that match the query's result type.
-		
-		if( $resultType == ProductIndexQuery::RESULT_TYPE_CURRENT ) {
-			$clause = sprintf("NOT EXISTS ( 
-					SELECT 
-						ps.%s 
-					FROM 
-						%s ps 
-					WHERE 
-						ps.%s = product.%s AND 
-						ps.%s = product.%s AND 
-						ps.%s = product.%s AND 
+
+		// 2013-08-01 -- EMM (EQH-2259) ::
+		// Do not include status=DELETE products in results unless using
+		// resultType = ProductIndexQuery::*_WITH_DELETE variation.
+
+		if ($resultType == ProductIndexQuery::RESULT_TYPE_CURRENT) {
+			$clause = sprintf("product.%s != 'DELETE' AND NOT EXISTS (
+					SELECT
+						ps.%s
+					FROM
+						%s ps
+					WHERE
+						ps.%s = product.%s AND
+						ps.%s = product.%s AND
+						ps.%s = product.%s AND
+						ps.%s > product.%s
+					)",
+					self::SUMMARY_STATUS,
+					self::SUMMARY_PRODUCT_INDEX_ID, self::SUMMARY_TABLE,
+					self::SUMMARY_TYPE, self::SUMMARY_TYPE, self::SUMMARY_SOURCE,
+					self::SUMMARY_SOURCE, self::SUMMARY_CODE, self::SUMMARY_CODE,
+					self::SUMMARY_UPDATE_TIME, self::SUMMARY_UPDATE_TIME
+				);
+		} else if ( // Same as above, but now include deleted products
+				$resultType == ProductIndexQuery::RESULT_TYPE_CURRENT_WITH_DELETE) {
+			$clause = sprintf("NOT EXISTS (
+					SELECT
+						ps.%s
+					FROM
+						%s ps
+					WHERE
+						ps.%s = product.%s AND
+						ps.%s = product.%s AND
+						ps.%s = product.%s AND
 						ps.%s > product.%s
 					)",
 					self::SUMMARY_PRODUCT_INDEX_ID, self::SUMMARY_TABLE,
 					self::SUMMARY_TYPE, self::SUMMARY_TYPE, self::SUMMARY_SOURCE,
 					self::SUMMARY_SOURCE, self::SUMMARY_CODE, self::SUMMARY_CODE,
 					self::SUMMARY_UPDATE_TIME, self::SUMMARY_UPDATE_TIME
-					);
-		}
-		else if( $resultType == ProductIndexQuery::RESULT_TYPE_SUPERSEDED ) {
+				);
+		} else if ($resultType == ProductIndexQuery::RESULT_TYPE_SUPERSEDED) {
 			// If they only want superseded products, make a slightly different
 			// clause that has a subquery
-			$clause = sprintf("EXISTS ( 
-					SELECT 
-						%s 
-					FROM 
-						%s ps 
-					WHERE 
-						ps.%s = product.%s AND 
-						ps.%s = product.%s AND 
-						ps.%s = product.%s AND 
-						ps.%s > product.%s 
+			$clause = sprintf("product.%s != 'DELETE' AND EXISTS (
+					SELECT
+						%s
+					FROM
+						%s ps
+					WHERE
+						ps.%s = product.%s AND
+						ps.%s = product.%s AND
+						ps.%s = product.%s AND
+						ps.%s > product.%s
 					)",
+					self::SUMMARY_STATUS,
 					self::SUMMARY_PRODUCT_INDEX_ID, self::SUMMARY_TABLE,
 					self::SUMMARY_TYPE, self::SUMMARY_TYPE, self::SUMMARY_SOURCE,
 					self::SUMMARY_SOURCE, self::SUMMARY_CODE, self::SUMMARY_CODE,
 					self::SUMMARY_UPDATE_TIME, self::SUMMARY_UPDATE_TIME
-					);
+				);
+		} else if ( // Same as above, but now include deleted products
+				$resultType == ProductIndexQuery::RESULT_TYPE_SUPERSEDED_WITH_DELETE) {
+			$clause = sprintf("EXISTS (
+					SELECT
+						%s
+					FROM
+						%s ps
+					WHERE
+						ps.%s = product.%s AND
+						ps.%s = product.%s AND
+						ps.%s = product.%s AND
+						ps.%s > product.%s
+					)",
+					self::SUMMARY_STATUS,
+					self::SUMMARY_PRODUCT_INDEX_ID, self::SUMMARY_TABLE,
+					self::SUMMARY_TYPE, self::SUMMARY_TYPE, self::SUMMARY_SOURCE,
+					self::SUMMARY_SOURCE, self::SUMMARY_CODE, self::SUMMARY_CODE,
+					self::SUMMARY_UPDATE_TIME, self::SUMMARY_UPDATE_TIME
+				);
 		}
-		
+
 		return $clause;
 	}
 
 	/**
 	 * Convert the given longitude to be between -180 and 180. If the given
 	 * value is already in the range, this method just returns the value.
-	 * 
+	 *
 	 * @param lon
 	 * @return double normalized between -180 and 180
 	 */
@@ -1257,10 +1307,10 @@ class ProductIndex {
 
 /**
 	 * This is only called when the product source is defined in the searchView.
-	 * This method will return a list of where clauses that apply search parameters 
+	 * This method will return a list of where clauses that apply search parameters
 	 * to the productSummary table, instead of the event table.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param query
 	 * @return Array containing clauses in the form: column="value"
 	 */
@@ -1284,7 +1334,7 @@ class ProductIndex {
 
 			// Loop over any remaining productIds and add them to clause
 			array_shift($productIds);
-			foreach($productIds as $pid ) { 
+			foreach($productIds as $pid ) {
 				$clause += "', '";
 				$clause += $pid;
 			}
@@ -1310,7 +1360,7 @@ class ProductIndex {
 			$clauseList[] = sprintf("UPPER(product.%s)!=UPPER('%s')", self::SUMMARY_STATUS,
 					'DELETE');
 		}
-	
+
 		$minTime = $query->getMinEventTime();
 		if ($minTime !== null) {
 			$clauseList[] = sprintf("product.%s>=%s", self::SUMMARY_EVENT_TIME,
@@ -1374,11 +1424,11 @@ class ProductIndex {
 			$clauseList[] = $lonClause;
 		} else {
 			if ($minLon !== null) {
-				$clauseList[] = sprintf("product.%s>=%s", self::SUMMARY_EVENT_LONGITUDE, 
+				$clauseList[] = sprintf("product.%s>=%s", self::SUMMARY_EVENT_LONGITUDE,
 					$this->connection->quote($minLon));
-			} 
+			}
 			if ($maxLon !== null) {
-				$clauseList[] = sprintf("product.%s<=%s", self::SUMMARY_EVENT_LONGITUDE, 
+				$clauseList[] = sprintf("product.%s<=%s", self::SUMMARY_EVENT_LONGITUDE,
 					$this->connection->quote($maxLon));
 			}
 		}
@@ -1399,7 +1449,7 @@ class ProductIndex {
 /*
 		$source = $query->getProductSource();
 		if ($source !== null) {
-			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_SOURCE, 
+			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_SOURCE,
 					$this->connection->quote($source));
 		}
 */
@@ -1415,29 +1465,29 @@ class ProductIndex {
 				else {
 					$sourceClause .= ' OR ';
 				}
-				$sourceClause .= sprintf(" product.%s LIKE %s", self::SUMMARY_SOURCE, 
-					$this->connection->quote($source)); 
+				$sourceClause .= sprintf(" product.%s LIKE %s", self::SUMMARY_SOURCE,
+					$this->connection->quote($source));
 			}
 			$sourceClause .= ')';
-			
+
 			$clauseList[] = $sourceClause;
 		}
 
 		$code = $query->getProductCode();
 		if ($code !== null) {
-			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_CODE, 
+			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_CODE,
 					$this->connection->quote($code));
 		}
 
 		$version = $query->getProductVersion();
 		if ($version !== null) {
-			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_VERSION, 
+			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_VERSION,
 					$this->connection->quote($version));
 		}
 
 		$status = $query->getProductStatus();
 		if ($status !== null) {
-			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_STATUS, 
+			$clauseList[] = sprintf("product.%s=%s", self::SUMMARY_STATUS,
 					$this->connection->quote($status));
 		}
 
@@ -1446,7 +1496,7 @@ class ProductIndex {
 		// --------------------------------------------
 		$eventId = $query->getEventId();
 		if( $eventId !== null ) {
-			$clauseList[] = sprintf("es.%s LIKE %s", self::EVENT_SUMMARY_EVENTIDS, 
+			$clauseList[] = sprintf("es.%s LIKE %s", self::EVENT_SUMMARY_EVENTIDS,
 					$this->connection->quote('%,'.$eventId.',%'));
 		}
 
@@ -1455,63 +1505,63 @@ class ProductIndex {
 			$clauseList[] = sprintf("es.%s LIKE %s", self::EVENT_SUMMARY_EVENT_SOURCES,
 					$this->connection->quote('%,'.$eventSource.',%'));
 		}
-		
+
 		// TEMPORARY CHANGE -- EJH 6/26/2012
-		
-		/* Eventually the catalog search will be handled by the eventSource search.   
+
+		/* Eventually the catalog search will be handled by the eventSource search.
 		 * In order to search based on a catalog source I needed to modify the eventSource
 		 * search to remove the trailing comma ( '%cnss%' ).  This is necessary because
-		 * I included the network name in the eventSource while loading historic data. 
+		 * I included the network name in the eventSource while loading historic data.
 		 * This means the eventSource for the ANSS comoposite catalog is 'cnss_ak' not 'cnss'
 		 */
-		 
+
 		$catalogSource = $query->getCatalogSource();
 		if ($catalogSource !== null) {
 			$clauseList[] = sprintf("es.%s LIKE %s", self::EVENT_SUMMARY_EVENT_SOURCES,
 					$this->connection->quote('%,'.$catalogSource.'%'));
 		}
-		
+
 		$maxMaxmmi = $query->getMaxMaxMMI();
 		if ($maxMaxmmi !== null ) {
-			$clauseList[] = sprintf("es.%s<=%s", self::EVENT_SUMMARY_MAXMMI, 
+			$clauseList[] = sprintf("es.%s<=%s", self::EVENT_SUMMARY_MAXMMI,
 					$this->connection->quote($maxMaxmmi));
-		}	
-		
+		}
+
 		$minMaxmmi = $query->getMinMaxMMI();
 		if ($minMaxmmi !== null ) {
-			$clauseList[] = sprintf("es.%s>=%s", self::EVENT_SUMMARY_MAXMMI, 
+			$clauseList[] = sprintf("es.%s>=%s", self::EVENT_SUMMARY_MAXMMI,
 					$this->connection->quote($minMaxmmi));
-		}	
+		}
 
 		$alertlevel = $query->getAlertLevel();
 		if ($alertlevel !== null ) {
-			$clauseList[] = sprintf("es.%s=%s", self::EVENT_SUMMARY_ALERT_LEVEL, 
+			$clauseList[] = sprintf("es.%s=%s", self::EVENT_SUMMARY_ALERT_LEVEL,
 					$this->connection->quote($alertlevel));
-		}	
+		}
 
 		$review_status = $query->getReviewStatus();
 		if ($review_status !== null ) {
-			$clauseList[] = sprintf("es.%s=%s", self::EVENT_SUMMARY_REVIEW_STATUS, 
+			$clauseList[] = sprintf("es.%s=%s", self::EVENT_SUMMARY_REVIEW_STATUS,
 					$this->connection->quote($review_status));
-		}	
-		
+		}
+
 		$minAz_gap = $query->getMinAzimuthalGap();
 		if ($minAz_gap !== null ) {
-			$clauseList[] = sprintf("es.%s>=%s", self::EVENT_SUMMARY_AZ_GAP, 
+			$clauseList[] = sprintf("es.%s>=%s", self::EVENT_SUMMARY_AZ_GAP,
 					$this->connection->quote($minAz_gap));
-		}	
-		
+		}
+
 		$maxAz_gap = $query->getMaxAzimuthalGap();
 		if ($maxAz_gap !== null ) {
-			$clauseList[] = sprintf("es.%s<=%s", self::EVENT_SUMMARY_AZ_GAP, 
+			$clauseList[] = sprintf("es.%s<=%s", self::EVENT_SUMMARY_AZ_GAP,
 					$this->connection->quote($maxAz_gap));
-		}	
-		
+		}
+
 		$mag_type = $query->getMagnitudeType();
 		if ($mag_type !== null ) {
-			$clauseList[] = sprintf("es.%s=%s", self::EVENT_SUMMARY_MAG_TYPE, 
+			$clauseList[] = sprintf("es.%s=%s", self::EVENT_SUMMARY_MAG_TYPE,
 					$this->connection->quote($mag_type));
-		}	
+		}
 
 		$types = $query->getProductTypes();
 		if ($types !== null && !empty($types)) {
@@ -1523,17 +1573,17 @@ class ProductIndex {
 				} else {
 					$typeClause .= ' AND ';
 				}
-				$typeClause .= sprintf(" es.%s LIKE %s", self::EVENT_SUMMARY_TYPES, 
+				$typeClause .= sprintf(" es.%s LIKE %s", self::EVENT_SUMMARY_TYPES,
 					$this->connection->quote('%'.$type.'%') );
 			}
 			$typeClause .= ')';
-			
+
 			$clauseList[] = $typeClause;
 		}
-		
+
 		return $clauseList;
 	}
-	
+
 
 	public function getConnection() {
 		return $this->connection;

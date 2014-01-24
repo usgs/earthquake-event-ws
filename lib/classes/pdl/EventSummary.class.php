@@ -122,7 +122,9 @@ class EventSummary {
 			'standardError' => $this->getStandardError(),
 			'properties' => $this->getProperties(),
 			'eventCodes' => $this->getEventCodes(),
-			'lastModified' => $this->getLastModified()
+			'lastModified' => $this->getLastModified(),
+			'eventType' => $this->getEventType(),
+			'title' => $this->getTitle()
 		);
 
 		//remove nulls
@@ -165,11 +167,16 @@ class EventSummary {
 			else if	($temp == "sonicboom")	$type = "Sonic Boom";
 			else							$type = ucwords($type);
 		}
+		return $type;
 	}
 
 	public function getRegion() {
 		$properties =  $this->getProperties();
-		return $properties['region'];
+		if ($properties) {
+			return $properties['region'];
+		} else {
+			return null;
+		}
 	}
 
 	public function getTitle() {

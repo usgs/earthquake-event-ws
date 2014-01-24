@@ -13,12 +13,15 @@ class FDSNEventWebService {
 
 	const NO_DATA = 204;
 	const BAD_REQUEST = 400;
+	const NOT_FOUND = 404;
 	const NOT_IMPLEMENTED = 501;
 	const SERVICE_UNAVAILABLE = 503;
 
 	// status message text
 	public static $statusMessage = array(
+		self::NO_DATA => 'No Data',
 		self::BAD_REQUEST => 'Bad Request',
+		self::NOT_FOUND => 'Not Found',
 		self::NOT_IMPLEMENTED => 'Not Implemented',
 		self::SERVICE_UNAVAILABLE => 'Service Unavailable'
 	);
@@ -40,11 +43,12 @@ class FDSNEventWebService {
 	// fdsn api methods
 	public function query() {
 		$query = $this->parseQuery();
+		$resultType = $this->parseResultType();
 
 		if ($query->eventid === null || $query->format === 'quakeml') {
 			$this->handleSummaryQuery($query);
 		} else {
-			$this->handleDetailQuery($query);
+			$this->handleDetailQuery($query, $resultType);
 		}
 	}
 
@@ -57,13 +61,10 @@ class FDSNEventWebService {
 			if ($query->format === 'quakeml') {
 				$this->error(self::NO_DATA, null);
 			}
-		} else if ($count > $this->serviceLimit &&
-				// query can match more than service limit, as long as limited
-				($query->limit === null || $query->limit > $this->serviceLimit)
-		) {
-			$this->error(self::BAD_REQUEST,
-				$count . ' matching events exceeds service limit of ' . $this->serviceLimit . '.' .
-				' Use limit and offset parameters or modify the search to match fewer events.');
+		} else if ($count > $this->serviceLimit) {
+			$this->error(self::BAD_REQUEST, $count . ' matching events exceeds ' .
+					'search limit of ' . $this->serviceLimit . '. Modify the search ' .
+					'to match fewer events.');
 		}
 
 		// save this on query for potential output
@@ -87,13 +88,19 @@ class FDSNEventWebService {
 		$this->index->getEvents($query, $callback);
 	}
 
-	public function handleDetailQuery($query) {
+	public function handleDetailQuery($query,
+			$resultType = ProductIndexQuery::RESULT_TYPE_CURRENT) {
 		global $APP_DIR;
 		global $index;
 
 		// use ProductIndex for detail
-		$event = $index->getEventFromEventId($query->eventid);
-        $eventid = $query->eventid;
+		$event = $index->getEventFromEventId($query->eventid, $resultType);
+
+		if ($event === null) {
+			$this->error(self::NOT_FOUND,self::$statusMessage[self::NOT_FOUND],true);
+		}
+
+		$eventid = $query->eventid;
 
 		// send caching headers
 		// default to 15 minutes
@@ -144,6 +151,89 @@ class FDSNEventWebService {
 		exit();
 	}
 
+	public function application_json () {
+		$information = array(
+			'catalogs' => $this->index->getCatalogs(),
+			'contributors' => $this->index->getContributors(),
+			'producttypes' => $this->index->getProductTypes(),
+			'eventtypes' => $this->index->getEventTypes(),
+			'magnitudetypes' => $this->index->getMagnitudeTypes()
+		);
+
+		if (isset($_GET['callback'])) {
+			header('Content-type: text/javascript');
+			echo $_GET['callback'] . '(';
+		} else {
+			header('Content-type: application/json');
+		}
+
+		echo str_replace('\/', '/', json_encode($information));
+
+		if (isset($_GET['callback'])) {
+			echo ');';
+		}
+
+		exit();
+	}
+
+	// count is returned as xml [default], geojson, or geojsonp
+	public function count() {
+
+		$query = $this->parseQuery();
+		$count = $this->index->getEventCount($query);
+		$limit = intval($this->serviceLimit);
+		$error = null;
+
+
+		if ($count > $limit) {
+			$error = $count . ' matching events exceeds search limit of ' .
+			$limit . '. A query using these search parameters would fail. ' .
+			'Modify the search to match fewer events.';
+		}
+
+		if ($query->format === 'geojson') {
+			$header = '';
+			$footer = '';
+			$array = array(
+					'count' => $count,
+					'maxAllowed' => $limit
+				);
+
+			if ($error != null) {
+				$array = array_merge($array, array('error' => $error));
+			}
+
+			$json = json_encode($array);
+
+			if ($query->callback) {
+				header('Content-type: text/javascript');
+				$header = $query->callback . '(';
+				$footer .= ');';
+			} else {
+				header('Content-type: application/json');
+			}
+
+			echo $header . $json . $footer;
+
+		} else if ($query->format === 'xml') {
+			// default format is xml
+			header('Content-type: application/xml');
+			echo '<query>';
+			echo '<count>' . $count. '</count>';
+			echo '<maxAllowed>' . $limit . '</maxAllowed>';
+			if ($error) {
+				echo '<error>' . $error . '</error>';
+			}
+			echo '</query>';
+		} else {
+			// default format is text
+			header('Content-type: text/plain');
+			echo $count;
+		}
+
+		exit(0);
+	}
+
 	public function version() {
 		header('Content-type: text/plain');
 		echo $this->version;
@@ -162,7 +252,60 @@ class FDSNEventWebService {
 		exit();
 	}
 
-	public function error($code, $message) {
+	public function error($code, $message, $isDetail = false) {
+		if (isset($_GET['jsonerror']) && $_GET['jsonerror'] == 'true' &&
+				isset($_GET['format']) && $_GET['format'] == 'geojson') {
+			// For geojson requests, user wants 'jsonerror' output
+			$this->jsonError($code, $message, $isDetail);
+		} else {
+			$this->httpError($code, $message);
+		}
+	}
+
+	public function jsonError ($code, $message, $isDetail = false) {
+		global $HOST_URL_PREFIX;
+		$callback = false;
+		if (isset($_GET['callback'])) {
+			$callback = $_GET['callback'];
+			header('Content-type: text/javascript');
+		} else {
+			header('Content-type: application/json');
+		}
+
+		// Does this need to look fully like GeoJSON format?
+		$response = array(
+			'type' => $isDetail ? 'Feature' : 'FeatureCollection',
+			'metadata' => array(
+				'status' => $code,
+				'generated' => time() . '000',
+				'url' => $HOST_URL_PREFIX . $_SERVER['REQUEST_URI'],
+				'title' => 'Search Error',
+				'api' => $this->version,
+				'count' => 0,
+				'error' => $message
+			)
+		);
+
+		if ($isDetail) {
+			$response['properties'] = null;
+		} else {
+			$response['features'] = array();
+		}
+
+		if ($callback) {
+			echo $callback . '(';
+		}
+		echo preg_replace('/"(generated)":"([\d]+)"/', '"$1":$2',
+				str_replace('\/', '/', json_encode($response)));
+
+		if ($callback) {
+			echo ');';
+		}
+
+		exit();
+	}
+
+	public function httpError ($code, $message) {
 		header('HTTP/1.0 ' . $code);
 		if ($code < 400) {
 			exit();
@@ -192,8 +335,6 @@ class FDSNEventWebService {
 		exit();
 	}
 
-
-
 // URL PARAMETER PARSING
 
 	/**
@@ -210,96 +351,114 @@ class FDSNEventWebService {
 		// parse and validate individual parameters
 		$params = $_GET;
 		foreach ($params as $name => $value) {
-			if ($name == 'method') {
+			if ($value === '') {
+				// check for empty values in non-javascript
+				continue;
+			}
+			if ($name === 'method') {
 				// used by apache rewrites
+				continue;
+			} else if ($value == '') {
+				// Allow empty values so non-js form works
 				continue;
 			} else if ($name == 'starttime' || $name == 'start') {
 				$query->starttime = $this->validateTime($name, $value);
-			} else if ($name == 'endtime' || $name == 'end') {
+			} else if ($name ==='endtime' || $name ==='end') {
 				$query->endtime = $this->validateTime($name, $value);
-			} else if ($name == 'minlatitude' || $name == 'minlat') {
+			} else if ($name ==='minlatitude' || $name ==='minlat') {
 				$query->minlatitude = $this->validateFloat($name, $value, -90, 90);
-			} else if ($name == 'maxlatitude' || $name == 'maxlat') {
+			} else if ($name ==='maxlatitude' || $name ==='maxlat') {
 				$query->maxlatitude = $this->validateFloat($name, $value, -90, 90);
-			} else if ($name == 'minlongitude' || $name == 'minlon') {
+			} else if ($name ==='minlongitude' || $name ==='minlon') {
 				$query->minlongitude = $this->validateFloat($name, $value, -360, 360);
-			} else if ($name == 'maxlongitude' || $name == 'maxlon') {
+			} else if ($name ==='maxlongitude' || $name ==='maxlon') {
 				$query->maxlongitude = $this->validateFloat($name, $value, -360, 360);
-			} else if ($name == 'latitude' || $name == 'lat') {
+			} else if ($name ==='latitude' || $name ==='lat') {
 				$query->latitude = $this->validateFloat($name, $value, -90, 90);
-			} else if ($name == 'longitude' || $name == 'lon') {
+			} else if ($name ==='longitude' || $name ==='lon') {
 				$query->longitude = $this->validateFloat($name, $value, -180, 180);
-			} else if ($name == 'minradius') {
+			} else if ($name ==='minradius') {
 				$query->minradius = $this->validateFloat($name, $value, 0, 180);
-			} else if ($name == 'maxradius') {
+			} else if ($name ==='maxradius') {
 				$query->maxradius = $this->validateFloat($name, $value, 0, 180);
-			} else if ($name == 'mindepth') {
+			} else if ($name==='minradiuskm') {
+				$query->minradiuskm = $this->validateFloat($name, $value, 0, 6371);
+			} else if ($name==='maxradiuskm') {
+				$query->maxradiuskm = $this->validateFloat($name, $value, 0, 6371);
+			} else if ($name ==='mindepth') {
 				$query->mindepth = $this->validateFloat($name, $value, null, null);
-			} else if ($name == 'maxdepth') {
+			} else if ($name ==='maxdepth') {
 				$query->maxdepth = $this->validateFloat($name, $value, null, null);
-			} else if ($name == 'minmagnitude' || $name == 'minmag') {
+			} else if ($name ==='minmagnitude' || $name ==='minmag') {
 				$query->minmagnitude = $this->validateFloat($name, $value, null, null);
-			} else if ($name == 'maxmagnitude' || $name == 'maxmag') {
+			} else if ($name ==='maxmagnitude' || $name ==='maxmag') {
 				$query->maxmagnitude = $this->validateFloat($name, $value, null, null);
-			} else if ($name == 'magnitudetype' || $name == 'magtype') {
+			} else if ($name ==='magnitudetype' || $name ==='magtype') {
 				$query->magnitudetype = $value;
-			} else if ($name == 'includeallorigins') {
+			} else if ($name ==='includeallorigins') {
 				$query->includeallorigins = $this->validateBoolean($name, $value);
-			} else if ($name == 'includeallmagnitudes') {
+			} else if ($name ==='includeallmagnitudes') {
 				$query->includeallmagnitudes =  $this->validateBoolean($name, $value);
-			} else if ($name == 'includearrivals') {
+			} else if ($name ==='includearrivals') {
 				$query->includearrivals =  $this->validateBoolean($name, $value);
 				if ($query->includearrivals) {
 					$this->error(self::NOT_IMPLEMENTED, 'includearrivals parameter is not supported');
 				}
-			} else if ($name == 'eventid') {
+			} else if ($name ==='eventid') {
 				$query->eventid = $value;
-			} else if ($name == 'limit') {
+			} else if ($name ==='limit') {
 				$query->limit = $this->validateInteger($name, $value, 0, $this->serviceLimit);
-			} else if ($name == 'offset') {
+			} else if ($name ==='offset') {
 				$query->offset = $this->validateInteger($name, $value, 1, null);
-			} else if ($name == 'orderby') {
+			} else if ($name ==='orderby') {
 				$query->orderby = $this->validateEnumerated($name, $value, array('time', 'time-asc', 'magnitude', 'magnitude-asc'));
-			} else if ($name == 'catalog') {
+			} else if ($name ==='catalog') {
 				$query->catalog = $this->validateEnumerated($name, $value, $this->index->getCatalogs());
-			} else if ($name == 'contributor') {
+			} else if ($name ==='contributor') {
 				$query->contributor = $this->validateEnumerated($name, $value, $this->index->getContributors());
-			} else if ($name == 'updatedafter') {
+			} else if ($name ==='updatedafter') {
 				$query->updatedafter = $this->validateTime($name, $value);
-			} else if ($name == 'format') {
-				$query->format = $this->validateEnumerated($name, $value, array('quakeml','geojson','csv','kml'));
-			} else if ($name == 'callback') {
+			} else if ($name ==='format') {
+				$query->format = $this->validateEnumerated($name, $value, array('quakeml','geojson','csv','kml','xml', 'text'));
+			} else if ($name ==='callback') {
 				$query->callback = $value;
-			} else if ($name == 'eventtype') {
-				$query->eventtype = $value; // todo: enumerate
-			} else if ($name == 'reviewstatus') {
+			} else if ($name ==='eventtype') {
+				$query->eventtype = explode(",", $value); // todo: enumerate
+			} else if ($name ==='reviewstatus') {
 				$query->reviewstatus = $this->validateEnumerated($name, $value, array('automatic', 'reviewed'));
-			} else if ($name == 'minmmi') {
+			} else if ($name ==='minmmi') {
 				$query->minmmi = $this->validateFloat($name, $value, 0, 12);
-			} else if ($name == 'maxmmi') {
+			} else if ($name ==='maxmmi') {
 				$query->maxmmi = $this->validateFloat($name, $value, 0, 12);
-			} else if ($name == 'mincdi') {
+			} else if ($name ==='mincdi') {
 				$query->mincdi = $this->validateFloat($name, $value, 0, 12);
-			} else if ($name == 'maxcdi') {
+			} else if ($name ==='maxcdi') {
 				$query->maxcdi = $this->validateFloat($name, $value, 0, 12);
-			} else if ($name == 'minfelt') {
+			} else if ($name ==='minfelt') {
 				$query->minfelt = $this->validateInteger($name, $value, 0, null);
-			} else if ($name == 'alertlevel') {
+			} else if ($name ==='alertlevel') {
 				$query->alertlevel = $this->validateEnumerated($name, $value, array('green', 'yellow', 'orange', 'red'));
-			} else if ($name == 'mingap') {
+			} else if ($name ==='mingap') {
 				$query->mingap = $this->validateFloat($name, $value, 0, 360);
-			} else if ($name == 'maxgap') {
+			} else if ($name ==='maxgap') {
 				$query->maxgap = $this->validateFloat($name, $value, 0, 360);
-			} else if ($name == 'minsig') {
+			} else if ($name ==='minsig') {
 				$query->minsig = $this->validateInteger($name, $value, 0, null);
-			} else if ($name == 'maxsig') {
+			} else if ($name ==='maxsig') {
 				$query->maxsig = $this->validateInteger($name, $value, 0, null);
-			} else if ($name == 'producttype') {
+			} else if ($name ==='producttype') {
 				$query->producttype = $value;
-			} else if ($name == 'kmlcolorby') {
+			} else if ($name ==='kmlcolorby') {
 				$query->kmlcolorby = $this->validateEnumerated($name, $value, array('age', 'depth'));
-			} else if ($name == 'kmlanimated') {
+			} else if ($name ==='kmlanimated') {
 				$query->kmlanimated = $this->validateBoolean($name, $value);
+			} else if ($name ==='jsonerror') {
+				// Used by this->error method. Just ignore for now
+				continue;
+			} else if ($name ==='includedelete') {
+				// This is used by parseResultType method, don't use it here, but don't
+				// throw an exception either.
+				continue;
 			} else {
 				$this->error(self::BAD_REQUEST,
 						'Unknown parameter "' . $name . '".');
@@ -309,15 +468,46 @@ class FDSNEventWebService {
 
 		// validate parameter combinations
 
-		// radial search is complete
+		// map {min,max}radiuskm --> {min,max}radius respectively, but only if
+		// their counterpart is not explicitely set. Do this _BEFORE_ validating
+		// general radial search parameters.
+
+		if ($query->minradiuskm !== null) {
+			if ($query->minradius !== null && $query->minradius !== 0) {
+				// can't specify both flavors of minradius
+				$this->error(self::BAD_REQUEST, 'Invalid area-circle parameter ' .
+						"combination.\nminradius and minradiuskm can not both be " .
+						'specified.');
+			} else {
+				// map minradiuskm --> minradius
+				$query->minradius = $this->kmToDeg($query->minradiuskm);
+			}
+		}
+
+		if ($query->maxradiuskm !== null) {
+			if ($query->maxradius !== null) {
+				// can't specify both flavors of maxradius
+				$this->error(self::BAD_REQUEST, 'Invalid area-circle parameter ' .
+						"combination.\nmaxradius and maxradiuskm can not both be " .
+						'specified.');
+			} else {
+				// map maxradius to maxradiuskm
+				$query->maxradius = $this->kmToDeg($query->maxradiuskm);
+			}
+		}
+
+		// ensure radial search is complete
 		if (
 			// any radius parameter set
-			($query->latitude !== null || $query->longitude !== null || $query->maxradius !== null)
+			($query->latitude !== null || $query->longitude !== null ||
+					$query->maxradius !== null) &&
 			// and any radius parameter left blank
-			&& ($query->latitude === null || $query->longitude === null || $query->maxradius === null)
+			($query->latitude === null || $query->longitude === null ||
+					$query->maxradius === null)
 		) {
-			$this->error(self::BAD_REQUEST, 'Invalid area-circle parameter combination.' . "\n" .
-					'latitude, longitude, and maxradius must all be specified for area-circle.');
+			$this->error(self::BAD_REQUEST, 'Invalid area-circle parameter ' .
+					"combination.\nlatitude, longitude, and maxradius must all be " .
+					'specified for area-circle.');
 		}
 
 		// rectangle search makes sense
@@ -387,6 +577,16 @@ class FDSNEventWebService {
 		return $query;
 	}
 
+	public function parseResultType () {
+		// By default, assume user wants only current products
+		$resultType = ProductIndexQuery::RESULT_TYPE_CURRENT;
+
+		if (isset($_GET['includedelete']) && $_GET['includedelete'] === 'true') {
+			$resultType = ProductIndexQuery::RESULT_TYPE_CURRENT_WITH_DELETE;
+		}
+
+		return $resultType;
+	}
 
 	/**
 	 * Validate a time parameter.
@@ -504,6 +704,15 @@ class FDSNEventWebService {
 				' Valid values are: "' . implode('", "', $enum) . '".');
 		}
 		return $value;
+	}
+
+	/**
+	 * Converts an input kilometer distance to a degrees of arc distance.
+	 *
+	 */
+	protected function kmToDeg ($km) {
+		return $km / 111.12;   // What Paul thinks
+		//return $km / 111.2;  // What NASA/math thinks 111.19492664455873...
 	}
 
 

@@ -18,6 +18,10 @@
 			<a href="https://developers.google.com/kml/" target="_blank">Keyhole Markup Language</a>.
 			The KML feeds offer a variety of options, you can view earthquakes colored by age or depth, and an animated feed allows you to animate the series of earthquakes.  
 		</p>
+                <p>
+                        This feed adheres to the USGS Earthquakes
+                        <a href="/earthquakes/feed/v1.0/../policy.php">Feed Life Cycle Policy</a>.
+                </p>
 		
 		
 		<h3>Usage</h3>

@@ -1,0 +1,12 @@
+.managedmodelview {
+	position:relative;
+}
+
+.managedmodelview-control {
+	position:absolute;
+	right:5px;
+
+	color:#009;
+	text-decoration:underline;
+	cursor:pointer;
+}

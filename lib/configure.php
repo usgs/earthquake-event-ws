@@ -83,6 +83,7 @@
 		'db_name' => 'Product index database schema name',
 
 		// Feed configuration settings
+		'SEARCH_PATH' => 'URL path to search page.',
 		'MAX_SEARCH' => 'Maximum search results allowed (default = 20,000)',
 		'API_VERSION' => 'Feed API version',
 		'FDSN_VERSION' => 'FDSN API version',
@@ -97,19 +98,20 @@
 		'FDSN_PATH' => '/fdsnws/event/1',
 
 		// Indexer storage
-		'storage_directory' => 'indexer_storage',
+		'storage_directory' => '/home/www/data/ProductClient/indexer_storage',
 		'storage_url' => '/product',
 
 		// Indexer database
-		'db_hostname' => '',
-		'db_read_user' => '',
+		'db_hostname' => 'localhost',
+		'db_read_user' => 'web',
 		'db_read_pass' => '',
 		'db_name' => 'product_index',
 
 		// Feed settings
+		'SEARCH_PATH' => '/earthquakes/search',
 		'MAX_SEARCH' => '20000',
 		'API_VERSION' => 'v1.0',
-		'FDSN_VERSION' => '1.0.0',
+		'FDSN_VERSION' => '1.0.6',
 		'DEFAULT_MAXEVENTAGE' => '2592000'
 	);
 

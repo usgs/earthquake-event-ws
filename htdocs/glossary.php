@@ -46,6 +46,7 @@
 		<li><a href="#metadata_generated">generated</a></li>
 		<li><a href="#metadata_title">title</a></li>
 		<li><a href="#metadata_url">url</a></li>
+		<li><a href="#metadata_status">status</a></li>
 	</ul>
 
 	<h3>Product Terms</h3>
@@ -131,7 +132,7 @@
 			<dt>Data Type</dt><dd class="datatype">String</dd>
 			<dt>Description</dt>
 			<dd>
-				Link to <a href="geojson_detail.php">GeoJSON detail</a> feed from a 
+				Link to <a href="geojson_detail.php">GeoJSON detail</a> feed from a
 					<a href="geojson.php">GeoJSON summary</a> feed.
 				<p>
 				NOTE: When searching and using geojson with callback, no callback is included in the <code>detail</code> url.
@@ -417,14 +418,13 @@
 			<dt>Data Type</dt><dd class="datatype">Integer</dd>
 			<dt>Description</dt>
 			<dd>
-				A boolean flag indicating whether or not the event is currently
-				believed to possibly produce a tsunami. A value of &ldquo;0&rdquo;
-				or &ldquo;null&rdquo; implies a negative belief while any other
-				value indicates a positive belief. <strong>The existence or value of
-				this flag does not indicate if a tsunami actually <em>did</em> or
-				<em>will</em> exist. This merely reflects the current belief based
-				on available scientific data.</strong> It may only indicate that NOAA
-				has issued a statement about whether or not this event may trigger a tsunami.
+				This flag is set to "1" for large events in oceanic regions and "0"
+				otherwise. <strong>The existence or value of this flag does not
+				indicate if a tsunami actually did or will exist</strong>. If the
+				flag value is "1", the event will include a link to the NOAA Tsunami
+				website for tsunami information. The USGS is not responsible for
+				Tsunami warning; we are simply providing a link to the authoritative
+				NOAA source.
 
 				<p>See <a target="_blank"
 				href="http://www.tsunami.gov/">http://www.tsunami.gov/</a> for all
@@ -533,7 +533,7 @@
 		</dl>
 	</dd>
 
-	
+
 	<dt id="metadata_title">title</dt>
 	<dd>
 		<dl>
@@ -554,6 +554,17 @@
 			<dt>Description</dt>
 			<dd>
 				Url of the feed.
+			</dd>
+		</dl>
+	</dd>
+
+	<dt id="metadata_status">status</dt>
+	<dd>
+		<dl>
+			<dt>Data Type</dt><dd class="datatype">Integer</dd>
+			<dt>Description</dt>
+			<dd>
+				HTTP status code of response.
 			</dd>
 		</dl>
 	</dd>
@@ -588,7 +599,7 @@
 					<dt>url</dt>
 					<dd>
 						Link to download this content.
-						When <code>&lt;path&gt;</code> is empty (""), 
+						When <code>&lt;path&gt;</code> is empty (""),
 							there will be <code>bytes</code> property with content inline.
 					</dd>
 				</dl>
@@ -626,7 +637,7 @@
 					<dd>
 						A millisecond timestamp that indicates when this version of the product was created.
 						<p>
-							Two products with the same <code>source</code>, <code>type</code>, and <code>code</code>, 
+							Two products with the same <code>source</code>, <code>type</code>, and <code>code</code>,
 							with different <code>updateTime</code>s indicate different versions of the same product
 							The latest updateTime for a product supersedes any earlier updateTime for the same product.
 						</p>
@@ -646,7 +657,7 @@
 				<dl>
 					<dt>&lt;relation&gt;</dt>
 					<dd>Relation describes how the link is related to the product.</dd>
-					
+
 					<dt>href</dt>
 					<dd>Link is a URI, and may be a URL or a URN depending on product type and <code>relation</code>.</dd>
 				</dl>

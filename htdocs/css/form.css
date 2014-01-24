@@ -1,0 +1,21 @@
+/* Generic Form Styling */
+.label {
+	display:block;
+	font-size:12px;
+}
+
+.label-checkbox {
+	cursor:pointer;
+}
+
+h3.label {
+	margin:0;
+	font-size:14px;
+	font-weight:bold;
+	text-transform:uppercase;
+}
+
+h4.label {
+	margin:0;
+	font-size:14px;
+}

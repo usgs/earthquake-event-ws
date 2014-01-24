@@ -22,6 +22,10 @@
             href="http://en.wikipedia.org/wiki/Comma-separated_values"
 			target="_blank">wikipedia</a> for more information on this format.
 		</p>
+                <p>
+                        This feed adheres to the USGS Earthquakes
+                        <a href="/earthquakes/feed/v1.0/../policy.php">Feed Life Cycle Policy</a>.
+                </p>
 
 
 		<h3>Usage</h3>
@@ -52,6 +56,7 @@
 			<li><a href="glossary.php#net">net</a></li>
 			<li><a href="glossary.php#id">id</a></li>
 			<li><a href="glossary.php#updated">updated</a></li>
+			<li><a href="glossary.php#place">place</a></li>
 		</ul>
 
 		<p>Screenshot of the spreadsheet format, loaded into Microsoft Excel&trade;.</p>

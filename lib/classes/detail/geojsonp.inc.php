@@ -36,7 +36,7 @@ $array = array(
 		'place' => $summary->properties["region"],
 		'time' => $summary->getTime(),
 		'updated' => $summary->getLastModified(),
-		'tz' => intval($summary->getOffset()),
+		'tz' => safeintval($summary->getOffset()),
 		'url' => $summary->getDetailLink(),
 		'felt' => safeintval($summary->properties['num_responses']),
 		'cdi' => safefloatval($summary->properties['maxcdi']),
@@ -55,7 +55,8 @@ $array = array(
 		'rms' => safefloatval($summary->getStandardError()),
 		'gap' => safefloatval($summary->getAzimuthalGap()),
 		'magType' => $summary->getMagnitudeType(),
-		'type' => $summary->getEventType()
+		'type' => $summary->getEventType(),
+		'title' => $summary->getTitle()
 	),
 	'geometry' => array(
 		'type' => 'Point',
@@ -76,5 +77,5 @@ if (!isset($callback)) {
 }
 echo $callback . '(';
 $json = str_replace('\/', '/', json_encode($array));
-echo preg_replace('/"(time|updated|updateTime|lastModified)":"([\d]+)"/', '"$1":$2', $json);
+echo preg_replace('/"(time|updated|updateTime|lastModified)":"(-?[\d]+)"/', '"$1":$2', $json);
 echo ');';

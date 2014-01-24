@@ -23,6 +23,10 @@
 			<a target="_blank" href="http://www.atomenabled.org/developers/">Atom Enabled</a>
 			for general information.
 		</p>
+		<p>
+			This feed adheres to the USGS Earthquakes 
+			<a href="/earthquakes/feed/v1.0/../policy.php">Feed Life Cycle Policy</a>.
+		</p>
 	
 	
 		<h3>Usage</h3>

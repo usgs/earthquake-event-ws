@@ -1,0 +1,21 @@
+/* Gridded Layout Stuff */
+.two-up > li,
+.three-up > li {
+	float:left;
+	margin:0 0 4px 0;
+
+}
+.two-up > li {
+	width:50%;
+}
+.three-up > li {
+	width:33%;
+}
+
+/* Clear fix */
+.two-up:after,
+.three-up:after {
+	display:block;
+	content:' ';
+	clear:left;
+}

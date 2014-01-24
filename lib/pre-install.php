@@ -9,6 +9,7 @@
 $APP_DIR = dirname(trim(`pwd`));
 $FEED_PATH = $CONFIG['FEED_PATH'] . '/' . $CONFIG['API_VERSION'];
 $FDSN_PATH = $CONFIG['FDSN_PATH'];
+$SEARCH_PATH = $CONFIG['SEARCH_PATH'];
 
 
 	// TODO :: Write httpd.conf
@@ -27,6 +28,17 @@ $FDSN_PATH = $CONFIG['FDSN_PATH'];
 
 RewriteEngine on
 
+
+
+## EQ Search URL Hijacking
+
+# Only ever offered for v1.0, so just need to redirect that version
+RewriteRule ^/earthquakes/feed/v1.0/urlbuilder.php ' . $SEARCH_PATH . '/ [R=301]
+RewriteRule ^/earthquakes/eqarchives/epic/ ' . $SEARCH_PATH . '/ [R=301]
+RewriteRule ^' . $SEARCH_PATH . '/$ ' . $FEED_PATH . '/search.php [L,PT]
+RewriteRule ^' . $SEARCH_PATH . '/(js|css|lib)/(.*) ' . $FEED_PATH . '/$1/$2 [L,PT]
+
+## END: EQ Search URL Hijacking
 
 
 ## DONT ALLOW SEARCH ON EARTHQUAKE, need new split architecture first.

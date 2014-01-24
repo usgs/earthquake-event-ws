@@ -4,7 +4,7 @@
 
 if (!isset($TEMPLATE)) {
 	$service = null;
-	
+
 	try {
 		// configuration
 		include_once '../conf/feed.inc.php';
@@ -23,10 +23,14 @@ if (!isset($TEMPLATE)) {
 			$service->catalogs();
 		} else if ($method === 'contributors') {
 			$service->contributors();
+		} else if ($method === 'count') {
+		  $service->count();
 		} else if ($method === 'version') {
 			$service->version();
 		} else if ($method === 'application.wadl') {
 			$service->wadl();
+		} else if ($method === 'application.json') {
+			$service->application_json();
 		} else {
 			$usage = true;
 		}
@@ -47,9 +51,9 @@ if (!isset($TEMPLATE)) {
 
 
 
-$TITLE = 'Web Service API Documentation';
+$TITLE = 'Earthquake Search and Web Service API Documentation';
 $STYLES = '
-	dt, code { 
+	dt, code {
 		font-family: monospace;
 		margin-top:1em;
 	}
@@ -83,11 +87,20 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/template/template.inc.php');
 	<dt>contributors</dt>
 	<dd><a href="./contributors">request available contributors</a>.</dd>
 
+	<dt>count</dt>
+	<dd>
+		to perform a count on a data request.
+		<p>Count uses the same <a href="#parameters">parameters</a> as the query method, and is available in these <a href="#format">formats</a>: plain text (default), geojson, and xml. </p>
+	</dd>
+
 	<dt>version</dt>
 	<dd><a href="./version">request full service version number</a>.</dd>
 
 	<dt>application.wadl</dt>
 	<dd><a href="./application.wadl">request <abbr title="Web Application Description Language">WADL</abbr> for the interface</a>.</dd>
+
+	<dt>application.json</dt>
+	<dd><a href="./application.json">request known enumerated parameter values for the interface</a>.</dd>
 </dl>
 
 
@@ -160,12 +173,20 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/template/template.inc.php');
 
 	<dt id="minradius">minradius</dt>
 	<dd>Decimal degrees: [0,180].  Default 0.</dd>
-	<dd>Limit to events further than the specified minimum number of degrees from the geographic point defined by the latitude and longitude parameters.</dd>
+	<dd>Limit to events further than the specified minimum number of degrees from the geographic point defined by the latitude and longitude parameters. This option is mutually exclusive with <a href="#minradiuskm">minradiuskm</a> and specifying both will result in an error.</dd>
+
+	<dt id="minradiuskm">minradiuskm</dt>
+	<dd>Kilometers: [0, 6371]</dd>
+	<dd>Limit to events further than the specified minimum number of kilometers from the geographic point defined by the latitude and longitude parameters. This option is mutually exclusive with <a href="#minradius">minradius</a> and specifying both will result in an error.</dd>
 
 	<dt id="maxradius">maxradius</dt>
 	<dd>Decimal degrees: [0,180]</dd>
-	<dd>Limit to events within the specified maximum number of degrees from the geographic point defined by the latitude and longitude parameters.</dd>
+	<dd>Limit to events within the specified maximum number of degrees from the geographic point defined by the latitude and longitude parameters. This option is mutually exclusive with <a href="#maxradiuskm">maxradiuskm</a> and specifying both will result in an error.</dd>
 </dl>
+
+	<dt id="maxradiuskm">maxradiuskm</dt>
+	<dd>Kilometers: [0, 6371]</dd>
+	<dd>Limit to events within the specified maximum number of kilometers from the geographic point defined by the latitude and longitude parameters. This option is mutually exclusive with <a href="#maxradius">maxradius</a> and specifying both will result in an error.</dd>
 
 
 <h3>Other</h3>
@@ -186,6 +207,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/template/template.inc.php');
 	<dd>Decimal.</dd>
 	<dd>Limit to events with a magnitude smaller than the specified maximum.</dd>
 
+	<!-- TODO :: Conform magnitude type to FDSN spec
 	<dt id="magnitudetype">magnitudetype</dt>
 	<dd>Specify a magnitude type to use for testing the minimum and maximum limits.
 		<br/><small>NOTE: this will only return events reported with this magnitude type.</small>
@@ -193,6 +215,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/template/template.inc.php');
 				&ldquo;Mw&rdquo;, &ldquo;Me&rdquo;, &ldquo;Mi&rdquo;,
 				&ldquo;Mb&rdquo;, &ldquo;MLg&rdquo;</p>
 	</dd>
+	-->
 
 	<dt id="includeallorigins">includeallorigins</dt>
 	<dd>Boolean "true"/"false".  Default false.</dd>
@@ -210,6 +233,15 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/template/template.inc.php');
 	<dd>Boolean "true"/"false".  Default false.</dd>
 	<dd>Specify if phase arrivals should be included.
 		<br/><small>NOTE: NOT CURRENTLY IMPLEMENTED</small>
+	</dd>
+
+	<dt id="includedelete">includedelete</dt>
+	<dd>Boolean &ldquo;true&rdquo;/&ldquo;false&rdquo;. Default false.</dd>
+	<dd>Specify if deleted products should be incuded.
+		<br/><small>
+			NOTE: Only works when specifying <a href="#eventid">eventid</a>
+			parameter.
+		</small>
 	</dd>
 
 	<dt id="eventid">eventid</dt>
@@ -255,7 +287,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/template/template.inc.php');
 </dl>
 
 
-<h3>Extensions</h3>
+<h3 id="extensions">Extensions</h3>
 <dl>
 	<dt id="format">format</dt>
 	<dd>Specify the output format
@@ -270,10 +302,13 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/template/template.inc.php');
 
 			<dt>geojson</dt>
 			<dd>Response format is <a href="<?php echo $FEED_HOST . $FEED_PATH; ?>/geojson.php">GeoJSON</a>.  Mime-type is "application/json".
-				<br/><small>NOTE: only summary event information is available in this format.</small>
 				<dl>
 					<dt id="callback">callback</dt>
 					<dd>Convert GeoJSON output to a JSONP response using this callback.  Mime-type is "text/javascript".</dd>
+					<dt id="jsonerror">jsonerror</dt>
+					<dd>Request JSON(P) formatted output even on API error results.
+					Accepts &ldquo;true&rdquo; or &ldquo;false&rdquo;. Default:
+					&ldquo;false&rdquo;</dd>
 				</dl>
 			</dd>
 
@@ -291,6 +326,16 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/template/template.inc.php');
 						"false" (default), or "true".
 					</dd>
 				</dl>
+			</dd>
+
+			<dt>xml</dt>
+			<dd>
+				This format is only available for the count method. Response format is xml. Mime-type is "application/xml".
+			</dd>
+
+			<dt>text</dt>
+			<dd>
+				This format is only available for the count and version methods. Response format is plain text.  Mime-type is "text/plain".
 			</dd>
 		</dl>
 	</dd>
