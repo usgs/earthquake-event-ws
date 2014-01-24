@@ -98,14 +98,14 @@
 		'FDSN_PATH' => '/fdsnws/event/1',
 
 		// Indexer storage
-		'storage_directory' => '/home/www/data/ProductClient/indexer_storage',
+		'storage_directory' => '',
 		'storage_url' => '/product',
 
 		// Indexer database
-		'db_hostname' => 'localhost',
-		'db_read_user' => 'web',
+		'db_hostname' => '',
+		'db_read_user' => '',
 		'db_read_pass' => '',
-		'db_name' => 'product_index',
+		'db_name' => '',
 
 		// Feed settings
 		'SEARCH_PATH' => '/earthquakes/search',

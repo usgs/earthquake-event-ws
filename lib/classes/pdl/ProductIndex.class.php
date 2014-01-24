@@ -716,7 +716,7 @@ class ProductIndex {
 		 * code.
 
 		   Verification:
-		      find /home/www/apps/EventApp -name '*.php' -exec grep -iH 'setProductIds' {} \;
+		      find EventApp -name '*.php' -exec grep -iH 'setProductIds' {} \;
 
 		 *//*
 
