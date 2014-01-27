@@ -174,7 +174,7 @@ class KMLFeed extends AbstractFeed {
 
 		$description = '<description><![CDATA[';
 
-		$description .= '<h2>' . parent::getEventTitle($event) . '</h2>';
+		$description .= '<h2>' . $this->getEventTitle($event) . '</h2>';
 		$description .= $this->getQuickSummary($event);
 		$description .= '<p class="links">' .
 			'<a href="' . $this->getEventDetailLink($id) . '">Details from USGS web site</a>';
@@ -238,11 +238,6 @@ class KMLFeed extends AbstractFeed {
 		return $feedBaseUrl . '/summary/' . $this->getMinMagnitude() . '_' . $this->getAgeString() . '_' . $this->colorBy . ($this->animated ? "_animated" : "") . '.kml';
 	}
 
-
-	public function getEventTitle($event) {
-		return $this->formatter->formatMagnitude($event['eventMagnitude']) .
-				' - ' . $this->formatter->formatDate($event['eventTime']);
-	}
 
 	public function getTitle() {
 		$title = parent::getTitle();

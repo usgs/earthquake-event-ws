@@ -17,9 +17,10 @@ class FDSNIndex {
 
 	public function getCatalogs() {
 		$rs = $this->pdo->query(
-				'select distinct eventSource' .
-				' from productSummary where eventSource is not null' .
-				' order by eventSource');
+				'select distinct eventSource ' .
+				'from productSummary ' .
+				"where eventSource is not null and eventSource != '' " .
+				'order by eventSource');
 		$catalogs = array();
 		while ($row = $rs->fetch()) {
 			$catalogs[] = $row[0];
@@ -30,10 +31,10 @@ class FDSNIndex {
 
 	public function getContributors() {
 		$rs = $this->pdo->query(
-				'select distinct source' .
-				' from productSummary where' .
-				" type='origin'" .
-				' order by source');
+				'select distinct source ' .
+				'from productSummary ' .
+				"where type='origin' " .
+				'order by source');
 		$contributors = array();
 		while ($row = $rs->fetch()) {
 			$contributors[] = $row[0];
@@ -42,10 +43,52 @@ class FDSNIndex {
 		return $contributors;
 	}
 
+	public function getProductTypes () {
+		$rs = $this->pdo->query(
+			'select distinct type ' .
+			'from productSummary ' .
+			"where type is not null and type != '' " .
+			'order by type');
+		$producttypes = array();
+		while ($row = $rs->fetch()) {
+			$producttypes[] = $row[0];
+		}
+		$rs->closeCursor();
+		return $producttypes;
+	}
+
+	public function getEventTypes () {
+		$rs = $this->pdo->query(
+			'select distinct event_type ' .
+			'from originSummary ' .
+			"where event_type is not null and event_type != '' " .
+			'order by event_type');
+		$eventtypes = array();
+		while ($row = $rs->fetch()) {
+			$eventtypes[] = $row[0];
+		}
+		$rs->closeCursor();
+		return $eventtypes;
+	}
+
+	public function getMagnitudeTypes () {
+		$rs = $this->pdo->query(
+			'select distinct magnitude_type ' .
+			'from originSummary ' .
+			"where magnitude_type is not null and magnitude_type != '' " .
+			'order by magnitude_type');
+		$magnitudetypes = array();
+		while ($row = $rs->fetch()) {
+			$magnitudetypes[] = $row[0];
+		}
+		$rs->closeCursor();
+		return $magnitudetypes;
+	}
+
 	public function getEvents($query, $callback=null, $objects=false) {
 		// build sql
 		$where = $this->getWhere($query);
-		$sql = 'select ' . 
+		$sql = 'select distinct ' .
 				implode(',', array(
 					'e.id as eventid',
 					'e.source as preferredSource',
@@ -55,6 +98,7 @@ class FDSNIndex {
 					'e.longitude as preferredLongitude',
 					'e.magnitude as preferredMagnitude',
 					'e.depth as preferredDepth',
+					'es.event_type',
 					'es.lastModified as eventUpdateTime',
 					'es.maxmmi',
 					'es.alertlevel',
@@ -145,7 +189,7 @@ class FDSNIndex {
 	public function getEventCount($query) {
 		// build sql
 		$where = $this->getWhere($query, true);
-		$sql = 'select count(*) from (select ps.* ' . $where['sql'] . ') x';
+		$sql = 'select count(*) from (select distinct ps.* ' . $where['sql'] . ') x';
 
 		//prepare statement
 		$statement = $this->pdo->prepare($sql);
@@ -154,7 +198,7 @@ class FDSNIndex {
 			$statement->bindValue($i+1, $where['params'][$i]);
 		}
 
-		// execute	
+		// execute
 		$statement->execute();
 
 		// get result
@@ -163,9 +207,15 @@ class FDSNIndex {
 		//free resources
 		$statement->closeCursor();
 
-		return intval($count[0]);
-	}
+		// Properly report what would match
+		if ($query->limit !== null) {
+			$count = min(intval($count[0]), intval($query->limit));
+		} else {
+			$count = intval($count[0]);
+		}
 
+		return $count;
+	}
 
 	public function getOrigins($eventid) {
 		$statement = $this->pdo->prepare(
@@ -175,7 +225,7 @@ class FDSNIndex {
 				' join currentProducts cp on (cp.id = ps.id)' .
 				' join originSummary os on (cp.id = os.productid)' .
 				' where e.id=?' .
-				' order by cp.eventId, cp.preferred desc, cp.updateTime desc');
+				' order by ps.eventId, ps.preferred desc, ps.updateTime desc');
 		$statement->bindValue(1, $eventid);
 		$statement->execute();
 		$origins = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -185,13 +235,13 @@ class FDSNIndex {
 
 	public function getMomentTensors($eventid) {
 		$statement = $this->pdo->prepare(
-				'select cp.*, mts.*' .
+				'select ps.*, mts.*' .
 				' from event e' .
 				' join productSummary ps on (ps.eventId = e.id)' .
 				' join currentProducts cp on (cp.id = ps.id)' .
 				' join momentTensorSummary mts on (cp.id = mts.productid)' .
 				' where e.id=?' .
-				' order by cp.preferred desc, cp.updateTime desc');
+				' order by ps.preferred desc, ps.updateTime desc');
 		$statement->bindValue(1, $eventid);
 		$statement->execute();
 		$tensors = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -201,13 +251,13 @@ class FDSNIndex {
 
 	public function getFocalMechanisms($eventid) {
 		$statement = $this->pdo->prepare(
-				'select cp.*, fms.*' .
+				'select ps.*, fms.*' .
 				' from event e' .
 				' join productSummary ps on (ps.eventId = e.id)' .
 				' join currentProducts cp on (cp.id = ps.id)' .
 				' join focalMechanismSummary fms on (cp.id = fms.productid)' .
 				' where e.id=?' .
-				' order by cp.preferred desc, cp.updateTime desc');
+				' order by ps.preferred desc, ps.updateTime desc');
 		$statement->bindValue(1, $eventid);
 		$statement->execute();
 		$tensors = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -218,13 +268,10 @@ class FDSNIndex {
 
 	protected function getWhere($query, $dontIncludeLimit=false) {
 
-		// TODO: $query->eventid !== null
-
 		$from = 'FROM event e' .
 				' JOIN eventSummary es on (es.eventid = e.id)' .
 				' JOIN productSummary ps on (ps.eventId = e.id)' .
-				' JOIN currentProducts cp on (cp.id = ps.id)' .
-				' JOIN originSummary os on (os.productid = cp.id)';
+				' JOIN originSummary os on (os.productid = ps.id)';
 
 		$where = array();
 		$params = array();
@@ -239,6 +286,7 @@ class FDSNIndex {
 
 		// hide deleted events
 		$where[] = "upper(e.status) <> 'DELETE'";
+		$where[] = "upper(ps.status) <> 'DELETE'";
 
 		if ($query->eventid !== null) {
 			// function call gives horrible performance in where,
@@ -247,18 +295,42 @@ class FDSNIndex {
 			$params[] = $query->eventid;
 		}
 
-		if ($query->contributor === null && $query->catalog === null) {
-			// limit joins to only preferred origin product for event
-			$where[] = ' NOT EXISTS (' .
-				'SELECT * FROM currentProducts' .
-				// in same event
-				' WHERE eventId=ps.eventId' .
-				// with same product type
+		// latest version of product
+		$where[] = ' NOT EXISTS (' .
+				'SELECT * FROM productSummary' .
+				' WHERE source=ps.source' .
 				' AND type=ps.type' .
-				// and more preferred
-				' AND (preferred > ps.preferred OR (preferred=ps.preferred and updateTime>ps.updateTime))' .
-			')';
-		} else {
+				' AND code=ps.code' .
+				' AND updateTime>ps.updateTime' .
+				')';
+
+		// limit join to most preferred origin product for event
+		$where[] = ' NOT EXISTS (' .
+			'SELECT * FROM productSummary mp' .
+			// in same event
+			' WHERE mp.eventId=ps.eventId' .
+			// with same product type
+			' AND mp.type=ps.type' .
+			// and not deleted
+			" AND upper(mp.status)<>'DELETE'" .
+			// limit to same catalog if searching by catalog
+			($query->catalog !== null ? ' AND mp.eventSource=ps.eventSource' : '') .
+			// and more preferred
+			' AND (' .
+				'mp.preferred > ps.preferred' .
+				' OR (mp.preferred=ps.preferred and mp.updateTime>ps.updateTime)' .
+			')' .
+			// and is the latest version of itself
+			' AND NOT EXISTS (' .
+				'select * from productSummary' .
+				' where source=mp.source' .
+				' and type=mp.type' .
+				' and code=mp.code' .
+				' and updateTime>mp.updateTime' .
+			')' .
+		')';
+
+		if ($query->catalog !== null) {
 			// additional parameters need summary tables
 			$timeColumn = 'ps.eventTime';
 			$latitudeColumn = 'ps.eventLatitude';
@@ -267,28 +339,8 @@ class FDSNIndex {
 			$magnitudeColumn = 'ps.eventMagnitude';
 			$updatedColumn = 'ps.updateTime';
 
-			if ($query->contributor !== null) {
-				$where[] = 'ps.source = ?';
-				$params[] = $query->contributor;
-			}
-			if ($query->catalog !== null) {
-				$where[] = 'ps.eventSource = ?';
-				$params[] = $query->catalog;
-			}
-
-			$where[] = ' NOT EXISTS (' .
-						'SELECT * FROM currentProducts' .
-						// in same event
-						' WHERE eventId=ps.eventId' .
-						// from the same contributor and/or catalog
-						// TODO: what if multiple match?
-						($query->contributor !== null ? ' AND source=ps.source' : '') .
-						($query->catalog !== null ? ' AND eventSource=ps.eventSource' : '') .
-						// with same product type
-						' AND type=ps.type' .
-						// and more preferred
-						' AND (preferred > ps.preferred OR (preferred=ps.preferred and updateTime>ps.updateTime))' .
-					')';
+			$where[] = 'ps.eventSource = ?';
+			$params[] = $query->catalog;
 		}
 
 
@@ -320,7 +372,7 @@ class FDSNIndex {
 				if ($alat < 89) {
 					// only filter longitude when not at poles
 					$lonradius = $latradius / cos(deg2rad($alat));
-					$query->maxlongitude = min($query->longitude+$lonradius, 
+					$query->maxlongitude = min($query->longitude+$lonradius,
 							($query->maxlongitude === null ? 360 : $query->maxlongitude));
 					$query->minlongitude = max($query->longitude-$lonradius,
 							($query->minlongitude === null ? -360 : $query->minlongitude));
@@ -335,8 +387,9 @@ class FDSNIndex {
 
 				$where[] = 'degrees(2 * asin(least(1,sqrt(' .
 						// a
-						'pow(sin(radians(' . $latitudeColumn . ' - ?' . /*lat*/ ')), 2)' .
-						'+ cos(radians(?' . /*lat*/ '))*cos(radians(' . $latitudeColumn . '))*pow(sin(radians(' . $longitudeColumn . ' - ?' . /*lon*/ ')), 2)' .
+						'pow(sin(radians(('. $latitudeColumn . ' - ?' ./*lat*/')/2)), 2)' .
+						'+ cos(radians(?' . /*lat*/ '))*cos(radians(' . $latitudeColumn .
+						'))*pow(sin(radians(('. $longitudeColumn . ' - ?' ./*lon*/')/2)), 2)' .
 						// end a
 						')))) BETWEEN ?' . /*minradius*/ ' AND ?' /*maxradius*/;
 				$params[] = $query->latitude;
@@ -387,7 +440,7 @@ class FDSNIndex {
 
 				$where[] = '(' .
 						'(' . $longitudeColumn . ' BETWEEN ? AND ?)' .
-						' OR ' . 
+						' OR ' .
 						'(' . $longitudeColumn . ' BETWEEN ? AND ?)' .
 					')';
 				$params[] = $left_min;
@@ -429,12 +482,12 @@ class FDSNIndex {
 			// extensions
 
 			if ($query->eventtype !== null) {
-				if ($query->eventtype == 'earthquake') {
-					$where[] = "(upper(os.event_type) = upper(?) OR os.event_type='' OR os.event_type IS NULL)";
-				} else {
-					$where[] = 'upper(os.event_type) = upper(?)';
+				$types = array();
+				foreach ($query->eventtype as $eventtype) {
+					$types[] = 'upper(os.event_type) = upper(?)';
+					$params[] =  $eventtype;
 				}
-				$params[] = $query->eventtype;
+				$where[] = "( " . implode(" OR ", $types) . " )";
 			}
 
 			if ($query->reviewstatus !== null) {
@@ -495,9 +548,18 @@ class FDSNIndex {
 				$params[] = $query->maxsig;
 			}
 
-			if ($query->producttype !== null) {
-				$where[] = 'exists (select * from currentProducts where eventid=e.id and type=?)';
-				$params[] = $query->producttype;
+			if ($query->producttype !== null || $query->contributor !== null) {
+				$from .= ' JOIN productSummary contributed on (e.id=contributed.eventid)';
+
+				if ($query->producttype !== null) {
+					$where[] = 'contributed.type=?';
+					$params[] = $query->producttype;
+				}
+
+				if ($query->contributor !== null) {
+					$where[] = 'contributed.source=?';
+					$params[] = $query->contributor;
+				}
 			}
 
 		} // end ($query->eventid === null)

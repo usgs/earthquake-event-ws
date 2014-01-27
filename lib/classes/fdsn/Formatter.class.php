@@ -104,5 +104,23 @@ class Formatter {
 		}
 		return gmdate('Y-m-d\TH:i:s', $seconds) . '.' . $milliseconds . $tz;
 	}
+	
+		
+	public function formatEventType($type) {
+
+		if($type == null || strtolower($type) == 'earthquake') {
+			// assume earthquake
+			$type = 'Earthquake';
+		} else {
+			$temp = strtolower($type);
+			if      ($temp == "quarry")    $type = "Quarry Blast";
+			else if ($temp == "nuke")      $type = "Nuclear Explosion";
+			else if ($temp == "rockfall")  $type = "Rockslide";
+			else if ($temp == "rockburst") $type = "Rockslide";
+			else if ($temp == "sonicboom") $type = "Sonic Boom";
+			else                           $type = ucwords($type);
+		}
+		return $type;
+	}
 
 }

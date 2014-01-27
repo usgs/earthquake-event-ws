@@ -7,7 +7,7 @@ class CSVFeed extends AbstractFeed {
 	}
 
 	public function getHeader ($query=null) {
-		return "time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated\n";
+		return "time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type\n";
 	}
 
 	public function getEntry ($event) {
@@ -26,7 +26,9 @@ class CSVFeed extends AbstractFeed {
 			$event['standard_error'],
 			$event['eventSource'],
 			$event['eventSource'] . $event['eventSourceCode'],
-			$this->formatter->formatDateIso($event['eventUpdateTime'])
+			$this->formatter->formatDateIso($event['eventUpdateTime']),
+			'"' . str_replace('"', '""', $event['region']) . '"',
+			$event['event_type']
 		)) . "\n";
 	}
 

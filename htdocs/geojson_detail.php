@@ -19,6 +19,10 @@
 		<p>
 			Links to GeoJSON Detail feeds are included in <a href="geojson.php">GeoJSON Summary</a> feeds as the feature property "detail".
 		</p>
+                <p>
+                        This feed adheres to the USGS Earthquakes
+                        <a href="/earthquakes/feed/v1.0/../policy.php">Feed Life Cycle Policy</a>.
+                </p>
 
 		<h3>Usage</h3>
 

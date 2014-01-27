@@ -1,0 +1,55 @@
+/* Basic toggle styles */
+section.toggle, /* Just for more specificity. */
+.toggle {
+	margin:0;
+	padding:0;
+}
+
+/* When content is visible, some space looks better */
+section.toggle-visible,
+.toggle-visible {
+	padding-bottom:12px;
+}
+
+/* Hide all children in a toggle element ... */
+.toggle > * {
+	display:none;
+	margin-left:5%;
+}
+
+/**
+ * Show children in a toggle-visible element (as well as always show the
+ * control element).
+ */
+.toggle-visible > * {
+	display:block;
+}
+
+/* The toggle controller element styles */
+.toggle > .toggle-control {
+	position:relative;
+	display:block;
+	margin:8px 0;
+	padding:4px 8px 3px 32px;
+	cursor:pointer;
+	z-index:1;
+}
+
+/* Add the '+' symbol in front of the control element */
+.toggle > .toggle-control:before {
+	display:block;
+	position:absolute;
+	top:6px; left:6px;
+	width:18px; height:18px;
+	background-color:#FAFAFA;
+	border:1px solid #000;
+	text-align:center;
+	line-height:1.2;
+	content:'+';
+}
+
+/* Switch to a '-' symbol when toggle is open */
+.toggle-visible > .toggle-control:before {
+	line-height:1.2;
+	content:'-';
+}

@@ -30,6 +30,8 @@
 */
 #api { background-image:url("../images/api.png"); }
 
+#quakeml { background-image:url("../images/quakeml.png"); }
+
 .format h2 {
     background-color:transparent;
     background-image:none;

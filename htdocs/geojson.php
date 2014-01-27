@@ -22,6 +22,10 @@
 			<a href="http://www.geojson.org/" target="_blank">GeoJSON site</a>
 			for more information.
 		</p>
+                <p>
+                        This feed adheres to the USGS Earthquakes
+                        <a href="/earthquakes/feed/v1.0/../policy.php">Feed Life Cycle Policy</a>.
+                </p>
 
 
 		<h3>Usage</h3>
@@ -39,7 +43,8 @@
 		<a href="glossary.php#metadata_url">url</a>: String,
 		<a href="glossary.php#metadata_title">title</a>: String,
 		<a href="glossary.php#metadata_api">api</a>: String,
-		<a href="glossary.php#metadata_count">count</a>: Integer
+		<a href="glossary.php#metadata_count">count</a>: Integer,
+		<a href="glossary.php#metadata_status">status</a>: Integer
 	},
 	bbox: [
 		<a href="glossary.php#longitude">minimum longitude</a>,

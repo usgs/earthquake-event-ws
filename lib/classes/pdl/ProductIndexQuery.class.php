@@ -6,26 +6,36 @@ class ProductIndexQuery {
 	}
 
 
+	// These types omit deleted products
+
 	const RESULT_TYPE_CURRENT = 1;
 	const RESULT_TYPE_SUPERSEDED = 2;
-	const RESULT_TYPE_ALL = 3;
-	const RESULT_TYPE_PRODUCT_SOURCE = 4;
+	const RESULT_TYPE_PRODUCT_SOURCE = 3; // Not implemented
+
+	// With deleted products too
+
+	const RESULT_TYPE_CURRENT_WITH_DELETE = 101;
+	const RESULT_TYPE_SUPERSEDED_WITH_DELETE = 102;
+	const RESULT_TYPE_PRODUCT_SOURCE_WITH_DELETE = 103; // Not implemented
+
+	// All means all. Yes deleted, yes superceded, yes all.
+	const RESULT_TYPE_ALL = 999; // Not implemented
 
 	/** Search results max limit */
 	private $searchMax;
-	
+
 	/** Include previous versions? */
 	private $resultType;
 
 	/** Event id */
 	private $eventId;
 
-	/** Preferred and non-preferred event source */ 
+	/** Preferred and non-preferred event source */
 	private $eventSource;
 
 	/** Preferred event source code */
 	private $eventSourceCode;
-	
+
 	/** Minimum event time, inclusive. */
 	private $minEventTime;
 
@@ -90,10 +100,10 @@ class ProductIndexQuery {
 
 	/** Pager alert level */
 	private $alertlevel;
-	
+
 	/** Event review status */
 	private $review_status;
-	
+
 	/** Minimum Azimuthal gap property */
 	private $minAzimuthal_gap;
 
@@ -114,16 +124,16 @@ class ProductIndexQuery {
 
 	/** Event Status **/
 	private $showDeletedEvent;
-	
+
 	/** Product Status **/
 	private $showDeletedProduct;
-	
+
 	/** Catalog Source -- same as eventSource **/
 	private $catalogSource;
-	
+
 	/** Display certain products on the event page **/
 	private $showProductBySource;
-	
+
 	/**
 	 * A lot of getters and setters...
 	*/
@@ -135,7 +145,7 @@ class ProductIndexQuery {
 	public function getSearchMax() {
 		return $this->searchMax;
 	}
-	
+
 	public function setResultType($resultType) {
 		$this->resultType = $resultType;
 	}
@@ -320,7 +330,7 @@ class ProductIndexQuery {
 	public function getProductStatus() {
 		return  $this->productStatus;
 	}
-	
+
 	/** Yes these should be MaxMaxMMI */
 	public function setMaxMaxMMI($maxMaxmmi) {
 		$this->maxMaxmmi = $maxMaxmmi;
@@ -329,7 +339,7 @@ class ProductIndexQuery {
 	public function getMaxMaxMMI() {
 		return  $this->maxMaxmmi;
 	}
-	
+
 	public function setMinMaxMMI($minMaxmmi) {
 		$this->minMaxmmi = $minMaxmmi;
 	}
@@ -337,8 +347,8 @@ class ProductIndexQuery {
 	public function getMinMaxMMI() {
 		return  $this->minMaxmmi;
 	}
-	
-	
+
+
 	public function setAlertLevel($alertlevel) {
 		$this->alertlevel = $alertlevel;
 	}
@@ -346,7 +356,7 @@ class ProductIndexQuery {
 	public function getAlertLevel() {
 		return  $this->alertlevel;
 	}
-	
+
 	public function setReviewStatus($review_status) {
 		$this->review_status = $review_status;
 	}
@@ -354,7 +364,7 @@ class ProductIndexQuery {
 	public function getReviewStatus() {
 		return  $this->review_status;
 	}
-	
+
 	public function setMinAzimuthalGap($minAzimuthal_gap) {
 		$this->minAzimuthal_gap = $minAzimuthal_gap;
 	}
@@ -362,7 +372,7 @@ class ProductIndexQuery {
 	public function getMinAzimuthalGap() {
 		return  $this->minAzimuthal_gap;
 	}
-	
+
 	public function setMaxAzimuthalGap($maxAzimuthal_gap) {
 		$this->maxAzimuthal_gap = $maxAzimuthal_gap;
 	}
@@ -394,37 +404,37 @@ class ProductIndexQuery {
 	public function getMaxSignificance () {
 		return $this->max_significance;
 	}
-	
+
 	public function getShowDeletedEvent() {
-		return $this->showDeletedEvent;	
+		return $this->showDeletedEvent;
 	}
-	
+
 	public function setShowDeletedEvent($showDeletedEvent) {
-		$this->showDeletedEvent = $showDeletedEvent;	
+		$this->showDeletedEvent = $showDeletedEvent;
 	}
-	
+
 	public function getShowDeletedProduct() {
-		return $this->showDeletedProduct;	
+		return $this->showDeletedProduct;
 	}
-	
+
 	public function setShowDeletedProduct($showDeletedProduct) {
-		$this->showDeletedProduct = $showDeletedProduct;	
+		$this->showDeletedProduct = $showDeletedProduct;
 	}
-	
+
 	public function getCatalogSource() {
 		return $this->catalogSource;
 	}
-	
+
 	public function setCatalogSource($catalogSource) {
-		$this->catalogSource = $catalogSource;	
+		$this->catalogSource = $catalogSource;
 	}
-	
+
 	public function getShowProductBySource() {
-		return $this->showProductBySource;	
+		return $this->showProductBySource;
 	}
-	
+
 	public function setShowProductBySource($showProductBySource) {
-		$this->showProductBySource = $showProductBySource;	
+		$this->showProductBySource = $showProductBySource;
 	}
 }
 ?>

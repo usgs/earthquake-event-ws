@@ -37,6 +37,7 @@ class GeoJSONFeed extends AbstractFeed {
 	public function __construct($jsonp=false, $callback='eqfeed_callback') {
 		$this->jsonp = $jsonp;
 		$this->callback = $callback;
+		parent::__construct();
 	}
 
 	public function getMimeType() {
@@ -66,6 +67,7 @@ class GeoJSONFeed extends AbstractFeed {
 		$metadata['generated'] = time() . '000';
 		$metadata['url'] = $HOST_URL_PREFIX . $_SERVER['REQUEST_URI'];
 		$metadata['title'] = $query->resultTitle;
+		$metadata['status'] = 200;
 		if (!empty($service)) {
 			$metadata['api'] = $service->version;
 		}
@@ -81,7 +83,7 @@ class GeoJSONFeed extends AbstractFeed {
 
 		// data is an array of entries
 		$header .= '{"type":"FeatureCollection",' .
-			'"metadata":' . preg_replace('/"(generated)":"([\d]+)"/', '"$1":$2', $json) . ',';
+			'"metadata":' . preg_replace('/"(generated)":"(-?[\d]+)"/', '"$1":$2', $json) . ',';
 
 		// start features array
 		$header .= '"features":[';
@@ -118,7 +120,7 @@ class GeoJSONFeed extends AbstractFeed {
 				'place' => $event["region"],
 				'time' => $event['eventTime'],
 				'updated' => $event['eventUpdateTime'],
-				'tz' => intval($event['offset']),
+				'tz' => safeintval($event['offset']),
 				'url' => $event['eventpage_url'],
 				'detail' => $event['detail_url'],
 				'felt' => safeintval($event['num_responses']),
@@ -138,7 +140,8 @@ class GeoJSONFeed extends AbstractFeed {
 				'rms' => safefloatval($event['standard_error']),
 				'gap' => safefloatval($event['azimuthal_gap']),
 				'magType' => $event['magnitude_type'],
-				'type' => $event['event_type']
+				'type' => $event['event_type'],
+				'title' => $this->getEventTitle($event)
 			),
 			'geometry' => array(
 				'type' => 'Point',
@@ -152,7 +155,7 @@ class GeoJSONFeed extends AbstractFeed {
 		);
 
 		$json = str_replace('\/', '/', json_encode($array));
-		$entry .= preg_replace('/"(time|updated)":"([\d]+)"/', '"$1":$2', $json);
+		$entry .= preg_replace('/"(time|updated)":"(-?[\d]+)"/', '"$1":$2', $json);
 
 		return $entry;
 	}

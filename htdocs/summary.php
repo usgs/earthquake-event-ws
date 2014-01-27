@@ -22,7 +22,7 @@ $SIZES = array(
 	'significant' => -1
 );
 
-$FORMATS = array('geojson', 'geojsonp', 'atom', 'kml', 'csv');
+$FORMATS = array('geojson', 'geojsonp', 'atom', 'kml', 'csv', 'quakeml');
 
 $KML_COLORBYS = array('age', 'depth');
 
