@@ -34,15 +34,13 @@
 		<dl class="kml-description"> 
 			<dt>Automatic Feeds</dt>
 			<dd>
-				Download a Automatic KML feed and the feed will update automatically, in Google Earth, with the most recent earthquake information every 5 or 15 minutes.
+				These feeds will automatically update every 5 or 15 minutes when downloaded and installed into Google Earth.
+<!-- 				Your KML file will not update automatically if you're not connect to the internet, but you can view the file in Google Earth without an internet connection.  -->
 			</dd>
 
 			<dt>Feeds</dt>
 			<dd>
 				Download a normal KML feed to view earthquake data in Google Earth. You will have to re-download the KML file to access updated earthquake information. 
-				
-				
-<!-- 				Your KML file will not update automatically if, but you can view the file in Google Earth without an internet connection.  -->
 			</dd>
 		</dl> 
 
