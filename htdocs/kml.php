@@ -32,17 +32,17 @@
 		</p>
 		
 		<dl class="kml-description"> 
+			<dt>Automatic Feeds</dt>
+			<dd>
+				Download a Automatic KML feed and the feed will update automatically, in Google Earth, with the most recent earthquake information every 5 or 15 minutes.
+			</dd>
+
 			<dt>Feeds</dt>
 			<dd>
 				Download a normal KML feed to view earthquake data in Google Earth. You will have to re-download the KML file to access updated earthquake information. 
 				
 				
 <!-- 				Your KML file will not update automatically if, but you can view the file in Google Earth without an internet connection.  -->
-			</dd>
-			
-			<dt>Network Link Feeds</dt>
-			<dd>
-				Download a network link KML feed and the feed will update automatically, in Google Earth, with the most recent earthquake information every 5 or 15 minutes.
 			</dd>
 		</dl> 
 
@@ -78,134 +78,9 @@
 	
 	<div class="column three">
 	
-		<h3>Feeds</h3>
-		<h4>
-			<?php
-				print $dateRanges["week"]["name"];
-				print ", ";
-				print $magRanges["1"]["name"];
-			?>
-			<small>
-				<?php print $dateRanges["week"]["help"]; ?> 
-				
-			</small>
-		</h4>
-	
-		<ul>
-			<li>
-				<?php
-					print '<a href="';
-					print $SUMMARY_PATH;
-					print $magRanges["1"]["url"];
-					print "_";
-					print $dateRanges["week"]["url"];
-					print '_age.';
-					print $format;
-					print '">Colored by Age</a>';
-				?>
-			</li>
-			<li>
-				<?php
-					print '<a href="';
-					print $SUMMARY_PATH;
-					print $magRanges["1"]["url"];
-					print "_";
-					print $dateRanges["week"]["url"];
-					print '_depth.';
-					print $format;
-					print '">Colored by Depth</a>';
-				?>
-			</li>
-			<li>
-				<?php
-					print '<a href="';
-					print $SUMMARY_PATH;
-					print $magRanges["1"]["url"];
-					print "_";
-					print $dateRanges["week"]["url"];
-					print '_age_animated.';
-					print $format;
-					print '">Colored by Age, Animated</a>';
-				?>
-			</li>
-			<li>
-				<?php
-					print '<a href="';
-					print $SUMMARY_PATH;
-					print $magRanges["1"]["url"];
-					print "_";
-					print $dateRanges["week"]["url"];
-					print '_depth_animated.';
-					print $format;
-					print '">Colored by Depth, Animated</a>';
-				?>
-			</li>
-		</ul>
-		
-		<h4>
-			<?php
-				print $dateRanges["month"]["name"];
-				print ", ";
-				print $magRanges["2.5"]["name"];
-			?>
-			<small>
-				<?php print $dateRanges["month"]["help"]; ?>
-			</small>
-		</h4>
-		
-		<ul>
-			<li>
-				<?php
-					print '<a href="';
-					print $SUMMARY_PATH;
-					print $magRanges["2.5"]["url"];
-					print "_";
-					print $dateRanges["month"]["url"];
-					print '_age.';
-					print $format;
-					print '">Colored by Age</a>';
-				?>
-			</li>
-			<li>
-				<?php
-					print '<a href="';
-					print $SUMMARY_PATH;
-					print $magRanges["2.5"]["url"];
-					print "_";
-					print $dateRanges["month"]["url"];
-					print '_depth.';
-					print $format;
-					print '">Colored by Depth</a>';
-				?>
-			</li>
-			<li>
-				<?php
-					print '<a href="';
-					print $SUMMARY_PATH;
-					print $magRanges["2.5"]["url"];
-					print "_";
-					print $dateRanges["month"]["url"];
-					print '_age_animated.';
-					print $format;
-					print '">Colored by Age, Animated</a>';
-				?>
-			</li>
-			<li>
-				<?php
-					print '<a href="';
-					print $SUMMARY_PATH;
-					print $magRanges["2.5"]["url"];
-					print "_";
-					print $dateRanges["month"]["url"];
-					print '_depth_animated.';
-					print $format;
-					print '">Colored by Depth, Animated</a>';
-				?>
-			</li>
-		</ul>
 		
 		
-		<h3>Network Link Feeds</h3>
+		<h3>Automatic Feeds</h3>
 		
 		<h4>
 			<?php
@@ -326,6 +201,132 @@
 					print "_";
 					print $dateRanges["month"]["url"];
 					print '_depth_animated_link.';
+					print $format;
+					print '">Colored by Depth, Animated</a>';
+				?>
+			</li>
+		</ul>
+
+		<h3>Feeds</h3>
+		<h4>
+			<?php
+				print $dateRanges["week"]["name"];
+				print ", ";
+				print $magRanges["1"]["name"];
+			?>
+			<small>
+				<?php print $dateRanges["week"]["help"]; ?> 
+				
+			</small>
+		</h4>
+	
+		<ul>
+			<li>
+				<?php
+					print '<a href="';
+					print $SUMMARY_PATH;
+					print $magRanges["1"]["url"];
+					print "_";
+					print $dateRanges["week"]["url"];
+					print '_age.';
+					print $format;
+					print '">Colored by Age</a>';
+				?>
+			</li>
+			<li>
+				<?php
+					print '<a href="';
+					print $SUMMARY_PATH;
+					print $magRanges["1"]["url"];
+					print "_";
+					print $dateRanges["week"]["url"];
+					print '_depth.';
+					print $format;
+					print '">Colored by Depth</a>';
+				?>
+			</li>
+			<li>
+				<?php
+					print '<a href="';
+					print $SUMMARY_PATH;
+					print $magRanges["1"]["url"];
+					print "_";
+					print $dateRanges["week"]["url"];
+					print '_age_animated.';
+					print $format;
+					print '">Colored by Age, Animated</a>';
+				?>
+			</li>
+			<li>
+				<?php
+					print '<a href="';
+					print $SUMMARY_PATH;
+					print $magRanges["1"]["url"];
+					print "_";
+					print $dateRanges["week"]["url"];
+					print '_depth_animated.';
+					print $format;
+					print '">Colored by Depth, Animated</a>';
+				?>
+			</li>
+		</ul>
+		
+		<h4>
+			<?php
+				print $dateRanges["month"]["name"];
+				print ", ";
+				print $magRanges["2.5"]["name"];
+			?>
+			<small>
+				<?php print $dateRanges["month"]["help"]; ?>
+			</small>
+		</h4>
+		
+		<ul>
+			<li>
+				<?php
+					print '<a href="';
+					print $SUMMARY_PATH;
+					print $magRanges["2.5"]["url"];
+					print "_";
+					print $dateRanges["month"]["url"];
+					print '_age.';
+					print $format;
+					print '">Colored by Age</a>';
+				?>
+			</li>
+			<li>
+				<?php
+					print '<a href="';
+					print $SUMMARY_PATH;
+					print $magRanges["2.5"]["url"];
+					print "_";
+					print $dateRanges["month"]["url"];
+					print '_depth.';
+					print $format;
+					print '">Colored by Depth</a>';
+				?>
+			</li>
+			<li>
+				<?php
+					print '<a href="';
+					print $SUMMARY_PATH;
+					print $magRanges["2.5"]["url"];
+					print "_";
+					print $dateRanges["month"]["url"];
+					print '_age_animated.';
+					print $format;
+					print '">Colored by Age, Animated</a>';
+				?>
+			</li>
+			<li>
+				<?php
+					print '<a href="';
+					print $SUMMARY_PATH;
+					print $magRanges["2.5"]["url"];
+					print "_";
+					print $dateRanges["month"]["url"];
+					print '_depth_animated.';
 					print $format;
 					print '">Colored by Depth, Animated</a>';
 				?>
