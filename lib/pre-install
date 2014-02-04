@@ -30,6 +30,7 @@ case $INSTALL_MYSQL in
 			# database to use, read from existing config
 			DBNAME=`egrep '^db_name = ' ../conf/config.ini | sed 's/^.*=//'`
 			DBHOSTNAME=`egrep '^db_hostname = ' ../conf/config.ini | sed 's/^.*=//'`
+			echo "Will install into database $DBNAME on host $DBHOSTNAME";
 			# admin db username
 			read -p 'Mysql user with permission to run scripts: ' MYSQL_USER
 			if [ -z "${MYSQL_USER}" ]
