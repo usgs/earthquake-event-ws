@@ -29,8 +29,8 @@ case $INSTALL_MYSQL in
 			fi
 
 			# read defaults from existing config
-			DEFAULT_HOST=`egrep '^db_hostname = ' ../conf/config.ini | sed 's/^.*=//'`
-			DEFAULT_DB=`egrep '^db_name = ' ../conf/config.ini | sed 's/^.*=//'`
+			DEFAULT_HOST=`egrep '^db_hostname = ' ../conf/config.ini | sed 's/^.*=[ ]*//;s/[ ]*$//'`
+			DEFAULT_DB=`egrep '^db_name = ' ../conf/config.ini | sed 's/^.*=[ ]*//;s/[ ]*$//'`
 
 			# install db host
 			read -p "Mysql hostname [$DEFAULT_HOST]: " MYSQL_HOST
