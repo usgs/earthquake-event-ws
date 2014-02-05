@@ -27,10 +27,25 @@ case $INSTALL_MYSQL in
 			then
 				read -p "Mysql not found on path, enter mysql command: " MYSQL
 			fi
-			# database to use, read from existing config
-			DBNAME=`egrep '^db_name = ' ../conf/config.ini | sed 's/^.*=//'`
-			DBHOSTNAME=`egrep '^db_hostname = ' ../conf/config.ini | sed 's/^.*=//'`
-			echo "Will install into database $DBNAME on host $DBHOSTNAME";
+
+			# read defaults from existing config
+			DEFAULT_HOST=`egrep '^db_hostname = ' ../conf/config.ini | sed 's/^.*=//'`
+			DEFAULT_DB=`egrep '^db_name = ' ../conf/config.ini | sed 's/^.*=//'`
+
+			# install db host
+			read -p "Mysql hostname [$DEFAULT_HOST]: " MYSQL_HOST
+			if [ -z "${MYSQL_HOST}" ]
+			then
+				MYSQL_HOST=$DEFAULT_HOST;
+			fi
+
+			# install db name
+			read -p "Mysql database [$DEFAULT_DB]: " MYSQL_DB
+			if [ -z "${MYSQL_DB}" ]
+			then
+				MYSQL_DB=$DEFAULT_DB;
+			fi
+
 			# admin db username
 			read -p 'Mysql user with permission to run scripts: ' MYSQL_USER
 			if [ -z "${MYSQL_USER}" ]
@@ -49,11 +64,11 @@ case $INSTALL_MYSQL in
 
 			# install scripts
 			echo "running getEventIdByFullEventId.sql"
-			$MYSQL -h $DBHOSTNAME -u $MYSQL_USER -p$MYSQL_PASS $DBNAME < sql/getEventIdByFullEventId.sql
+			$MYSQL -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASS $MYSQL_DB < sql/getEventIdByFullEventId.sql
 			echo "running currentProducts.sql"
-			$MYSQL -h $DBHOSTNAME -u $MYSQL_USER -p$MYSQL_PASS $DBNAME < sql/currentProducts.sql
+			$MYSQL -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASS $MYSQL_DB < sql/currentProducts.sql
 			echo "running auto_summary.sql"
-			$MYSQL -h $DBHOSTNAME -u $MYSQL_USER -p$MYSQL_PASS $DBNAME < sql/auto_summary.sql
+			$MYSQL -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASS $MYSQL_DB < sql/auto_summary.sql
 			echo "done"
 		;;
 esac;
