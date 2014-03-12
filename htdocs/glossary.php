@@ -268,7 +268,7 @@
 			<dd>
 				The method or algorithm used to calculate the preferred magnitude
 				for the event. <a
-				href="http://earthquake.usgs.gov/earthquakes/glossary.php"
+				href="http://earthquake.usgs.gov/earthquakes/map/doc_aboutdata.php#magnitudes"
 				>Learn more about magnitude types.</a>
 			</dd>
 		</dl>
