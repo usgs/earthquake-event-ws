@@ -51,9 +51,18 @@ var rewrites = [
 
 if (!iniConfig.hasOwnProperty('OFFSITE_HOST') ||
 		iniConfig.OFFSITE_HOST.trim() !== '') {
+
+	// Redirect for event page
 	rewrites.push({
 		from: '^' + iniConfig.EVENT_PATH + '(.*)$',
 		to: iniConfig.OFFSITE_HOST + iniConfig.EVENT_PATH + '$1',
+		redirect: 'permanent'
+	});
+
+	// Redirect for event content
+	rewrites.push({
+		from: '^' + iniConfig.storage_url + '(.*)$',
+		to: iniConfig.OFFSITE_HOST + iniConfig.storage_url + '$1',
 		redirect: 'permanent'
 	});
 }
