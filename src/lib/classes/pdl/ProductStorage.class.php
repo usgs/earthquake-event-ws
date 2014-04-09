@@ -40,11 +40,15 @@ class ProductStorage {
 	public function getProduct($productid) {
 		$directory = $this->getProductFile($productid);
 		$xml = $directory . '/' . self::$PRODUCT_XML_FILENAME;
-		$url = $this->getProductURL($productid);
+		$url = $this->getProductURL($productid) . '/' . self::$PRODUCT_XML_FILENAME;
 
 		//parse xml
 		try {
-			$parsed = simplexml_load_file($xml);
+			if (is_file($xml)) { // Prefer local files
+				$parsed = simplexml_load_file($xml);
+			} else { // Fall back to remote files if needed
+				$parsed = simplexml_load_file($url);
+			}
 			if ($parsed == null) {
 				return null;
 			}
