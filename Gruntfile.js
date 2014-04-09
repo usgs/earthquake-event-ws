@@ -2,10 +2,63 @@
 
 var LIVE_RELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({port: LIVE_RELOAD_PORT});
-var rewriteRulesSnippet =
-		require('grunt-connect-rewrite/lib/utils').rewriteRequest;
 var gateway = require('gateway');
+var rewriteModule = require('http-rewrite-middleware');
 
+var iniConfig = require('ini').parse(require('fs')
+		.readFileSync('./src/conf/config.ini', 'utf-8'));
+
+var rewrites = [
+	// Template
+	{
+		from: '^/theme/(.*)$',
+		to: '/hazdev-template/src/htdocs/$1'
+	},
+
+	// Search pages
+	{
+		from: '^' + iniConfig.SEARCH_PATH + '/$',
+		to: '/search.php'
+	},
+	{
+		from: '^' + iniConfig.SEARCH_PATH + '/(js|css|lib)/(.*)',
+		to: '/$1/$2'
+	},
+
+	// Realtime feeds
+	{
+		from: '^' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION +
+				'/detail/([^\\./]+)\\.([^\\./]+)$',
+		to: '/detail.php?eventid=$1&format=$2'
+	},
+	{
+		from: '^' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION +
+				'/summary/([^/]+)\\.([^\\./]+)$',
+		to: '/summary.php?params=$1&format=$2'
+	},
+	{
+		from: '^' + iniConfig.FDSN_PATH + '/([^/]*)$',
+		to: '/fdsn.php?method=$1'
+	},
+
+	// Other mount path stuff
+	{
+		from: '^' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION +
+				'/(.*)$',
+		to: '/$1'
+	},
+];
+
+if (!iniConfig.hasOwnProperty('OFFSITE_HOST') ||
+		iniConfig.OFFSITE_HOST.trim() !== '') {
+	rewrites.push({
+		from: '^' + iniConfig.EVENT_PATH + '(.*)$',
+		to: iniConfig.OFFSITE_HOST + iniConfig.EVENT_PATH + '$1',
+		redirect: 'permanent'
+	});
+}
+
+var rewriteMiddleware = rewriteModule.getMiddleware(rewrites/*,{verbose:true}/**/);
 
 var mountFolder = function (connect, dir) {
 	return connect.static(require('path').resolve(dir));
@@ -34,8 +87,6 @@ module.exports = function (grunt) {
 		tmp: '.tmp'
 	};
 
-	var iniConfig = require('ini').parse(require('fs')
-			.readFileSync('./src/conf/config.ini', 'utf-8'));
 
 	// TODO :: Read this from .bowerrc
 	var bowerConfig = {
@@ -98,51 +149,6 @@ module.exports = function (grunt) {
 			options: {
 				hostname: 'localhost'
 			},
-			rules: [
-				// Template
-				{
-					from: '^/theme/(.*)$',
-					to: '/hazdev-template/src/htdocs/$1'
-				},
-
-				// Search pages
-				{
-					from: '^' + iniConfig.SEARCH_PATH + '/$',
-					to: '/search.php'
-				},
-				{
-					from: '^' + iniConfig.SEARCH_PATH + '/(js|css|lib)/(.*)',
-					to: '/$1/$2'
-				},
-
-				// Realtime feeds
-				{
-					from: '^' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION +
-							'/detail/([^\\./]+)\\.([^\\./]+)$',
-					to: '/detail.php?eventid=$1&format=$2'
-				},
-				{
-					from: '^' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION +
-							'/summary/([^/]+)\\.([^\\./]+)$',
-					to: '/summary.php?params=$1&format=$2'
-				},
-				{
-					from: '^' + iniConfig.FDSN_PATH + '/([^/]*)$',
-					to: '/fdsn.php?method=$1'
-				},
-
-				// Other mount path stuff
-				{
-					from: '^' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION +
-							'/(.*)$',
-					to: '/$1'
-				},
-				{
-					from: '^/earthquakes/eventpage(.*)$',
-					to: 'http://earthquake.usgs.gov/earthquakes/eventpage$1',
-					redirect: 'permanent'
-				}
-			],
 			dev: {
 				options: {
 					base: '<%= app.src %>/htdocs',
@@ -151,7 +157,7 @@ module.exports = function (grunt) {
 					middleware: function (connect, options) {
 						return [
 							lrSnippet,
-							rewriteRulesSnippet,
+							rewriteMiddleware,
 							mountFolder(connect, '.tmp'),
 							mountFolder(connect, options.components),
 							mountPHP(options.base),
@@ -362,7 +368,6 @@ module.exports = function (grunt) {
 	grunt.registerTask('default', [
 		'clean:dist',
 		'compass:dev',
-		'configureRewriteRules',
 		'connect:test',
 		'connect:dev',
 		'open:test',
