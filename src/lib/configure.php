@@ -88,6 +88,8 @@
 		'API_VERSION' => 'Feed API version',
 		'FDSN_VERSION' => 'FDSN API version',
 		'DEFAULT_MAXEVENTAGE' => 'Default maxEventAge parameter (seconds)',
+
+		'OFFSITE_HOST' => 'HTTP host for remote product index location'
 	);
 
 	// Defaults
@@ -112,7 +114,9 @@
 		'MAX_SEARCH' => '20000',
 		'API_VERSION' => 'v1.0',
 		'FDSN_VERSION' => '1.0.6',
-		'DEFAULT_MAXEVENTAGE' => '2592000'
+		'DEFAULT_MAXEVENTAGE' => '2592000',
+
+		'OFFSITE_HOST' => ''
 	);
 
 	// Default action is to configure

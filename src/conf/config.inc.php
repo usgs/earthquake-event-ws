@@ -41,8 +41,7 @@ $FDSN_VERSION = $CONFIG['FDSN_VERSION'];
 $DEFAULT_MAXEVENTAGE = isset($CONFIG['DEFAULT_MAXEVENTAGE']) ?
 		$CONFIG['DEFAULT_MAXEVENTAGE'] : null;
 
-
-$storage_directory = $CONFIG['storage_directory'];
+$storage_directory = $CONFIG['OFFSITE_HOST'] . $CONFIG['storage_directory'];
 $storage_url = $CONFIG['storage_url'];
 
 // build absolute Event Page URL string
