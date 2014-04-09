@@ -136,6 +136,11 @@ module.exports = function (grunt) {
 					from: '^' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION +
 							'/(.*)$',
 					to: '/$1'
+				},
+				{
+					from: '^/earthquakes/eventpage(.*)$',
+					to: 'http://earthquake.usgs.gov/earthquakes/eventpage$1',
+					redirect: 'permanent'
 				}
 			],
 			dev: {
