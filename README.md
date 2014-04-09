@@ -18,4 +18,5 @@ a local development environemnt.
 
 1. [Use git to clone the earthquake-event-ws from git repository](docs/git.md).
 2. [Install needed dependencies](docs/deps.md).
-3. Run ```grunt``` from the install directory.
+3. Run ```src/lib/pre-install``` from the install directory.
+4. Run ```grunt``` from the install directory.
