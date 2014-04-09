@@ -1,5 +1,3 @@
-GIT INSTALL
-
 ### Fork the project repository ###
 
 1. Fork the project into your GitHub user account.

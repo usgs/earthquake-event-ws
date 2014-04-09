@@ -1,6 +1,3 @@
-Readme dependencies
-
----
 ### Windows ###
 
 1. You will need a terminal tool for Windows. I used [Git Bash][] to test these
