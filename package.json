@@ -35,9 +35,9 @@
     "matchdep": "~0.1.2",
     "mocha": "~1.9.0",
     "sinon": "~1.7.3",
-    "hazdev-template": "0.0.8",
-    "grunt-connect-rewrite": "~0.2.1",
-    "ini": "~1.1.0"
+    "hazdev-template": "0.0.9",
+    "ini": "~1.1.0",
+    "http-rewrite-middleware": "~0.1.5"
   },
   "engines": {
     "node": ">=0.8.0"
