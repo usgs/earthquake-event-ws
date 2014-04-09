@@ -1,0 +1,50 @@
+.header, .footer {
+	display:block;
+	clear:left;
+	background-color:#EEE;
+	padding:16px;
+}
+
+.search-basic,
+.search-advanced,
+.search-output {
+	max-width:1344px;
+}
+
+.search-basic > h2,
+.search-advanced > h2,
+.search-output > h2 {
+	border-bottom:1px solid #333;
+	padding-left:8px;
+}
+
+.search-basic ul,
+.search-advanced ul,
+.search-output ul {
+	list-style:none;
+	padding:0;
+}
+
+.search-basic ul ul,
+.search-advanced ul ul,
+.search-output ul ul {
+	margin-left:16px;
+}
+
+.search-basic input[type="text"],
+.search-basic input[type="number"],
+.search-advanced input[type="text"],
+.search-advanced input[type="number"],
+.search-output input[type="text"],
+.search-output input[type="number"] {
+	width:60%;
+	display:block;
+}
+
+section[role="group"] {
+	margin-top:16px;
+}
+
+section[role="group"]:last-child {
+	border-bottom:none;
+}

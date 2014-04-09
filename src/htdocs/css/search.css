@@ -1,0 +1,41 @@
+@import url('layout.css');
+@import url('n-up.css');   /* Provides .two-up and .three-up styles */
+@import url('fdsn-search.css');
+@import url('form.css');
+
+@import url('ManagedModelView.css');
+@import url('ToggleSection.css');
+@import url('ModalView.css');
+
+.help {
+	margin:0;
+	color:#777;
+	font-size:.8em;
+}
+
+.hidden {
+	display:none;
+}
+
+.button-as-link {
+	display:inline;
+	border:none;
+	background:none;
+	text-decoration:none;
+	margin:0;
+	padding:0;
+	font:normal 1em/1.5 'Arial';
+	cursor:pointer;
+	color:#00C;
+	text-decoration:underline;
+}
+
+.search-error {
+	display:none;
+}
+.show-errors .search-error {
+	display:block;
+}
+.show-errors input.error {
+	outline:2px solid #C10C0C;
+}

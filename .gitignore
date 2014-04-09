@@ -1,3 +1,10 @@
-conf/config.ini
-conf/httpd.conf
+.DS_Store
+.tmp
+.sass-cache
+dist
+node_modules
+bower_components
+*.sublime-workspace
+src/conf/config.ini*
+src/conf/httpd.conf
 
