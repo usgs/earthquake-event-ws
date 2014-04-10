@@ -87,6 +87,11 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
 	Allow from all
 </Directory>
 
+<Directory ' . $storage_directory . '>
+	Order allow,deny
+	Allow from all
+</Directory>
+
 <Location ' . $FEED_PATH . '/>
 	SetEnv APP_URL_PATH ' . $FEED_PATH . '
 	SetEnv APP_WEB_DIR ' . $HTDOCS_DIR . '
