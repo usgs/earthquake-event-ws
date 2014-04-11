@@ -17,6 +17,10 @@ $FEED_PATH = $CONFIG['FEED_PATH'] . '/' . $CONFIG['API_VERSION'];
 $FDSN_PATH = $CONFIG['FDSN_PATH'];
 $SEARCH_PATH = $CONFIG['SEARCH_PATH'];
 
+$storage_directory = $CONFIG['storage_directory'];
+$storage_url = $CONFIG['storage_url'];
+
+
 
 // write apache configuration
 $HTTPD_CONF = '
@@ -76,7 +80,14 @@ RewriteRule ^' . $FDSN_PATH . '$ ' . $FDSN_PATH . '/ [R=301,L]
 RewriteRule ^' . $FDSN_PATH . '/([^/]*)$ ' . $FEED_PATH . '/fdsn.php?method=$1 [L,QSA,PT]
 
 Alias ' . $FEED_PATH . ' ' . $HTDOCS_DIR . '
+Alias ' . $storage_url . ' ' . $storage_directory . '
+
 <Directory ' . $HTDOCS_DIR . '>
+	Order allow,deny
+	Allow from all
+</Directory>
+
+<Directory ' . $storage_directory . '>
 	Order allow,deny
 	Allow from all
 </Directory>
