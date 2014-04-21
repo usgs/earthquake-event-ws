@@ -96,7 +96,7 @@ if (!isset($TEMPLATE)) {
 	<dd>
 		to submit a data request.
 	<p>
-		<a href="#parameters">See the Parameters section for supported url 
+		<a href="#parameters">See the Parameters section for supported url
 		parameters.</a>
 	</p>
 	</dd>
@@ -244,7 +244,7 @@ if (!isset($TEMPLATE)) {
 	</dd>
 
 	<dt id="minradiuskm">minradiuskm</dt>
-	<dd>Kilometers: [0, 6371]</dd>
+	<dd>Kilometers: [0, 20001.6]</dd>
 	<dd>
 		Limit to events further than the specified minimum number of kilometers
 		from the geographic point defined by the latitude and longitude parameters.
@@ -263,7 +263,7 @@ if (!isset($TEMPLATE)) {
 </dl>
 
 	<dt id="maxradiuskm">maxradiuskm</dt>
-	<dd>Kilometers: [0, 6371]</dd>
+	<dd>Kilometers: [0, 20001.6]</dd>
 	<dd>
 		Limit to events within the specified maximum number of kilometers from the
 		geographic point defined by the latitude and longitude parameters. This
@@ -486,7 +486,7 @@ if (!isset($TEMPLATE)) {
 
 			<dt>text</dt>
 			<dd>
-				This format is only available for the count and version methods. 
+				This format is only available for the count and version methods.
 				Response format is plain text. Mime-type is &ldquo;text/plain&rdquo;.
 			</dd>
 		</dl>
