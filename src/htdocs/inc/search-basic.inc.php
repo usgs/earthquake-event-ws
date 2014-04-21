@@ -128,7 +128,7 @@
 						<abbr title="Minimum">Inside</abbr> Radius (km)
 					</label>
 					<input type="number" step="any" name="minradiuskm" id="minradiuskm"
-							min="0" max="6371"
+							min="0" max="20001.6"
 							aria-labelledby="region region-circle circle-minradiuskm"/>
 				</li>
 				<li>
@@ -136,7 +136,7 @@
 						<abbr title="Maximum">Outside</abbr> Radius (km)
 					</label>
 					<input type="number" step="any" name="maxradiuskm" id="maxradiuskm"
-							min="0" max="6371"
+							min="0" max="20001.6"
 							aria-labelledby="region region-circle circle-maxradiuskm"/>
 				</li>
 			</ul>
