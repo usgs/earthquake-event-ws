@@ -38,6 +38,10 @@ var rewrites = [
 	},
 	// Archive searches (with QSA essentially)
 	{
+		from: '^' + iniConfig.FDSN_PATH + '/query\\.([^/?]*)\\??(.*)$',
+		to: '/fdsn.php?method=query&format=$1&$2'
+	},
+	{
 		from: '^' + iniConfig.FDSN_PATH + '/([^/?]*)\\??(.*)$',
 		to: '/fdsn.php?method=$1&$2'
 	},
@@ -185,8 +189,11 @@ module.exports = function (grunt) {
 					keepalive: true,
 					middleware: function (connect, options) {
 						return [
+							rewriteMiddleware,
 							mountPHP(options.base),
-							mountFolder(connect, options.base)
+							mountFolder(connect, options.base),
+							mountFolder(connect, '.tmp'),
+							mountFolder(connect, 'node_modules')
 						];
 					}
 				}
@@ -237,11 +244,11 @@ module.exports = function (grunt) {
 		requirejs: {
 			dist: {
 				options: {
-					name: 'index',
+					name: 'search',
 					baseUrl: appConfig.src + '/htdocs/js',
-					out: appConfig.dist + '/htdocs/js/index.js',
+					out: appConfig.dist + '/htdocs/js/search.js',
 					optimize: 'uglify2',
-					mainConfigFile: appConfig.src + '/htdocs/js/index.js',
+					mainConfigFile: appConfig.src + '/htdocs/js/search.js',
 					useStrict: true,
 					wrap: true,
 					uglify2: {
@@ -249,6 +256,10 @@ module.exports = function (grunt) {
 						mangle: true,
 						compress: true,
 						preserveComments: 'some'
+					},
+					paths: {
+						mvc: '../../../node_modules/hazdev-webutils/src/mvc',
+						util: '../../../node_modules/hazdev-webutils/src/util'
 					}
 				}
 			}
@@ -257,8 +268,16 @@ module.exports = function (grunt) {
 			dist: {
 				files: {
 					'<%= app.dist %>/htdocs/css/index.css': [
-						'<%= app.src %>/htdocs/css/**/*.css',
-						'.tmp/css/**/*.css'
+						'.tmp/css/index.css'
+					],
+					'<%= app.dist %>/htdocs/css/search.css': [
+						'.tmp/css/search.css'
+					],
+					'<%= app.dist %>/htdocs/css/feedPages.css': [
+						'.tmp/css/feedPages.css'
+					],
+					'<%= app.dist %>/htdocs/css/glossary.css': [
+						'.tmp/css/glossary.css'
 					]
 				}
 			}
@@ -297,14 +316,14 @@ module.exports = function (grunt) {
 				cwd: '<%= app.src %>/htdocs',
 				dest: '<%= app.dist %>/htdocs',
 				src: [
-					'img/**/*.{png,gif,jpg,jpeg}',
+					'images/*.{png,gif,jpg,jpeg}',
 					'**/*.php'
 				]
 			},
 			conf: {
 				expand: true,
 				cwd: '<%= app.src %>/conf',
-				dest: '<%= app.dist/conf',
+				dest: '<%= app.dist %>/conf',
 				src: [
 					'**/*',
 					'!**/*.orig'
