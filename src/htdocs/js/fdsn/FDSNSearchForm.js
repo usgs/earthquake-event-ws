@@ -265,11 +265,12 @@ define([
 			    search = this._trimSearch(this.model.getNonEmpty()),
 			    maplistsort = 'newest', searchsort = this.model.get('orderby'),
 					mapposition = [[], []],
-			    searchString = [], key = null;
+			    searchString = [], key = null,
+			    format = search.format;
 
-			if (search.format === 'maplist') {
-				delete search.format;
+			delete search.format;
 
+			if (format === 'maplist') {
 				// TODO :: Streamline this mapping
 				if (searchsort === 'time-asc') {
 					maplistsort = 'oldest';
@@ -326,7 +327,7 @@ define([
 					}
 				}
 
-				url += '?' + searchString.join('&');
+				url += '.' + format + '?' + searchString.join('&');
 			}
 
 			return url;
