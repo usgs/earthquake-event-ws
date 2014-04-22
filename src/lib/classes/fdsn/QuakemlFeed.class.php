@@ -420,6 +420,7 @@ class QuakemlFeed extends AbstractFeed {
 		global $storage_url;
 
 		$prefix = str_replace('http://', '', $HOST_URL_PREFIX);
+		$prefix = str_replace(':', '', $prefix);
 
 		return 'quakeml:' . $prefix . $storage_url . '/' . $type . '/' . $code .
 				'/' . $source . '/' . $updateTime . '/product.xml';
