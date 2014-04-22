@@ -36,10 +36,9 @@ var rewrites = [
 				'/summary/([^/]+)\\.([^\\./]+)$',
 		to: '/summary.php?params=$1&format=$2'
 	},
-	// Archive searches (with QSA essentially)
 	{
-		from: '^' + iniConfig.FDSN_PATH + '/([^/?]*)\\??(.*)$',
-		to: '/fdsn.php?method=$1&$2'
+		from: '^' + iniConfig.FDSN_PATH + '/([^/]*)$',
+		to: '/fdsn.php?method=$1'
 	},
 
 	// Other mount path stuff
@@ -68,8 +67,7 @@ if (!iniConfig.hasOwnProperty('OFFSITE_HOST') ||
 	});
 }
 
-var rewriteMiddleware = rewriteModule.getMiddleware(rewrites/*,
-		{verbose:true}/**/);
+var rewriteMiddleware = rewriteModule.getMiddleware(rewrites/*,{verbose:true}/**/);
 
 var mountFolder = function (connect, dir) {
 	return connect.static(require('path').resolve(dir));
