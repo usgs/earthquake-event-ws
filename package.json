@@ -37,7 +37,9 @@
     "sinon": "~1.7.3",
     "hazdev-template": "0.0.9",
     "ini": "~1.1.0",
-    "http-rewrite-middleware": "~0.1.5"
+    "http-rewrite-middleware": "~0.1.5",
+    "hazdev-webutils": "0.0.9",
+    "requirejs": "~2.1.11"
   },
   "engines": {
     "node": ">=0.8.0"
