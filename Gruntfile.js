@@ -68,8 +68,8 @@ if (!iniConfig.hasOwnProperty('OFFSITE_HOST') ||
 	});
 }
 
-var rewriteMiddleware = rewriteModule.getMiddleware(rewrites
-		/*,{verbose:true}/**/);
+var rewriteMiddleware = rewriteModule.getMiddleware(rewrites/*,
+		{verbose:true}/**/);
 
 var mountFolder = function (connect, dir) {
 	return connect.static(require('path').resolve(dir));
