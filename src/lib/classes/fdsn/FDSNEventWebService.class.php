@@ -382,9 +382,9 @@ class FDSNEventWebService {
 			} else if ($name ==='maxradius') {
 				$query->maxradius = $this->validateFloat($name, $value, 0, 180);
 			} else if ($name==='minradiuskm') {
-				$query->minradiuskm = $this->validateFloat($name, $value, 0, 6371);
+				$query->minradiuskm = $this->validateFloat($name, $value, 0, 20001.6);
 			} else if ($name==='maxradiuskm') {
-				$query->maxradiuskm = $this->validateFloat($name, $value, 0, 6371);
+				$query->maxradiuskm = $this->validateFloat($name, $value, 0, 20001.6);
 			} else if ($name ==='mindepth') {
 				$query->mindepth = $this->validateFloat($name, $value, null, null);
 			} else if ($name ==='maxdepth') {
