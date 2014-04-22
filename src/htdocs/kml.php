@@ -2,10 +2,7 @@
 if (!isset($TEMPLATE)) {
 	$TITLE = 'KML Format';
 	$NAVIGATION = true;
-	$HEAD = '
-		<link rel="stylesheet" href="css/feedPages.css"/>
-		<link rel="stylesheet" href="css/format.css"/>
-	';
+	$HEAD = '<link rel="stylesheet" href="css/feedPages.css"/>';
 
 	include '../conf/config.inc.php';
 	include 'inc/terms.inc.php';
@@ -32,7 +29,7 @@ if (!isset($TEMPLATE)) {
 		<h3>Usage</h3>
 		<p>
 			You will need to download and install <a href="http://earth.google.com/"
-			target="_blank">Google Earth</a> to view KML files. 
+			target="_blank">Google Earth</a> to view KML files.
 		</p>
 
 		<dl class="kml-description">
@@ -46,9 +43,9 @@ if (!isset($TEMPLATE)) {
 			<dd>
 				Download a normal KML feed to view earthquake data in Google Earth. You
 				will have to re-download the KML file to access updated earthquake
-				information. 
+				information.
 			</dd>
-		</dl> 
+		</dl>
 
 		<h3>Earthquake Animations</h3>
 		<p>
@@ -66,7 +63,7 @@ if (!isset($TEMPLATE)) {
 				<img class="screenshot" src="images/google-earth-time-slider.png"
 						alt="screenshot of google earth time slider"/>
 				<p>
-					For more information on how to use the time slider, 
+					For more information on how to use the time slider,
 					<a href="http://support.google.com/earth/bin/answer.py?hl=en&amp;answer=183758"
 							target="_blank">click here</a>.
 				</p>
@@ -263,7 +260,7 @@ if (!isset($TEMPLATE)) {
 			?>
 			<small><?php print $dateRanges['month']['help']; ?></small>
 		</h4>
-		
+
 		<ul>
 			<li>
 				<?php

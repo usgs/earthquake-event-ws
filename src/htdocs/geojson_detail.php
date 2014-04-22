@@ -2,10 +2,7 @@
 if (!isset($TEMPLATE)) {
 	$TITLE = 'GeoJSON Detail Format';
 	$NAVIGATION = true;
-	$HEAD = '
-		<link rel="stylesheet" href="css/feedPages.css"/>
-		<link rel="stylesheet" href="css/format.css"/>
-	';
+	$HEAD = '<link rel="stylesheet" href="css/feedPages.css"/>';
 
 	include 'template.inc.php';
 }
