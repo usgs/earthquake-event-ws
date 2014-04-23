@@ -35,7 +35,8 @@ class QuakemlFeed extends AbstractFeed {
 		// Quakeml publicID may not contain colons
 		$request_url = str_replace(':', '', $request_url);
 		// Strip milliseconds off time parameters to strtotime still parses
-		$request_url = preg_replace('/\.[\d]{3}(&|$)/', '$1', $request_url);
+		$request_url = preg_replace('/(time=[^\.&]+)(\.[\d]{3})?(&|$)/', '$1$3',
+				$request_url);
 
 		$header .= "\n" . '<eventParameters publicID="' .
 				'quakeml:' . htmlentities($request_url) . '">';
