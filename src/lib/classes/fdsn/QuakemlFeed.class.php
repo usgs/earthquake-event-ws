@@ -104,7 +104,7 @@ class QuakemlFeed extends AbstractFeed {
 
 		// event type
 		$type = $event['event_type'];
-		if ($type == '') {
+		if ($type === '') {
 			$type = 'earthquake';
 		}
 		$entry .= $this->getElement('type', $type);
@@ -138,7 +138,7 @@ class QuakemlFeed extends AbstractFeed {
 				$origin['code'],
 				$origin['updateTime']);
 
-		if ($origin['eventMagnitude'] != '') {
+		if ($origin['eventMagnitude'] !== '') {
 			$magnitudePublicID = $originPublicID . '#magnitude';
 		}
 
@@ -156,17 +156,17 @@ class QuakemlFeed extends AbstractFeed {
 		$xml .= $this->getElement('longitude/value', $origin['eventLongitude']);
 		$xml .= $this->getElement('latitude/value', $origin['eventLatitude']);
 
-		if ($origin['eventDepth'] != '') {
+		if ($origin['eventDepth'] !== '') {
 			$xml .= '<depth>';
 			$xml .= '<value>' . $origin['eventDepth']*1000 . '</value>';
-			if ($origin['vertical_error'] != '') {
+			if ($origin['vertical_error'] !== '') {
 				$xml .= '<uncertainty>' . $origin['vertical_error']*1000 .
 						'</uncertainty>';
 			}
 			$xml .= '</depth>';
 		}
 
-		if ($origin['horizontal_error'] != '') {
+		if ($origin['horizontal_error'] !== '') {
 			$xml .= '<originUncertainty>' .
 				'<horizontalUncertainty>' .
 					$origin['horizontal_error']*1000 .
@@ -188,12 +188,12 @@ class QuakemlFeed extends AbstractFeed {
 				$origin['azimuthal_gap']);
 		$quality .= $this->getElement('minimumDistance',
 				$origin['minimum_distance']);
-		if ($quality != '') {
+		if ($quality !== '') {
 			$xml .= '<quality>' . $quality . '</quality>';
 		}
 
 		$xml .= '<evaluationMode>';
-		if (strtoupper($origin["review_status"]) == "REVIEWED") {
+		if (strtoupper($origin["review_status"]) === "REVIEWED") {
 			$xml .= 'manual';
 		} else {
 			$xml .= 'automatic';
@@ -216,7 +216,7 @@ class QuakemlFeed extends AbstractFeed {
 
 				$xml .= '<mag>';
 				$xml .= '<value>' . $origin['eventMagnitude'] . '</value>';
-				if ($origin['magnitude_error'] != '') {
+				if ($origin['magnitude_error'] !== '') {
 					$xml .= '<uncertainty>' . $origin['magnitude_error'] .
 							'</uncertainty>';
 				}
@@ -227,7 +227,7 @@ class QuakemlFeed extends AbstractFeed {
 
 				$xml .= '<originID>' . $originPublicID . '</originID>';
 				$xml .= '<evaluationMode>';
-				if (strtoupper($origin['review_status']) == "REVIEWED") {
+				if (strtoupper($origin['review_status']) === "REVIEWED") {
 					$xml .= 'manual';
 				} else {
 					$xml .= 'automatic';
@@ -269,7 +269,7 @@ class QuakemlFeed extends AbstractFeed {
 				' publicID="' . $beachballPublicID . '"' .
 				'>';
 
-		if ($beachball['nodal_plane_1_strike'] != '') {
+		if ($beachball['nodal_plane_1_strike'] !== '') {
 			$xml .= '<nodalPlanes>' .
 					'<nodalPlane1>' .
 						$this->getElement('strike/value',
@@ -302,12 +302,12 @@ class QuakemlFeed extends AbstractFeed {
 					$beachball['percent_double_couple']);
 			$xml .= $this->getElement('methodID', $beachball['beachball_type']);
 
-			if ($beachball['derived_depth'] != '' ||
-					$beachball['derived_latitude'] != '') {
+			if ($beachball['derived_depth'] !== '' ||
+					$beachball['derived_latitude'] !== '') {
 				$originPublicID = $beachballPublicID . '#origin';
 				$xml .= $this->getElement('derivedOriginID', $originPublicID);
 			}
-			if ($beachball['derived_magnitude'] != '') {
+			if ($beachball['derived_magnitude'] !== '') {
 				$magnitudePublicID = $beachballPublicID . '#magnitude';
 				$xml .= $this->getElement('momentMagnitudeID', $magnitudePublicID);
 			}
@@ -316,7 +316,7 @@ class QuakemlFeed extends AbstractFeed {
 		}
 
 		$xml .= '<evaluationMode>';
-		if (strtoupper($beachball["review_status"]) == "REVIEWED") {
+		if (strtoupper($beachball["review_status"]) === "REVIEWED") {
 			$xml .= 'manual';
 		} else {
 			$xml .= 'automatic';
@@ -332,13 +332,13 @@ class QuakemlFeed extends AbstractFeed {
 
 
 		// add derived origin
-		if ($originPublicID != null) {
+		if ($originPublicID !== null) {
 			$xml .= '<origin publicID="' . $originPublicID . '">' .
 					$this->getElement('time/value', $beachball['derived_eventtime']) .
 					$this->getElement('latitude/value', $beachball['derived_latitude']) .
 					$this->getElement('longitude/value', $beachball['derived_longitude']);
 
-			if ($beachball['derived_depth'] != '') {
+			if ($beachball['derived_depth'] !== '') {
 				$xml .= $this->getElement('depth/value',
 						$beachball['derived_depth']*1000) .
 						'<depthType>from moment tensor inversion</depthType>';
@@ -348,7 +348,7 @@ class QuakemlFeed extends AbstractFeed {
 		}
 
 		// add derived magnitude
-		if ($magnitudePublicID != null) {
+		if ($magnitudePublicID !== null) {
 			$xml .= '<magnitude publicID="' . $magnitudePublicID . '">' .
 					$this->getElement('mag/value', $beachball['derived_magnitude']) .
 					$this->getElement('type', $beachball['derived_magnitude_type']) .
