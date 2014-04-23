@@ -75,7 +75,7 @@ try {
 
 
 // serve detail feed
-$service = new FDSNEventWebService($fdsnIndex);
+$service = new FDSNEventWebService($fdsnIndex, true);
 try {
 	if ($query->format === 'quakeml') {
 		$service->handleSummaryQuery($query);
