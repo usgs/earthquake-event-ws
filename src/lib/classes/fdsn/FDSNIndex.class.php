@@ -47,7 +47,7 @@ class FDSNIndex {
 		$rs = $this->pdo->query(
 			'select distinct type ' .
 			'from productSummary ' .
-			"where type is not null and type != '' " .
+			"where type is not null and type != '' and status != 'DELETE' " .
 			'order by type');
 		$producttypes = array();
 		while ($row = $rs->fetch()) {
