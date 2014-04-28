@@ -27,12 +27,26 @@ class FDSNEventWebService {
 	);
 
 
-	public function __construct($index) {
+	/**
+	 * @param $index {Index}
+	 *      The index used to search for events.
+	 * @param $redirect {Boolean} Optional. Default false.
+	 *      True if NO_DATA and NOT_FOUND errors should be redirected to a
+	 *      different service rather than returning the response code.
+	 */
+	public function __construct($index, $redirect=false) {
 		$this->index = $index;
 
 		global $CONFIG;
 		$this->version = $CONFIG['FDSN_VERSION'];
 		$this->serviceLimit = $CONFIG['MAX_SEARCH'];
+
+		if ($redirect === true) {
+			// May want to include some FDSN_HOST information ... ?
+			$this->redirect = $CONFIG['FDSN_PATH'];
+		} else {
+			$this->redirect = false;
+		}
 	}
 
 
@@ -59,7 +73,7 @@ class FDSNEventWebService {
 			// adhere to specification for default format
 			// allow empty feeds in other formats.
 			if ($query->format === 'quakeml') {
-				$this->error(self::NO_DATA, null);
+				$this->error(self::NO_DATA, null, true);
 			}
 		} else if ($count > $this->serviceLimit) {
 			$this->error(self::BAD_REQUEST, $count . ' matching events exceeds ' .
@@ -245,7 +259,8 @@ class FDSNEventWebService {
 		// stored in external static file
 		$wadl = file_get_contents($APP_DIR . '/lib/application.wadl');
 		// inject base url
-		$wadl = str_replace('BASEURL', htmlentities(AbstractFeed::getServiceUrl()), $wadl);
+		$wadl = str_replace('BASEURL', htmlentities(AbstractFeed::getServiceUrl()),
+				$wadl);
 
 		header('Content-type: application/xml');
 		echo $wadl;
@@ -253,6 +268,16 @@ class FDSNEventWebService {
 	}
 
 	public function error($code, $message, $isDetail = false) {
+		if ($this->redirect !== false && $isDetail &&
+				($code === self::NO_DATA || $code === self::NOT_FOUND)) {
+
+			$redirect = $this->redirect . '/query?' . $_SERVER['QUERY_STRING'];
+
+			header('HTTP/1.0 302 Found');
+			header('Location: ' . $redirect);
+			exit();
+		}
+
 		if (isset($_GET['jsonerror']) && $_GET['jsonerror'] == 'true' &&
 				isset($_GET['format']) && $_GET['format'] == 'geojson') {
 			// For geojson requests, user wants 'jsonerror' output
@@ -306,7 +331,14 @@ class FDSNEventWebService {
 	}
 
 	public function httpError ($code, $message) {
-		header('HTTP/1.0 ' . $code);
+
+		if (isset(self::$statusMessage[$code])) {
+			$codeMessage = ' ' . self::$statusMessage[$code];
+		} else {
+			$codeMessage = '';
+		}
+
+		header('HTTP/1.0 ' . $code . $codeMessage);
 		if ($code < 400) {
 			exit();
 		}
