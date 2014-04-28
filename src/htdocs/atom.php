@@ -2,10 +2,7 @@
 if (!isset($TEMPLATE)) {
 	$TITLE = 'ATOM Format';
 	$NAVIGATION = true;
-	$HEAD = '
-		<link rel="stylesheet" href="css/feedPages.css"/>
-		<link rel="stylesheet" href="css/format.css"/>
-	';
+	$HEAD = '<link rel="stylesheet" href="css/feedPages.css"/>';
 
 	include '../conf/config.inc.php';
 	include 'template.inc.php';
@@ -22,14 +19,14 @@ if (!isset($TEMPLATE)) {
 			<a target="_blank" href="http://www.w3.org/2005/Atom">
 				ATOM specification
 			</a>
-			or 
+			or
 			<a target="_blank" href="http://www.atomenabled.org/developers/">
 				Atom Enabled
 			</a>
 			for general information.
 		</p>
 		<p>
-			This feed adheres to the USGS Earthquakes 
+			This feed adheres to the USGS Earthquakes
 			<a href="/earthquakes/feed/policy.php">Feed Life Cycle Policy</a>.
 		</p>
 
@@ -46,7 +43,7 @@ if (!isset($TEMPLATE)) {
 
 	<div class="column three-of-ten">
 		<h3>Feeds</h3>
-		<?php 
+		<?php
 			$format = 'atom';
 			include_once 'inc/feedlinks.inc.php';
 		?>

@@ -1,11 +1,11 @@
-@import url('layout.css');
-@import url('n-up.css');   /* Provides .two-up and .three-up styles */
-@import url('fdsn-search.css');
-@import url('form.css');
+@import 'layout';
+@import 'n-up';   /* Provides .two-up and .three-up styles */
+@import 'fdsn-search';
+@import 'form';
 
-@import url('ManagedModelView.css');
-@import url('ToggleSection.css');
-@import url('ModalView.css');
+@import 'ManagedModelView';
+@import 'ToggleSection';
+@import 'ModalView';
 
 .help {
 	margin:0;

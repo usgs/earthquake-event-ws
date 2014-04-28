@@ -2,10 +2,7 @@
 if (!isset($TEMPLATE)) {
 	$TITLE = 'QuakeML Summary Format';
 	$NAVIGATION = true;
-	$HEAD = '
-		<link rel="stylesheet" href="css/feedPages.css"/>
-		<link rel="stylesheet" href="css/format.css"/>
-	';
+	$HEAD = '<link rel="stylesheet" href="css/feedPages.css"/>';
 
 	include '../conf/config.inc.php';
 	include 'template.inc.php';
@@ -19,10 +16,10 @@ if (!isset($TEMPLATE)) {
 			This documentation provides information on the details of the QuakeML
 			source response. For more information please see the
 			<a href="https://quake.ethz.ch/quakeml/">QuakeML website</a> for a better
-			understanding of the specification. 
+			understanding of the specification.
 		</p>
 		<p>
-			This feed adheres to the USGS Earthquakes 
+			This feed adheres to the USGS Earthquakes
 			<a href="/earthquakes/feed/policy.php">Feed Life Cycle Policy</a>.
 		</p>
 

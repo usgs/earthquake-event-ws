@@ -45,7 +45,8 @@ RewriteEngine on
 # Only ever offered for v1.0, so just need to redirect that version
 RewriteRule ^/earthquakes/eqarchives/epic/ ' . $SEARCH_PATH . '/ [R=301]
 RewriteRule ^' . $SEARCH_PATH . '/$ ' . $FEED_PATH . '/search.php [L,PT]
-RewriteRule ^' . $SEARCH_PATH . '/(js|css|lib)/(.*) ' . $FEED_PATH . '/$1/$2 [L,PT]
+RewriteRule ^' . $SEARCH_PATH . '/(js|css|lib)/(.*) ' . $FEED_PATH .
+		'/$1/$2 [L,PT]
 
 ## END: EQ Search URL Hijacking
 
@@ -70,14 +71,19 @@ RewriteRule ' . $FEED_PATH . '(.*) - [R=404,L]
 
 
 # detail is EVENTID.FORMAT
-RewriteRule ^' . $FEED_PATH . '/detail/([^\./]+)\.([^/\.]+)$ ' . $FEED_PATH . '/detail.php?eventid=$1&format=$2 [L,PT]
+RewriteRule ^' . $FEED_PATH . '/detail/([^\./]+)\.([^/\.]+)$ ' . $FEED_PATH .
+		'/detail.php?eventid=$1&format=$2 [L,PT]
 # summary is PARAMS.FORMAT
-RewriteRule ^' . $FEED_PATH . '/summary/([^/]+)\.([^/\.]+)$ ' . $FEED_PATH . '/summary.php?params=$1&format=$2 [L,PT]
+RewriteRule ^' . $FEED_PATH . '/summary/([^/]+)\.([^/\.]+)$ ' . $FEED_PATH .
+		'/summary.php?params=$1&format=$2 [L,PT]
 
 
 # fdsn event webservice
 RewriteRule ^' . $FDSN_PATH . '$ ' . $FDSN_PATH . '/ [R=301,L]
-RewriteRule ^' . $FDSN_PATH . '/([^/]*)$ ' . $FEED_PATH . '/fdsn.php?method=$1 [L,QSA,PT]
+RewriteRule ^' . $FDSN_PATH . '/query\.([^/]*)$ ' . $FEED_PATH .
+		'/fdsn.php?method=query&format=$1 [L,QSA,PT]
+RewriteRule ^' . $FDSN_PATH . '/([^/]*)$ ' . $FEED_PATH .
+		'/fdsn.php?method=$1 [L,QSA,PT]
 
 Alias ' . $FEED_PATH . ' ' . $HTDOCS_DIR . '
 Alias ' . $storage_url . ' ' . $storage_directory . '

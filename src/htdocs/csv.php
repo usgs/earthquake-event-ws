@@ -2,10 +2,7 @@
 if (!isset($TEMPLATE)) {
 	$TITLE = 'Spreadsheet Applications';
 	$NAVIGATION = true;
-	$HEAD = '
-		<link rel="stylesheet" href="css/feedPages.css"/>
-		<link rel="stylesheet" href="css/format.css"/>
-	';
+	$HEAD = '<link rel="stylesheet" href="css/feedPages.css"/>';
 
 	include '../conf/config.inc.php';
 	include 'template.inc.php';
