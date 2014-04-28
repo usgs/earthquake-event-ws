@@ -30,13 +30,16 @@ class QuakemlFeed extends AbstractFeed {
 				'>';
 
 		$request_url = $HOST_URL_PREFIX . $_SERVER['REQUEST_URI'];
-		// make eventparameters publicId unique to request time
-		// using fragment so it doesn't break the url
-		$request_url .= '#requested=' . $this->isoFormat(time() . '000');
+
+		$request_url = str_replace('http://', '', $request_url);
+		// Quakeml publicID may not contain colons
+		$request_url = str_replace(':', '', $request_url);
+		// Strip milliseconds off time parameters to strtotime still parses
+		$request_url = preg_replace('/(time=[^\.&]+)(\.[\d]{3})?(&|$)/', '$1$3',
+				$request_url);
 
 		$header .= "\n" . '<eventParameters publicID="' .
-				str_replace('http://', 'quakeml:', htmlentities($request_url)) .
-				'">';
+				'quakeml:' . htmlentities($request_url) . '">';
 
 		return $header;
 	}
@@ -44,17 +47,20 @@ class QuakemlFeed extends AbstractFeed {
 	public function getEntry ($event) {
 		$entry = "\n";
 
+		$publicID = self::getEventDetailFeed(
+				$event['eventSource'] . $event['eventSourceCode'], 'quakeml');
+		$publicID = str_replace('http://', '', $publicID);
+		$publicID = str_replace(':', '', $publicID);
+
 		$entry .= '<event' .
 				' catalog:datasource="' . $event['source'] . '"' .
 				' catalog:eventsource="' . $event['eventSource'] . '"' .
 				' catalog:eventid="' . $event['eventSourceCode'] . '"' .
-				' publicID="' . htmlentities(str_replace('http://', 'quakeml:', str_replace('&', '&amp;', self::getEventDetailFeed($event['eventSource'] .  $event['eventSourceCode'], 'quakeml')))) . '">';
-
+				' publicID="quakeml:' . htmlentities($publicID) . '">';
 
 		$preferredOriginID = null;
 		$preferredMagnitudeID = null;
 		$preferredFocalMechanismID = null;
-
 
 		$origins = array($event);
 		if (isset($event['origin'])) {
@@ -93,16 +99,18 @@ class QuakemlFeed extends AbstractFeed {
 
 		$entry .= $this->getElement('preferredOriginID', $preferredOriginID);
 		$entry .= $this->getElement('preferredMagnitudeID', $preferredMagnitudeID);
-		$entry .= $this->getElement('preferredFocalMechanismID', $preferredFocalMechanismID);
+		$entry .= $this->getElement('preferredFocalMechanismID',
+				$preferredFocalMechanismID);
 
 		// event type
 		$type = $event['event_type'];
-		if ($type == '') {
+		if ($type === '') {
 			$type = 'earthquake';
 		}
 		$entry .= $this->getElement('type', $type);
 
-		$entry .= $this->getCreationInfo($event['source'], $event['eventUpdateTime'], $event['version']);
+		$entry .= $this->getCreationInfo($event['source'],
+				$event['eventUpdateTime'], $event['version']);
 		$entry .= '</event>';
 
 
@@ -130,8 +138,8 @@ class QuakemlFeed extends AbstractFeed {
 				$origin['code'],
 				$origin['updateTime']);
 
-		if ($origin['eventMagnitude'] != '') {
-			$magnitudePublicID = $originPublicID . '/magnitude';
+		if ($origin['eventMagnitude'] !== '') {
+			$magnitudePublicID = $originPublicID . '#magnitude';
 		}
 
 		// build origin element
@@ -143,48 +151,60 @@ class QuakemlFeed extends AbstractFeed {
 				' publicID="' . $originPublicID . '"' .
 				'>';
 
-			$xml .= $this->getElement('time/value', $this->isoFormat($origin['eventTime']));
-			$xml .= $this->getElement('longitude/value', $origin['eventLongitude']);
-			$xml .= $this->getElement('latitude/value', $origin['eventLatitude']);
+		$xml .= $this->getElement('time/value',
+				$this->isoFormat($origin['eventTime']));
+		$xml .= $this->getElement('longitude/value', $origin['eventLongitude']);
+		$xml .= $this->getElement('latitude/value', $origin['eventLatitude']);
 
-			if ($origin['eventDepth'] != '') {
-				$xml .= '<depth>';
-				$xml .= '<value>' . $origin['eventDepth']*1000 . '</value>';
-				if ($origin['vertical_error'] != '') {
-					$xml .= '<uncertainty>' . $origin['vertical_error']*1000 . '</uncertainty>';
-				}
-				$xml .= '</depth>';
+		if ($origin['eventDepth'] !== '') {
+			$xml .= '<depth>';
+			$xml .= '<value>' . $origin['eventDepth']*1000 . '</value>';
+			if ($origin['vertical_error'] !== '') {
+				$xml .= '<uncertainty>' . $origin['vertical_error']*1000 .
+						'</uncertainty>';
 			}
+			$xml .= '</depth>';
+		}
 
-			if ($origin['horizontal_error'] != '') {
-				$xml .= '<originUncertainty>' .
-					'<horizontalUncertainty>' . $origin['horizontal_error']*1000 . '</horizontalUncertainty>' .
-					'<preferredDescription>horizontal uncertainty</preferredDescription>' .
-					'</originUncertainty>';
-			}
+		if ($origin['horizontal_error'] !== '') {
+			$xml .= '<originUncertainty>' .
+				'<horizontalUncertainty>' .
+					$origin['horizontal_error']*1000 .
+				'</horizontalUncertainty>' .
+				'<preferredDescription>' .
+					'horizontal uncertainty' .
+				'</preferredDescription>' .
+				'</originUncertainty>';
+		}
 
-			$quality = '';
-			$quality .= $this->getElement('usedPhaseCount', $origin['num_phases_used']);
-			$quality .= $this->getElement('usedStationCount', $origin['num_stations_used']);
-			$quality .= $this->getElement('standardError', $origin['standard_error']);
-			$quality .= $this->getElement('azimuthalGap', $origin['azimuthal_gap']);
-			$quality .= $this->getElement('minimumDistance', $origin['minimum_distance']);
-			if ($quality != '') {
-				$xml .= '<quality>' . $quality . '</quality>';
-			}
+		$quality = '';
+		$quality .= $this->getElement('usedPhaseCount',
+				$origin['num_phases_used']);
+		$quality .= $this->getElement('usedStationCount',
+				$origin['num_stations_used']);
+		$quality .= $this->getElement('standardError',
+				$origin['standard_error']);
+		$quality .= $this->getElement('azimuthalGap',
+				$origin['azimuthal_gap']);
+		$quality .= $this->getElement('minimumDistance',
+				$origin['minimum_distance']);
+		if ($quality !== '') {
+			$xml .= '<quality>' . $quality . '</quality>';
+		}
 
-			$xml .= '<evaluationMode>';
-			if (strtoupper($origin["review_status"]) == "REVIEWED") {
-				$xml .= 'manual';
-			} else {
-				$xml .= 'automatic';
-			}
-			$xml .= '</evaluationMode>';
+		$xml .= '<evaluationMode>';
+		if (strtoupper($origin["review_status"]) === "REVIEWED") {
+			$xml .= 'manual';
+		} else {
+			$xml .= 'automatic';
+		}
+		$xml .= '</evaluationMode>';
 
-			$xml .= $this->getCreationInfo($origin['origin_source'], $origin['updateTime'], $origin['version']);
+		$xml .= $this->getCreationInfo($origin['origin_source'],
+				$origin['updateTime'], $origin['version']);
 		$xml .= '</origin>';
 
-			// output magnitude
+		// output magnitude
 		if ($magnitudePublicID !== null) {
 			$xml .= '<magnitude' .
 					' catalog:datasource="' . $origin['source'] . '"' .
@@ -195,24 +215,27 @@ class QuakemlFeed extends AbstractFeed {
 					'>';
 
 				$xml .= '<mag>';
-					$xml .= '<value>' . $origin['eventMagnitude'] . '</value>';
-					if ($origin['magnitude_error'] != '') {
-						$xml .= '<uncertainty>' . $origin['magnitude_error'] . '</uncertainty>';
-					}
+				$xml .= '<value>' . $origin['eventMagnitude'] . '</value>';
+				if ($origin['magnitude_error'] !== '') {
+					$xml .= '<uncertainty>' . $origin['magnitude_error'] .
+							'</uncertainty>';
+				}
 				$xml .= '</mag>';
 				$xml .= $this->getElement('type', $origin['magnitude_type']);
-				$xml .= $this->getElement('stationCount', $origin['magnitude_num_stations_used']);
+				$xml .= $this->getElement('stationCount',
+						$origin['magnitude_num_stations_used']);
 
 				$xml .= '<originID>' . $originPublicID . '</originID>';
 				$xml .= '<evaluationMode>';
-				if (strtoupper($origin['review_status']) == "REVIEWED") {
+				if (strtoupper($origin['review_status']) === "REVIEWED") {
 					$xml .= 'manual';
 				} else {
 					$xml .= 'automatic';
 				}
 				$xml .= '</evaluationMode>';
 
-				$xml .= $this->getCreationInfo($origin['magnitude_source'], $origin['updateTime'], null);
+				$xml .= $this->getCreationInfo($origin['magnitude_source'],
+						$origin['updateTime'], null);
 
 			$xml .= '</magnitude>';
 		}
@@ -246,15 +269,17 @@ class QuakemlFeed extends AbstractFeed {
 				' publicID="' . $beachballPublicID . '"' .
 				'>';
 
-		if ($beachball['nodal_plane_1_strike'] != '') {
+		if ($beachball['nodal_plane_1_strike'] !== '') {
 			$xml .= '<nodalPlanes>' .
 					'<nodalPlane1>' .
-						$this->getElement('strike/value', $beachball['nodal_plane_1_strike']) .
+						$this->getElement('strike/value',
+								$beachball['nodal_plane_1_strike']) .
 						$this->getElement('dip/value', $beachball['nodal_plane_1_dip']) .
 						$this->getElement('rake/value', $beachball['nodal_plane_1_rake']) .
 					'</nodalPlane1>' .
 					'<nodalPlane2>' .
-						$this->getElement('strike/value', $beachball['nodal_plane_2_strike']) .
+						$this->getElement('strike/value',
+								$beachball['nodal_plane_2_strike']) .
 						$this->getElement('dip/value', $beachball['nodal_plane_2_dip']) .
 						$this->getElement('rake/value', $beachball['nodal_plane_2_rake']) .
 					'</nodalPlane2>' .
@@ -273,15 +298,17 @@ class QuakemlFeed extends AbstractFeed {
 						$this->getElement('Mtp/value', $beachball['tensor_mtp']) .
 					'</tensor>';
 
-			$xml .= $this->getElement('doubleCouple', $beachball['percent_double_couple']);
+			$xml .= $this->getElement('doubleCouple',
+					$beachball['percent_double_couple']);
 			$xml .= $this->getElement('methodID', $beachball['beachball_type']);
 
-			if ($beachball['derived_depth'] != '' || $beachball['derived_latitude'] != '') {
-				$originPublicID = $beachballPublicID . '/origin';
+			if ($beachball['derived_depth'] !== '' ||
+					$beachball['derived_latitude'] !== '') {
+				$originPublicID = $beachballPublicID . '#origin';
 				$xml .= $this->getElement('derivedOriginID', $originPublicID);
 			}
-			if ($beachball['derived_magnitude'] != '') {
-				$magnitudePublicID = $beachballPublicID . '/magnitude';
+			if ($beachball['derived_magnitude'] !== '') {
+				$magnitudePublicID = $beachballPublicID . '#magnitude';
 				$xml .= $this->getElement('momentMagnitudeID', $magnitudePublicID);
 			}
 
@@ -289,7 +316,7 @@ class QuakemlFeed extends AbstractFeed {
 		}
 
 		$xml .= '<evaluationMode>';
-		if (strtoupper($beachball["review_status"]) == "REVIEWED") {
+		if (strtoupper($beachball["review_status"]) === "REVIEWED") {
 			$xml .= 'manual';
 		} else {
 			$xml .= 'automatic';
@@ -305,23 +332,23 @@ class QuakemlFeed extends AbstractFeed {
 
 
 		// add derived origin
-		if ($originPublicID != null) {
+		if ($originPublicID !== null) {
 			$xml .= '<origin publicID="' . $originPublicID . '">' .
 					$this->getElement('time/value', $beachball['derived_eventtime']) .
 					$this->getElement('latitude/value', $beachball['derived_latitude']) .
 					$this->getElement('longitude/value', $beachball['derived_longitude']);
 
-			if ($beachball['derived_depth'] != '') {
-				$xml .= $this->getElement('depth/value', $beachball['derived_depth']*1000) .
+			if ($beachball['derived_depth'] !== '') {
+				$xml .= $this->getElement('depth/value',
+						$beachball['derived_depth']*1000) .
 						'<depthType>from moment tensor inversion</depthType>';
 			}
 
 			$xml .= '</origin>';
 		}
 
-
 		// add derived magnitude
-		if ($magnitudePublicID != null) {
+		if ($magnitudePublicID !== null) {
 			$xml .= '<magnitude publicID="' . $magnitudePublicID . '">' .
 					$this->getElement('mag/value', $beachball['derived_magnitude']) .
 					$this->getElement('type', $beachball['derived_magnitude_type']) .
@@ -390,7 +417,14 @@ class QuakemlFeed extends AbstractFeed {
 	}
 
 	protected function getPublicID($source, $type, $code, $updateTime) {
-		return 'quakeml:earthquake.usgs.gov/product/' . $source . '/' . $type . '/' . $code . '/' . $updateTime;
+		global $HOST_URL_PREFIX;
+		global $storage_url;
+
+		$prefix = str_replace('http://', '', $HOST_URL_PREFIX);
+		$prefix = str_replace(':', '', $prefix);
+
+		return 'quakeml:' . $prefix . $storage_url . '/' . $type . '/' . $code .
+				'/' . $source . '/' . $updateTime . '/product.xml';
 	}
 
 }
