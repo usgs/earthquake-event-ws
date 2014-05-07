@@ -226,14 +226,4 @@ END;
 delimiter ;
 
 
-delimiter //
-CREATE TRIGGER <?php echo $TRIGGER_NAME; ?> AFTER UPDATE ON event FOR EACH ROW
-BEGIN
-	CALL updateEventSummary(NEW.id);
-	CALL summarizeEventProducts(NEW.id);
-END;
-//
-delimiter ;
-
-
 CALL resummarizeEventProducts();
