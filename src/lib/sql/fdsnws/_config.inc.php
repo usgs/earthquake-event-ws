@@ -5,6 +5,7 @@
 // file extension is ".sql" then the file is just appened to the output.
 $files = array(
 	'on_event_update_trigger.remove.sql', // Removes the trigger. Re-added later.
+	'currentProducts.sql',
 	'getEventIdBySourceAndCode.sql',
 	'getEventIdByFullEventId.sql',
 	'getProductProperty.sql',
@@ -16,6 +17,6 @@ $files = array(
 	'getEventSummary.sql',
 	'updateEventSummary.sql',
 	'recreateEventSummary.sql',
-	'on_event_update_trigger.sql',
-	'summary_sql.php'
+	'summary_sql.php',
+	'on_event_update_trigger.sql'
 );
