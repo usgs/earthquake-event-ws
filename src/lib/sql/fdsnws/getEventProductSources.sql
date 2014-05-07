@@ -14,8 +14,9 @@ BEGIN
   DECLARE done INT DEFAULT 0;
   DECLARE cur_products CURSOR FOR
     SELECT DISTINCT source
-    FROM productSummary
-    WHERE eventid = in_eventid;
+    FROM currentProducts
+    WHERE eventid = in_eventid
+    AND status <> 'DELETE';
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 
   SET out_productsources = NULL;
