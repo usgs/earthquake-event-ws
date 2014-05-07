@@ -74,3 +74,5 @@ BEGIN
 END;
 //
 delimiter ;
+
+CALL recreateEventSummary();
