@@ -44,31 +44,11 @@ BEGIN
   DECLARE done INT DEFAULT 0;
   DECLARE cur_summary_products CURSOR FOR
     SELECT ps.id, ps.type
-    FROM productSummary ps
+    FROM preferredProduct ps
     WHERE ps.eventId=in_eventid
       AND ps.type IN ('losspager', 'origin', 'shakemap', 'dyfi', 'geoserve',
-	  'significance')
-      AND NOT EXISTS (
-	SELECT *
-	FROM productSummary
-	WHERE source = ps.source
-	  AND type = ps.type
-	  AND code = ps.code
-	  AND updateTime > ps.updateTime
-	)
-      AND NOT EXISTS (
-	SELECT *
-	FROM productSummary
-	WHERE eventId = ps.eventId
-	AND type = ps.type
-	AND (
-	  preferred > ps.preferred
-	  OR (
-	    preferred = ps.preferred
-	    AND updateTime > ps.updateTime
-	  )
-	)
-      );
+	  'significance');
+
   -- used to look up event location for region name
   DECLARE cur_location CURSOR FOR
     SELECT latitude, longitude
