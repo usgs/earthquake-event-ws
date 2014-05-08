@@ -10,4 +10,4 @@ CREATE TABLE feplus (
   feregion INT,
   priority INT,
   dataset VARCHAR(255)
-);
+) ENGINE=MyISAM;
