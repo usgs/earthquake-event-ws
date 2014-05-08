@@ -24,10 +24,7 @@ CREATE TABLE IF NOT EXISTS productSummary(
   KEY summaryEventIdIndex (eventSource, eventSourceCode),
   KEY summaryTimeLatLonIdx (eventTime, eventLatitude, eventLongitude),
   KEY preferredEventProductIndex (eventId, type, preferred, updateTime),
-
-  KEY summaryUpdateTimeIdx (updateTime),
-  KEY summaryCodeIdx (code),
-  KEY summaryVersionIdx (version),
-  KEY summaryStatusIdx (status),
-  KEY summaryTypeStatusIdx (`type`, status)
+  KEY productIdIndex (productId)
 ) ENGINE = INNODB;
+
+-- Note :: Additional may indexes added by FDSN later

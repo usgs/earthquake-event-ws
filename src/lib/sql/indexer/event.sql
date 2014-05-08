@@ -14,10 +14,7 @@ CREATE TABLE IF NOT EXISTS event  (
   UNIQUE KEY eventIdIdx (source, sourceCode),
 
   KEY eventLatLonIdx (latitude, longitude),
-  KEY eventTimeLatLonIdx (eventTime, latitude, longitude),
-
-  KEY eventLongitudeIdx (longitude),
-  KEY eventDepthIdx (depth),
-  KEY eventMagnitudeIdx (magnitude),
-  KEY eventStatusIdx (status)
+  KEY eventTimeLatLonIdx (eventTime, latitude, longitude)
 ) ENGINE=INNODB;
+
+-- Note :: Additional may indexes added by FDSN later
