@@ -52,9 +52,9 @@ END//
 DELIMITER ;
 
 -- Note: Use drop/create rather than conditionally create because indexes
---       can get complex and it is more reliable to not wrap the entire create
+--       can get complex and it is more flexible to not wrap the entire create
 --       syntax within a stored procedure. This approach is less efficient
---       but more reliable.
+--       but more universal.
 
 
 -- Indexes for event table used by FDSN
