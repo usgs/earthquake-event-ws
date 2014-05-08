@@ -17,34 +17,17 @@ CREATE TABLE IF NOT EXISTS productSummary(
   version VARCHAR(255) DEFAULT NULL,
   status VARCHAR(255) NOT NULL,
   trackerURL VARCHAR(255) NOT NULL,
-  preferred BIGINT NOT NULL
+  preferred BIGINT NOT NULL,
+
+  UNIQUE KEY summaryIdIndex (source, `type`, code, updateTime),
+
+  KEY summaryEventIdIndex (eventSource, eventSourceCode),
+  KEY summaryTimeLatLonIdx (eventTime, eventLatitude, eventLongitude),
+  KEY preferredEventProductIndex (eventId, type, preferred, updateTime),
+
+  KEY summaryUpdateTimeIdx (updateTime),
+  KEY summaryCodeIdx (code),
+  KEY summaryVersionIdx (version),
+  KEY summaryStatusIdx (status),
+  KEY summaryTypeStatusIdx (`type`, status)
 ) ENGINE = INNODB;
-
-
-CREATE UNIQUE INDEX summaryIdIndex
-  ON productSummary (source, `type`, code, updateTime);
-
-CREATE INDEX summaryEventIdIndex
-  ON productSummary (eventSource, eventSourceCode);
-
-CREATE INDEX summaryTimeLatLonIdx
-  ON productSummary (eventTime, eventLatitude, eventLongitude);
-
-CREATE INDEX preferredEventProductIndex
-  ON productSummary (eventId, type, preferred, updateTime);
-
-
--- The following indexes are frequently used by user queries,
--- but may be commented out if desired (affects processing speed)
-
-CREATE INDEX summaryUpdateTimeIdx
-  ON productSummary (updateTime);
-
-CREATE INDEX summaryCodeIdx
-  ON productSummary (code);
-
-CREATE INDEX summaryVersionIdx
-  ON productSummary (version);
-
-CREATE INDEX summaryStatusIdx
-  ON productSummary (status);

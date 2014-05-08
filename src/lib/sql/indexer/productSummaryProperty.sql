@@ -5,10 +5,9 @@ CREATE TABLE IF NOT EXISTS productSummaryProperty (
   productSummaryIndexId BIGINT,
   name VARCHAR(255),
   value TEXT,
+
+  UNIQUE KEY propertyIdNameIndex (productSummaryIndexId, name),
+
   FOREIGN KEY (productSummaryIndexId) REFERENCES productSummary(id)
     ON DELETE CASCADE
 ) ENGINE=INNODB;
-
-
-CREATE UNIQUE INDEX propertyIdNameIndex
-  ON productSummaryProperty (productSummaryIndexId, name);
