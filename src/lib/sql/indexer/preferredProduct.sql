@@ -1,4 +1,4 @@
-CREATE VIEW preferredProduct AS
+CREATE OR REPLACE VIEW preferredProduct AS
 SELECT ps.eventId, ps.id, ps.type
 FROM productSummary ps
 WHERE ps.eventId IS NOT NULL
