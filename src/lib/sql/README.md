@@ -1,6 +1,8 @@
 Files in this directory set up mysql tables, views, stored procedures, and
-functions used by the FeedApp. The documentation below describes the
-functionality of non-straightforward files.
+functions used by the FeedApp. The majority of these files contain a single
+table/view/etc... definition and are relatively straightforward. The
+documentation below describes the functionality of non-straightforward files.
+
 
 ## create_mysql_installer.php
 Creates a SQL script (install_mysql.sql) with all the required SQL statements
