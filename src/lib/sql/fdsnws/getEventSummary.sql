@@ -36,6 +36,7 @@ BEGIN
   DECLARE l_longitude DOUBLE;
   DECLARE summary_type VARCHAR(255);
   DECLARE summary_id INT;
+  DECLARE tmp_tsunami VARCHAR(255);
 
   DECLARE mag_sig DOUBLE;
   DECLARE pager_sig DOUBLE;
@@ -100,7 +101,7 @@ BEGIN
   IF origin_id <> -1 THEN
     CALL getProductProperty(origin_id, 'magnitude', out_magnitude);
     CALL getProductProperty(origin_id, 'magnitude-type', out_magnitude_type);
-    CALL getProductProperty(origin_id, 'region', out_region);
+    CALL getProductProperty(origin_id, 'title', out_region);
     CALL getProductProperty(origin_id, 'azimuthal-gap', out_azimuthal_gap);
     CALL getProductProperty(origin_id, 'review-status', out_review_status);
     CALL getProductProperty(origin_id, 'event-type', out_event_type);
@@ -116,9 +117,16 @@ BEGIN
 
   -- improved location information from geoserve
   IF geoserve_id <> -1 THEN
-    CALL getProductProperty(geoserve_id, 'location', out_region);
-    CALL getProductProperty(geoserve_id, 'tsunamiFlag', out_tsunami);
     CALL getProductProperty(geoserve_id, 'utcOffset', out_offset);
+
+    CALL getProductProperty(geoserve_id, 'tsunamiFlag', tmp_tsunami);
+    IF tmp_tsunami IS NOT NULL AND tmp_tsunami = 'true' THEN
+      SET out_tsunami = 1;
+    END IF;
+
+    IF out_region IS NULL THEN
+      CALL getProductProperty(geoserve_id, 'location', out_region);
+    END IF;
   END IF;
 
   IF out_region IS NULL THEN
