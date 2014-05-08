@@ -31,19 +31,19 @@ BEGIN
     DECLARE l_event_id INT;
     DECLARE l_done INT DEFAULT 0;
     DECLARE cur_event_id CURSOR FOR
-	SELECT eventId
-	FROM productSummary
-	WHERE eventSource=_eventSource
-	AND eventSourceCode=_eventSourceCode
-	LIMIT 1;
+    SELECT eventId
+    FROM productSummary
+    WHERE eventSource=_eventSource
+    AND eventSourceCode=_eventSourceCode
+        LIMIT 1;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET l_done = 1;
 
     -- open cursor
     OPEN cur_event_id;
     FETCH cur_event_id INTO l_event_id;
     IF l_done = 1 THEN
-	-- no matching results
-	SET l_event_id = NULL;
+        -- no matching results
+        SET l_event_id = NULL;
     END IF;
     -- free cursor
     CLOSE cur_event_id;

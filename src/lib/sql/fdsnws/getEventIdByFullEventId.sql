@@ -2,9 +2,9 @@
 -- Example Usage:
 --     SELECT * FROM event WHERE id=getEventIdByFulleventid('usb000bupa');
 --
--- NOTE: This method checks all known event sources in an attempt to split a full
--- event id into its components event source and event source code, before using
--- getEventIdBySourceAndCode to find the actual id.
+-- NOTE: This method checks all known event sources in an attempt to split a
+-- full event id into its components event source and event source code, before
+-- using getEventIdBySourceAndCode to find the actual id.
 --
 -- This method returns the first match.  Although unlikely, it is possible
 -- for an event source and code collision given one event source that is the
@@ -44,18 +44,19 @@ BEGIN
 	    LEAVE cur_sources_loop;
 	END IF;
 
-	-- check if _fullEventId starts with l_eventSource
-	SET l_source = SUBSTRING(_fullEventId, 1, LENGTH(l_eventSource));
-	IF l_source = l_eventSource THEN
-	    -- _fullEventId starts with this source, now check if there is an event with this code
-	    SET l_code = SUBSTRING(_fullEventId, LENGTH(l_eventSource) + 1);
-	    SET l_event_id = getEventIdBySourceAndCode(l_source, l_code);
-	    IF l_event_id IS NOT NULL THEN
-		-- found event id
-		CLOSE cur_sources;
-		LEAVE cur_sources_loop;
-	    END IF;
-	END IF;
+        -- check if _fullEventId starts with l_eventSource
+        SET l_source = SUBSTRING(_fullEventId, 1, LENGTH(l_eventSource));
+        IF l_source = l_eventSource THEN
+	    -- _fullEventId starts with this source, now check if there is an
+	    -- event with this code
+            SET l_code = SUBSTRING(_fullEventId, LENGTH(l_eventSource) + 1);
+            SET l_event_id = getEventIdBySourceAndCode(l_source, l_code);
+            IF l_event_id IS NOT NULL THEN
+                -- found event id
+                CLOSE cur_sources;
+                LEAVE cur_sources_loop;
+            END IF;
+        END IF;
     END LOOP cur_sources_loop;
 
     RETURN l_event_id;
