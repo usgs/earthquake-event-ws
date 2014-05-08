@@ -62,13 +62,43 @@ case $INSTALL_MYSQL in
 				exit 1;
 			fi
 
+			# verify which components to install
+			CREATE_MYSQL_INSTALLER="${PHP} sql/create_mysql_installer.php";
+
+			read -p 'Include PDL indexer base schema? (y/n) [y]: ' ANSWER;
+			case ANSWER in
+				n|N|no|NO|No*)
+					CREATE_MYSQL_INSTALLER="${CREATE_MYSQL_INSTALLER} --without-indexer";
+				;;
+				*)
+				;;
+			esac
+
+			read -p 'Include FE+ schema and routines? (y/n) [y]: ' ANSWER;
+			case ANSWER in
+				n|N|no|NO|No*)
+					CREATE_MYSQL_INSTALLER="${CREATE_MYSQL_INSTALLER} --without-feplus";
+				;;
+				*)
+				;;
+			esac
+
+			read -p 'Include FDSN schema and routines? (y/n) [y]: ' ANSWER;
+			case ANSWER in
+				n|N|no|NO|No*)
+					CREATE_MYSQL_INSTALLER="${CREATE_MYSQL_INSTALLER} --without-fdsnws";
+				;;
+				*)
+				;;
+			esac
+
+			echo "Creating SQL install script with: ${CREATE_MYSQL_INSTALLER}";
+			`$CREATE_MYSQL_INSTALLER`;
+			echo 'done';
+
 			# install scripts
-			echo "running getEventIdByFullEventId.sql"
-			$MYSQL -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASS $MYSQL_DB < sql/getEventIdByFullEventId.sql
-			echo "running currentProducts.sql"
-			$MYSQL -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASS $MYSQL_DB < sql/currentProducts.sql
-			echo "running auto_summary.sql"
-			$MYSQL -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASS $MYSQL_DB < sql/auto_summary.sql
+			echo "running sql/install_mysql.sql";
+			$MYSQL -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASS $MYSQL_DB < sql/install_mysql.sql;
 			echo "done"
 		;;
 esac;
