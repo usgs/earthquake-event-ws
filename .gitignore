@@ -7,4 +7,4 @@ bower_components
 *.sublime-workspace
 src/conf/config.ini*
 src/conf/httpd.conf
-
+src/lib/sql/install_mysql.sql
