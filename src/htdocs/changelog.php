@@ -11,6 +11,16 @@ if (!isset($TEMPLATE)) {
 }
 ?>
 
+<h2>v1.0.14 <small>2014-05-13</small></h2>
+<ul>
+	<li>Fixed various typos and normalized naming conventions.</li>
+	<li>Cleaned up installation process.</li>
+	<li>Migrated source code for offline development.</li>
+	<li>Fixed bug in QuakeML output related to publicID.</li>
+	<li>Updated maxradiuskm to allow for larger circular searches.</li>
+	<li>Excludes deleted products from results.</li>
+</ul>
+
 <h2>v1.0.13 <small>2013-11-07</small></h2>
 <ul>
 	<li>Updated links and text at the top of search page.</li>
