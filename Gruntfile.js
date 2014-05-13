@@ -103,15 +103,9 @@ module.exports = function (grunt) {
 	};
 
 
-	// TODO :: Read this from .bowerrc
-	var bowerConfig = {
-		directory: 'bower_components'
-	};
-
 	grunt.initConfig({
 		app: appConfig,
 		ini: iniConfig,
-		bower: bowerConfig,
 		watch: {
 			scripts: {
 				files: ['<%= app.src %>/htdocs/js/**/*.js'],
@@ -168,13 +162,11 @@ module.exports = function (grunt) {
 				options: {
 					base: '<%= app.src %>/htdocs',
 					port: 8080,
-					components: bowerConfig.directory,
 					middleware: function (connect, options) {
 						return [
 							lrSnippet,
 							rewriteMiddleware,
 							mountFolder(connect, '.tmp'),
-							mountFolder(connect, options.components),
 							mountPHP(options.base),
 							mountFolder(connect, options.base),
 							mountFolder(connect, 'node_modules')
@@ -201,12 +193,10 @@ module.exports = function (grunt) {
 			test: {
 				options: {
 					base: '<%= app.test %>',
-					components: bowerConfig.directory,
 					port: 8000,
 					middleware: function (connect, options) {
 						return [
 							mountFolder(connect, '.tmp'),
-							mountFolder(connect, 'bower_components'),
 							mountFolder(connect, 'node_modules'),
 							mountFolder(connect, options.base),
 							mountFolder(connect, appConfig.src + '/htdocs/js')
@@ -304,9 +294,7 @@ module.exports = function (grunt) {
 			dist: {
 				files: {
 					'<%= app.dist %>/htdocs/lib/requirejs/require.js':
-							['<%= bower.directory %>/requirejs/require.js'],
-					'<%= app.dist %>/htdocs/lib/html5shiv/html5shiv.js':
-							['<%= bower.directory %>/html5shiv-dist/html5shiv.js']
+							['node_modules/requirejs/require.js'],
 				}
 			}
 		},

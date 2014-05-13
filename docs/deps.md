@@ -15,10 +15,7 @@ You will need to have the following tools installed in order to run this project
 Make sure you are in your `earthquake-event-ws` project directory.
 Install these packages from your terminal.
 
-1. Install local bower modules  
-   ```bower install```
-
-2. Install local npm modules  
+1. Install local npm modules
    ```npm install```
 
    [Dependency install details for Windows and Mac](deps_detail.md)
