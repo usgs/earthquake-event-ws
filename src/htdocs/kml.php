@@ -8,6 +8,8 @@ if (!isset($TEMPLATE)) {
 	include 'inc/terms.inc.php';
 	include 'template.inc.php';
 }
+
+$format = 'kml';
 ?>
 
 <div id="feed-format" class="row">
@@ -269,7 +271,7 @@ if (!isset($TEMPLATE)) {
 					print $magRanges['2.5']['url'];
 					print "_";
 					print $dateRanges['month']['url'];
-					print '_age.';
+					print '_age.kml';
 					print $format;
 					print '">Colored by Age</a>';
 				?>
