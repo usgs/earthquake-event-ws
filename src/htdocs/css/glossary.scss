@@ -1,6 +1,6 @@
 #contents li {
-	display: block;
-	margin: 0;
+	display:block;
+	margin:0;
 }
 
 .typelist > dt {
@@ -43,7 +43,7 @@
 	margin-right:16px;
 }
 */
-/* TODO :: Highlight this sublist "bullet-point" in a better way. 
+/* TODO :: Highlight this sublist "bullet-point" in a better way.
 .typelist > dd > dl > dd > dl > dt:before {content: '\00bb ';}
 .typelist > dd > dl > dd > dl > dt:after {content: ':';}
 .typelist > dd > dl > dd > dl > dd {color:#666;}
@@ -58,7 +58,7 @@
 }
 
 h3 {
-	clear: both;
+	clear:both;
 	border-bottom:1px solid #000;
 	padding:0 0 5px 0;
 }

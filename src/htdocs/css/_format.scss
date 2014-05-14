@@ -34,11 +34,11 @@ code em:after {content:'>';}
 	font-style:italic;
 }
 .input-parameters .eg:before {
-	content: '(eg. ';
+	content:'(eg. ';
 	font-style:normal;
 }
 .input-parameters .eg:after {
-	content: ')';
+	content:')';
 	font-style:normal;
 }
 
@@ -91,8 +91,8 @@ pre.detailResponse {
 	margin-right:16px;
 }
 /* TODO :: Highlight this sublist "bullet-point" in a better way. */
-#typelist > dd > dl > dd > dl > dt:before {content: '\00bb ';}
-#typelist > dd > dl > dd > dl > dt:after {content: ':';}
+#typelist > dd > dl > dd > dl > dt:before {content:'\00bb ';}
+#typelist > dd > dl > dd > dl > dt:after {content:':';}
 #typelist > dd > dl > dd > dl > dd {color:#666;}
 
 #typelist dd.datatype, .monospace {
@@ -103,11 +103,11 @@ pre.detailResponse {
 .small { font-size:.8em; padding-top:3px; }
 .csv, .html, .atom, .geojson, .kml {
 	background-color:#EEE;
-	border-left:5px solid #ccc;	
+	border-left:5px solid #ccc;
 	padding:8px;
 	text-align:left;
 	white-space:pre;
-	overflow-x: auto;
+	overflow-x:auto;
 	font-size:.9em;
 	margin:10px 0;
 }

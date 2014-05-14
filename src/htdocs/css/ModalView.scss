@@ -29,21 +29,21 @@
 	outline:0;
 }
 .modal-close-link {
-	display: block;
-	position: absolute;
-	top: 9px;
-	right: 9px;
-	width: 25px;
-	height: 24px;
+	display:block;
+	position:absolute;
+	top:9px;
+	right:9px;
+	width:25px;
+	height:24px;
 
-	color: #fff;
+	color:#fff;
 	font:bold 18px/1.2 'Arial';
-	text-align: center;
-	text-decoration: none;
+	text-align:center;
+	text-decoration:none;
 
-	cursor: pointer;
-	background: #BBB;
-	border: 1px solid #999;
+	cursor:pointer;
+	background:#BBB;
+	border:1px solid #999;
 }
 .modal-close-link:hover {color:#C10C0C;}
 .modal-content {
