@@ -77,10 +77,10 @@ if (!isset($TEMPLATE)) {
 </div>
 
 <div class="row">
-	<h1>Programmatic Access</h1>
+	<h2>Programmatic Access</h2>
 	<div class="one-of-two column">
 
-		<a href="geojson.php" class="format"
+		<a href="geojson.php" id="geo" class="format"
 				title="Geojson">
 			<h2>Geojson</h2>
 			<p>
@@ -90,7 +90,7 @@ if (!isset($TEMPLATE)) {
 			</p>
 		</a>
 
-		<a href="https://github.com/usgs/devcorner" class="format"
+		<a href="https://github.com/usgs/devcorner" id="api" class="format"
 				title="The ANSS Developer's Corner">
 			<h2>The ANSS Developer's Corner</h2>
 			<p>
@@ -103,7 +103,7 @@ if (!isset($TEMPLATE)) {
 	<div class="one-of-two column">
 
 		<a href="https://geohazards.usgs.gov/mailman/listinfo/realtime-feeds"
-				class="format" title="Real-time feeds email list">
+				class="format" id="ens" title="Real-time feeds email list">
 			<h2>Real-time feeds email list</h2>
 			<p>
 				Notification of changes to earthquake feeds and data.
@@ -111,7 +111,7 @@ if (!isset($TEMPLATE)) {
 		</a>
 
 		<a href="https://geohazards.usgs.gov/mailman/listinfo/realtime-feed-users"
-				class="format" title="Real-time feed users">
+				class="format" id="ens" title="Real-time feed users">
 			<h2>Real-time feed users</h2>
 			<p>
 				Questions from users of earthquake feeds and data.
