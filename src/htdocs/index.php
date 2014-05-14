@@ -78,6 +78,7 @@ if (!isset($TEMPLATE)) {
 
 <div class="row">
 	<h2>Programmatic Access</h2>
+
 	<div class="one-of-two column">
 
 		<a href="geojson.php" id="geo" class="format"
