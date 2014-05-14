@@ -40,15 +40,6 @@ if (!isset($TEMPLATE)) {
 			</p>
 		</a>
 
-		<a href="quakeml.php" id="quakeml" class="format"
-				title="QuakeML">
-			<h2>QuakeML</h2>
-			<p>
-				A flexible, extensible and modular XML representation of 
-				seismological data which is intended to cover a broad range of 
-				fields of application in modern seismology.
-			</p>
-		</a>
 	</div>
 
 	<div class="one-of-two column">
@@ -72,13 +63,58 @@ if (!isset($TEMPLATE)) {
 			</p>
 		</a>
 
-		<a href="geojson.php" id="api" class="format"
-				title="Programmatic Access">
-			<h2>Programmatic Access</h2>
+		<a href="quakeml.php" id="quakeml" class="format"
+				title="QuakeML">
+			<h2>QuakeML</h2>
+			<p>
+				A flexible, extensible and modular XML representation of
+				seismological data which is intended to cover a broad range of
+				fields of application in modern seismology.
+			</p>
+		</a>
+
+	</div>
+</div>
+
+<div class="row">
+	<h1>Programmatic Access</h1>
+	<div class="one-of-two column">
+
+		<a href="geojson.php" class="format"
+				title="Geojson">
+			<h2>Geojson</h2>
 			<p>
 				A well-structured format readily parsed by most programming
 				languages. This is a good option for software developers
 				wishing to use earthquake data.
+			</p>
+		</a>
+
+		<a href="https://github.com/usgs/devcorner" class="format"
+				title="The ANSS Developer's Corner">
+			<h2>The ANSS Developer's Corner</h2>
+			<p>
+				Software tools to access information in real-time feeds and the
+				comprehensive catalog.
+			</p>
+		</a>
+	</div>
+
+	<div class="one-of-two column">
+
+		<a href="https://geohazards.usgs.gov/mailman/listinfo/realtime-feeds"
+				class="format" title="Real-time feeds email list">
+			<h2>Real-time feeds email list</h2>
+			<p>
+				Notification of changes to earthquake feeds and data.
+			</p>
+		</a>
+
+		<a href="https://geohazards.usgs.gov/mailman/listinfo/realtime-feed-users"
+				class="format" title="Real-time feed users">
+			<h2>Real-time feed users</h2>
+			<p>
+				Questions from users of earthquake feeds and data.
 			</p>
 		</a>
 	</div>
