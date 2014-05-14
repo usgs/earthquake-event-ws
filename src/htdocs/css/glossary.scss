@@ -52,7 +52,8 @@
 .typelist > dd > dl > dd > dl > dt { font-weight:bold; margin-top:1em; }
 .typelist > dd > dl > dd > dl > dd { margin-left:40px; }
 
-.typelist dd.datatype, .monospace {
+.typelist dd.datatype,
+.monospace {
 	font-family:Monaco, Courier, monospace;
 	font-family:.9em;
 }

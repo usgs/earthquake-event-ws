@@ -1,7 +1,8 @@
 h3 {
   margin:.5em 0;
 }
-h4, ul p {
+h4,
+ul p {
   margin:0;
 }
 ul li {
@@ -54,7 +55,8 @@ a.button {
   padding:0 3px 0 3px;
   margin:0 2px;
 }
-a.button:hover, .rssinfo a.button:hover {
+a.button:hover,
+.rssinfo a.button:hover {
   color:#000;
 }
 

@@ -60,8 +60,11 @@
 .format:hover h2 {
     text-decoration:underline;
 }
-.format p, .format p:hover, .format p:visited,
-.format p:active, .format p:focus {
+.format p,
+.format p:hover,
+.format p:visited,
+.format p:active,
+.format p:focus {
     color:#666;
     font-size:.9em;
     padding:0;

@@ -100,8 +100,16 @@ pre.detailResponse {
 	font-family:.9em;
 }
 .meta { font-style:italic; }
-.small { font-size:.8em; padding-top:3px; }
-.csv, .html, .atom, .geojson, .kml {
+.small {
+	font-size:.8em;
+	padding-top:3px;
+}
+
+.csv,
+.html,
+.atom,
+.geojson,
+.kml {
 	background-color:#EEE;
 	border-left:5px solid #ccc;
 	padding:8px;
