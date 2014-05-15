@@ -8,6 +8,8 @@ if (!isset($TEMPLATE)) {
 	include 'inc/terms.inc.php';
 	include 'template.inc.php';
 }
+
+$format = 'kml';
 ?>
 
 <div id="feed-format" class="row">
