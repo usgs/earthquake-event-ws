@@ -271,7 +271,7 @@ $format = 'kml';
 					print $magRanges['2.5']['url'];
 					print "_";
 					print $dateRanges['month']['url'];
-					print '_age.kml';
+					print '_age.';
 					print $format;
 					print '">Colored by Age</a>';
 				?>
