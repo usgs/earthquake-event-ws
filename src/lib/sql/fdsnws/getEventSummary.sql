@@ -165,7 +165,7 @@ BEGIN
       ELSEIF out_alertlevel = 'orange' THEN
 	SET pager_sig = 1000;
       ELSEIF out_alertlevel = 'yellow' THEN
-	SET pager_sig = 500;
+	SET pager_sig = 650;
       END IF;
     END IF;
 
