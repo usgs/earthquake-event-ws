@@ -76,7 +76,7 @@ if (!isset($TEMPLATE)) {
 	</div>
 </div>
 
-<div class="row">
+<div class="row feeds">
 	<h2>Programmatic Access</h2>
 
 	<div class="one-of-two column">
@@ -104,7 +104,7 @@ if (!isset($TEMPLATE)) {
 	<div class="one-of-two column">
 
 		<a href="https://geohazards.usgs.gov/mailman/listinfo/realtime-feeds"
-				class="format" id="ens" title="Real-time feeds email list">
+				class="format" id="note" title="Real-time feeds email list">
 			<h2>Real-time feeds email list</h2>
 			<p>
 				Notification of changes to earthquake feeds and data.
@@ -112,7 +112,7 @@ if (!isset($TEMPLATE)) {
 		</a>
 
 		<a href="https://geohazards.usgs.gov/mailman/listinfo/realtime-feed-users"
-				class="format" id="ens" title="Real-time feed users">
+				class="format" id="question" title="Real-time feed users">
 			<h2>Real-time feed users</h2>
 			<p>
 				Questions from users of earthquake feeds and data.
