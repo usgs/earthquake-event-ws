@@ -9,8 +9,13 @@
 }
 
 #ted { background-image:url("../images/ted.png"); }
-#ens { background-image:url("../images/ens.png"); }
+
+#ens { background-image:url("../images/ens-x2.png");
+    background-size:64px;
+}
+
 #atom { background-image:url("../images/atom.png"); }
+
 /*
     Icon Source: www.iconspedia.com
     Author: Tempest, http://tempest.deviantart.com/
@@ -30,10 +35,17 @@
 */
 #api { background-image:url("../images/api.png"); }
 
-/*
-    Needs an image created from this link
-*/
-#geo { background-image:url("https://raw.githubusercontent.com/alatas/GeoJSON4EntityFramework/master/GeoJSON4EntityFramework/geojson.png")}
+#geo { background-image:url("../images/geojson-x2.png");
+    background-size:64px;
+}
+
+#note { background-image:url("../images/notifications-x2.png");
+    background-size:64px;
+}
+
+#question { background-image:url("../images/questions-x2.png");
+    background-size:64px;
+}
 
 #quakeml { background-image:url("../images/quakeml.png"); }
 
@@ -54,4 +66,12 @@
     font-size:.9em;
     padding:0;
     margin:0;
+}
+
+.feeds {
+    a {
+        min-height:64px;
+        display:block;
+    }
+
 }
