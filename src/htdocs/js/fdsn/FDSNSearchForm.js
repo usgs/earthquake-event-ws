@@ -32,7 +32,7 @@ define([
 
 	var FDSNSearchForm = function (options) {
 		// Pull conf options off the options and store as instance variables
-		this.el = options.el || document.createElement('div');
+		this._el = options.el || document.createElement('div');
 		this.fieldDataUrl = options.fieldDataUrl || null;
 		this.model = options.model || new FDSNModel();
 
@@ -75,7 +75,7 @@ define([
 			} else {
 
 				// Some errors during submission, show them
-				Util.addClass(this.el, 'show-errors');
+				Util.addClass(this._el, 'show-errors');
 
 				(new ModalView(this._formatSearchErrors(
 						this.validator.getErrors()), {
@@ -119,8 +119,8 @@ define([
 		},
 
 		onModelChange: function () {
-			var fields = this.el.querySelectorAll('.error'),
-			    searchError = this.el.querySelector('.search-error'),
+			var fields = this._el.querySelectorAll('.error'),
+			    searchError = this._el.querySelector('.search-error'),
 			    i = 0,
 			    len = fields.length;
 
@@ -134,7 +134,7 @@ define([
 					this._formatSearchErrors(this.validator.getErrors());
 			} else {
 				searchError.innerHTML = '';
-				Util.removeClass(this.el, 'show-errors');
+				Util.removeClass(this._el, 'show-errors');
 			}
 		},
 
@@ -153,7 +153,7 @@ define([
 
 			text = (fmtMap.hasOwnProperty(format)) ? fmtMap[format] : format;
 
-			this.el.querySelector('.output-descriptor').innerHTML =
+			this._el.querySelector('.output-descriptor').innerHTML =
 					'Output Format: ' + text;
 		},
 
@@ -199,7 +199,7 @@ define([
 					// Mark the field in the UI
 					fields = errors[key][message];
 					for (i = 0; i < fields.length; i++) {
-						field = this.el.querySelector('#' + fields[i]);
+						field = this._el.querySelector('#' + fields[i]);
 						if (field !== null) {
 							Util.addClass(field, 'error');
 						}
@@ -423,11 +423,11 @@ define([
 			nonEmptyParams = this.model.getNonEmpty();
 			// TODO :: Conform magnitude type to FDSN spec
 			//if (nonEmptyParams.hasOwnProperty('magnitudetype')) {
-				//Util.addClass(this.el.querySelector('#magtype').parentNode,
+				//Util.addClass(this._el.querySelector('#magtype').parentNode,
 						//'toggle-visible');
 			//}
 			if (nonEmptyParams.hasOwnProperty('eventtype')) {
-				Util.addClass(this.el.querySelector('#evttype').parentNode,
+				Util.addClass(this._el.querySelector('#evttype').parentNode,
 						'toggle-visible');
 			}
 			if (nonEmptyParams.hasOwnProperty('minsig') ||
@@ -438,19 +438,19 @@ define([
 					nonEmptyParams.hasOwnProperty('mincdi') ||
 					nonEmptyParams.hasOwnProperty('maxcdi') ||
 					nonEmptyParams.hasOwnProperty('minfelt')) {
-				Util.addClass(this.el.querySelector('#impact').parentNode,
+				Util.addClass(this._el.querySelector('#impact').parentNode,
 						'toggle-visible');
 			}
 			if (nonEmptyParams.hasOwnProperty('catalog')) {
-				Util.addClass(this.el.querySelector('#cat').parentNode,
+				Util.addClass(this._el.querySelector('#cat').parentNode,
 						'toggle-visible');
 			}
 			if (nonEmptyParams.hasOwnProperty('contributor')) {
-				Util.addClass(this.el.querySelector('#contrib').parentNode,
+				Util.addClass(this._el.querySelector('#contrib').parentNode,
 						'toggle-visible');
 			}
 			if (nonEmptyParams.hasOwnProperty('producttype')) {
-				Util.addClass(this.el.querySelector('#prodtype').parentNode,
+				Util.addClass(this._el.querySelector('#prodtype').parentNode,
 						'toggle-visible');
 			}
 		},
@@ -458,7 +458,7 @@ define([
 		_bindInput: function (inputId) {
 			var form = this,
 			    eventName = 'change:' + inputId,
-			    input = this.el.querySelector('#' + inputId),
+			    input = this._el.querySelector('#' + inputId),
 			    onModelChange = null, onViewChange = null;
 
 			onModelChange = function (newValue) {
@@ -485,7 +485,7 @@ define([
 		_bindRadio: function (inputId) {
 			var form = this,
 			    eventName = 'change:' + inputId,
-			    list = this.el.querySelector('.' + inputId + '-list'),
+			    list = this._el.querySelector('.' + inputId + '-list'),
 			    inputs = list.querySelectorAll('input'),
 			    input = null, i = 0, numInputs = inputs.length,
 			    onModelChange = null, onViewChange = null;
@@ -586,7 +586,7 @@ define([
 		 *
 		 */
 		_enableToggleFields: function () {
-			var toggles = this.el.querySelectorAll('.toggle-control'),
+			var toggles = this._el.querySelectorAll('.toggle-control'),
 			    i = 0, len = toggles.length,
 			    t = null, s = null;
 
@@ -607,7 +607,7 @@ define([
 			var form = this;
 
 			// Prevent early submission through <enter> key
-			Util.addEvent(this.el, 'keydown', function (evt) {
+			Util.addEvent(this._el, 'keydown', function (evt) {
 				var code = evt.keyCode || evt.charCode;
 				if (code === 13 && this.id !== 'fdsn-submit') {
 					evt.preventDefault();
@@ -616,7 +616,7 @@ define([
 			});
 
 			// Add event handler for form submission
-			Util.addEvent(this.el, 'submit', (function () {
+			Util.addEvent(this._el, 'submit', (function () {
 				return function (evt) {
 					form.onSubmit();
 					evt.preventDefault();
@@ -626,7 +626,7 @@ define([
 		},
 
 		_enhanceField: function (fields, name, format, classes) {
-			var textInput = this.el.querySelector('#' + name),
+			var textInput = this._el.querySelector('#' + name),
 			    parentNode = textInput.parentNode,
 			    list = parentNode.appendChild(document.createElement('ul')),
 			    i, len;
@@ -649,7 +649,7 @@ define([
 		},
 
 		_enhanceEventType: function (fields) {
-			var textInput = this.el.querySelector('#eventtype'),
+			var textInput = this._el.querySelector('#eventtype'),
 			    parentNode = textInput.parentNode,
 			    list = parentNode.appendChild(document.createElement('ul'));
 
@@ -671,7 +671,7 @@ define([
 				clearedText: 'Currently searching entire world',
 				filledText: 'Currently searching custom region',
 				controlText: 'Clear Region',
-				el: this.el.querySelector('.region-description'),
+				el: this._el.querySelector('.region-description'),
 				model: this.model,
 				fields: {
 					'maxlatitude': '',
@@ -687,15 +687,15 @@ define([
 		},
 
 		_enableOutputDetailsToggle: function () {
-			var list = this.el.querySelector('.format-list'),
+			var list = this._el.querySelector('.format-list'),
 			    map = document.createElement('li'),
-			    csv = this.el.querySelector('#output-format-csv'),
-			    kml = this.el.querySelector('#output-format-kml'),
-			    quakeml = this.el.querySelector('#output-format-quakeml'),
-			    geojson = this.el.querySelector('#output-format-geojson'),
-			    kmlD = this.el.querySelector('#output-format-kml-details'),
-			    quakemlD = this.el.querySelector('#output-format-quakeml-details'),
-			    geojsonD = this.el.querySelector('#output-format-geojson-details'),
+			    csv = this._el.querySelector('#output-format-csv'),
+			    kml = this._el.querySelector('#output-format-kml'),
+			    quakeml = this._el.querySelector('#output-format-quakeml'),
+			    geojson = this._el.querySelector('#output-format-geojson'),
+			    kmlD = this._el.querySelector('#output-format-kml-details'),
+			    quakemlD = this._el.querySelector('#output-format-quakeml-details'),
+			    geojsonD = this._el.querySelector('#output-format-geojson-details'),
 			    handler = null;
 
 			/* jshint -W015 */
