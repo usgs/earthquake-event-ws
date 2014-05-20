@@ -40,15 +40,6 @@ if (!isset($TEMPLATE)) {
 			</p>
 		</a>
 
-		<a href="quakeml.php" id="quakeml" class="format"
-				title="QuakeML">
-			<h2>QuakeML</h2>
-			<p>
-				A flexible, extensible and modular XML representation of 
-				seismological data which is intended to cover a broad range of 
-				fields of application in modern seismology.
-			</p>
-		</a>
 	</div>
 
 	<div class="one-of-two column">
@@ -72,13 +63,62 @@ if (!isset($TEMPLATE)) {
 			</p>
 		</a>
 
-		<a href="geojson.php" id="api" class="format"
-				title="Programmatic Access">
-			<h2>Programmatic Access</h2>
+		<a href="quakeml.php" id="quakeml" class="format"
+				title="QuakeML">
+			<h2>QuakeML</h2>
+			<p>
+				A flexible, extensible and modular XML representation of
+				seismological data which is intended to cover a broad range of
+				fields of application in modern seismology.
+			</p>
+		</a>
+
+	</div>
+</div>
+
+<div class="row feeds">
+
+	<div class="one-of-two column">
+		<h2>Programmatic Access</h2>
+
+		<a href="geojson.php" id="geo" class="format"
+				title="Geojson">
+			<h2>GeoJSON</h2>
 			<p>
 				A well-structured format readily parsed by most programming
 				languages. This is a good option for software developers
 				wishing to use earthquake data.
+			</p>
+		</a>
+
+		<a href="https://github.com/usgs/devcorner" id="api" class="format"
+				title="The ANSS Developer's Corner">
+			<h2>The ANSS Developer's Corner</h2>
+			<p>
+				Software tools to access information in real-time feeds and the
+				comprehensive catalog.
+			</p>
+		</a>
+	</div>
+
+
+
+
+	<div class="one-of-two column">
+		<h2>Mailing List</h2>
+		<a href="https://geohazards.usgs.gov/mailman/listinfo/realtime-feeds"
+				class="format" id="note" title="Real-time feeds email list">
+			<h2>Announcements <small>(realtime-feeds)</small></h2>
+			<p>
+				Notification of changes to earthquake feeds and data.
+			</p>
+		</a>
+
+		<a href="https://geohazards.usgs.gov/mailman/listinfo/realtime-feed-users"
+				class="format" id="question" title="Real-time feed users">
+			<h2>Questions <small>(realtime-feed-users)</small></h2>
+			<p>
+				Questions from users of earthquake feeds and data.
 			</p>
 		</a>
 	</div>
