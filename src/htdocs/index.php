@@ -77,21 +77,20 @@ if (!isset($TEMPLATE)) {
 </div>
 
 <div class="row feeds">
-	<h2>Programmatic Access</h2>
 
 	<div class="one-of-two column">
+		<h2>Programmatic Access</h2>
+
 		<a href="geojson.php" id="geo" class="format"
 				title="Geojson">
-			<h2>Geojson</h2>
+			<h2>GeoJSON</h2>
 			<p>
 				A well-structured format readily parsed by most programming
 				languages. This is a good option for software developers
 				wishing to use earthquake data.
 			</p>
 		</a>
-	</div>
 
-	<div class="one-of-two column">
 		<a href="https://github.com/usgs/devcorner" id="api" class="format"
 				title="The ANSS Developer's Corner">
 			<h2>The ANSS Developer's Corner</h2>
@@ -101,25 +100,23 @@ if (!isset($TEMPLATE)) {
 			</p>
 		</a>
 	</div>
-</div>
 
-<div class="row feeds">
-	<h2>Mailing List</h2>
+
+
 
 	<div class="one-of-two column">
+		<h2>Mailing List</h2>
 		<a href="https://geohazards.usgs.gov/mailman/listinfo/realtime-feeds"
 				class="format" id="note" title="Real-time feeds email list">
-			<h2>Real-time feeds email list</h2>
+			<h2>Announcements <small>(realtime-feeds)</small></h2>
 			<p>
 				Notification of changes to earthquake feeds and data.
 			</p>
 		</a>
-	</div>
 
-	<div class="one-of-two column">
 		<a href="https://geohazards.usgs.gov/mailman/listinfo/realtime-feed-users"
 				class="format" id="question" title="Real-time feed users">
-			<h2>Real-time feed users</h2>
+			<h2>Questions <small>(realtime-feed-users)</small></h2>
 			<p>
 				Questions from users of earthquake feeds and data.
 			</p>
