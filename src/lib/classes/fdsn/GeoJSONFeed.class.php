@@ -3,8 +3,8 @@
 /**
  * JSONFeed is a JSON or JSONP feed of earthquakes.
  *
- * The JSONP feed does not accept a callback name as a paramter, 
- * unlike typical JSONP requests.  This is for cacheability: everybody makes 
+ * The JSONP feed does not accept a callback name as a paramter,
+ * unlike typical JSONP requests.  This is for cacheability: everybody makes
  * the same request.
  */
 class GeoJSONFeed extends AbstractFeed {
@@ -13,7 +13,7 @@ class GeoJSONFeed extends AbstractFeed {
 	protected $callback;
 
 
-	// track whether this is the first entry, 
+	// track whether this is the first entry,
 	// so commas can be added between entries.
 	private $firstEntry = true;
 
@@ -28,10 +28,10 @@ class GeoJSONFeed extends AbstractFeed {
 	/**
 	 * Construct a new JSON Feed object.
 	 *
-	 * @param $jsonp boolean, default false, whether this should 
+	 * @param $jsonp boolean, default false, whether this should
 	 *                        be jsonp output (true),
 	 *                        or json (false).
-	 * @param $callback string, default 'eqfeed_callback', name of 
+	 * @param $callback string, default 'eqfeed_callback', name of
 	 *                        jsonp function to call with json data.
 	 */
 	public function __construct($jsonp=false, $callback='eqfeed_callback') {
@@ -128,7 +128,7 @@ class GeoJSONFeed extends AbstractFeed {
 				'mmi' => safefloatval($event['maxmmi']),
 				'alert' => $event['alertlevel'],
 				'status' => $event['review_status'],
-				'tsunami' => safeintval($event['tsunami']),
+				'tsunami' => intval($event['tsunami']),
 				'sig' => safeintval($event['significance']),
 				'net' => $event['eventSource'],
 				'code' => $event['eventSourceCode'],
