@@ -86,7 +86,7 @@ define([
 							text: 'Edit Search',
 							title: 'Go back to form and edit search',
 							callback: function (evt, dialog) {
-								var error = form.el.querySelector('input.error'),
+								var error = form._el.querySelector('input.error'),
 								    fields = null,
 								    field = null,
 								    section = null,
@@ -96,12 +96,12 @@ define([
 
 								// Make error fields visible (might be in collapsed secion)
 								fields = Array.prototype.slice.call(
-										form.el.querySelectorAll('.error'), 0);
+										form._el.querySelectorAll('.error'), 0);
 								len = fields.length;
 
 								for (i = 0; i < len; i++) {
 									field = fields[i];
-									section = Util.getParentNode(field, 'SECTION', form.el);
+									section = Util.getParentNode(field, 'SECTION', form._el);
 
 									if (section !== null && Util.hasClass(section, 'toggle') &&
 											!Util.hasClass(section, 'toggle-visible')) {
