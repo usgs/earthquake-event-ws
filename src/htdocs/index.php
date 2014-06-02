@@ -12,7 +12,7 @@ if (!isset($TEMPLATE)) {
 
 <div class="row">
 	<div class="one-of-two column">
-		<a href="/earthquakes/ted/" id="ted" class="format"
+		<a href="/earthquakes/ted/" class="format ted-icon"
 				title="Tweet Earthquake Dispatch">
 			<h2>Tweet Earthquake Dispatch</h2>
 			<p>
@@ -20,30 +20,9 @@ if (!isset($TEMPLATE)) {
 				average, each account will produce about one tweet per day.
 			</p>
 		</a>
-
-		<a href="atom.php" id="atom" class="format" title="ATOM Syndication">
-			<h2>Atom Syndication</h2>
-			<p>
-				A basic syndication format supported by a variety of feed readers.
-				This is a good option for casually subscribing to earthquake
-				information.
-			</p>
-		</a>
-
-		<a href="csv.php" id="csv" class="format"
-				title="Spreadsheet Applications">
-			<h2>Spreadsheet Applications</h2>
-			<p>
-				A simple text format suitable for loading data into spreadsheet
-				applications like Microsoft Excel&trade;. This is a good option for
-				manual scientific analysis.
-			</p>
-		</a>
-
 	</div>
-
 	<div class="one-of-two column">
-		<a href="https://sslearthquake.usgs.gov/ens/" id="ens" class="format"
+		<a href="https://sslearthquake.usgs.gov/ens/" class="format ens-icon"
 				title="Earthquake Notification Service">
 			<h2>Earthquake Notification Service</h2>
 			<p>
@@ -52,8 +31,22 @@ if (!isset($TEMPLATE)) {
 				earthquakes happen.
 			</p>
 		</a>
+	</div>
+</div>
 
-		<a href="kml.php" id="kml" class="format"
+<div class="row">
+	<div class="one-of-two column">
+		<a href="atom.php" class="format atom-icon" title="ATOM Syndication">
+			<h2>Atom Syndication</h2>
+			<p>
+				A basic syndication format supported by a variety of feed readers.
+				This is a good option for casually subscribing to earthquake
+				information.
+			</p>
+		</a>
+	</div>
+	<div class="one-of-two column">
+		<a href="kml.php" class="format kml-icon"
 				title="Google Earth KML">
 			<h2>Google Earth KML</h2>
 			<p>
@@ -62,8 +55,23 @@ if (!isset($TEMPLATE)) {
 				Earth&trade;.
 			</p>
 		</a>
+	</div>
+</div>
 
-		<a href="quakeml.php" id="quakeml" class="format"
+<div class="row">
+	<div class="one-of-two column">
+		<a href="csv.php" class="format csv-icon"
+				title="Spreadsheet Applications">
+			<h2>Spreadsheet Applications</h2>
+			<p>
+				A simple text format suitable for loading data into spreadsheet
+				applications like Microsoft Excel&trade;. This is a good option for
+				manual scientific analysis.
+			</p>
+		</a>
+	</div>
+	<div class="one-of-two column">
+		<a href="quakeml.php" class="format quakeml-icon"
 				title="QuakeML">
 			<h2>QuakeML</h2>
 			<p>
@@ -72,16 +80,14 @@ if (!isset($TEMPLATE)) {
 				fields of application in modern seismology.
 			</p>
 		</a>
-
 	</div>
 </div>
 
-<div class="row feeds">
+<div class="row">
+	<h2>Programmatic Access</h2>
 
 	<div class="one-of-two column">
-		<h2>Programmatic Access</h2>
-
-		<a href="geojson.php" id="geo" class="format"
+		<a href="geojson.php" class="format geojson-icon"
 				title="Geojson">
 			<h2>GeoJSON</h2>
 			<p>
@@ -90,8 +96,9 @@ if (!isset($TEMPLATE)) {
 				wishing to use earthquake data.
 			</p>
 		</a>
-
-		<a href="https://github.com/usgs/devcorner" id="api" class="format"
+	</div>
+	<div class="one-of-two column">
+		<a href="https://github.com/usgs/devcorner" class="format api-icon"
 				title="The ANSS Developer's Corner">
 			<h2>The ANSS Developer's Corner</h2>
 			<p>
@@ -100,22 +107,22 @@ if (!isset($TEMPLATE)) {
 			</p>
 		</a>
 	</div>
+</div>
 
-
-
-
+<div class="row">
+	<h2>Mailing List</h2>
 	<div class="one-of-two column">
-		<h2>Mailing List</h2>
 		<a href="https://geohazards.usgs.gov/mailman/listinfo/realtime-feeds"
-				class="format" id="note" title="Real-time feeds email list">
+				class="format announce-icon" title="Real-time feeds email list">
 			<h2>Announcements <small>(realtime-feeds)</small></h2>
 			<p>
 				Notification of changes to earthquake feeds and data.
 			</p>
 		</a>
-
+	</div>
+	<div class="one-of-two column">
 		<a href="https://geohazards.usgs.gov/mailman/listinfo/realtime-feed-users"
-				class="format" id="question" title="Real-time feed users">
+				class="format question-icon" title="Real-time feed users">
 			<h2>Questions <small>(realtime-feed-users)</small></h2>
 			<p>
 				Questions from users of earthquake feeds and data.

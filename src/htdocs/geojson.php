@@ -2,17 +2,14 @@
 if (!isset($TEMPLATE)) {
 	$TITLE = 'GeoJSON Summary Format';
 	$NAVIGATION = true;
-	$HEAD = '
-		<link rel="stylesheet" href="css/feedPages.css"/>
-		<link rel="stylesheet" href="css/format.css"/>
-	';
+	$HEAD = '<link rel="stylesheet" href="css/feedPages.css"/>';
 
 	include '../conf/config.inc.php';
 	include 'template.inc.php';
 }
 ?>
 
-<div id="feed-format" class="row">
+<div class="row feed-format">
 	<div class="column seven-of-ten">
 		<h3>Description</h3>
 		<p>

@@ -10,12 +10,13 @@
 	h4 {
 		clear:both;
 		font-size:15px;
-	}
 
-	h4 small {
-		display:block;
-		font-size:.8em;
-		color:gray;
+		> small {
+			display:block;
+			font-size:.8em;
+			font-weight:normal;
+			color:gray;
+		}
 	}
 
 	ul {
@@ -28,7 +29,6 @@ img.screenshot {
 	display:block;
 	position:relative;
 	margin:20px 0;
-	max-width:542px;
 }
 
 a:hover img.screenshot {

@@ -148,7 +148,6 @@ module.exports = function (grunt) {
 			],
 			dist: [
 				'requirejs:dist',
-				'cssmin:dist',
 				'htmlmin:dist',
 				'uglify',
 				'copy'
@@ -261,7 +260,8 @@ module.exports = function (grunt) {
 						'.tmp/css/index.css'
 					],
 					'<%= app.dist %>/htdocs/css/search.css': [
-						'.tmp/css/search.css'
+						'node_modules/hazdev-webutils/src/ModalView.css',
+						'<%= app.dist %>/htdocs/css/search.css'
 					],
 					'<%= app.dist %>/htdocs/css/feedPages.css': [
 						'.tmp/css/feedPages.css'
@@ -324,6 +324,21 @@ module.exports = function (grunt) {
 				src: [
 					'**/*'
 				]
+			},
+			css: {
+				expand: true,
+				cwd: '<%= app.tmp %>/css',
+				dest: '<%= app.dist %>/htdocs/css',
+				src: [
+					'search.css'
+				],
+				options: {
+					process: function (content, srcpath) {
+						return content.replace(
+								'@import url(/hazdev-webutils/src/ModalView.css);',
+								'');
+					}
+				}
 			}
 		},
 		replace: {
@@ -378,6 +393,7 @@ module.exports = function (grunt) {
 		'clean:dist',
 		'concurrent:predist',
 		'concurrent:dist',
+		'cssmin:dist',
 		'replace',
 		'open:dist',
 		'connect:dist'
