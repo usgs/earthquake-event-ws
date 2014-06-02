@@ -50,55 +50,7 @@ pre.detailResponse {
 	font-family:Monaco, Courier, monospace;
 }
 
-#typelist > dt {
-	color:#333;
-	font-weight:bold;
-	clear:left;
-}
-#typelist > dd {
-	float:left;
-}
 
-#typelist > dd > dl {
-	float:left;
-	width:784px;
-	padding-left:16px;
-	padding-bottom:8px;
-	border-bottom:1px solid #EEE;
-	margin-bottom:8px;
-}
-
-#typelist > dd > dl > dt {
-	display:block;
-	float:left;
-	clear:left;
-	width:128px;
-	margin-right:16px;
-	margin-top:2px;
-	color:#999;
-	font-weight:bold;
-}
-
-#typelist > dd > dl > dd {
-	float:left;
-	width:640px;
-}
-
-#typelist > dd > dl > dd > dl > dt {
-	color:#000;
-	font-weight:normal;
-	float:left;
-	margin-right:16px;
-}
-/* TODO :: Highlight this sublist "bullet-point" in a better way. */
-#typelist > dd > dl > dd > dl > dt:before {content:'\00bb ';}
-#typelist > dd > dl > dd > dl > dt:after {content:':';}
-#typelist > dd > dl > dd > dl > dd {color:#666;}
-
-#typelist dd.datatype, .monospace {
-	font-family:Monaco, Courier, monospace;
-	font-family:.9em;
-}
 .meta { font-style:italic; }
 .small {
 	font-size:.8em;
