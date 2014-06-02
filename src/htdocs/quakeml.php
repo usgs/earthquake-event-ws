@@ -9,7 +9,7 @@ if (!isset($TEMPLATE)) {
 }
 ?>
 
-<div id="feed-format" class="row">
+<div class="row feed-format">
 	<div class="column seven-of-ten">
 	<h3>Description</h3>
 		<p>

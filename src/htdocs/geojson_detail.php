@@ -8,7 +8,7 @@ if (!isset($TEMPLATE)) {
 }
 ?>
 
-<div id="feed-format" class="row">
+<div class="feed-format">
 
 		<h3>Description</h3>
 		<p>

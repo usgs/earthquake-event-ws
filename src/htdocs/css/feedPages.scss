@@ -10,12 +10,13 @@
 	h4 {
 		clear:both;
 		font-size:15px;
-	}
 
-	h4 small {
-		display:block;
-		font-size:.8em;
-		color:gray;
+		> small {
+			display:block;
+			font-size:.8em;
+			font-weight:normal;
+			color:gray;
+		}
 	}
 
 	ul {
