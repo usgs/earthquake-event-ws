@@ -288,7 +288,7 @@ class KMLFeed extends AbstractFeed {
 	}
 
 	protected function getSize($e) {
-		static $sizes = array(.15, .2, .3, .4, .5, .6, .8, 1.1, 1.5, 2.0, 2.5); // Mag 0 - 10
+		static $sizes = array(.2, .2, .3, .4, .5, .6, .8, 1.1, 1.5, 2.0, 2.5); // Mag 0 - 10
 
 		$mag = $e['eventMagnitude'];
 		if ($mag !== null && $mag != '') {
