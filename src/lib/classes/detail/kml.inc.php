@@ -25,7 +25,7 @@ echo '<kml xmlns="http://earth.google.com/kml/2.0">' .
 				'<refreshVisibility>0</refreshVisibility>' .
 				'<Link>' .
 					'<href>' .
-						AbstractFeed::getEventDetailFeed($query->eventid, 'kmlraw') .
+						htmlentities(AbstractFeed::getEventDetailFeed($query->eventid, 'kmlraw')) .
 					'</href>' .
 					'<refreshMode>onInterval</refreshMode>' .
 					'<refreshInterval>300</refreshInterval>' .
