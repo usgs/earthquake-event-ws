@@ -86,15 +86,15 @@ class FDSNEventWebService {
 
 		// setup output format
 		$callback = new FDSNIndexCallback();
-		if ($query->format == 'quakeml') {
+		if ($query->format === 'quakeml') {
 			$callback->feed = new QuakemlFeed();
-		} else if ($query->format == 'csv') {
+		} else if ($query->format === 'csv') {
 			$callback->feed = new CSVFeed();
-		} else if ($query->format == 'geojson') {
+		} else if ($query->format === 'geojson') {
 			$callback->feed = new GeoJSONFeed($query->callback !== null, $query->callback);
-		} else if ($query->format == 'kml') {
+		} else if ($query->format === 'kml' || $query->format === 'kmlraw') {
 			$callback->feed = new KMLFeed("depth", true);
-		} else if ($query->format == 'atom') {
+		} else if ($query->format === 'atom') {
 			$callback->feed = new AtomFeed();
 		}
 
@@ -451,7 +451,7 @@ class FDSNEventWebService {
 			} else if ($name ==='updatedafter') {
 				$query->updatedafter = $this->validateTime($name, $value);
 			} else if ($name ==='format') {
-				$query->format = $this->validateEnumerated($name, $value, array('quakeml','geojson','csv','kml','xml', 'text'));
+				$query->format = $this->validateEnumerated($name, $value, array('quakeml','geojson','csv','kml', 'kmlraw', 'xml', 'text'));
 			} else if ($name ==='callback') {
 				$query->callback = $value;
 			} else if ($name ==='eventtype') {
