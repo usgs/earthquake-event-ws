@@ -190,17 +190,30 @@ class ProductSummary {
 			//weight's equal, compare update time
 			$thisTime = $this->getUpdateTime();
 			$thatTime = $that->getUpdateTime();
-			
-			// Check if thisTime is greater than thatTime
-			if (gmp_cmp($thisTime, $thatTime) == 1) {
-			//if ( $thisTime >  $thatTime) {
+
+			if (PHP_INT_SIZE >= 8) {
+				// 64 bit, ms timestamps in int range
+				$thisTime = intval($thisTime);
+				$thatTime = intval($thatTime);
+				if ($thisTime > $thatTime) {
+					return -1;
+				} else if ($thatTime > $thisTime) {
+					return 1;
+				} else {
+					return 0;
+				}
+			}
+
+			// 32bit-safe comparison of update times as strings
+			$thisTimeLen = strlen($thisTime);
+			$thatTimeLen = strlen($thatTime);
+			if ($thisTimeLen > $thatTimeLen) {
 				return -1;
-			// Check if thisTime is less than thatTime
-			} else if (gmp_cmp($thisTime, $thatTime) == -1 ) {
-			//} else if ( $thisTime < $thatTime ) {
+			} else if ($thisTimeLen < $thatTimeLen) {
 				return 1;
 			} else {
-				return 0;
+				// lengths are equal, compare digits as string
+				return -1 * strcmp($thisTimeLen, $thatTimeLen);
 			}
 		}
 	}
