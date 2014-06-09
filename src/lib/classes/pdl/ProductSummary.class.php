@@ -207,7 +207,8 @@ class ProductSummary {
 				return 1;
 			} else {
 				// lengths are equal, compare digits as string
-				return -1 * strcmp($thisTimeLen, $thatTimeLen);
+				// NOTE: $that before $this for descending
+				return strcmp($thatTime, $thisTime);
 			}
 		}
 	}
