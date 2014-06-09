@@ -313,7 +313,7 @@
 
 			if ($dyfizip) {
 				echo '<NetworkLink>' .
-						'<name>Zip Codes / Cities</name>' .
+						'<name>ZIP codes / Cities</name>' .
 						'<visibility>0</visibility>' .
 						'<Link>' .
 							'<href>' . $dyfizip['url'] . '</href>' .
