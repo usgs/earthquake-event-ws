@@ -56,7 +56,8 @@
 	$include_sm = false;
 
 	$lpe = null;
-	$dyfie = null;
+	$dyfizip = null;
+	$dyfigeo = null;
 
 	if (isset($event['products']['shakemap'])) {
 		$sm = $event['products']['shakemap'][0];
@@ -105,8 +106,12 @@
 		$dyfip = $dyfi['properties'];
 		$dyfic = $dyfi['contents'];
 
-		if(isset($dyfic[$eventid . '_dyfimap.kmz'])) {
-			$dyfie = $dyfic[$eventid . '_dyfimap.kmz'];
+		if(isset($dyfic['dyfi_zip.kmz'])) {
+			$dyfizip = $dyfic['dyfi_zip.kmz'];
+		}
+
+		if (isset($dyfic['dyfi_geo.kmz'])) {
+			$dyfigeo = $dyfic['dyfi_geo.kmz'];
 		}
 	}
 
@@ -296,25 +301,41 @@
 		} // end ShakeMap
 
 
-		/*
-		if ($dyfie) {
+		if ($dyfizip || $dyfigeo) {
 			echo '<Folder>' .
 					'<name>DYFI - ' .
 						$ROMANS[intval($summary['maxcdi'])] .
 					'</name>' .
 					$kmlfeed->getLookAt($latitude, $longitude, 500000) .
-					'<NetworkLink>' .
-						'<name>Did You Feel It?</name>' .
+				'<Style><ListStyle>' .
+					'<listItemType>radioFolder</listItemType>' .
+				'</ListStyle></Style>';
+
+			if ($dyfizip) {
+				echo '<NetworkLink>' .
+						'<name>Grouped by city or zip code</name>' .
 						'<visibility>0</visibility>' .
 						'<Link>' .
-							'<href>' . $dyfie['url'] . '</href>' .
+							'<href>' . $dyfizip['url'] . '</href>' .
 							'<refreshMode>onExpire</refreshMode>' .
 						'</Link>' .
-					'</NetworkLink>' .
-				'</Folder>';
+					'</NetworkLink>';
+			}
+
+			if ($dyfigeo) {
+				echo '<NetworkLink>' .
+						'<name>Grouped by geocoded location</name>' .
+						'<visibility>0</visibility>' .
+						'<Link>' .
+							'<href>' . $dyfigeo['url'] . '</href>' .
+							'<refreshMode>onExpire</refreshMode>' .
+						'</Link>' .
+					'</NetworkLink>';
+			};
+
+			echo '</Folder>';
 
 		} // end DYFI
-		*/
 
 		echo '</Folder>';
 
