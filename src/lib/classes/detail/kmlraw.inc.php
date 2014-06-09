@@ -216,7 +216,7 @@
 			if ($smcont) {
 				echo '<NetworkLink>' .
 						'<name>Contours</name>' .
-						'<visibility>0</visibility>' .
+						'<visibility>1</visibility>' .
 						'<Link>' .
 							'<href>' . $smcont['url'] . '</href>' .
 							'<viewRefreshMode>never</viewRefreshMode>' .
