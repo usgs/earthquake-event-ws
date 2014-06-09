@@ -48,8 +48,13 @@
 	$event = $event->toArray($storage);
 
 
+	$smcont = null;
+	$smfault = null;
+	$smover = null;
 	$smo = null;
 	$sms = null;
+	$include_sm = false;
+
 	$lpe = null;
 	$dyfie = null;
 
@@ -58,12 +63,30 @@
 		$smp = $sm['properties'];
 		$smc = $sm['contents'];
 
-		if(isset($smc['download/ii_overlay.png'])) {
+		if (isset($smc['download/contours.kmz'])) {
+			$smcont = $smc['download/contours.kmz'];
+			$include_sm = true;
+		}
+
+		if (isset($smc['download/fault.kmz'])) {
+			$smfault = $smc['download/fault.kmz'];
+			$include_sm = true;
+		}
+
+		if (isset($smc['download/overlay.kmz'])) {
+			$smover = $smc['download/overlay.kmz'];
+			$include_sm = true;
+		}
+
+		// This one is legacy and only used if KMZ (above) is not available
+		if (isset($smc['download/ii_overlay.png'])) {
 			$smo = $smc['download/ii_overlay.png'];
+			$include_sm = $include_sm || isset($smp['maximum-latitude']);
 		}
 
 		if (isset($smc['download/stations.kmz'])) {
 			$sms = $smc['download/stations.kmz'];
+			$include_sm = true;
 		}
 	}
 
@@ -158,7 +181,7 @@
 			'<Point><coordinates>'.$longitude.','.$latitude.',0'.'</coordinates></Point>' .
 		'</Placemark>';
 
-	if ($smo || $sms || $lpe) {
+	if ($include_sm || $lpe) {
 		echo "\n" . '<Folder>' .
 				'<name>Impact Estimates</name>' .
 				'<open>1</open>' .
@@ -184,13 +207,44 @@
 
 
 		// ShakeMap
-		if (($smo && isset($smp['maximum-latitude'])) || $sms) {
+		if ($include_sm) {
 			echo "\n" . '<Folder>' .
 					'<name>ShakeMap - ' .
 						$ROMANS[intval($summary['maxmmi'])] .
 					'</name>';
 
-			if ($smo && isset($smp['maximum-latitude'])) {
+			if ($smcont) {
+				echo '<NetworkLink>' .
+						'<name>Contours</name>' .
+						'<visibility>0</visibility>' .
+						'<Link>' .
+							'<href>' . $smcont['url'] . '</href>' .
+							'<viewRefreshMode>never</viewRefreshMode>' .
+						'</Link>' .
+					'</NetworkLink>';
+			}
+
+			if ($smfault) {
+				echo '<NetworkLink>' .
+						'<name>Faults</name>' .
+						'<visibility>0</visibility>' .
+						'<Link>' .
+							'<href>' . $smfault['url'] . '</href>' .
+							'<viewRefreshMode>never</viewRefreshMode>' .
+						'</Link>' .
+					'</NetworkLink>';
+			}
+
+			if ($smover) {
+				echo '<NetworkLink>' .
+						'<name>Intensity Overlay</name>' .
+						'<visibility>0</visibility>' .
+						'<Link>' .
+							'<href>' . $smover['url'] . '</href>' .
+							'<viewRefreshMode>never</viewRefreshMode>' .
+						'</Link>' .
+					'</NetworkLink>';
+			} else if ($smo && isset($smp['maximum-latitude'])) {
 				echo $kmlfeed->getLookAt($latitude, $longitude, 500000) .
 					'<GroundOverlay>' .
 						'<name>Intensity</name>' .
@@ -207,17 +261,7 @@
 							'<east>' . $smp['maximum-longitude'] . '</east>' .
 							'<west>' . $smp['minimum-longitude'] . '</west>' .
 						'</LatLonBox>' .
-					'</GroundOverlay>' .
-					'<ScreenOverlay>' .
-						'<name>Intensity Legend</name>' .
-						'<visibility>0</visibility>' .
-						'<Icon><href>' .
-							$HOST_URL_PREFIX . $FEED_PATH . '/images/kml_shakemap_legend.png' .
-						'</href></Icon>' .
-						'<overlayXY x="0" y="90" xunits="pixels" yunits="pixels"/>' .
-						'<screenXY x="5" y="1" xunits="pixels" yunits="fraction"/>' .
-						'<size x="0" y="0" xunits="pixels" yunits="pixels"/>' .
-					'</ScreenOverlay>';
+					'</GroundOverlay>';
 			}
 
 			if ($sms) {
@@ -229,6 +273,22 @@
 							'<refreshMode>onExpire</refreshMode>' .
 						'</Link>' .
 					'</NetworkLink>';
+			}
+
+			// If any of the colored layers are present, thus the legend is relevant,
+			// include the legend overlay. This may be overkill logic since one of
+			// these ought always exist...
+			if ($smover || $smcont || ($smo && isset($smp['maximum-latitude']))) {
+				echo '<ScreenOverlay>' .
+						'<name>Intensity Legend</name>' .
+						'<visibility>0</visibility>' .
+						'<Icon><href>' .
+							$HOST_URL_PREFIX . $FEED_PATH . '/images/kml_shakemap_legend.png' .
+						'</href></Icon>' .
+						'<overlayXY x="0" y="90" xunits="pixels" yunits="pixels"/>' .
+						'<screenXY x="5" y="1" xunits="pixels" yunits="fraction"/>' .
+						'<size x="0" y="0" xunits="pixels" yunits="pixels"/>' .
+					'</ScreenOverlay>';
 			}
 
 			echo '</Folder>';
