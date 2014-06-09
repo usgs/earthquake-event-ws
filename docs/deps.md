@@ -9,7 +9,6 @@ You will need to have the following tools installed in order to run this project
   1. Sass
   1. Compass
 1. PHP 5.5+
-  1. With support for GMP module (generally --with-gmp)
 
 ### Secondary Dependencies ###
 Make sure you are in your `earthquake-event-ws` project directory.
