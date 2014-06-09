@@ -313,7 +313,7 @@
 
 			if ($dyfizip) {
 				echo '<NetworkLink>' .
-						'<name>Grouped by city or zip code</name>' .
+						'<name>Zip Codes / Cities</name>' .
 						'<visibility>0</visibility>' .
 						'<Link>' .
 							'<href>' . $dyfizip['url'] . '</href>' .
@@ -324,7 +324,7 @@
 
 			if ($dyfigeo) {
 				echo '<NetworkLink>' .
-						'<name>Grouped by geocoded location</name>' .
+						'<name>Geocoded locations</name>' .
 						'<visibility>0</visibility>' .
 						'<Link>' .
 							'<href>' . $dyfigeo['url'] . '</href>' .
