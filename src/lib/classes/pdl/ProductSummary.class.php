@@ -195,13 +195,7 @@ class ProductSummary {
 				// 64 bit, ms timestamps in int range
 				$thisTime = intval($thisTime);
 				$thatTime = intval($thatTime);
-				if ($thisTime > $thatTime) {
-					return -1;
-				} else if ($thatTime > $thisTime) {
-					return 1;
-				} else {
-					return 0;
-				}
+				return $thatTime - $thisTime;
 			}
 
 			// 32bit-safe comparison of update times as strings
