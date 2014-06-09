@@ -186,7 +186,7 @@
 			'<Point><coordinates>'.$longitude.','.$latitude.',0'.'</coordinates></Point>' .
 		'</Placemark>';
 
-	if ($include_sm || $lpe) {
+	if ($include_sm || $lpe || ($dyfizip || $dyfigeo)) {
 		echo "\n" . '<Folder>' .
 				'<name>Impact Estimates</name>' .
 				'<open>1</open>' .
