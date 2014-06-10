@@ -307,6 +307,7 @@
 						$ROMANS[intval($summary['maxcdi'])] .
 					'</name>' .
 					$kmlfeed->getLookAt($latitude, $longitude, 500000) .
+				'<visibility>0</visibility>' .
 				'<Style><ListStyle>' .
 					'<listItemType>radioFolder</listItemType>' .
 				'</ListStyle></Style>';
