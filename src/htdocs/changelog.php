@@ -11,6 +11,31 @@ if (!isset($TEMPLATE)) {
 }
 ?>
 
+<h2>v1.0.16 <small>2014-06-11</small></h2>
+<ul>
+	<li>Added access control headers for product contents.</li>
+	<li>Increased marker size for small earthquakes in KML.</li>
+	<li>Fixed network link bug in KML.</li>
+	<li>Add kmlraw support to web service.</li>
+	<li>Fixed string based time comparison when determining preferred order.</li>
+	<li>Updated product ordering and enabled content in event KML.</li>
+	<li>Updated ShakeMap information in event KML.</li>
+	<li>Updated DYFI information in event KML.</li>
+	<li>Added DYFI legend to event KML.</li>
+</ul>
+
+<h2>v1.0.15 <small>2014-06-02</small></h2>
+<ul>
+	<li>Fixed bug in KML format.</li>
+	<li>Increased the significance value of a pager yellow alert to 650.</li>
+	<li>
+		Added programmatic access and mailing list sections to the
+		summary page.
+	</li>
+	<li>Fixed Tsunami warning bug.</li>
+	<li>Removed unused files, and cleaned up existing code.</li>
+</ul>
+
 <h2>v1.0.14 <small>2014-05-13</small></h2>
 <ul>
 	<li>Fixed various typos and normalized naming conventions.</li>
