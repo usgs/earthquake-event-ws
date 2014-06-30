@@ -94,7 +94,11 @@ BEGIN
   -- load dyfi properties
   IF dyfi_id <> -1 THEN
     CALL getProductProperty(dyfi_id, 'maxmmi', out_maxcdi);
-    CALL getProductProperty(dyfi_id, 'numResp', out_num_responses);
+    CALL getProductProperty(dyfi_id, 'num-responses', out_num_responses);
+
+    IF out_num_responses IS NULL THEN
+      CALL getProductProperty(dyfi_id, 'numResp', out_num_responses);
+    END IF;
   END IF;
 
   -- load origin properties
