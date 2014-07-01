@@ -39,4 +39,3 @@ $HEAD =
 				'seismogram,seismograph,seismologist,seismology,subduction,' .
 				'tectonics,tsunami,quake,sismologico,sismologia' .
 		'"/>';
-

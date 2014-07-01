@@ -1,6 +1,6 @@
 <?php
 if (!isset($TEMPLATE)) {
-	$TITLE = 'KML Format';
+	$TITLE = 'Google Earth&trade; KML';
 	$NAVIGATION = true;
 	$HEAD = '<link rel="stylesheet" href="css/feedPages.css"/>';
 

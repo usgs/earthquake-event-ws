@@ -1,6 +1,6 @@
 <?php
 if (!isset($TEMPLATE)) {
-	$TITLE = 'ATOM Format';
+	$TITLE = 'ATOM Syndication';
 	$NAVIGATION = true;
 	$HEAD = '<link rel="stylesheet" href="css/feedPages.css"/>';
 

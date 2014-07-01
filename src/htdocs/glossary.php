@@ -1,6 +1,6 @@
 <?php
 if (!isset($TEMPLATE)) {
-	$TITLE = 'Alphabetical Glossary of Event Terms';
+	$TITLE = 'Glossary - Earthquake Catalog Data Terms';
 	$NAVIGATION = true;
 	$HEAD = '
 		<link rel="stylesheet" href="css/glossary.css"/>

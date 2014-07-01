@@ -1,24 +1,28 @@
 <?php
 	include_once '../conf/config.inc.php';
 
-	$feedSection = $FEED_HOST . $FEED_PATH;
-	$fdsnSection = $FDSN_HOST . $FDSN_PATH;
+	print navItem($FEED_URL . '/', 'Feeds &amp; Notifications');
 
-	print navGroup('Formats',
-		navItem($feedSection . '/index.php', 'Summary') .
-		navItem($feedSection . '/atom.php', 'ATOM') .
-		navItem($feedSection . '/geojson.php', 'GeoJSON Summary') .
-		navItem($feedSection . '/geojson_detail.php', 'GeoJSON Detail') .
-		navItem($feedSection . '/kml.php', 'KML') .
-		navItem($feedSection . '/csv.php', 'Spreadsheets') .
-		navItem($feedSection . '/quakeml.php', 'QuakeML')
+	print navGroup('Real-time Feeds',
+		navItem($FEED_URL . '/atom.php', 'ATOM') .
+		navItem($FEED_URL . '/kml.php', 'KML') .
+		navItem($FEED_URL . '/csv.php', 'Spreadsheet') .
+		navItem($FEED_URL . '/quakeml.php', 'QuakeML')
 	);
-	print navGroup('Web Service',
-		navItem($fdsnSection . '/', 'API Documentation') .
-		navItem($SEARCH_PATH . '/', 'Search Earthquake Archives')
+	print navGroup('Real-time Notifications',
+		navItem('https://sslearthquake.usgs.gov/ens/', 'Earthquake Notification Service') .
+		navItem('/earthquakes/ted/', 'Tweet Earthquake Dispatch')
 	);
-	print navItem($feedSection . '/glossary.php', 'Glossary');
-	print navItem($feedSection . '/changelog.php', 'Change Log');
-	print navItem($feedSection . '/../policy.php', 'Feed Life Cycle Policy');
+	print navGroup('For Developers',
+		navItem($FDSN_URL . '/', 'API Documentation - EQ Catalog') .
+		navItem($FEED_URL . '/geojson.php', 'GeoJSON Summary Feeds') .
+		navItem($FEED_URL . '/geojson_detail.php', 'GeoJSON Detail Feeds') .
+		navItem('https://github.com/usgs/devcorner', 'Developers Corner') .
+		navItem($FEED_URL . '/glossary.php', 'Glossary') .
+		navItem($FEED_URL . '/changelog.php', 'Change Log') .
+		navItem($FEED_URL . '/../policy.php', 'Feed Lifecycle Policy') .
+		navItem('https://geohazards.usgs.gov/mailman/listinfo/realtime-feeds', 'Mailing List-Announcements') .
+		navItem('https://geohazards.usgs.gov/mailman/listinfo/realtime-feed-users', 'Mailing List-Forum/Questions')
+	);
 
 ?>
