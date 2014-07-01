@@ -90,7 +90,6 @@ BEGIN
     CALL getProductProperty(pager_id, 'alertlevel', out_alertlevel);
   END IF;
 
-
   -- load dyfi properties
   IF dyfi_id <> -1 THEN
     CALL getProductProperty(dyfi_id, 'maxmmi', out_maxcdi);
