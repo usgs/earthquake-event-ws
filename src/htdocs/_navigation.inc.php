@@ -1,7 +1,7 @@
 <?php
 	include_once '../conf/config.inc.php';
 
-	print navItem($FEED_URL . '/', 'Feeds &amp; Notifications');
+	print navItem($FEED_URL . '/index.php', 'Feeds &amp; Notifications');
 
 	print navGroup('Real-time Feeds',
 		navItem($FEED_URL . '/atom.php', 'ATOM') .
@@ -15,8 +15,8 @@
 	);
 	print navGroup('For Developers',
 		navItem($FDSN_URL . '/', 'API Documentation - EQ Catalog') .
-		navItem($FEED_URL . '/geojson.php', 'GeoJSON Summary Feeds') .
-		navItem($FEED_URL . '/geojson_detail.php', 'GeoJSON Detail Feeds') .
+		navItem($FEED_URL . '/geojson.php', 'GeoJSON Summary') .
+		navItem($FEED_URL . '/geojson_detail.php', 'GeoJSON Detail') .
 		navItem('https://github.com/usgs/devcorner', 'Developers Corner') .
 		navItem($FEED_URL . '/glossary.php', 'Glossary') .
 		navItem($FEED_URL . '/changelog.php', 'Change Log') .

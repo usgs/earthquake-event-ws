@@ -10,7 +10,7 @@ if (!isset($TEMPLATE)) {
 
 <div class="feed-format">
 
-		<h3>Description</h3>
+		<h2>Description</h2>
 		<p>
 			GeoJSON Detail output includes detailed information about a single
 			earthquake. This matches the <a href="geojson.php">GeoJSON Summary
@@ -24,16 +24,16 @@ if (!isset($TEMPLATE)) {
 		</p>
 		<p>
 			This feed adheres to the USGS Earthquakes
-			<a href="/earthquakes/feed/policy.php">Feed Life Cycle Policy</a>.
+			<a href="/earthquakes/feed/policy.php">Feed Lifecycle Policy</a>.
 		</p>
 
-		<h3>Usage</h3>
+		<h2>Usage</h2>
 		<p>
 			GeoJSON is intended to be used as a programatic interface for
 			applications.
 		</p>
 
-		<h3>Output</h3>
+		<h2>Output</h2>
 		<code class="geojson">{
 	type: "Feature",
 	properties: {

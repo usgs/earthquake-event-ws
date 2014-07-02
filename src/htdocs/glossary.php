@@ -12,7 +12,7 @@ if (!isset($TEMPLATE)) {
 
 <div class="row right-to-left">
 	<section id="contents" class="column two-of-ten">
-		<h3>Event Terms</h3>
+		<h2>Event Terms</h2>
 		<ul>
 			<li><a href="#alert">alert</a></li>
 			<li><a href="#cdi">cdi</a><li>
@@ -45,7 +45,7 @@ if (!isset($TEMPLATE)) {
 			<li><a href="#url">url</a></li>
 		</ul>
 
-		<h3>Metadata Terms</h3>
+		<h2>Metadata Terms</h2>
 		<ul>
 			<li><a href="#metadata_api">api</a></li>
 			<li><a href="#metadata_count">count</a></li>
@@ -55,7 +55,7 @@ if (!isset($TEMPLATE)) {
 			<li><a href="#metadata_status">status</a></li>
 		</ul>
 
-		<h3>Product Terms</h3>
+		<h2>Product Terms</h2>
 		<ul>
 			<li><a href="#product_content">content</a></li>
 			<li><a href="#product_id">id</a></li>
@@ -67,7 +67,7 @@ if (!isset($TEMPLATE)) {
 	</section>
 
 	<section class="column eight-of-ten">
-		<h3>Event Terms</h3>
+		<h2>Event Terms</h2>
 		<dl class="typelist">
 			<dt id="alert">alert</dt>
 			<dd>
@@ -507,7 +507,7 @@ if (!isset($TEMPLATE)) {
 			</dd>
 		</dl>
 
-		<h3>Metadata Terms</h3>
+		<h2>Metadata Terms</h2>
 		<dl class="typelist">
 			<dt id="metadata_api">api</dt>
 			<dd>
@@ -583,7 +583,7 @@ if (!isset($TEMPLATE)) {
 			</dd>
 		</dl>
 
-		<h3>Product Terms</h3>
+		<h2>Product Terms</h2>
 		<dl class="typelist">
 			<dt id="product_content">content</dt>
 			<dd>

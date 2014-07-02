@@ -49,7 +49,7 @@ if (!isset($TEMPLATE)) {
 	}
 
 
-	$TITLE = 'Earthquake Search and Web Service API Documentation';
+	$TITLE = 'API Documentation - Earthquake Catalog';
 	$HEAD = '
 	<style>
 		dt, code {

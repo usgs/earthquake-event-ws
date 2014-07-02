@@ -15,7 +15,7 @@ $format = 'kml';
 <div class="row feed-format">
 
 	<div class="column seven-of-ten">
-		<h3>Description</h3>
+		<h2>Description</h2>
 		<p>
 			KML is Google's
 			<a href="https://developers.google.com/kml/" target="_blank">Keyhole
@@ -28,7 +28,7 @@ $format = 'kml';
 			<a href="/earthquakes/feed/policy.php">Feed Life Cycle Policy</a>.
 		</p>
 
-		<h3>Usage</h3>
+		<h2>Usage</h2>
 		<p>
 			You will need to download and install <a href="http://earth.google.com/"
 			target="_blank">Google Earth</a> to view KML files.
@@ -49,7 +49,7 @@ $format = 'kml';
 			</dd>
 		</dl>
 
-		<h3>Earthquake Animations</h3>
+		<h2>Earthquake Animations</h2>
 		<p>
 			To view earthquake animations in Google Earth follow the directions below:
 		</p>
@@ -72,7 +72,7 @@ $format = 'kml';
 			</li>
 		</ol>
 
-		<h3>Output</h3>
+		<h2>Output</h2>
 		<p>
 			Screenshot of &ldquo;Past 7 Days, M1+ Earthquakes, Colored by Age&rdquo;
 			KML in Google Earth.
@@ -82,14 +82,15 @@ $format = 'kml';
 	</div>
 
 	<div class="column three-of-ten">
-		<h3>Automatic Feeds</h3>
+		<h2>Automatic Feeds</h2>
 
-		<h4>
+		<h3>
 			<?php
 				print $dateRanges['week']['name'] . ', ' . $magRanges['1']['name'];
 			?>
+		</h3>
 			<small><?php print $dateRanges['week']['help']; ?></small>
-		</h4>
+
 		<ul>
 			<li>
 				<?php
@@ -141,12 +142,12 @@ $format = 'kml';
 			</li>
 		</ul>
 
-		<h4>
+		<h3>
 			<?php
 				print $dateRanges['month']['name'] . ', ' . $magRanges['2.5']['name'];
 			?>
+		</h3>
 			<small><?php print $dateRanges['month']['help']; ?></small>
-		</h4>
 		<ul>
 			<li>
 				<?php
@@ -198,13 +199,13 @@ $format = 'kml';
 			</li>
 		</ul>
 
-		<h3>Feeds</h3>
-		<h4>
+		<h2>Feeds</h2>
+		<h3>
 			<?php
 				print $dateRanges['week']['name'] . ', ' . $magRanges['1']['name'];
 			?>
+		</h3>
 			<small><?php print $dateRanges['week']['help']; ?></small>
-		</h4>
 		<ul>
 			<li>
 				<?php
@@ -256,12 +257,12 @@ $format = 'kml';
 			</li>
 		</ul>
 
-		<h4>
+		<h3>
 			<?php
 				print $dateRanges['month']['name'] . ', ' . $magRanges['2.5']['name'];
 			?>
+		</h3>
 			<small><?php print $dateRanges['month']['help']; ?></small>
-		</h4>
 
 		<ul>
 			<li>

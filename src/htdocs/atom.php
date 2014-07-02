@@ -11,7 +11,7 @@ if (!isset($TEMPLATE)) {
 
 <div class="row feed-format">
 	<div class="column seven-of-ten">
-		<h3>Description</h3>
+		<h2>Description</h2>
 		<p>
 			This documentation goes over the details of the ATOM source response.
 			Many browsers (or other feed readers) will render this format in a
@@ -27,22 +27,22 @@ if (!isset($TEMPLATE)) {
 		</p>
 		<p>
 			This feed adheres to the USGS Earthquakes
-			<a href="/earthquakes/feed/policy.php">Feed Life Cycle Policy</a>.
+			<a href="/earthquakes/feed/policy.php">Feed Lifecycle Policy</a>.
 		</p>
 
-		<h3>Usage</h3>
+		<h2>Usage</h2>
 		<p>
 			To request this output format, use &ldquo;format=atom&rdquo;.
 		</p>
 
-		<h3>Output</h3>
+		<h2>Output</h2>
 		<p>Screenshot of the Magnitude Atom feed.</p>
 		<img src="images/screenshot_atom.jpg" class="screenshot"
 				alt="screenshot of the earthqauke Atom feed"/>
 	</div>
 
 	<div class="column three-of-ten">
-		<h3>Feeds</h3>
+		<h2>Feeds</h2>
 		<?php
 			$format = 'atom';
 			include_once 'inc/feedlinks.inc.php';

@@ -11,7 +11,7 @@ if (!isset($TEMPLATE)) {
 
 <div class="row feed-format">
 	<div class="column seven-of-ten">
-	<h3>Description</h3>
+	<h2>Description</h2>
 		<p>
 			This documentation provides information on the details of the QuakeML
 			source response. For more information please see the
@@ -23,12 +23,12 @@ if (!isset($TEMPLATE)) {
 			<a href="/earthquakes/feed/policy.php">Feed Life Cycle Policy</a>.
 		</p>
 
-		<h3>Usage</h3>
+		<h2>Usage</h2>
 		<p>
 			To request this output format, use &ldquo;format=quakeml&rdquo;.
 		</p>
 
-		<h3>Output</h3>
+		<h2>Output</h2>
 		<p>
 			For a description of the QuakeML format, view the
 			<a href="https://quake.ethz.ch/quakeml/Documents" target="_blank">
@@ -40,7 +40,7 @@ if (!isset($TEMPLATE)) {
 	</div>
 
 	<div class="column three">
-		<h3>Feeds</h3>
+		<h2>Feeds</h2>
 		<?php
 			$format = 'quakeml';
 			include_once 'inc/feedlinks.inc.php';
