@@ -1,6 +1,6 @@
 <?php
 if (!isset($TEMPLATE)) {
-	$TITLE = 'Earthquake Archive Search & URL Builder';
+	$TITLE = 'Search Earthquake Archives';
 	$NAVIGATION = true;
 	$HEAD = '
 		<link rel="stylesheet" href="css/search.css"/>
@@ -18,6 +18,8 @@ if (!isset($TEMPLATE)) {
 	include 'template.inc.php';
 }
 ?>
+
+<h2>(&amp; Build URLs)</h2> 
 
 <form method="get" action="<?php print $FDSN_HOST . $FDSN_PATH; ?>/query"
 		id="fdsn-search-form" role="search">

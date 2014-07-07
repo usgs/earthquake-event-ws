@@ -15,9 +15,9 @@
 <?php
 	foreach ($dateRanges as $dateKey=>$dateRange) {
 		print '
-			<h4>' .
-				$dateRange['name'] . ' <small>' . $dateRange['help'] . '</small>
-			</h4>
+			<h3>' .
+				$dateRange['name'] . '</h3>' .
+				'<small>' . $dateRange['help'] . '</small>
 			<ul>';
 
 		foreach ($magRanges as $magKey=>$magRange) {

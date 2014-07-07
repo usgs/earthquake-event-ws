@@ -73,3 +73,6 @@ if (strpos($HOST_URL_PREFIX, 'comcat') !== FALSE) {
 	// on comcat, feeds are on earthquake
 	$FEED_HOST = 'http://earthquake.usgs.gov';
 }
+
+$FEED_URL = $FEED_HOST . $FEED_PATH;
+$FDSN_URL = $FDSN_HOST . $FDSN_PATH;
