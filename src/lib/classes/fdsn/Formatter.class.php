@@ -94,12 +94,7 @@ class Formatter {
 	 * @param $time millisecond epoch timestamp.
 	 * @param $offset (Default null offset from UTC in minutes.
 	 */
-	public function formatDateIso($time, $offset=null, $omitZ=false) {
-		if ($omitZ == false) {
-			$tz = 'Z';
-		} else {
-			$tz = '';
-		}
+	public function formatDateIso($time, $offset=null, $tz='Z') {
 		$seconds = intval(substr($time, 0, -3));
 		$milliseconds = substr($time, -3);
 		if ($offset != null) {
