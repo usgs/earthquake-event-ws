@@ -25,6 +25,7 @@
 
 	include_once ('classes/fdsn/AtomFeed.class.php');
 	include_once ('classes/fdsn/CSVFeed.class.php');
+	include_once ('classes/fdsn/TextFeed.class.php');
 	include_once ('classes/fdsn/GeoJSONFeed.class.php');
 	include_once ('classes/fdsn/KMLFeed.class.php');
 	include_once ('classes/fdsn/QuakemlFeed.class.php');
