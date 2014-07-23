@@ -51,7 +51,7 @@ class Formatter {
 	 * @return formatted longitude.
 	 */
 	public function formatLongitude($longitude) {
-		return number_format(abs($longitude), 3) . 
+		return number_format(abs($longitude), 3) .
 				'&deg;' . ($longitude < 0 ? 'W' : 'E');
 	}
 
@@ -87,15 +87,19 @@ class Formatter {
 		return $sign . sprintf("%02d:%02d", $hours, $minutes);
 	}
 
-	
+
 	/**
 	 * Format a date using iso8601.
 	 *
 	 * @param $time millisecond epoch timestamp.
 	 * @param $offset (Default null offset from UTC in minutes.
 	 */
-	public function formatDateIso($time, $offset=null) {
-		$tz = 'Z';
+	public function formatDateIso($time, $offset=null, $omitZ=false) {
+		if ($omitZ == false) {
+			$tz = 'Z';
+		} else {
+			$tz = '';
+		}
 		$seconds = intval(substr($time, 0, -3));
 		$milliseconds = substr($time, -3);
 		if ($offset != null) {
@@ -104,8 +108,8 @@ class Formatter {
 		}
 		return gmdate('Y-m-d\TH:i:s', $seconds) . '.' . $milliseconds . $tz;
 	}
-	
-		
+
+
 	public function formatEventType($type) {
 
 		if($type == null || strtolower($type) == 'earthquake') {
