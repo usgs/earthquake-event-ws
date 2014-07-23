@@ -96,6 +96,8 @@ class FDSNEventWebService {
 			$callback->feed = new KMLFeed("depth", true);
 		} else if ($query->format === 'atom') {
 			$callback->feed = new AtomFeed();
+		} else if ($query->format === 'text') {
+			$callback->feed = new TextFeed();
 		}
 
 		// execute query and stream output
