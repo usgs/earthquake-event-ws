@@ -92,16 +92,20 @@ class Formatter {
 	 * Format a date using iso8601.
 	 *
 	 * @param $time millisecond epoch timestamp.
-	 * @param $offset (Default null offset from UTC in minutes.
+	 * @param $offset (Default null) offset from UTC in minutes.
+	 * @param $tz (Default 'Z') timezone string.
+	 * @param $timeSeparator (Default '\T') separator between date and time.
 	 */
-	public function formatDateIso($time, $offset=null, $tz='Z') {
+	public function formatDateIso($time, $offset=null, $tz='Z',
+			$timeSeparator='\T') {
 		$seconds = intval(substr($time, 0, -3));
 		$milliseconds = substr($time, -3);
 		if ($offset != null) {
 			$seconds = $seconds + (60*intval($offset));
 			$tz = $this->offset($offset);
 		}
-		return gmdate('Y-m-d\TH:i:s', $seconds) . '.' . $milliseconds . $tz;
+		return gmdate('Y-m-d' . $timeSeparator . 'H:i:s',
+				$seconds) . '.' . $milliseconds . $tz;
 	}
 
 
