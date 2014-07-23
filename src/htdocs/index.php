@@ -2,7 +2,7 @@
 if (!isset($TEMPLATE)) {
 	include_once '../conf/config.inc.php';
 	$TITLE = 'Feeds &amp; Notifications';
-	$HEAD = '<link rel="stylesheet" href="/css/imagelist.css"/>';
+	$HEAD = '<link rel="stylesheet" href="css/index.css"/>';
 	include 'classes/ImageList.class.php';
 	include 'template.inc.php';
 }
