@@ -13,19 +13,25 @@ class TextFeed extends AbstractFeed {
 	public function getEntry ($event) {
 		if ($event == null) { return ''; }
 
+		$author = $event['origin_source'];
+		$author = strtolower($author ? $author : $event['source']);
+
+		$magAuthor = $event['magnitude_source'];
+		$magAuthor = strtolower($magAuthor ? $magAuthor : $event['source']);
+
 		return implode('|', array(
 			$event['eventSource'] . $event['eventSourceCode'],
-			$this->formatter->formatDateIso($event['eventTime'], null, ''),
+			$this->formatter->formatDateIso($event['eventTime'], null, '', ' '),
 			$event['eventLatitude'],
 			$event['eventLongitude'],
 			$event['eventDepth'],
-			$event['origin_source'],
+			$author,
 			$event['eventSource'],
 			$event['source'],
 			$event['eventSource'] . $event['eventSourceCode'],
 			$event['magnitude_type'],
 			$event['eventMagnitude'],
-			$event['magnitude_source'],
+			$magAuthor,
 			$event['region']
 		)) . "\n";
 	}
