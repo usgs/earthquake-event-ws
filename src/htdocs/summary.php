@@ -15,14 +15,15 @@ $AGES = array(
 
 // name => size in magnitude
 $SIZES = array(
-	'all' => -1, 
-	'1.0' => 1, 
-	'2.5' => 2.5, 
+	'all' => -1,
+	'1.0' => 1,
+	'2.5' => 2.5,
 	'4.5' => 4.5,
 	'significant' => -1
 );
 
-$FORMATS = array('geojson', 'geojsonp', 'atom', 'kml', 'csv', 'quakeml');
+$FORMATS = array('geojson', 'geojsonp', 'atom', 'kml', 'csv', 'quakeml',
+		'text');
 
 $KML_COLORBYS = array('age', 'depth');
 
