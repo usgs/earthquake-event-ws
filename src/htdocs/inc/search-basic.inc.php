@@ -55,6 +55,25 @@
 			</li>
 		</ul>
 	</section>
+
+	<section role="group" aria-labelledby="depth">
+		<h3 id="depth" class="label">Depth (km)</h3>
+
+		<ul class="two-up">
+			<li>
+				<label for="mindepth" class="label" id="depth-mindepth">Minimum</label>
+				<input type="number" step="any" name="mindepth" id="mindepth"
+						min="-100" max="1000" step="0.1"
+						aria-labelledby="depth depth-mindepth"/>
+			</li>
+			<li>
+				<label for="maxdepth" class="label" id="depth-maxdepth">Maximum</label>
+				<input type="number" step="any" name="maxdepth" id="maxdepth"
+						min="-100" max="1000" step="0.1"
+						aria-labelledby="depth depth-maxdepth"/>
+			</li>
+		</ul>
+	</section>
 </div>
 
 <div class="one-of-two column">
