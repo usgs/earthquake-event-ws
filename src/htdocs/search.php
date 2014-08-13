@@ -19,8 +19,6 @@ if (!isset($TEMPLATE)) {
 }
 ?>
 
-<h2>(&amp; Build URLs)</h2> 
-
 <form method="get" action="<?php print $FDSN_HOST . $FDSN_PATH; ?>/query"
 		id="fdsn-search-form" role="search">
 
