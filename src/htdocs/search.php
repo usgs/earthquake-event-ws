@@ -25,7 +25,8 @@ if (!isset($TEMPLATE)) {
 <header class="header" role="region" aria-label="Search form header">
 	<p class="help">
 		Search results are limited to
-		<?php echo number_format($MAX_SEARCH); ?> events.
+		<?php echo number_format($MAX_SEARCH); ?> events. To get URL for a search,
+				click the search button, then copy the URL from the browser address bar.
 	</p>
 	<ul>
 		<li>
