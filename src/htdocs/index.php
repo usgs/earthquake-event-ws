@@ -20,17 +20,17 @@ $list->addItem(
 		'atom.php', //link
 		'images/atom.png', //image
 		'ATOM Syndication', //title
-		'<p>A basic syndication format supported by a variety of feed readers.
+		'A basic syndication format supported by a variety of feed readers.
 			This is a good option for casually subscribing to earthquake
-			information.</p>'); //content
+			information.'); //content
 
 $list->addItem(
 		'kml.php', //link
 		'images/kml.png', //image
 		'Google Earth&trade; KML', //title
-		'<p>This feed format is suitable for loading into applications that
+		'This feed format is suitable for loading into applications that
 			understand Keyhole Markup Language (KML) such as Google
-			Earth&trade;</p>'); //content
+			Earth&trade;'); //content
 	/*
 		Icon Source: www.iconspedia.com
 		Author: Tempest, http://tempest.deviantart.com/
@@ -41,17 +41,17 @@ $list->addItem(
 		'csv.php', //link
 		'images/csv.png', //image
 		'Spreadsheet Format', //title
-		'<p>A simple text format suitable for loading data into spreadsheet
+		'A simple text format suitable for loading data into spreadsheet
 			applications like Microsoft Excel&trade;. This is a good option for
-			manual scientific analysis.</p>'); //content
+			manual scientific analysis.'); //content
 
 $list->addItem(
 		'quakeml.php', //link
 		'images/quakeml.png', //image
 		'QuakeML', //title
-		'<p>A flexible, extensible and modular XML representation of
+		'A flexible, extensible and modular XML representation of
 			seismological data which is intended to cover a broad range of
-			fields of application in modern seismology.</p>'); //content
+			fields of application in modern seismology.'); //content
 
 	$list->display();
 ?>
@@ -67,16 +67,16 @@ $list->addItem(
 		'https://sslearthquake.usgs.gov/ens/', //link
 		'images/ens-x2.png', //image
 		'Earthquake Notification Service', //title
-		'<p>The Earthquake Notification Service (ENS) is a free service that
+		'The Earthquake Notification Service (ENS) is a free service that
 			sends you automated notifications to your email or cell phone when
-			earthquakes happen.</p>'); //content
+			earthquakes happen.'); //content
 
 $list->addItem(
 		'/earthquakes/ted/', //link
 		'images/ted.png', //image
 		'Tweet Earthquake Dispatch', //title
-		'<p>Tweet Earthquake Dispatch (TED) offers two Twitter accounts. On
-			average, each account will produce about one tweet per day.</p>'); //content
+		'Tweet Earthquake Dispatch (TED) offers two Twitter accounts. On
+			average, each account will produce about one tweet per day.'); //content
 
 	$list->display();
 ?>
