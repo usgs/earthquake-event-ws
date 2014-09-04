@@ -105,7 +105,8 @@ class GeoJSONFeed extends AbstractFeed {
 
 		$longitude = floatval($event['eventLongitude']);
 		$latitude = floatval($event['eventLatitude']);
-		$depth = floatval($event['eventDepth']);
+		$depth = safefloatval($event['eventDepth']);
+
 		if ($longitude < $this->minLongitude) { $this->minLongitude = $longitude; }
 		if ($longitude > $this->maxLongitude) { $this->maxLongitude = $longitude; }
 		if ($latitude < $this->minLatitude) { $this->minLatitude = $latitude; }

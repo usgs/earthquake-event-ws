@@ -28,7 +28,6 @@ if (isset($summaries[$event->getIndexId()])) {
 	$summary = $summaries[$event->getIndexId()];
 }
 
-
 $array = array(
 	'type' => 'Feature',
 	'properties' => array(
@@ -63,7 +62,7 @@ $array = array(
 		'coordinates' => array(
 			floatval($summary->getLongitude()),
 			floatval($summary->getLatitude()),
-			floatval($summary->getDepth())
+			safefloatval($summary->getDepth())
 		)
 	),
 	'id' => $summary->getSource() . $summary->getSourceCode()
