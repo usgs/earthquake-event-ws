@@ -111,8 +111,12 @@ class GeoJSONFeed extends AbstractFeed {
 		if ($longitude > $this->maxLongitude) { $this->maxLongitude = $longitude; }
 		if ($latitude < $this->minLatitude) { $this->minLatitude = $latitude; }
 		if ($latitude > $this->maxLatitude) { $this->maxLatitude = $latitude; }
-		if ($depth < $this->minDepth) { $this->minDepth = $depth; }
-		if ($depth > $this->maxDepth) { $this->maxDepth = $depth; }
+		if (is_numeric($depth) && $depth < $this->minDepth) {
+			$this->minDepth = $depth;
+		}
+		if (is_numeric($depth) && $depth > $this->maxDepth) {
+			$this->maxDepth = $depth;
+		}
 
 		$array = array(
 			'type' => 'Feature',
