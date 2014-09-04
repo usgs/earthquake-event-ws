@@ -156,7 +156,7 @@ class QuakemlFeed extends AbstractFeed {
 		$xml .= $this->getElement('longitude/value', $origin['eventLongitude']);
 		$xml .= $this->getElement('latitude/value', $origin['eventLatitude']);
 
-		if ($origin['eventDepth'] !== '') {
+		if ($origin['eventDepth'] !== null && $origin['eventDepth'] !== '') {
 			$xml .= '<depth>';
 			$xml .= '<value>' . $origin['eventDepth']*1000 . '</value>';
 			if ($origin['vertical_error'] !== '') {
