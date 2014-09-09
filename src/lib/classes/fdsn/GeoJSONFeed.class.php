@@ -105,13 +105,23 @@ class GeoJSONFeed extends AbstractFeed {
 
 		$longitude = floatval($event['eventLongitude']);
 		$latitude = floatval($event['eventLatitude']);
-		$depth = floatval($event['eventDepth']);
+		$depth = safefloatval($event['eventDepth']);
+		$type = $event['event_type'];
+
+		if ($type === null) {
+			$type = 'earthquake';
+		}
+
 		if ($longitude < $this->minLongitude) { $this->minLongitude = $longitude; }
 		if ($longitude > $this->maxLongitude) { $this->maxLongitude = $longitude; }
 		if ($latitude < $this->minLatitude) { $this->minLatitude = $latitude; }
 		if ($latitude > $this->maxLatitude) { $this->maxLatitude = $latitude; }
-		if ($depth < $this->minDepth) { $this->minDepth = $depth; }
-		if ($depth > $this->maxDepth) { $this->maxDepth = $depth; }
+		if (is_numeric($depth) && $depth < $this->minDepth) {
+			$this->minDepth = $depth;
+		}
+		if (is_numeric($depth) && $depth > $this->maxDepth) {
+			$this->maxDepth = $depth;
+		}
 
 		$array = array(
 			'type' => 'Feature',
@@ -140,7 +150,7 @@ class GeoJSONFeed extends AbstractFeed {
 				'rms' => safefloatval($event['standard_error']),
 				'gap' => safefloatval($event['azimuthal_gap']),
 				'magType' => $event['magnitude_type'],
-				'type' => $event['event_type'],
+				'type' => $type,
 				'title' => $this->getEventTitle($event)
 			),
 			'geometry' => array(
