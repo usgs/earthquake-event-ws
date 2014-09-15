@@ -1,3 +1,4 @@
+@import '../../../node_modules/hazdev-template/src/htdocs/site/earthquake/_variables';
 @import 'layout';
 @import 'n-up';   /* Provides .two-up and .three-up styles */
 @import 'fdsn-search';
@@ -6,6 +7,10 @@
 @import 'ManagedModelView';
 @import 'ToggleSection';
 @import '/hazdev-webutils/src/mvc/ModalView.css';
+
+h2[role="heading"] {
+	margin-left:$horizontal-spacing;
+}
 
 .help {
 	margin:0;
