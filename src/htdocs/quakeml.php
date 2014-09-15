@@ -10,7 +10,7 @@ if (!isset($TEMPLATE)) {
 ?>
 
 <div class="row feed-format">
-	<div class="column seven-of-ten">
+	<div class="column three-of-five">
 	<h2>Description</h2>
 		<p>
 			This documentation provides information on the details of the QuakeML
@@ -39,7 +39,7 @@ if (!isset($TEMPLATE)) {
 		</p>
 	</div>
 
-	<div class="column three">
+	<div class="column two-of-five">
 		<h2>Feeds</h2>
 		<?php
 			$format = 'quakeml';
