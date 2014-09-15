@@ -14,7 +14,7 @@ $format = 'kml';
 
 <div class="row feed-format">
 
-	<div class="column seven-of-ten">
+	<div class="column three-of-five">
 		<h2>Description</h2>
 		<p>
 			KML is Google's
@@ -81,7 +81,7 @@ $format = 'kml';
 				alt="screenshot of kml feed in google earth"/>
 	</div>
 
-	<div class="column three-of-ten">
+	<div class="column two-of-five">
 		<h2>Automatic Feeds</h2>
 
 		<h3>

@@ -10,7 +10,7 @@ if (!isset($TEMPLATE)) {
 ?>
 
 <div class="row feed-format">
-	<div class="column seven-of-ten">
+	<div class="column three-of-five">
 		<h3>Description</h3>
 		<p>
 			GeoJSON is a format for encoding a variety of geographic data structures.
@@ -97,7 +97,7 @@ if (!isset($TEMPLATE)) {
 }</code>
 	</div>
 
-	<div class="column three-of-ten">
+	<div class="column two-of-five">
 		<h3>Feeds</h3>
 		<?php
 			$format = 'geojson';

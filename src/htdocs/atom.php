@@ -10,7 +10,7 @@ if (!isset($TEMPLATE)) {
 ?>
 
 <div class="row feed-format">
-	<div class="column seven-of-ten">
+	<div class="column three-of-five">
 		<h2>Description</h2>
 		<p>
 			This documentation goes over the details of the ATOM source response.
@@ -41,7 +41,7 @@ if (!isset($TEMPLATE)) {
 				alt="screenshot of the earthqauke Atom feed"/>
 	</div>
 
-	<div class="column three-of-ten">
+	<div class="column two-of-five">
 		<h2>Feeds</h2>
 		<?php
 			$format = 'atom';

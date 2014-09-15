@@ -11,7 +11,7 @@ if (!isset($TEMPLATE)) {
 ?>
 
 <div class="row right-to-left">
-	<section id="contents" class="column two-of-ten">
+	<section id="contents" class="column one-of-five">
 		<h2>Event Terms</h2>
 		<ul>
 			<li><a href="#alert">alert</a></li>
@@ -66,7 +66,7 @@ if (!isset($TEMPLATE)) {
 		</ul>
 	</section>
 
-	<section class="column eight-of-ten">
+	<section class="column four-of-five">
 		<h2>Event Terms</h2>
 		<dl class="typelist">
 			<dt id="alert">alert</dt>
