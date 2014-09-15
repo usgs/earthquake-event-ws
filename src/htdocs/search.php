@@ -19,15 +19,14 @@ if (!isset($TEMPLATE)) {
 }
 ?>
 
-<h2>(&amp; Build URLs)</h2> 
-
 <form method="get" action="<?php print $FDSN_HOST . $FDSN_PATH; ?>/query"
 		id="fdsn-search-form" role="search">
 
 <header class="header" role="region" aria-label="Search form header">
 	<p class="help">
 		Search results are limited to
-		<?php echo number_format($MAX_SEARCH); ?> events.
+		<?php echo number_format($MAX_SEARCH); ?> events. To get URL for a search,
+				click the search button, then copy the URL from the browser address bar.
 	</p>
 	<ul>
 		<li>
