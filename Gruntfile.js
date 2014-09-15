@@ -12,7 +12,7 @@ var rewrites = [
 	// Template
 	{
 		from: '^/theme/(.*)$',
-		to: '/hazdev-template/src/htdocs/$1'
+		to: '/hazdev-template/dist/htdocs/$1'
 	},
 
 	// Search pages
@@ -255,12 +255,14 @@ module.exports = function (grunt) {
 		},
 		cssmin: {
 			dist: {
+				options: {
+					root: 'node_modules'
+				},
 				files: {
 					'<%= app.dist %>/htdocs/css/index.css': [
 						'.tmp/css/index.css'
 					],
 					'<%= app.dist %>/htdocs/css/search.css': [
-						'node_modules/hazdev-webutils/src/ModalView.css',
 						'<%= app.dist %>/htdocs/css/search.css'
 					],
 					'<%= app.dist %>/htdocs/css/feedPages.css': [
