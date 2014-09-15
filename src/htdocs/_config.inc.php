@@ -19,7 +19,7 @@ $SITE_COMMONNAV =
 
 $HEAD = 
 		// site theme
-		'<link rel="stylesheet" href="/css/theme.css"/>' .
+		'<link rel="stylesheet" href="/theme/site/earthquake/index.css"/>' .
 
 		// page head content
 		($HEAD ? $HEAD : '') .
