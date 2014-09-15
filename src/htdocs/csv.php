@@ -10,7 +10,7 @@ if (!isset($TEMPLATE)) {
 ?>
 
 <div class="row feed-format">
-	<div class="column seven-of-ten">
+	<div class="column three-of-five">
 		<h2>Description</h2>
 		<p>
 			CSV is a &ldquo;comma separated values&rdquo; ASCII text file.
@@ -58,7 +58,7 @@ if (!isset($TEMPLATE)) {
 				alt="screenshot of kml feed in google earth" />
 	</div>
 
-	<div class="column three-of-ten">
+	<div class="column two-of-five">
 		<h2>Feeds</h2>
 		<?php
 			$format = 'csv';
