@@ -23,7 +23,7 @@ $SIZES = array(
 );
 
 $FORMATS = array('geojson', 'geojsonp', 'atom', 'kml', 'csv', 'quakeml',
-		'text');
+		'text', 'xml');
 
 $KML_COLORBYS = array('age', 'depth');
 
