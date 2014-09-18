@@ -146,7 +146,7 @@ class FDSNIndex {
 			$callback->onStart($query);
 			while($row = $statement->fetch(PDO::FETCH_ASSOC)) {
 
-				if ($query->format === 'quakeml') {
+				if ($query->format === 'quakeml' || $query->format === 'xml') {
 					if ($query->eventid !== null || $query->includeallorigins || $query->includeallmagnitudes) {
 						// when querying a specific event, include all information
 						$row['origin'] = $this->getOrigins($row['eventid']);
