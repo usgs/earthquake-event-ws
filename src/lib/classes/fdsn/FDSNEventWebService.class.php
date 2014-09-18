@@ -59,7 +59,8 @@ class FDSNEventWebService {
 		$query = $this->parseQuery();
 		$resultType = $this->parseResultType();
 
-		if ($query->eventid === null || $query->format === 'quakeml') {
+		if ($query->eventid === null || $query->format === 'quakeml' ||
+					$query->format === 'xml') {
 			$this->handleSummaryQuery($query);
 		} else {
 			$this->handleDetailQuery($query, $resultType);
@@ -72,7 +73,7 @@ class FDSNEventWebService {
 		if ($count === 0) {
 			// adhere to specification for default format
 			// allow empty feeds in other formats.
-			if ($query->format === 'quakeml') {
+			if ($query->format === 'quakeml' || $query->format === 'xml') {
 				$this->error(self::NO_DATA, null, true);
 			}
 		} else if ($count > $this->serviceLimit) {
@@ -86,7 +87,7 @@ class FDSNEventWebService {
 
 		// setup output format
 		$callback = new FDSNIndexCallback();
-		if ($query->format === 'quakeml') {
+		if ($query->format === 'quakeml' || $query->format === 'xml') {
 			$callback->feed = new QuakemlFeed();
 		} else if ($query->format === 'csv') {
 			$callback->feed = new CSVFeed();
@@ -583,11 +584,11 @@ class FDSNEventWebService {
 
 		// only quakeml supports allorigins/magnitudes
 		if (
-			$query->format !== 'quakeml'
+			($query->format !== 'quakeml' && $query->format !== 'xml')
 			&& ($query->includeallorigins || $query->includeallmagnitudes)
 		) {
 			$this->error(self::BAD_REQUEST, 'Cannot use includeallorigins or includeallmagnitudes' .
-				' parameters when format is not quakeml.');
+				' parameters when format is not quakeml or xml.');
 		}
 
 		// only geojson supports callback
