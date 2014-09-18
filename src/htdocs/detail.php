@@ -19,7 +19,8 @@ try {
 	$query->eventid = $eventid;
 
 
-	if (!in_array($format, array('quakeml', 'geojson', 'geojsonp', 'kml', 'kmlraw'))) {
+	if (!in_array($format, array('quakeml', 'geojson', 'geojsonp', 'kml',
+				'kmlraw', 'xml'))) {
 		throw new Exception('Unknown format "' . $format . '"');
 	}
 
@@ -77,7 +78,7 @@ try {
 // serve detail feed
 $service = new FDSNEventWebService($fdsnIndex, true);
 try {
-	if ($query->format === 'quakeml') {
+	if ($query->format === 'quakeml' || $query->format === 'xml') {
 		$service->handleSummaryQuery($query);
 	} else {
 		$service->handleDetailQuery($query);
