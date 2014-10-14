@@ -154,7 +154,7 @@
 					max="<?php echo $MAX_SEARCH; ?>"/>
 		</li>
 		<li>
-			<label for="offset">Offset</label>
+			<label for="offset" class="label">Offset</label>
 			<input type="number" step="any" name="offset" id="offset" min="1"/>
 		</li>
 	</ul>
