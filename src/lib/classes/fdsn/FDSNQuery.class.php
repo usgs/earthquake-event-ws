@@ -88,6 +88,9 @@ class FDSNQuery {
 	public $kmlcolorby = 'age'; // 'age', 'depth'
 	public $kmlanimated = false;
 
+	// error code options
+	public $nodata = 204;
+
 
 // non-query parameters
 
