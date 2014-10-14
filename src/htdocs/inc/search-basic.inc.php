@@ -123,7 +123,9 @@
 		</div>
 
 		<div class="fieldset" role="group" aria-labelledby="region-circle">
-			<h4 id="region-circle" class="label">Circle</h4>
+			<h4 id="region-circle" class="label">
+				Circle (or donut if specifying inner radius)
+			</h4>
 
 			<ul class="two-up">
 				<li>
@@ -144,7 +146,7 @@
 				</li>
 				<li>
 					<label for="minradiuskm" class="label" id="circle-minradiuskm">
-						<abbr title="Minimum">Inside</abbr> Radius (km)
+						<abbr title="Minimum">Inner</abbr> Radius (km) Optional
 					</label>
 					<input type="number" step="any" name="minradiuskm" id="minradiuskm"
 							min="0" max="20001.6"
@@ -152,7 +154,7 @@
 				</li>
 				<li>
 					<label for="maxradiuskm" class="label" id="circle-maxradiuskm">
-						<abbr title="Maximum">Outside</abbr> Radius (km)
+						<abbr title="Maximum">Outer</abbr> Radius (km)
 					</label>
 					<input type="number" step="any" name="maxradiuskm" id="maxradiuskm"
 							min="0" max="20001.6"
