@@ -58,6 +58,8 @@ class QuakemlFeed extends AbstractFeed {
 				' catalog:eventid="' . $event['eventSourceCode'] . '"' .
 				' publicID="quakeml:' . htmlentities($publicID) . '">';
 
+		$entry .= $this->getName($event['region']);
+
 		$preferredOriginID = null;
 		$preferredMagnitudeID = null;
 		$preferredFocalMechanismID = null;
@@ -414,6 +416,20 @@ class QuakemlFeed extends AbstractFeed {
 		$info .= '</creationInfo>';
 
 		return $info;
+	}
+
+	protected function getName($name) {
+		if ($name === null) {
+			return '';
+		}
+
+		$xml = '';
+		$xml .= '<description>';
+		$xml .= '<type>earthquake name</type>';
+		$xml .= '<text>' . $name . '</text>';
+		$xml .= '</description>';
+
+		return $xml;
 	}
 
 	protected function getPublicID($source, $type, $code, $updateTime) {
