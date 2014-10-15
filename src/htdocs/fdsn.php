@@ -576,4 +576,10 @@ if (!isset($TEMPLATE)) {
 		&ldquo;shakemap&rdquo;, &ldquo;losspager&rdquo;, &ldquo;dyfi&rdquo;.
 	</dd>
 	<dd>Limit to events that have this type of product associated.</dd>
+
+	<dt id="nodata">nodata</dt>
+	<dd>Integer: (204|404). Default 204.</dd>
+	<dd>
+		Define the error code that will be returned when no data is found.
+	</dd>
 </dl>
