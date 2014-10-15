@@ -552,7 +552,10 @@ class FDSNIndex {
 				$params[] = $query->maxsig;
 			}
 
-			if ($query->producttype !== null || $query->contributor !== null) {
+			if ($query->producttype !== null ||
+					$query->contributor !== null ||
+					$query->productcode !== null ) {
+
 				$from .= ' JOIN productSummary contributed on (e.id=contributed.eventid)';
 
 				if ($query->producttype !== null) {
@@ -563,6 +566,11 @@ class FDSNIndex {
 				if ($query->contributor !== null) {
 					$where[] = 'contributed.source=?';
 					$params[] = $query->contributor;
+				}
+
+				if ($query->productcode !== null) {
+					$where[] = 'contributed.code=?';
+					$params[] = $query->productcode;
 				}
 			}
 

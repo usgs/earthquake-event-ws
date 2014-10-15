@@ -593,4 +593,14 @@ if (!isset($TEMPLATE)) {
 	<dd>
 		Define the error code that will be returned when no data is found.
 	</dd>
+
+	<dt id="productcode">productcode</dt>
+	<dd>
+		Examples: &ldquo;nn00458749&rdquo;, &ldquo;at00ndf1fr&rdquo;,
+		&ldquo;usb000skys&rdquo;.
+	</dd>
+	<dd>
+		Return the event that is associated with the productcode. The event will be
+		returned even if the productcode is not the preferred code for the event.
+	</dd>
 </dl>

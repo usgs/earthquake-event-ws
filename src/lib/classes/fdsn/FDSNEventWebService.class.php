@@ -498,6 +498,8 @@ class FDSNEventWebService {
 				$query->maxsig = $this->validateInteger($name, $value, 0, null);
 			} else if ($name ==='producttype') {
 				$query->producttype = $value;
+			} else if ($name ==='productcode') {
+				$query->productcode = $value;
 			} else if ($name ==='kmlcolorby') {
 				$query->kmlcolorby = $this->validateEnumerated($name, $value, array('age', 'depth'));
 			} else if ($name ==='kmlanimated') {
