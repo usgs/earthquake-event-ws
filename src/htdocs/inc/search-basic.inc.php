@@ -19,7 +19,7 @@
 				Start (UTC)
 			</label>
 			<input type="datetime" name="starttime" id="starttime"
-					placeholder="yyyy-mm-dd hh:mm:ss" value="<?php print $starttime; ?>"
+					value="<?php print $starttime; ?>"
 					aria-labelledby="datetime datetime-starttime"/>
 		</li>
 
@@ -28,7 +28,7 @@
 				End (UTC)
 			</label>
 			<input type="datetime" name="endtime" id="endtime"
-					placeholder="yyyy-mm-dd hh:mm:ss" value="<?php print $endtime; ?>"
+					value="<?php print $endtime; ?>"
 					aria-labelledby="datetime datetime-endtime"/>
 		</li>
 		</ul>
