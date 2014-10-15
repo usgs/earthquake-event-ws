@@ -105,12 +105,12 @@ try {
 		// all significant feeds are 1 minute
 		$CACHE_MAXAGE = 60;
 	} else if ($age === 'month') {
-		// all one month feeds are 15 minutes
+		// all other one month feeds are 15 minutes
 		$CACHE_MAXAGE = 900;
 	} else if ($query->format === 'geojson') {
 		// geojson offers lower default expiration
 		$CACHE_MAXAGE = 60;
-	} 
+	}
 	include $APP_DIR . '/lib/cache.inc.php';
 
 
