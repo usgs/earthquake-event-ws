@@ -58,7 +58,12 @@ class QuakemlFeed extends AbstractFeed {
 				' catalog:eventid="' . $event['eventSourceCode'] . '"' .
 				' publicID="quakeml:' . htmlentities($publicID) . '">';
 
-		$entry .= $this->getName($event['region']);
+		if ($name = $this->getEventTitle($event)) {
+			$entry .= '<description>';
+			$entry .= '<type>earthquake name</type>';
+			$entry .= '<text>' . $name . '</text>';
+			$entry .= '</description>';
+		}
 
 		$preferredOriginID = null;
 		$preferredMagnitudeID = null;
@@ -127,6 +132,10 @@ class QuakemlFeed extends AbstractFeed {
 		$footer .= "\n" . '</eventParameters></q:quakeml>';
 
 		return $footer;
+	}
+
+	public function getEventTitle($event) {
+		return $event['region'];
 	}
 
 	protected function getOrigin($origin) {
@@ -416,20 +425,6 @@ class QuakemlFeed extends AbstractFeed {
 		$info .= '</creationInfo>';
 
 		return $info;
-	}
-
-	protected function getName($name) {
-		if ($name === null) {
-			return '';
-		}
-
-		$xml = '';
-		$xml .= '<description>';
-		$xml .= '<type>earthquake name</type>';
-		$xml .= '<text>' . $name . '</text>';
-		$xml .= '</description>';
-
-		return $xml;
 	}
 
 	protected function getPublicID($source, $type, $code, $updateTime) {
