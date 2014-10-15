@@ -113,8 +113,8 @@
 	</div>
 </section>
 
-<section class="one-of-two column">
-	<h3 class="label">Order By</h3>
+<section class="one-of-two column" aria-labelledby="adv-orderby">
+	<h3 id="adv-orderby" class="label">Order By</h3>
 	<ul class="orderby-list">
 		<li>
 			<label for="orderby-time" class="label-checkbox">
