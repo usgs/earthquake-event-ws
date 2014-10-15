@@ -422,10 +422,15 @@ if (!isset($TEMPLATE)) {
 	<dt id="format">format</dt>
 	<dd>Specify the output format
 		<dl>
-			<dt>quakeml</dt>
+			<dt>xml</dt>
 			<dd>
 				(Default) Response format is <a href="http://www.quakeml.org/">
 				Quakeml 1.2</a>.  Mime-type is "application/xml".
+			</dd>
+
+			<dt>quakeml</dt>
+			<dd>
+				Alias for "xml" format.
 			</dd>
 
 			<dt>csv</dt>
