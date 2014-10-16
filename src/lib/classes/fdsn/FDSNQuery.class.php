@@ -74,7 +74,8 @@ class FDSNQuery {
 
 	// associated information
 	public $producttype = null;
-
+	public $includedeleted = false;
+	public $includesuperseded = false;
 
 	// formatting parameters
 
