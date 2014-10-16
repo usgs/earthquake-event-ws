@@ -631,6 +631,8 @@ class Event {
       }
       $r['products'][$summary->getId()->getType()][] = $array;
     }
+    // sort product types alphabetically
+    ksort($r['products']);
     // return array representation
     return $r;
   }
