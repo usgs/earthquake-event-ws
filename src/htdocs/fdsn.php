@@ -260,7 +260,6 @@ if (!isset($TEMPLATE)) {
 		option is mutually exclusive with <a href="#maxradiuskm">maxradiuskm</a>
 		and specifying both will result in an error.
 	</dd>
-</dl>
 
 	<dt id="maxradiuskm">maxradiuskm</dt>
 	<dd>Kilometers: [0, 20001.6]</dd>
@@ -270,6 +269,7 @@ if (!isset($TEMPLATE)) {
 		option is mutually exclusive with <a href="#maxradius">maxradius</a> and
 		specifying both will result in an error.
 	</dd>
+</dl>
 
 
 <h3>Other</h3>
