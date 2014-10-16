@@ -74,7 +74,7 @@ class FDSNEventWebService {
 			// adhere to specification for default format
 			// allow empty feeds in other formats.
 			if ($query->format === 'quakeml' || $query->format === 'xml') {
-				$this->error(self::NO_DATA, null, true);
+				$this->error($query->nodata, null, true);
 			}
 		} else if ($count > $this->serviceLimit) {
 			$this->error(self::BAD_REQUEST, $count . ' matching events exceeds ' .
@@ -114,7 +114,11 @@ class FDSNEventWebService {
 		$event = $index->getEventFromEventId($query->eventid, $resultType);
 
 		if ($event === null) {
-			$this->error(self::NOT_FOUND,self::$statusMessage[self::NOT_FOUND],true);
+			if ($query->format === 'quakeml') {
+				$this->error($query->nodata, null, true);
+			} else {
+				$this->error(self::NOT_FOUND,self::$statusMessage[self::NOT_FOUND],true);
+			}
 		}
 
 		$eventid = $query->eventid;
@@ -487,6 +491,8 @@ class FDSNEventWebService {
 				$query->kmlcolorby = $this->validateEnumerated($name, $value, array('age', 'depth'));
 			} else if ($name ==='kmlanimated') {
 				$query->kmlanimated = $this->validateBoolean($name, $value);
+			} else if ($name ==='nodata') {
+				$query->nodata = $this->validateEnumerated($name, $value, array(204, 404));
 			} else if ($name ==='jsonerror') {
 				// Used by this->error method. Just ignore for now
 				continue;

@@ -260,7 +260,6 @@ if (!isset($TEMPLATE)) {
 		option is mutually exclusive with <a href="#maxradiuskm">maxradiuskm</a>
 		and specifying both will result in an error.
 	</dd>
-</dl>
 
 	<dt id="maxradiuskm">maxradiuskm</dt>
 	<dd>Kilometers: [0, 20001.6]</dd>
@@ -270,6 +269,7 @@ if (!isset($TEMPLATE)) {
 		option is mutually exclusive with <a href="#maxradius">maxradius</a> and
 		specifying both will result in an error.
 	</dd>
+</dl>
 
 
 <h3>Other</h3>
@@ -576,4 +576,10 @@ if (!isset($TEMPLATE)) {
 		&ldquo;shakemap&rdquo;, &ldquo;losspager&rdquo;, &ldquo;dyfi&rdquo;.
 	</dd>
 	<dd>Limit to events that have this type of product associated.</dd>
+
+	<dt id="nodata">nodata</dt>
+	<dd>Integer: (204|404). Default 204.</dd>
+	<dd>
+		Define the error code that will be returned when no data is found.
+	</dd>
 </dl>
