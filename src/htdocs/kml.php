@@ -199,7 +199,7 @@ $format = 'kml';
 			</li>
 		</ul>
 
-		<h2>Feeds</h2>
+		<h2>Static Feeds (do not auto update)</h2>
 		<h3>
 			<?php
 				print $dateRanges['week']['name'] . ', ' . $magRanges['1']['name'];
