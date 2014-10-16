@@ -44,7 +44,7 @@ try {
 	if (!$format || !in_array($format, $FORMATS)) {
 		throw new Exception("Unknown format");
 	}
-	if ($format == 'geojsonp') {
+	if ($format === 'geojsonp') {
 		// geojsonp is geojson with implied callback name
 		$query->format = 'geojson';
 		$query->callback = 'eqfeed_callback';
@@ -53,7 +53,7 @@ try {
 	}
 
 // kml extras
-	if ($format == 'kml') {
+	if ($format === 'kml') {
 		// look for additional parameters
 		$colorby = $params[2];
 		if (!in_array($colorby, $KML_COLORBYS)) {
@@ -101,10 +101,13 @@ try {
 // caching headers
 	// default to 5 minutes
 	$CACHE_MAXAGE = 300;
-	if ($age === 'month') {
-		// all one month feeds are 15 minutes
+	if ($size === 'significant') {
+		// all significant feeds are 1 minute
+		$CACHE_MAXAGE = 60;
+	} else if ($age === 'month') {
+		// all other one month feeds are 15 minutes
 		$CACHE_MAXAGE = 900;
-	} else if ($query->format == 'geojson') {
+	} else if ($query->format === 'geojson') {
 		// geojson offers lower default expiration
 		$CACHE_MAXAGE = 60;
 	}
@@ -113,9 +116,9 @@ try {
 
 //title
 	$title = 'USGS';
-	if ($size == 'significant') {
+	if ($size === 'significant') {
 		$title .= ' Significant';
-	} else if ($size == 'all') {
+	} else if ($size === 'all') {
 		$title .= ' All';
 	} else {
 		$title .= ' Magnitude ' . $size . '+';
