@@ -74,7 +74,8 @@ class FDSNEventWebService {
 			// adhere to specification for default format
 			// allow empty feeds in other formats.
 			if ($query->format === 'quakeml' || $query->format === 'xml') {
-				$this->error($query->nodata, null, true);
+				$this->error($query->nodata, self::$statusMessage[$query->nodata],
+						true);
 			}
 		} else if ($count > $this->serviceLimit) {
 			$this->error(self::BAD_REQUEST, $count . ' matching events exceeds ' .
@@ -115,9 +116,11 @@ class FDSNEventWebService {
 
 		if ($event === null) {
 			if ($query->format === 'quakeml') {
-				$this->error($query->nodata, null, true);
+				$this->error($query->nodata, self::$statusMessage[$query->nodata],
+						true);
 			} else {
-				$this->error(self::NOT_FOUND,self::$statusMessage[self::NOT_FOUND],true);
+				$this->error(self::NOT_FOUND, self::$statusMessage[self::NOT_FOUND],
+						true);
 			}
 		}
 
