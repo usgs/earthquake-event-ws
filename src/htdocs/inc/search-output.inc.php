@@ -1,4 +1,4 @@
-<section class="one-of-two column" role="group" aria-labelledby="output-format">
+<section class="one-of-two column" aria-labelledby="output-format">
 	<h3 id="output-format" class="label">Format</h3>
 
 	<ul class="format-list">

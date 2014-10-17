@@ -22,7 +22,7 @@ if (!isset($TEMPLATE)) {
 <form method="get" action="<?php print $FDSN_HOST . $FDSN_PATH; ?>/query"
 		id="fdsn-search-form" role="search">
 
-<header class="header" role="region" aria-label="Search form header">
+<header class="header" aria-label="Search form header">
 	<p class="help">
 		Search results are limited to
 		<?php echo number_format($MAX_SEARCH); ?> events. To get URL for a search,
@@ -40,20 +40,17 @@ if (!isset($TEMPLATE)) {
 	</ul>
 </header>
 
-<section class="search-basic row" role="region"
-		aria-labelledby="search-basic">
+<section class="search-basic row" aria-labelledby="search-basic">
 	<h2 role="heading" id="search-basic">Basic Options</h2>
 	<?php include_once 'inc/search-basic.inc.php' ?>
 </section>
 
-<section class="search-advanced row" role="region"
-		aria-labelledby="search-advanced">
+<section class="search-advanced row" aria-labelledby="search-advanced">
 	<h2 role="heading" id="search-advanced">Advanced Options</h2>
 	<?php include_once 'inc/search-advanced.inc.html' ?>
 </section>
 
-<section class="search-output row" role="region"
-		aria-labelledby="search-output">
+<section class="search-output row" aria-labelledby="search-output">
 	<h2 role="heading" id="search-output">Output Options</h2>
 	<?php
 		/* Note this include is PHP because it needs $MAX_SEARCH info */
@@ -61,7 +58,7 @@ if (!isset($TEMPLATE)) {
 	?>
 </section>
 
-<footer class="footer" role="region" aria-label="Search form footer">
+<footer class="footer" aria-label="Search form footer">
 	<button type="submit" id="fdsn-submit">Search</button>
 	<span class="output-descriptor"></span>
 	<div class="search-error"></div>

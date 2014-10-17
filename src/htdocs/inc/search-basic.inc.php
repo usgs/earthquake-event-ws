@@ -11,7 +11,7 @@
 ?>
 
 <div class="one-of-two column">
-	<section role="group" aria-labelledby="datetime">
+	<section aria-labelledby="datetime">
 		<h3 id="datetime" class="label">Date &amp; Time</h3>
 		<ul class="two-up">
 		<li>
@@ -34,7 +34,7 @@
 		</ul>
 	</section>
 
-	<section role="group" aria-labelledby="magnitude">
+	<section aria-labelledby="magnitude">
 		<h3 id="magnitude" class="label">Magnitude</h3>
 		<ul class="two-up">
 			<li>
@@ -56,7 +56,7 @@
 		</ul>
 	</section>
 
-	<section role="group" aria-labelledby="depth">
+	<section aria-labelledby="depth">
 		<h3 id="depth" class="label">Depth (km)</h3>
 
 		<ul class="two-up">
@@ -77,7 +77,7 @@
 </div>
 
 <div class="one-of-two column">
-	<section role="group" aria-labelledby="region">
+	<section aria-labelledby="region">
 		<h3 id="region" class="label">Geographic Region</h3>
 		<p class="help region-description"></p>
 
