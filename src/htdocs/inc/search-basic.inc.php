@@ -18,7 +18,8 @@
 			<label for="starttime" class="label" id="datetime-starttime">
 				Start (UTC)
 			</label>
-			<input type="datetime" name="starttime" id="starttime"
+			<input type="text" name="starttime" id="starttime"
+					placeholder="yyyy-mm-dd hh:mm:ss"
 					value="<?php print $starttime . 'Z'; ?>"
 					aria-labelledby="datetime datetime-starttime"/>
 		</li>
@@ -27,7 +28,8 @@
 			<label for="endtime" class="label" id="datetime-endtime">
 				End (UTC)
 			</label>
-			<input type="datetime" name="endtime" id="endtime"
+			<input type="text" name="endtime" id="endtime"
+					placeholder="yyyy-mm-dd hh:mm:ss"
 					value="<?php print $endtime . 'Z'; ?>"
 					aria-labelledby="datetime datetime-endtime"/>
 		</li>
