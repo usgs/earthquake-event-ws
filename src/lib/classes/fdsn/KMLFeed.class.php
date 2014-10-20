@@ -214,7 +214,6 @@ class KMLFeed extends AbstractFeed {
     }
 
     $footer .= $this->getUSGSOverlay();
-    $footer .= $this->getPlatesOverlay();
     $footer .= "\n" . '</Document></kml>';
 
     return $footer;
@@ -231,22 +230,6 @@ class KMLFeed extends AbstractFeed {
         '<size x="0" y="0" xunits="pixels" yunits="pixels"/>' .
       '</ScreenOverlay>';
   }
-
-  public function getPlatesOverlay() {
-    $feedBaseUrl = $this->getFeedUrlPrefix();
-    return
-      '<NetworkLink>' .
-        '<name>Tectonic Plates</name>' .
-        '<visibility>0</visibility>' .
-        '<refreshVisibility>0</refreshVisibility>' .
-        '<Link>' .
-          '<href>'.
-            $feedBaseUrl . '/plates.kmz' .
-          '</href>' .
-        '</Link>' .
-      '</NetworkLink>';
-  }
-
 
   public function getFeedUrl() {
     $feedBaseUrl = $this->getFeedUrlPrefix();
