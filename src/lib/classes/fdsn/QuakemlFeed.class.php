@@ -153,7 +153,8 @@ class QuakemlFeed extends AbstractFeed {
 				$origin['code'],
 				$origin['updateTime']);
 
-		if ($origin['eventMagnitude'] !== '') {
+		if ($origin['eventMagnitude'] !== ''
+				&& $origin['eventMagnitude'] !== null) {
 			$magnitudePublicID = $originPublicID . '#magnitude';
 		}
 
@@ -230,11 +231,9 @@ class QuakemlFeed extends AbstractFeed {
 					'>';
 
 				$xml .= '<mag>';
+				// $magnitudePublicID is not null based on this value being set
 				$xml .= '<value>' . $origin['eventMagnitude'] . '</value>';
-				if ($origin['magnitude_error'] !== '') {
-					$xml .= '<uncertainty>' . $origin['magnitude_error'] .
-							'</uncertainty>';
-				}
+				$xml .= $this->getElement('uncertainty', $origin['magnitude_error']);
 				$xml .= '</mag>';
 				$xml .= $this->getElement('type', $origin['magnitude_type']);
 				$xml .= $this->getElement('stationCount',
