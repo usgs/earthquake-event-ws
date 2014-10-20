@@ -4,6 +4,7 @@ include_once '../conf/feeds.inc.php';
 
 // requested url
 $URL = $HOST_URL_PREFIX . $_SERVER['REQUEST_URI'];
+$PLATES =	$HOST_URL_PREFIX . $FEED_PATH . '/plates.kmz';
 
 // name => age in seconds
 $AGES = array(
@@ -166,6 +167,16 @@ if ($networkLink) {
 					'<href>' . str_replace('_link', '', $URL) . '</href>' .
 					'<refreshMode>onInterval</refreshMode>' .
 					'<refreshInterval>' . $CACHE_MAXAGE . '</refreshInterval>' .
+				'</Link>' .
+			'</NetworkLink>' .
+			'<NetworkLink>' .
+				'<name>Tectonic Plates</name>'.
+				'<visibility>0</visibility>' .
+				'<refreshVisibility>0</refreshVisibility>' .
+				'<Link>' .
+					'<href>' .
+						$PLATES .
+					'</href>' .
 				'</Link>' .
 			'</NetworkLink>' .
 		'</Document>' .
