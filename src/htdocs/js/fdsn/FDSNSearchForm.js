@@ -35,6 +35,7 @@ define([
 		this._el = options.el || document.createElement('div');
 		this.fieldDataUrl = options.fieldDataUrl || null;
 		this.model = options.model || new FDSNModel();
+		this._parsedUrl = UrlManager.parseUrl();
 
 		if (options.hasOwnProperty('fdsnHost')) {
 			this.fdsnHost = options.fdsnHost;
@@ -168,18 +169,16 @@ define([
 		_initialize: function () {
 			if (this._INITIALIZED_) {
 				return;
-			} else if (!this._ASYNC_FIELDS_INITIALIZED_) {
-				// Fire this off as soon as possible
-				this._fetchFieldData();
 			} else {
+				this._enableToggleFields();
 
-				this._enableToggleFields();   // Standard show/hide sections
-				this._enableCustomControls(); // Show/hide based on certain values
+				this._enableRegionControl();
+				this._enableOutputDetailsToggle();
 
 				this._bindModel();
-
 				this._addSubmitHandler();
-				this._INITIALIZED_ = true;
+
+				this._fetchFieldData();
 			}
 		},
 
@@ -334,7 +333,7 @@ define([
 		},
 
 		_bindModel: function () {
-			var nonEmptyParams = null, parsedUrl = null;
+			var nonEmptyParams = null;
 
 			this.model.on('change', this.onModelChange, this);
 			this.model.on('change:format', this.onModelFormatChange, this);
@@ -363,10 +362,10 @@ define([
 			this._bindInput('mingap');
 			this._bindInput('maxgap');
 
-			this._bindRadio('reviewstatus');
+			this._bindInput('reviewstatus');
 			// TODO :: Conform magnitude type to FDSN spec
-			//this._bindRadio('magnitudetype');
-			this._bindRadio('eventtype');
+			//this._bindInput('magnitudetype');
+			this._bindInput('evttype');
 
 			this._bindInput('minsig');
 			this._bindInput('maxsig');
@@ -380,9 +379,9 @@ define([
 			this._bindInput('maxcdi');
 			this._bindInput('minfelt');
 
-			this._bindRadio('catalog');
-			this._bindRadio('contributor');
-			this._bindRadio('producttype');
+			this._bindInput('catalog');
+			this._bindInput('contributor');
+			this._bindInput('producttype');
 
 
 			this._bindRadio('format');
@@ -398,24 +397,23 @@ define([
 
 			if (window.location.hash !== '') {
 				// Update the model with information from the hash
-				parsedUrl = UrlManager.parseUrl();
-				parsedUrl = parsedUrl.search || {};
-				parsedUrl = parsedUrl.params || null;
+				this._parsedUrl = this._parsedUrl.search || {};
+				this._parsedUrl = this._parsedUrl.params || null;
 
 				// If parsing a hash, that contains an existing search
 				// want to clear default values (if not specified)
-				if (parsedUrl !== null) {
-					if (!parsedUrl.hasOwnProperty('starttime')) {
-						parsedUrl.starttime = '';
+				if (this._parsedUrl !== null) {
+					if (!this._parsedUrl.hasOwnProperty('starttime')) {
+						this._parsedUrl.starttime = '';
 					}
-					if (!parsedUrl.hasOwnProperty('endtime')) {
-						parsedUrl.endtime = '';
+					if (!this._parsedUrl.hasOwnProperty('endtime')) {
+						this._parsedUrl.endtime = '';
 					}
-					if (!parsedUrl.hasOwnProperty('minmagnitude')) {
-						parsedUrl.minmagnitude = '';
+					if (!this._parsedUrl.hasOwnProperty('minmagnitude')) {
+						this._parsedUrl.minmagnitude = '';
 					}
 
-					this.model.setAll(parsedUrl);
+					this.model.setAll(this._parsedUrl);
 				}
 			}
 
@@ -426,10 +424,7 @@ define([
 				//Util.addClass(this._el.querySelector('#magtype').parentNode,
 						//'toggle-visible');
 			//}
-			if (nonEmptyParams.hasOwnProperty('eventtype')) {
-				Util.addClass(this._el.querySelector('#evttype').parentNode,
-						'toggle-visible');
-			}
+
 			if (nonEmptyParams.hasOwnProperty('minsig') ||
 					nonEmptyParams.hasOwnProperty('maxsig') ||
 					nonEmptyParams.hasOwnProperty('alertlevel') ||
@@ -439,6 +434,48 @@ define([
 					nonEmptyParams.hasOwnProperty('maxcdi') ||
 					nonEmptyParams.hasOwnProperty('minfelt')) {
 				Util.addClass(this._el.querySelector('#impact').parentNode,
+						'toggle-visible');
+			}
+
+		},
+
+		_bindModelUpdate: function () {
+			var nonEmptyParams = null;
+
+			this._bindRadio('reviewstatus');
+			// TODO :: Conform magnitude type to FDSN spec
+			//this._bindRadio('magnitudetype');
+			this._bindRadio('eventtype');
+
+			this._bindRadio('catalog');
+			this._bindRadio('contributor');
+			this._bindRadio('producttype');
+
+			if (window.location.hash !== '') {
+				// Update the model with information from the hash
+
+				// If parsing a hash, that contains an existing search
+				// want to clear default values (if not specified)
+				if (this._parsedUrl !== null) {
+					if (!this._parsedUrl.hasOwnProperty('starttime')) {
+						this._parsedUrl.starttime = '';
+					}
+					if (!this._parsedUrl.hasOwnProperty('endtime')) {
+						this._parsedUrl.endtime = '';
+					}
+					if (!this._parsedUrl.hasOwnProperty('minmagnitude')) {
+						this._parsedUrl.minmagnitude = '';
+					}
+
+					this.model.setAll(this._parsedUrl);
+				}
+			}
+
+			// Expand collapsed sections if any of their parameters are set
+			nonEmptyParams = this.model.getNonEmpty();
+
+			if (nonEmptyParams.hasOwnProperty('eventtype')) {
+				Util.addClass(this._el.querySelector('#evttype').parentNode,
 						'toggle-visible');
 			}
 			if (nonEmptyParams.hasOwnProperty('catalog')) {
@@ -575,8 +612,7 @@ define([
 							'producttype', form.formatter.formatProductType, ['two-up']);
 					form._enhanceEventType(data.eventtypes || []);
 
-					form._ASYNC_FIELDS_INITIALIZED_ = true;
-					form._initialize();
+					form._bindModelUpdate();
 				}
 			});
 		},
@@ -598,10 +634,6 @@ define([
 			}
 		},
 
-		_enableCustomControls: function () {
-			this._enableRegionControl();
-			this._enableOutputDetailsToggle();
-		},
 
 		_addSubmitHandler: function () {
 			var form = this;
@@ -708,6 +740,7 @@ define([
 			].join('');
 			/* jshint +W015 */
 			list.insertBefore(map, list.firstChild);
+
 
 			handler = function () {
 				if (kml.checked) {
