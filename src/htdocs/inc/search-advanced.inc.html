@@ -56,8 +56,10 @@
 <div class="one-of-two column">
 	<section class="toggle toggle-visible" role="group" aria-labelledby="evttype">
 		<h3 id="evttype" class="label toggle-control">Event Type</h3>
-		<input type="text" name="eventtype" id="eventtype"
-				aria-labelledby="evttype"/>
+		<div class="fieldset" role="group" aria-labelledby="evttype">
+			<input type="text" name="eventtype" id="eventtype"
+					aria-labelledby="evttype"/>
+		</div>
 	</section>
 
 	<section class="toggle toggle-visible" role="group" aria-labelledby="impact">
@@ -180,18 +182,24 @@
 
 	<section class="toggle toggle-visible" role="group" aria-labelledby="cat">
 		<h3 id="cat" class="label toggle-control">Catalog</h3>
-		<input type="text" aria-labelledby="cat" name="catalog" id="catalog"/>
+		<div class="fieldset" role="group" aria-labelledby="cat">
+			<input type="text" aria-labelledby="cat" name="catalog" id="catalog"/>
+		</div>
 	</section>
 
 	<section class="toggle toggle-visible" role="group" aria-labelledby="contrib">
 		<h3 id="contrib" class="label toggle-control">Contributor</h3>
-		<input type="text" aria-labelledby="contrib" name="contributor"
-				id="contributor"/>
+		<div class="fieldset" role="group" aria-labelledby="contrib">
+			<input type="text" aria-labelledby="contrib" name="contributor"
+					id="contributor"/>
+		</div>
 	</section>
 
 	<section class="toggle toggle-visible" role="group" aria-labelledby="prodtype">
 		<h3 id="prodtype" class="label toggle-control">Product Type</h3>
-		<input type="text" aria-labelledby="prodtype" name="producttype"
-				id="producttype"/>
+		<div class="fieldset" role="group" aria-labelledby="prodtype">
+			<input type="text" aria-labelledby="prodtype" name="producttype"
+					id="producttype"/>
+		</div>
 	</section>
 </div>
