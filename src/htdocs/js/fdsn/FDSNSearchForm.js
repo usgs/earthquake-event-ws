@@ -633,15 +633,25 @@ define([
 
 		_enhanceDateTime: function () {
 			var testInput = document.createElement('input'),
-			    startTimeInput = this._el.querySelector('#starttime'),
-			    endTimeInput = this._el.querySelector('#endtime');
+			    startTimeInput,
+			    endTimeInput,
+			    startTimeValue,
+			    endTimeValue;
 
 			testInput.setAttribute('type', 'datetime');
 
 			if (testInput.getAttribute('type') === 'datetime') {
 				// browser supports datetime input
+				startTimeInput = this._el.querySelector('#starttime');
+				endTimeInput = this._el.querySelector('#endtime');
+
 				startTimeInput.setAttribute('type', 'datetime');
 				endTimeInput.setAttribute('type', 'datetime');
+
+				startTimeValue = startTimeInput.getAttribute('value') + 'Z';
+				endTimeValue = endTimeInput.getAttribute('value') + 'Z';
+				startTimeInput.setAttribute('value', startTimeValue);
+				endTimeInput.setAttribute('value', endTimeValue);
 			}
 		},
 
