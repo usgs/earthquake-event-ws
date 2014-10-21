@@ -617,7 +617,7 @@ class FDSNEventWebService {
 			if ($query->includedeleted) {
 				$this->error(self::BAD_REQUEST, 'Cannot use includedeleted parameter unless format is geojson.');
 			}
-			if ($query->includesuperseded !== null) {
+			if ($query->includesuperseded) {
 				$this->error(self::BAD_REQUEST, 'Cannot use includesuperseded parameter unless format is geojson.');
 			}
 		}
