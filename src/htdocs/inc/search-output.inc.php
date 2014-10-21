@@ -113,34 +113,34 @@
 	</div>
 </section>
 
-<section class="one-of-two column" aria-labelledby="adv-orderby">
-	<h3 id="adv-orderby" class="label">Order By</h3>
+<section class="one-of-two column" aria-labelledby="output-orderby">
+	<h3 id="output-orderby" class="label">Order By</h3>
 	<ul class="orderby-list">
 		<li>
 			<label for="orderby-time" class="label-checkbox">
 				<input id="orderby-time" type="radio" name="orderby"
-						value="time" aria-labelledby="adv-orderby" checked/>
+						value="time" aria-labelledby="output-orderby" checked/>
 				Time - Newest First
 			</label>
 		</li>
 		<li>
 			<label for="orderby-time-asc" class="label-checkbox">
 				<input id="orderby-time-asc" type="radio" name="orderby"
-						value="time-asc" aria-labelledby="adv-orderby"/>
+						value="time-asc" aria-labelledby="output-orderby"/>
 				Time - Oldest First
 			</label>
 		</li>
 		<li style="margin-top:8px;">
 			<label for="orderby-magnitude" class="label-checkbox">
 				<input id="orderby-magnitude" type="radio" name="orderby"
-						value="magnitude" aria-labelledby="adv-orderby"/>
+						value="magnitude" aria-labelledby="output-orderby"/>
 				Magnitude - Largest First
 			</label>
 		</li>
 		<li>
 			<label for="orderby-magnitude-asc" class="label-checkbox">
 				<input id="orderby-magnitude-asc" type="radio" name="orderby"
-						value="magnitude-asc" aria-labelledby="adv-orderby"/>
+						value="magnitude-asc" aria-labelledby="output-orderby"/>
 				Magnitude - Smallest First
 			</label>
 		</li>
