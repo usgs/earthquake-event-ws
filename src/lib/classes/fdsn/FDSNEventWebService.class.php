@@ -57,13 +57,12 @@ class FDSNEventWebService {
 	// fdsn api methods
 	public function query() {
 		$query = $this->parseQuery();
-		$resultType = $this->parseResultType();
 
 		if ($query->eventid === null || $query->format === 'quakeml' ||
 					$query->format === 'xml') {
 			$this->handleSummaryQuery($query);
 		} else {
-			$this->handleDetailQuery($query, $resultType);
+			$this->handleDetailQuery($query);
 		}
 	}
 
@@ -106,10 +105,19 @@ class FDSNEventWebService {
 		$this->index->getEvents($query, $callback);
 	}
 
-	public function handleDetailQuery($query,
-			$resultType = ProductIndexQuery::RESULT_TYPE_CURRENT) {
+	public function handleDetailQuery($query) {
 		global $APP_DIR;
 		global $index;
+
+		// current versions, not deleted
+		$resultType = ProductIndexQuery::RESULT_TYPE_CURRENT;
+		if ($query->includesuperseded) {
+			// all products
+			$resultType = ProductIndexQuery::RESULT_TYPE_ALL;
+		} else if ($query->includedeleted) {
+			// current versions, including deleted products
+			$resultType = ProductIndexQuery::RESULT_TYPE_CURRENT_WITH_DELETE;
+		}
 
 		// use ProductIndex for detail
 		$event = $index->getEventFromEventId($query->eventid, $resultType);
@@ -496,12 +504,13 @@ class FDSNEventWebService {
 				$query->kmlanimated = $this->validateBoolean($name, $value);
 			} else if ($name ==='nodata') {
 				$query->nodata = $this->validateEnumerated($name, $value, array(204, 404));
+			} else if ($name === 'includedeleted') {
+				$query->includedeleted = $this->validateBoolean($name, $value);
+			} else if ($name === 'includesuperseded') {
+				$query->includesuperseded = $this->validateBoolean($name, $value);
 			} else if ($name ==='jsonerror') {
-				// Used by this->error method. Just ignore for now
-				continue;
-			} else if ($name ==='includedelete') {
-				// This is used by parseResultType method, don't use it here, but don't
-				// throw an exception either.
+				// Used by this->error method, which doesn't have access to $query.
+				// Just ignore for now
 				continue;
 			} else {
 				$this->error(self::BAD_REQUEST,
@@ -600,14 +609,32 @@ class FDSNEventWebService {
 				' parameters when format is not quakeml or xml.');
 		}
 
-		// only geojson supports callback
-		if (
-			$query->format !== 'geojson'
-			&& $query->callback !== null
-		) {
-			$this->error(self::BAD_REQUEST, 'Cannot use callback parameter when format is not geojson.');
+		// validate geojson specific parameters
+		if ($query->format !== 'geojson') {
+			if ($query->callback !== null) {
+				$this->error(self::BAD_REQUEST, 'Cannot use callback parameter unless format is geojson.');
+			}
+			if ($query->includedeleted) {
+				$this->error(self::BAD_REQUEST, 'Cannot use includedeleted parameter unless format is geojson.');
+			}
+			if ($query->includesuperseded) {
+				$this->error(self::BAD_REQUEST, 'Cannot use includesuperseded parameter unless format is geojson.');
+			}
 		}
 
+		// validate detail specific parameters
+		if ($query->eventid === null) {
+			if ($query->includedeleted) {
+				$this->error(self::BAD_REQUEST, 'Cannot use includedeleted parameter without eventid parameter.');
+			}
+			if ($query->includesuperseded) {
+				$this->error(self::BAD_REQUEST, 'Cannot use includesuperseded parameter without eventid parameter.');
+			}
+		}
+
+		if ($query->includedeleted && $query->includesuperseded) {
+			$this->error(self::BAD_REQUEST, 'Cannot use includedeleted and includesuperseded parameters at same time.');
+		}
 
 		// set default starttime when not specified
 		if ($query->starttime === null) {
@@ -619,17 +646,6 @@ class FDSNEventWebService {
 
 
 		return $query;
-	}
-
-	public function parseResultType () {
-		// By default, assume user wants only current products
-		$resultType = ProductIndexQuery::RESULT_TYPE_CURRENT;
-
-		if (isset($_GET['includedelete']) && $_GET['includedelete'] === 'true') {
-			$resultType = ProductIndexQuery::RESULT_TYPE_CURRENT_WITH_DELETE;
-		}
-
-		return $resultType;
 	}
 
 	/**

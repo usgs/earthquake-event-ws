@@ -15,7 +15,7 @@ if( $event == null ) {
 $content = null;
 
 // try to find cap product
-$cap = $event->getCapAlertProduct();
+$cap = $event->getPreferredProduct('cap');
 if ($cap !== null) {
 	$product = $storage->getProduct($cap->getId());
 	if ($product !== null) {

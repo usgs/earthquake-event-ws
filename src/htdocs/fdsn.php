@@ -337,9 +337,20 @@ if (!isset($TEMPLATE)) {
 		<br/><small>NOTE: NOT CURRENTLY IMPLEMENTED</small>
 	</dd>
 
-	<dt id="includedelete">includedelete</dt>
+	<dt id="includedeleted">includedeleted</dt>
 	<dd>Boolean &ldquo;true&rdquo;/&ldquo;false&rdquo;. Default false.</dd>
 	<dd>Specify if deleted products should be incuded.
+		<br/><small>
+			NOTE: Only works when specifying <a href="#eventid">eventid</a>
+			parameter.
+		</small>
+	</dd>
+
+	<dt id="includesuperseded">includesuperseded</dt>
+	<dd>Boolean &ldquo;true&rdquo;/&ldquo;false&rdquo;. Default false.</dd>
+	<dd>Specify if superseded products should be included.
+		This also includes all deleted products, and is mutually exclusive to
+		the <a href="#includedeleted">includedeleted</a> parameter.
 		<br/><small>
 			NOTE: Only works when specifying <a href="#eventid">eventid</a>
 			parameter.
