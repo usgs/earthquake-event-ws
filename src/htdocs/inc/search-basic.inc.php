@@ -20,7 +20,7 @@
 			</label>
 			<input type="text" name="starttime" id="starttime"
 					placeholder="yyyy-mm-dd hh:mm:ss"
-					value="<?php print $starttime . 'Z'; ?>"
+					value="<?php print $starttime; ?>"
 					aria-labelledby="datetime datetime-starttime"/>
 		</li>
 
@@ -30,7 +30,7 @@
 			</label>
 			<input type="text" name="endtime" id="endtime"
 					placeholder="yyyy-mm-dd hh:mm:ss"
-					value="<?php print $endtime . 'Z'; ?>"
+					value="<?php print $endtime; ?>"
 					aria-labelledby="datetime datetime-endtime"/>
 		</li>
 		</ul>
