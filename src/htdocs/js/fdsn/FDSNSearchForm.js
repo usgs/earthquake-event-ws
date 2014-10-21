@@ -648,10 +648,14 @@ define([
 				startTimeInput.setAttribute('type', 'datetime');
 				endTimeInput.setAttribute('type', 'datetime');
 
-				startTimeValue = startTimeInput.getAttribute('value') + 'Z';
-				endTimeValue = endTimeInput.getAttribute('value') + 'Z';
-				startTimeInput.setAttribute('value', startTimeValue);
-				endTimeInput.setAttribute('value', endTimeValue);
+				startTimeValue = startTimeInput.getAttribute('value');
+				endTimeValue = endTimeInput.getAttribute('value');
+				if (startTimeValue !== null) {
+					startTimeInput.setAttribute('value', startTimeValue + 'Z');
+				}
+				if (endTimeValue !== null) {
+					endTimeInput.setAttribute('value', endTimeValue + 'Z');
+				}
 			}
 		},
 
