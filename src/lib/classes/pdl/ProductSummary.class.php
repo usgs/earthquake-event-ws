@@ -105,6 +105,7 @@ class ProductSummary {
 		$r = array(
 			// should be able to look this up using "id" property, there is an index
 			'indexid' => $this->getIndexId(),
+			'indexTime' => $this->getCreated(),
 
 			'id' => $this->getId()->toString(),
 			'type' => $this->getId()->getType(),
