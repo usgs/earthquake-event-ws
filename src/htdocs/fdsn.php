@@ -153,7 +153,7 @@ if (!isset($TEMPLATE)) {
 <ul>
 	<li>
 		<em><?php echo gmdate('Y-m-d'); ?></em>,
-		Implicity UTC timezone, and time at start of the day (00:00:00)
+		Implicit UTC timezone, and time at start of the day (00:00:00)
 	</li>
 	<li>
 		<em><?php echo gmdate('Y-m-d\TH:i:s'); ?></em>,
@@ -179,7 +179,7 @@ if (!isset($TEMPLATE)) {
 		<?php echo str_replace("+00:00", "", gmdate("c")); ?>
 		<br/>
 		<small>
-			Default is NOW
+			Default is NOW -
 			<?php echo ($DEFAULT_MAXEVENTAGE/86400); ?> days
 		</small>
 	</dd>
@@ -532,17 +532,20 @@ if (!isset($TEMPLATE)) {
 
 			<dt>xml</dt>
 			<dd>
-				(Default) Response format is <a href="http://www.quakeml.org/">
-				Quakeml 1.2</a>.  Mime-type is "application/xml".
+				The xml format is dependent upon the request <em>method<em> used.
+				<dl>
+					<dt>method=query</dt>
+					<dd>
+						Response format is <a href="http://www.quakeml.org/">
+						Quakeml 1.2</a>.  Mime-type is "application/xml".
+					</dd>
+					<dt>method=count</dt>
+					<dd>
+						Response format is xml. Mime-type is &ldquo;application/xml&rdquo;.
+						This format is only available for the count method.
+					</dd>
+				</dl>
 			</dd>
-
-<!--
-			<dt>xml</dt>
-			<dd>
-				This format is only available for the count method. Response format is
-				xml. Mime-type is &ldquo;application/xml&rdquo;.
-			</dd>
--->
 
 		</dl>
 	</dd>
