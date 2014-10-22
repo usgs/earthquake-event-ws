@@ -81,12 +81,18 @@ define([
 				this._startWrapper,
 				'<label class="label-checkbox">',
 					'<input type="', this._type, '" name="', this._id, '" id="',
-							this._id, '-', ((valueStr === '') ? textStr : valueStr),
+							this._getFieldId((valueStr === '') ? textStr : valueStr),
 							'" value="', valueStr, '"', ((checked)?' checked':''),'/>',
 					textStr,
 				'</label>',
 				this._endWrapper
 			].join('');
+		},
+
+		_getFieldId: function (value) {
+			//replace spaces with double underscore in case one value uses underscore
+			//and another uses a space, that are otherwise the same
+			return this._id + '-' + value.replace(/ /g, '__');
 		}
 	};
 
