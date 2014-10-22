@@ -76,5 +76,5 @@ if (!isset($callback)) {
 }
 echo $callback . '(';
 $json = str_replace('\/', '/', json_encode($array));
-echo preg_replace('/"(time|updated|updateTime|lastModified)":"(-?[\d]+)"/', '"$1":$2', $json);
+echo preg_replace('/"(time|indexTime|updated|updateTime|lastModified)":"(-?[\d]+)"/', '"$1":$2', $json);
 echo ');';
