@@ -144,6 +144,97 @@ if (!isset($TEMPLATE)) {
 	multiple times the result is undefined.
 </p>
 
+
+<h3>Formats</h3>
+<p>If no format is specified <em>quakeml</em> will be returned by default.</p>
+
+<dt id="format">format</dt>
+<dd>Specify the output format.
+	<dl>
+
+		<dt>csv</dt>
+		<dd>
+			Response format is
+			<a href="<?php echo $FEED_HOST . $FEED_PATH; ?>/csv.php">CSV</a>.
+			Mime-type is &ldquo;text/csv&rdquo;.
+			<br/>
+			<small>
+				NOTE: only summary event information is available in this format.
+			</small>
+		</dd>
+
+		<dt>geojson</dt>
+		<dd>
+			Response format is
+			<a href="<?php echo $FEED_HOST . $FEED_PATH; ?>/geojson.php">
+			GeoJSON</a>. Mime-type is &ldquo;application/json&rdquo;.
+			<dl>
+				<dt id="callback">callback</dt>
+				<dd>Convert GeoJSON output to a JSONP response using this callback.
+					Mime-type is &ldquo;text/javascript&rdquo;.
+				</dd>
+				<dt id="jsonerror">jsonerror</dt>
+				<dd>
+					Request JSON(P) formatted output even on API error results.
+					Accepts &ldquo;true&rdquo; or &ldquo;false&rdquo;. Default:
+					&ldquo;false&rdquo;
+				</dd>
+			</dl>
+		</dd>
+
+		<dt>kml</dt>
+		<dd>
+			Response format is
+			<a href="<?php echo $FEED_PATH . $FEED_PATH; ?>/kml.php">KML</a>.
+			Mime-type is &ldquo;vnd.google-earth.kml+xml&rdquo;.
+			<dl>
+				<dt id="kmlanimated">kmlanimated</dt>
+				<dd>
+					Whether to include timestamp in generated kml, for google earth
+					animation support. &ldquo;false&rdquo; (default), or
+					&ldquo;true&rdquo;.
+				</dd>
+				<dt id="kmlcolorby">kmlcolorby</dt>
+				<dd>
+					How earthquakes are colored.
+					"age" (default), or "depth".
+				</dd>
+			</dl>
+		</dd>
+
+		<dt>quakeml</dt>
+		<dd>
+			Alias for "xml" format.
+		</dd>
+
+		<dt>text</dt>
+		<dd>
+			This format is only available for the count and version methods.
+			Response format is plain text. Mime-type is &ldquo;text/plain&rdquo;.
+		</dd>
+
+		<dt>xml</dt>
+		<dd>
+			The xml format is dependent upon the request <em>method</em> used.
+			<dl>
+				<dt>method=query</dt>
+				<dd>
+					Response format is <a href="http://www.quakeml.org/">
+					Quakeml 1.2</a>.  Mime-type is "application/xml".
+				</dd>
+				<dt>method=count</dt>
+				<dd>
+					Response format is xml. Mime-type is &ldquo;application/xml&rdquo;.
+					This format is only available for the count method.
+				</dd>
+			</dl>
+		</dd>
+
+	</dl>
+</dd>
+
+
+
 <h3>Time</h3>
 <p>
 	All times use ISO8601 Date/Time format. Unless a timezone is specified, UTC
@@ -463,91 +554,6 @@ if (!isset($TEMPLATE)) {
 	<dd>
 		Limit to events of a specific type.
 		&ldquo;earthquake&ldquo; will filter non-earthquake events.
-	</dd>
-
-	<dt id="format">format</dt>
-	<dd>Specify the output format, <em>quakeml<em> is the default format.
-		<dl>
-
-			<dt>csv</dt>
-			<dd>
-				Response format is
-				<a href="<?php echo $FEED_HOST . $FEED_PATH; ?>/csv.php">CSV</a>.
-				Mime-type is &ldquo;text/csv&rdquo;.
-				<br/>
-				<small>
-					NOTE: only summary event information is available in this format.
-				</small>
-			</dd>
-
-			<dt>geojson</dt>
-			<dd>
-				Response format is
-				<a href="<?php echo $FEED_HOST . $FEED_PATH; ?>/geojson.php">
-				GeoJSON</a>. Mime-type is &ldquo;application/json&rdquo;.
-				<dl>
-					<dt id="callback">callback</dt>
-					<dd>Convert GeoJSON output to a JSONP response using this callback.
-						Mime-type is &ldquo;text/javascript&rdquo;.
-					</dd>
-					<dt id="jsonerror">jsonerror</dt>
-					<dd>
-						Request JSON(P) formatted output even on API error results.
-						Accepts &ldquo;true&rdquo; or &ldquo;false&rdquo;. Default:
-						&ldquo;false&rdquo;
-					</dd>
-				</dl>
-			</dd>
-
-			<dt>kml</dt>
-			<dd>
-				Response format is
-				<a href="<?php echo $FEED_PATH . $FEED_PATH; ?>/kml.php">KML</a>.
-				Mime-type is &ldquo;vnd.google-earth.kml+xml&rdquo;.
-				<dl>
-					<dt id="kmlanimated">kmlanimated</dt>
-					<dd>
-						Whether to include timestamp in generated kml, for google earth
-						animation support. &ldquo;false&rdquo; (default), or
-						&ldquo;true&rdquo;.
-					</dd>
-					<dt id="kmlcolorby">kmlcolorby</dt>
-					<dd>
-						How earthquakes are colored.
-						"age" (default), or "depth".
-					</dd>
-				</dl>
-			</dd>
-
-			<dt>quakeml</dt>
-			<dd>
-				Alias for "xml" format.
-			</dd>
-
-			<dt>text</dt>
-			<dd>
-				This format is only available for the count and version methods.
-				Response format is plain text. Mime-type is &ldquo;text/plain&rdquo;.
-			</dd>
-
-			<dt>xml</dt>
-			<dd>
-				The xml format is dependent upon the request <em>method<em> used.
-				<dl>
-					<dt>method=query</dt>
-					<dd>
-						Response format is <a href="http://www.quakeml.org/">
-						Quakeml 1.2</a>.  Mime-type is "application/xml".
-					</dd>
-					<dt>method=count</dt>
-					<dd>
-						Response format is xml. Mime-type is &ldquo;application/xml&rdquo;.
-						This format is only available for the count method.
-					</dd>
-				</dl>
-			</dd>
-
-		</dl>
 	</dd>
 
 	<dt id="maxcdi">maxcdi</dt>
