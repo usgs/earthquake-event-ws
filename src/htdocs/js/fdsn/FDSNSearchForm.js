@@ -166,15 +166,15 @@ define([
 		 *
 		 */
 		_initialize: function () {
-				this._enableToggleFields();
+			this._enableToggleFields();
 
-				this._enableRegionControl();
-				this._enableOutputDetailsToggle();
+			this._enableRegionControl();
+			this._enableOutputDetailsToggle();
 
-				this._bindModel();
-				this._addSubmitHandler();
+			this._bindModel();
+			this._addSubmitHandler();
 
-				this._fetchFieldData();
+			this._fetchFieldData();
 		},
 
 		_formatSearchErrors: function (errors) {
