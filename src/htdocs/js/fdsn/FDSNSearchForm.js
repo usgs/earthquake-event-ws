@@ -35,7 +35,6 @@ define([
 		this._el = options.el || document.createElement('div');
 		this.fieldDataUrl = options.fieldDataUrl || null;
 		this.model = options.model || new FDSNModel();
-		this._parsedUrl = UrlManager.parseUrl();
 
 		if (options.hasOwnProperty('fdsnHost')) {
 			this.fdsnHost = options.fdsnHost;
@@ -167,9 +166,6 @@ define([
 		 *
 		 */
 		_initialize: function () {
-			if (this._INITIALIZED_) {
-				return;
-			} else {
 				this._enableToggleFields();
 
 				this._enableRegionControl();
@@ -179,7 +175,6 @@ define([
 				this._addSubmitHandler();
 
 				this._fetchFieldData();
-			}
 		},
 
 		_formatSearchErrors: function (errors) {
@@ -333,7 +328,7 @@ define([
 		},
 
 		_bindModel: function () {
-			var nonEmptyParams = null;
+			var nonEmptyParams = null, parsedUrl = null;
 
 			this.model.on('change', this.onModelChange, this);
 			this.model.on('change:format', this.onModelFormatChange, this);
@@ -362,10 +357,10 @@ define([
 			this._bindInput('mingap');
 			this._bindInput('maxgap');
 
-			this._bindInput('reviewstatus');
+			this._bindRadio('reviewstatus');
 			// TODO :: Conform magnitude type to FDSN spec
 			//this._bindInput('magnitudetype');
-			this._bindInput('evttype');
+			this._bindInput('eventtype');
 
 			this._bindInput('minsig');
 			this._bindInput('maxsig');
@@ -397,23 +392,24 @@ define([
 
 			if (window.location.hash !== '') {
 				// Update the model with information from the hash
-				this._parsedUrl = this._parsedUrl.search || {};
-				this._parsedUrl = this._parsedUrl.params || null;
+				parsedUrl = UrlManager.parseUrl();
+				parsedUrl = parsedUrl.search || {};
+				parsedUrl = parsedUrl.params || null;
 
 				// If parsing a hash, that contains an existing search
 				// want to clear default values (if not specified)
-				if (this._parsedUrl !== null) {
-					if (!this._parsedUrl.hasOwnProperty('starttime')) {
-						this._parsedUrl.starttime = '';
+				if (parsedUrl !== null) {
+					if (!parsedUrl.hasOwnProperty('starttime')) {
+						parsedUrl.starttime = '';
 					}
-					if (!this._parsedUrl.hasOwnProperty('endtime')) {
-						this._parsedUrl.endtime = '';
+					if (!parsedUrl.hasOwnProperty('endtime')) {
+						parsedUrl.endtime = '';
 					}
-					if (!this._parsedUrl.hasOwnProperty('minmagnitude')) {
-						this._parsedUrl.minmagnitude = '';
+					if (!parsedUrl.hasOwnProperty('minmagnitude')) {
+						parsedUrl.minmagnitude = '';
 					}
 
-					this.model.setAll(this._parsedUrl);
+					this.model.setAll(parsedUrl);
 				}
 			}
 
@@ -442,34 +438,11 @@ define([
 		_bindModelUpdate: function () {
 			var nonEmptyParams = null;
 
-			this._bindRadio('reviewstatus');
-			// TODO :: Conform magnitude type to FDSN spec
-			//this._bindRadio('magnitudetype');
 			this._bindRadio('eventtype');
 
 			this._bindRadio('catalog');
 			this._bindRadio('contributor');
 			this._bindRadio('producttype');
-
-			if (window.location.hash !== '') {
-				// Update the model with information from the hash
-
-				// If parsing a hash, that contains an existing search
-				// want to clear default values (if not specified)
-				if (this._parsedUrl !== null) {
-					if (!this._parsedUrl.hasOwnProperty('starttime')) {
-						this._parsedUrl.starttime = '';
-					}
-					if (!this._parsedUrl.hasOwnProperty('endtime')) {
-						this._parsedUrl.endtime = '';
-					}
-					if (!this._parsedUrl.hasOwnProperty('minmagnitude')) {
-						this._parsedUrl.minmagnitude = '';
-					}
-
-					this.model.setAll(this._parsedUrl);
-				}
-			}
 
 			// Expand collapsed sections if any of their parameters are set
 			nonEmptyParams = this.model.getNonEmpty();
@@ -661,8 +634,12 @@ define([
 			var textInput = this._el.querySelector('#' + name),
 			    parentNode = textInput.parentNode,
 			    list = parentNode.appendChild(document.createElement('ul')),
+			    inputModel,
+			    element,
+			    selectField,
 			    i, len;
 
+			inputModel  = this.model.get(name).split(',');
 			classes = classes || [];
 			Util.addClass(list, name + '-list');
 			parentNode.removeChild(textInput);
@@ -671,31 +648,54 @@ define([
 				Util.addClass(list, classes[i]);
 			}
 
-			new SelectField({
+			selectField = new SelectField({
 				el: list,
 				id: name,
 				fields: fields,
 				type: 'radio',
 				formatDisplay: format
 			});
+
+			len = inputModel.length;
+			for (i = 0; i < len; i++) {
+				element = this._el.querySelector('#' +
+					selectField._getFieldId(inputModel[i]));
+				if (element !== null) {
+					element.checked = true;
+				}
+			}
 		},
 
 		_enhanceEventType: function (fields) {
 			var textInput = this._el.querySelector('#eventtype'),
 			    parentNode = textInput.parentNode,
-			    list = parentNode.appendChild(document.createElement('ul'));
+			    list = parentNode.appendChild(document.createElement('ul')),
+			    inputModel,
+			    element,
+			    eventType,
+			    i, len;
 
+			inputModel = this.model.get('eventtype').split(',');
 			Util.addClass(list, 'eventtype-list');
 			// Util.addClass(list, 'two-up');
 			parentNode.removeChild(textInput);
 
-			new EventTypeField({
+			eventType = new EventTypeField({
 				el: list,
 				id: 'eventtype',
 				fields: fields,
 				type: 'checkbox',
 				formatDisplay: this.formatter.formatEventType
 			});
+
+			len = inputModel.length;
+			for (i = 0; i < len; i++) {
+				element = this._el.querySelector('#' +
+						eventType._getFieldId(inputModel[i]));
+				if (element !== null) {
+					element.checked = true;
+				}
+			}
 		},
 
 		_enableRegionControl: function () {
