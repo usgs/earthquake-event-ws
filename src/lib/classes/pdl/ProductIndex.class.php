@@ -110,7 +110,8 @@ class ProductIndex {
 			self::SUMMARY_PRODUCT_INDEX_ID, self::SUMMARY_TABLE, self::SUMMARY_EVENT_ID);
 		$this->GET_SUMMARY_BY_PRODUCT_INDEX_ID = sprintf("SELECT
 			%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-			%s, %s, %s, %s, %s, %s FROM %s WHERE %s = ?",
+			%s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s = ?",
+			self::SUMMARY_CREATED,
 			self::SUMMARY_PRODUCT_ID, self::SUMMARY_TYPE, self::SUMMARY_SOURCE,
 			self::SUMMARY_CODE, self::SUMMARY_UPDATE_TIME, self::SUMMARY_EVENT_SOURCE,
 			self::SUMMARY_EVENT_SOURCE_CODE, self::SUMMARY_EVENT_TIME,
@@ -1047,6 +1048,7 @@ class ProductIndex {
 			}
 
 			// Set some simple types. Null values are fine.
+			$summary->setCreated($results[self::SUMMARY_CREATED]);
 			$summary->setEventSource($results[self::SUMMARY_EVENT_SOURCE]);
 			$summary->setEventSourceCode($results[self::SUMMARY_EVENT_SOURCE_CODE]);
 
