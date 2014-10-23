@@ -584,7 +584,6 @@ define([
 					form._enhanceField(data.producttypes || [],
 							'producttype', form.formatter.formatProductType, ['two-up']);
 					form._enhanceEventType(data.eventtypes || []);
-					form._enhanceDateTime();
 
 					form._bindModelUpdate();
 				}
@@ -629,34 +628,6 @@ define([
 					return false;
 				};
 			})(this));
-		},
-
-		_enhanceDateTime: function () {
-			var testInput = document.createElement('input'),
-			    startTimeInput,
-			    endTimeInput,
-			    startTimeValue,
-			    endTimeValue;
-
-			testInput.setAttribute('type', 'datetime');
-
-			if (testInput.getAttribute('type') === 'datetime') {
-				// browser supports datetime input
-				startTimeInput = this._el.querySelector('#starttime');
-				endTimeInput = this._el.querySelector('#endtime');
-
-				startTimeInput.setAttribute('type', 'datetime');
-				endTimeInput.setAttribute('type', 'datetime');
-
-				startTimeValue = startTimeInput.getAttribute('value');
-				endTimeValue = endTimeInput.getAttribute('value');
-				if (startTimeValue !== null) {
-					startTimeInput.setAttribute('value', startTimeValue + 'Z');
-				}
-				if (endTimeValue !== null) {
-					endTimeInput.setAttribute('value', endTimeValue + 'Z');
-				}
-			}
 		},
 
 		_enhanceField: function (fields, name, format, classes) {
