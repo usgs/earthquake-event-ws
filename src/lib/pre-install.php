@@ -97,6 +97,10 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
 	Order allow,deny
 	Allow from all
 
+	# prevent php execution in product contents
+	<IfModule mod_php5.c>
+		php_flag engine off
+	</IfModule>
 </Directory>
 
 <Location ' . $FEED_PATH . '/>
