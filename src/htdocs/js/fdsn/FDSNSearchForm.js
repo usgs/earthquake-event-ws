@@ -166,21 +166,15 @@ define([
 		 *
 		 */
 		_initialize: function () {
-			if (this._INITIALIZED_) {
-				return;
-			} else if (!this._ASYNC_FIELDS_INITIALIZED_) {
-				// Fire this off as soon as possible
-				this._fetchFieldData();
-			} else {
+			this._enableToggleFields();
 
-				this._enableToggleFields();   // Standard show/hide sections
-				this._enableCustomControls(); // Show/hide based on certain values
+			this._enableRegionControl();
+			this._enableOutputDetailsToggle();
 
-				this._bindModel();
+			this._bindModel();
+			this._addSubmitHandler();
 
-				this._addSubmitHandler();
-				this._INITIALIZED_ = true;
-			}
+			this._fetchFieldData();
 		},
 
 		_formatSearchErrors: function (errors) {
@@ -365,8 +359,8 @@ define([
 
 			this._bindRadio('reviewstatus');
 			// TODO :: Conform magnitude type to FDSN spec
-			//this._bindRadio('magnitudetype');
-			this._bindRadio('eventtype');
+			//this._bindInput('magnitudetype');
+			this._bindInput('eventtype');
 
 			this._bindInput('minsig');
 			this._bindInput('maxsig');
@@ -380,9 +374,9 @@ define([
 			this._bindInput('maxcdi');
 			this._bindInput('minfelt');
 
-			this._bindRadio('catalog');
-			this._bindRadio('contributor');
-			this._bindRadio('producttype');
+			this._bindInput('catalog');
+			this._bindInput('contributor');
+			this._bindInput('producttype');
 
 
 			this._bindRadio('format');
@@ -426,10 +420,7 @@ define([
 				//Util.addClass(this._el.querySelector('#magtype').parentNode,
 						//'toggle-visible');
 			//}
-			if (nonEmptyParams.hasOwnProperty('eventtype')) {
-				Util.addClass(this._el.querySelector('#evttype').parentNode,
-						'toggle-visible');
-			}
+
 			if (nonEmptyParams.hasOwnProperty('minsig') ||
 					nonEmptyParams.hasOwnProperty('maxsig') ||
 					nonEmptyParams.hasOwnProperty('alertlevel') ||
@@ -439,6 +430,25 @@ define([
 					nonEmptyParams.hasOwnProperty('maxcdi') ||
 					nonEmptyParams.hasOwnProperty('minfelt')) {
 				Util.addClass(this._el.querySelector('#impact').parentNode,
+						'toggle-visible');
+			}
+
+		},
+
+		_bindModelUpdate: function () {
+			var nonEmptyParams = null;
+
+			this._bindRadio('eventtype');
+
+			this._bindRadio('catalog');
+			this._bindRadio('contributor');
+			this._bindRadio('producttype');
+
+			// Expand collapsed sections if any of their parameters are set
+			nonEmptyParams = this.model.getNonEmpty();
+
+			if (nonEmptyParams.hasOwnProperty('eventtype')) {
+				Util.addClass(this._el.querySelector('#evttype').parentNode,
 						'toggle-visible');
 			}
 			if (nonEmptyParams.hasOwnProperty('catalog')) {
@@ -575,8 +585,7 @@ define([
 							'producttype', form.formatter.formatProductType, ['two-up']);
 					form._enhanceEventType(data.eventtypes || []);
 
-					form._ASYNC_FIELDS_INITIALIZED_ = true;
-					form._initialize();
+					form._bindModelUpdate();
 				}
 			});
 		},
@@ -598,10 +607,6 @@ define([
 			}
 		},
 
-		_enableCustomControls: function () {
-			this._enableRegionControl();
-			this._enableOutputDetailsToggle();
-		},
 
 		_addSubmitHandler: function () {
 			var form = this;
@@ -629,8 +634,12 @@ define([
 			var textInput = this._el.querySelector('#' + name),
 			    parentNode = textInput.parentNode,
 			    list = parentNode.appendChild(document.createElement('ul')),
+			    inputModel,
+			    element,
+			    selectField,
 			    i, len;
 
+			inputModel  = this.model.get(name).split(',');
 			classes = classes || [];
 			Util.addClass(list, name + '-list');
 			parentNode.removeChild(textInput);
@@ -639,31 +648,54 @@ define([
 				Util.addClass(list, classes[i]);
 			}
 
-			new SelectField({
+			selectField = new SelectField({
 				el: list,
 				id: name,
 				fields: fields,
 				type: 'radio',
 				formatDisplay: format
 			});
+
+			len = inputModel.length;
+			for (i = 0; i < len; i++) {
+				element = this._el.querySelector('#' +
+					selectField._getFieldId(inputModel[i]));
+				if (element !== null) {
+					element.checked = true;
+				}
+			}
 		},
 
 		_enhanceEventType: function (fields) {
 			var textInput = this._el.querySelector('#eventtype'),
 			    parentNode = textInput.parentNode,
-			    list = parentNode.appendChild(document.createElement('ul'));
+			    list = parentNode.appendChild(document.createElement('ul')),
+			    inputModel,
+			    element,
+			    eventType,
+			    i, len;
 
+			inputModel = this.model.get('eventtype').split(',');
 			Util.addClass(list, 'eventtype-list');
 			// Util.addClass(list, 'two-up');
 			parentNode.removeChild(textInput);
 
-			new EventTypeField({
+			eventType = new EventTypeField({
 				el: list,
 				id: 'eventtype',
 				fields: fields,
 				type: 'checkbox',
 				formatDisplay: this.formatter.formatEventType
 			});
+
+			len = inputModel.length;
+			for (i = 0; i < len; i++) {
+				element = this._el.querySelector('#' +
+						eventType._getFieldId(inputModel[i]));
+				if (element !== null) {
+					element.checked = true;
+				}
+			}
 		},
 
 		_enableRegionControl: function () {
@@ -708,6 +740,7 @@ define([
 			].join('');
 			/* jshint +W015 */
 			list.insertBefore(map, list.firstChild);
+
 
 			handler = function () {
 				if (kml.checked) {
