@@ -97,9 +97,6 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
 	Order allow,deny
 	Allow from all
 
-	Header set Access-Control-Allow-Origin "*"
-	Header set Access-Control-Allow-Methods "*"
-	Header set Access-Control-Allow-Headers "accept,origin,authorization,content-type"
 </Directory>
 
 <Location ' . $FEED_PATH . '/>
