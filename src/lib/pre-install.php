@@ -101,6 +101,12 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
 	<IfModule mod_php5.c>
 		php_flag engine off
 	</IfModule>
+
+	# only allow GET access
+	<LimitExcept GET>
+		Order allow,deny
+		Deny from all
+	</LimitExcept>
 </Directory>
 
 <Location ' . $FEED_PATH . '/>
@@ -108,6 +114,20 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
 	SetEnv APP_WEB_DIR ' . $HTDOCS_DIR . '
 	ExpiresActive on
 	ExpiresDefault A60
+
+	# only allow GET access
+	<LimitExcept GET>
+		Order allow,deny
+		Deny from all
+	</LimitExcept>
+</Location>
+
+<Location ' . $FDSN_PATH . '/>
+	# only allow GET access
+	<LimitExcept GET>
+		Order allow,deny
+		Deny from all
+	</LimitExcept>
 </Location>
 ';
 
