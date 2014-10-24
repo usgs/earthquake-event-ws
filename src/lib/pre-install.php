@@ -99,6 +99,8 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
 <Directory ' . $storage_directory . '>
 	Order allow,deny
 	Allow from all
+	ExpiresActive on
+	ExpiresDefault "access plus 10 years"
 
 	# prevent php execution in product contents
 	<IfModule mod_php5.c>
