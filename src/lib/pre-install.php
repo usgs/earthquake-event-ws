@@ -69,6 +69,9 @@ RewriteRule ' . $FEED_PATH . '(.*) - [R=404,L]
 
 ## END DONT ALLOW FEEDS ON COMCAT
 
+# forbid cache busting query strings
+RewriteCond %{QUERY_STRING} ^.+
+RewriteRule ^' . $FEED_PATH . '/(summary|detail)/.* - [F,L]
 
 # detail is EVENTID.FORMAT
 RewriteRule ^' . $FEED_PATH . '/detail/([^\./]+)\.([^/\.]+)$ ' . $FEED_PATH .
@@ -107,6 +110,10 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
 		Order allow,deny
 		Deny from all
 	</LimitExcept>
+
+	# block query strings
+	RewriteCond %{QUERY_STRING} ^.+
+	RewriteRule .* - [F,L]
 </Directory>
 
 <Location ' . $FEED_PATH . '/>
