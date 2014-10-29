@@ -32,14 +32,15 @@
     "grunt-mocha-phantomjs": "~0.2.8",
     "grunt-open": "~0.2.0",
     "grunt-text-replace": "~0.3.6",
+    "hazdev-template": "~0.1.0",
+    "hazdev-webutils": "0.0.15",
+    "http-rewrite-middleware": "~0.1.5",
+    "ini": "~1.1.0",
+    "leaflet": "^0.7.3",
     "matchdep": "~0.1.2",
     "mocha": "~1.9.0",
-    "sinon": "~1.7.3",
-    "hazdev-template": "~0.1.0",
-    "ini": "~1.1.0",
-    "http-rewrite-middleware": "~0.1.5",
-    "hazdev-webutils": "0.0.15",
-    "requirejs": "~2.1.11"
+    "requirejs": "~2.1.11",
+    "sinon": "~1.7.3"
   },
   "engines": {
     "node": ">=0.8.0"

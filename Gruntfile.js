@@ -247,8 +247,15 @@ module.exports = function (grunt) {
 						preserveComments: 'some'
 					},
 					paths: {
+						leaflet: '../../../node_modules/leaflet/dist/leaflet-src',
+						locationview: '../../../node_modules/hazdev-location-view/dist',
 						mvc: '../../../node_modules/hazdev-webutils/src/mvc',
 						util: '../../../node_modules/hazdev-webutils/src/util'
+					},
+					shim: {
+						leaflet: {
+							exports: 'L'
+						}
 					}
 				}
 			}

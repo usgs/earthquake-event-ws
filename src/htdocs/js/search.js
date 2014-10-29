@@ -3,8 +3,15 @@ require.config({
 	baseUrl: 'js',
 	//urlArgs: 'stamp='+(new Date()).getTime(), /* Remove for production */
 	paths: {
+		leaflet: '/leaflet/dist/leaflet-src',
+		locationview: '/hazdev-location-view/src',
 		mvc: '/hazdev-webutils/src/mvc',
 		util: '/hazdev-webutils/src/util'
+	},
+	shim: {
+		leaflet: {
+			exports: 'L'
+		}
 	}
 });
 
