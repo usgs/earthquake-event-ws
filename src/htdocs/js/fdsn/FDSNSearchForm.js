@@ -10,7 +10,8 @@ define([
 	'fdsn/UrlManager',
 	'util/Util',
 	'util/Xhr',
-	'mvc/ModalView'
+	'mvc/ModalView',
+	'locationview/RegionView'
 ], function (
 	FDSNModel,
 	FDSNModelValidator,
@@ -22,7 +23,8 @@ define([
 	UrlManager,
 	Util,
 	Xhr,
-	ModalView
+	ModalView,
+	RegionView
 ) {
 	'use strict';
 
@@ -699,6 +701,17 @@ define([
 		},
 
 		_enableRegionControl: function () {
+			var rectangleButtons = this._el.querySelector('.rectangle-buttons'),
+			    drawRectangleButton = rectangleButtons.querySelector('.draw'),
+			    clearRectangleButton = rectangleButtons.querySelector('.clear'),
+			    maxLatitude = document.querySelector('#maxlatitude'),
+			    minLatitude = document.querySelector('#minlatitude'),
+			    maxLongitude = document.querySelector('#maxlongitude'),
+			    minLongitude = document.querySelector('#minlongitude'),
+			    regionView,
+			    _onInputChange,
+			    _onRegionCallback;
+
 			this._regionControl = new ManagedModelView({
 				clearedText: 'Currently searching entire world',
 				filledText: 'Currently searching custom region',
@@ -715,6 +728,73 @@ define([
 					'minradiuskm': '',
 					'maxradiuskm': ''
 				}
+			});
+
+			// set form values on callback from regionview
+			_onRegionCallback = function (region) {
+				maxLatitude.value = region.get('north');
+				minLatitude.value = region.get('south');
+				maxLongitude.value = region.get('east');
+				minLongitude.value = region.get('west');
+				clearRectangleButton.disabled = false;
+			};
+
+			// monitor disabled/enabled state of clear button
+			_onInputChange = function () {
+				if (maxLatitude.value !== '' ||
+						minLatitude.value !== '' ||
+						maxLongitude.value !== '' ||
+						minLongitude.value !== '') {
+					clearRectangleButton.disabled = false;
+				} else {
+					clearRectangleButton.disabled = true;
+				}
+			};
+
+			// Initialize RegionView
+			regionView = new RegionView({
+				onRegionCallback: _onRegionCallback
+			});
+
+			// Listen to rectangle input changes
+			maxLatitude.addEventListener('input', _onInputChange);
+			minLatitude.addEventListener('input', _onInputChange);
+			maxLongitude.addEventListener('input', _onInputChange);
+			minLongitude.addEventListener('input', _onInputChange);
+
+			// Add rectangle controls for drawing on map
+			drawRectangleButton.addEventListener('click', function () {
+				var region = null,
+				    north,
+				    south,
+				    east,
+				    west;
+
+				north = (maxLatitude.value === '') ? null : parseFloat(maxLatitude.value);
+				south = (minLatitude.value === '') ? null : parseFloat(minLatitude.value);
+				east = (maxLongitude.value === '') ? null : parseFloat(maxLongitude.value);
+				west = (minLongitude.value === '') ? null : parseFloat(minLongitude.value);
+
+				if (north === null &&south === null && east === null && west === null ) {
+					regionView.show({region: null});
+				} else {
+					region = {
+						north: north,
+						south: south,
+						east:  east,
+						west:  west
+					};
+					regionView.show({region: region});
+				}
+			});
+
+			// Remove rectangle coordinates from the form inputs
+			clearRectangleButton.addEventListener('click', function () {
+				maxLatitude.value = '';
+				minLatitude.value = '';
+				maxLongitude.value = '';
+				minLongitude.value = '';
+				clearRectangleButton.disabled = true;
 			});
 		},
 
