@@ -733,16 +733,11 @@ define([
 			// set form values on callback from regionview
 			_onRegionCallback = function (region) {
 				_model.set({
-					maxLatitude: region.get('north'),
-					minLatitude: region.get('south'),
-					maxLongitude: region.get('east'),
-					minLongitude: region.get('west')
+					maxlatitude: region.get('north'),
+					minlatitude: region.get('south'),
+					maxlongitude: region.get('east'),
+					minlongitude: region.get('west')
 				});
-
-				maxLatitude.value = region.get('north');
-				minLatitude.value = region.get('south');
-				maxLongitude.value = region.get('east');
-				minLongitude.value = region.get('west');
 			};
 
 			// Initialize RegionView
