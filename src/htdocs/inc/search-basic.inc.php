@@ -90,14 +90,7 @@
 				must be greater than West.
 			</p>
 
-			<div class="row rectangle-buttons">
-				<div class="column one-of-two">
-					<button type="button" class="draw orange">Draw Rectangle on Map</button>
-				</div>
-				<div class="column one-of-two">
-					<button type="button" class="clear" disabled>Clear Rectangle</button>
-				</div>
-			</div>
+			<button type="button" class="draw orange">Draw Rectangle on Map</button>
 
 			<ul class="region-square-details">
 			<li class="region-square-details-north">

@@ -701,15 +701,12 @@ define([
 		},
 
 		_enableRegionControl: function () {
-			var rectangleButtons = this._el.querySelector('.rectangle-buttons'),
-			    drawRectangleButton = rectangleButtons.querySelector('.draw'),
-			    clearRectangleButton = rectangleButtons.querySelector('.clear'),
+			var drawRectangleButton = this._el.querySelector('.draw'),
 			    maxLatitude = document.querySelector('#maxlatitude'),
 			    minLatitude = document.querySelector('#minlatitude'),
 			    maxLongitude = document.querySelector('#maxlongitude'),
 			    minLongitude = document.querySelector('#minlongitude'),
 			    regionView,
-			    _onInputChange,
 			    _onRegionCallback,
 			    _model;
 
@@ -746,32 +743,12 @@ define([
 				minLatitude.value = region.get('south');
 				maxLongitude.value = region.get('east');
 				minLongitude.value = region.get('west');
-
-				clearRectangleButton.disabled = false;
-			};
-
-			// monitor disabled/enabled state of clear button
-			_onInputChange = function () {
-				if (maxLatitude.value !== '' ||
-						minLatitude.value !== '' ||
-						maxLongitude.value !== '' ||
-						minLongitude.value !== '') {
-					clearRectangleButton.disabled = false;
-				} else {
-					clearRectangleButton.disabled = true;
-				}
 			};
 
 			// Initialize RegionView
 			regionView = new RegionView({
 				onRegionCallback: _onRegionCallback
 			});
-
-			// Listen to rectangle input changes
-			maxLatitude.addEventListener('input', _onInputChange);
-			minLatitude.addEventListener('input', _onInputChange);
-			maxLongitude.addEventListener('input', _onInputChange);
-			minLongitude.addEventListener('input', _onInputChange);
 
 			// Add rectangle controls for drawing on map
 			drawRectangleButton.addEventListener('click', function () {
@@ -797,15 +774,6 @@ define([
 					};
 					regionView.show({region: region});
 				}
-			});
-
-			// Remove rectangle coordinates from the form inputs
-			clearRectangleButton.addEventListener('click', function () {
-				maxLatitude.value = '';
-				minLatitude.value = '';
-				maxLongitude.value = '';
-				minLongitude.value = '';
-				clearRectangleButton.disabled = true;
 			});
 		},
 
