@@ -710,14 +710,17 @@ define([
 			    minLongitude = document.querySelector('#minlongitude'),
 			    regionView,
 			    _onInputChange,
-			    _onRegionCallback;
+			    _onRegionCallback,
+			    _model;
+
+			_model = this.model;
 
 			this._regionControl = new ManagedModelView({
 				clearedText: 'Currently searching entire world',
 				filledText: 'Currently searching custom region',
 				controlText: 'Clear Region',
 				el: this._el.querySelector('.region-description'),
-				model: this.model,
+				model: _model,
 				fields: {
 					'maxlatitude': '',
 					'minlatitude': '',
@@ -732,10 +735,18 @@ define([
 
 			// set form values on callback from regionview
 			_onRegionCallback = function (region) {
+				_model.set({
+					maxLatitude: region.get('north'),
+					minLatitude: region.get('south'),
+					maxLongitude: region.get('east'),
+					minLongitude: region.get('west')
+				});
+
 				maxLatitude.value = region.get('north');
 				minLatitude.value = region.get('south');
 				maxLongitude.value = region.get('east');
 				minLongitude.value = region.get('west');
+
 				clearRectangleButton.disabled = false;
 			};
 
