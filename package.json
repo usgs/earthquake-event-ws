@@ -32,7 +32,7 @@
     "grunt-mocha-phantomjs": "~0.2.8",
     "grunt-open": "~0.2.0",
     "grunt-text-replace": "~0.3.6",
-    "hazdev-template": "~0.1.0",
+    "hazdev-template": "git://github.com/usgs/hazdev-template",
     "hazdev-webutils": "0.0.15",
     "http-rewrite-middleware": "~0.1.5",
     "ini": "~1.1.0",
