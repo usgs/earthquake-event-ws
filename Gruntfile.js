@@ -259,7 +259,7 @@ module.exports = function (grunt) {
 					},
 					paths: {
 						leaflet: '../../../node_modules/leaflet/dist/leaflet-src',
-						locationview: '../../../node_modules/hazdev-location-view/dist',
+						locationview: '../../../node_modules/hazdev-location-view/src',
 						mvc: '../../../node_modules/hazdev-webutils/src/mvc',
 						util: '../../../node_modules/hazdev-webutils/src/util'
 					},
