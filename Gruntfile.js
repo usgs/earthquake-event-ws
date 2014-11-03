@@ -75,6 +75,15 @@ if (!iniConfig.hasOwnProperty('OFFSITE_HOST') ||
 var rewriteMiddleware = rewriteModule.getMiddleware(rewrites
 		/*,{verbose:true}/**/);
 
+// middleware to send CORS headers
+var corsMiddleware = function (req, res, next) {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', '*');
+	res.setHeader('Access-Control-Allow-Headers', 'accept,origin,authorization,content-type');
+	return next();
+};
+
+
 var mountFolder = function (connect, dir) {
 	return connect.static(require('path').resolve(dir));
 };
@@ -165,6 +174,7 @@ module.exports = function (grunt) {
 						return [
 							lrSnippet,
 							rewriteMiddleware,
+							corsMiddleware,
 							mountFolder(connect, '.tmp'),
 							mountPHP(options.base),
 							mountFolder(connect, options.base),
@@ -181,6 +191,7 @@ module.exports = function (grunt) {
 					middleware: function (connect, options) {
 						return [
 							rewriteMiddleware,
+							corsMiddleware,
 							mountPHP(options.base),
 							mountFolder(connect, options.base),
 							mountFolder(connect, '.tmp'),

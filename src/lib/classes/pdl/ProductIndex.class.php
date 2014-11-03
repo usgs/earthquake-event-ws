@@ -110,7 +110,8 @@ class ProductIndex {
 			self::SUMMARY_PRODUCT_INDEX_ID, self::SUMMARY_TABLE, self::SUMMARY_EVENT_ID);
 		$this->GET_SUMMARY_BY_PRODUCT_INDEX_ID = sprintf("SELECT
 			%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-			%s, %s, %s, %s, %s, %s FROM %s WHERE %s = ?",
+			%s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s = ?",
+			self::SUMMARY_CREATED,
 			self::SUMMARY_PRODUCT_ID, self::SUMMARY_TYPE, self::SUMMARY_SOURCE,
 			self::SUMMARY_CODE, self::SUMMARY_UPDATE_TIME, self::SUMMARY_EVENT_SOURCE,
 			self::SUMMARY_EVENT_SOURCE_CODE, self::SUMMARY_EVENT_TIME,
@@ -1047,16 +1048,17 @@ class ProductIndex {
 			}
 
 			// Set some simple types. Null values are fine.
+			$summary->setCreated($results[self::SUMMARY_CREATED]);
 			$summary->setEventSource($results[self::SUMMARY_EVENT_SOURCE]);
 			$summary->setEventSourceCode($results[self::SUMMARY_EVENT_SOURCE_CODE]);
 
 			// The caught exceptions here are fine. Just use null as their value
 
 			$summary->setEventTime($results[self::SUMMARY_EVENT_TIME]);
-			$summary->setEventLatitude(floatval($results[self::SUMMARY_EVENT_LATITUDE]));
-			$summary->setEventLongitude(floatval($results[self::SUMMARY_EVENT_LONGITUDE]));
-			$summary->setEventDepth(floatval($results[self::SUMMARY_EVENT_DEPTH]));
-			$summary->setEventMagnitude(floatval($results[self::SUMMARY_EVENT_MAGNITUDE]));
+			$summary->setEventLatitude(safefloatval($results[self::SUMMARY_EVENT_LATITUDE]));
+			$summary->setEventLongitude(safefloatval($results[self::SUMMARY_EVENT_LONGITUDE]));
+			$summary->setEventDepth(safefloatval($results[self::SUMMARY_EVENT_DEPTH]));
+			$summary->setEventMagnitude(safefloatval($results[self::SUMMARY_EVENT_MAGNITUDE]));
 
 			// Set some more simple values
 			$summary->setVersion( $results[self::SUMMARY_VERSION] );

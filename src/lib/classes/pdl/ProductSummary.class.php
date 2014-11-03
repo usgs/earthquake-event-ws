@@ -4,6 +4,7 @@
 class ProductSummary {
 
 	public $indexId = null;
+	public $created = null;
 	public $id = null;
 	public $status = null;
 	public $trackerURL = null;
@@ -31,6 +32,9 @@ class ProductSummary {
 
 	public function getIndexId() { return $this->indexId; }
 	public function setIndexId($indexId) { $this->indexId = $indexId; }
+
+	public function getCreated() { return $this->created; }
+	public function setCreated($created) { $this->created = $created; }
 
 	public function getId() { return $this->id; }
 	public function setId($id) { $this->id = $id; }
@@ -101,6 +105,7 @@ class ProductSummary {
 		$r = array(
 			// should be able to look this up using "id" property, there is an index
 			'indexid' => $this->getIndexId(),
+			'indexTime' => $this->getCreated(),
 
 			'id' => $this->getId()->toString(),
 			'type' => $this->getId()->getType(),

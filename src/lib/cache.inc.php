@@ -52,4 +52,3 @@ if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
 
 // make this cacheable
 header('Last-Modified: ' . gmdate(RFC_DATE, $MODIFIED));
-
