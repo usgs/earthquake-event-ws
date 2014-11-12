@@ -97,7 +97,7 @@ class Event {
     $lastModified = -1;
     foreach ($allProducts as $type => $products) {
       foreach ($products as $p) {
-        $modified = $product->getUpdateTime();
+        $modified = $p->getUpdateTime();
         if ($modified > $lastModified) {
           $lastModified = $modified;
         }
