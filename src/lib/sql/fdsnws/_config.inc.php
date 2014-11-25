@@ -20,5 +20,6 @@ $files = array(
 	'updateEventSummary.sql',
 	'recreateEventSummary.sql',
 	'summary_sql.php',
+	'summarizeEventsUpdatedAfter.sql',
 	'on_event_update_trigger.sql'
 );
