@@ -44,7 +44,7 @@ $productsToSummarize = array(
 			'derived-latitude' => 'DOUBLE',
 			'derived-longitude' => 'DOUBLE',
 			'derived-depth' => 'DOUBLE',
-			'derived_eventtime' => 'BIGINT',
+			'derived-eventtime' => 'VARCHAR(255)',
 			'derived-magnitude' => 'DOUBLE',
 			'derived-magnitude-type' => 'VARCHAR(255)'
 		)
