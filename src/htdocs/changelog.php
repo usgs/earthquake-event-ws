@@ -11,6 +11,20 @@ if (!isset($TEMPLATE)) {
 }
 ?>
 
+<h2>v1.0.17 <small>2014-12-16</small></h2>
+<ul>
+	<li>Added plain text feed format.</li>
+	<li>Reorganized search page layout.</li>
+	<li>Fixed bug where un-reported values were displayed as 0.0.</li>
+	<li>Set default event type to be &ldquo;earthquake&rdquo;.</li>
+	<li>Support XML extension as valid feed format.</li>
+	<li>Added nodata parameter to FDSN web service.</li>
+	<li>Added option for &ldquo;includesuperceded&rsquo;.</li>
+	<li>Restricted feed requests to HTTP GET method.</li>
+	<li>Fixed event-time property for moment tensors.</li>
+	<li>Added support for searching rectangle regions on a map.</li>
+</ul>
+
 <h2>v1.0.16 <small>2014-06-11</small></h2>
 <ul>
 	<li>Added access control headers for product contents.</li>
