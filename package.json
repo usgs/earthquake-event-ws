@@ -1,6 +1,6 @@
 {
   "name": "earthquake-event-ws",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "We service for querying ComCat.",
   "repository": {
     "type": "git",
