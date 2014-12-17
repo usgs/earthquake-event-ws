@@ -11,8 +11,9 @@
  */
 
 // phps "r" date format puts +0000 for timezone
-define('RFC_DATE', 'D, d M Y H:i:s \G\M\T');
-
+if (!defined('RFC_DATE')) {
+	define('RFC_DATE', 'D, d M Y H:i:s \G\M\T');
+}
 
 // set defaults
 if (!isset($MODIFIED)) {
