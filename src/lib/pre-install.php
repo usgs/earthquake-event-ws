@@ -122,7 +122,7 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
 	SetEnv APP_URL_PATH ' . $FEED_PATH . '
 	SetEnv APP_WEB_DIR ' . $HTDOCS_DIR . '
 	ExpiresActive on
-	ExpiresDefault A60
+	ExpiresDefault "access plus 1 days"
 
 	# only allow GET access
 	<LimitExcept GET>
