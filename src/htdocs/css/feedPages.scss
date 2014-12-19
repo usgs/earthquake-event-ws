@@ -7,15 +7,6 @@ img.screenshot {
 	margin:1em 0 0;
 }
 
-a:hover img.screenshot {
-	border:1px solid #00f;
-}
-
-dl.kml-description dt {
-	font-weight:bold;
-	margin-bottom:5px;
-}
-
-dl.kml-description dd {
-	margin-bottom:10px;
+dl.kml-description > dt {
+	margin: 1em 0 0;
 }

@@ -34,7 +34,7 @@ $format = 'kml';
 			target="_blank">Google Earth</a> to view KML files.
 		</p>
 
-		<dl class="kml-description">
+		<dl class="kml-description vertical">
 			<dt>Automatic Feeds</dt>
 			<dd>
 				These feeds will automatically update every 5 or 15 minutes when
