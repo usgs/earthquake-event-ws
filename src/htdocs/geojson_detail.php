@@ -34,7 +34,7 @@ if (!isset($TEMPLATE)) {
 		</p>
 
 		<h2>Output</h2>
-		<code class="geojson">{
+		<pre><code class="geojson">{
 	type: "Feature",
 	properties: {
 		<a href='glossary.php#mag'>mag</a>: Decimal,
@@ -99,5 +99,5 @@ if (!isset($TEMPLATE)) {
 		]
 	},
 	<a href='glossary.php#id'>id</a>: String
-}</code>
+}</code></pre>
 </div>
