@@ -2,6 +2,7 @@
 if (!isset($TEMPLATE)) {
 	include_once '../conf/config.inc.php';
 	$TITLE = 'Feeds &amp; Notifications';
+	$NAVIGATION = true;
 	$HEAD = '<link rel="stylesheet" href="css/index.css"/>';
 	include 'template.inc.php';
 }
