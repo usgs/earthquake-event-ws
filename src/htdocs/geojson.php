@@ -34,7 +34,7 @@ if (!isset($TEMPLATE)) {
 		</p>
 
 		<h3>Output</h3>
-		<code class="geojson">{
+		<pre><code class="geojson">{
 	type: "FeatureCollection",
 	metadata: {
 		<a href="glossary.php#metadata_generated">generated</a>: Long Integer,
@@ -94,7 +94,7 @@ if (!isset($TEMPLATE)) {
 		},
 		&hellip;
 	]
-}</code>
+}</code></pre>
 	</div>
 
 	<div class="column two-of-five">
