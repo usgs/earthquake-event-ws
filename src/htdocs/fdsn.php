@@ -50,37 +50,27 @@ if (!isset($TEMPLATE)) {
 
 
 	$TITLE = 'API Documentation - Earthquake Catalog';
-	$HEAD = '
-	<style>
-		dt, code {
-			font-family: monospace;
-			margin-top:1em;
-		}
-		dd {
-			margin-left:40px;
-		}
-	</style>
-	';
 	$NAVIGATION = true;
+	$HEAD = '<link rel="stylesheet" href="' . $FEED_PATH . '/css/api.css"/>';
 
 	include 'template.inc.php';
 }
 ?>
 
 <p>
-	This is an implementation of the FDSN Event Web Service Specification, and
-	allows custom searches for earthquake information using a variety of
-	parameters.  Please note that <strong>
-	<a href="<?php echo $FEED_HOST . $FEED_PATH; ?>/geojson.php">automated
-	applications should use Real-time GeoJSON Feeds for displaying earthquake
-	information whenever possible</a></strong>, as they will have the best
-	performance and availability for that type of information.
+	This is an implementation of the
+	<a href="http://www.fdsn.org/webservices/FDSN-WS-Specifications-1.0.pdf">
+			FDSN Event Web Service Specification</a>,
+	and allows custom searches for earthquake information using a variety of
+	parameters.
+</p>
+<p class="alert info">Please note that automated applications should use
+	<a href="<?php echo $FEED_HOST . $FEED_PATH; ?>/geojson.php">
+			Real-time GeoJSON Feeds</a>
+	for displaying earthquake information whenever possible, as they will have
+	the best performance and availability for that type of information.
 </p>
 
-<p>
-	<a href="http://www.fdsn.org/webservices/FDSN-WS-Specifications-1.0.pdf">
-	FDSN Web Service Specification PDF</a>.
-</p>
 
 <h2 id="url">URL</h2>
 <p>
@@ -91,49 +81,96 @@ if (!isset($TEMPLATE)) {
 
 
 <h2 id="methods">Methods</h2>
-<dl>
-
+<dl class="vertical">
 	<dt>application.json</dt>
 	<dd>
-		<a href="./application.json">request known enumerated parameter values for
-		the interface</a>.
+			request known enumerated parameter values for the interface.
 	</dd>
-
+	<dd>
+		<ul class="examples">
+			<li>
+				<a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/application.json">
+						<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/application.json</a>
+			</li>
+		</ul>
+	</dd>
 	<dt>application.wadl</dt>
 	<dd>
-		<a href="./application.wadl">request
-		<abbr title="Web Application Description Language">WADL</abbr> for the
-		interface</a>.
+		request <abbr title="Web Application Description Language">WADL</abbr>
+		for the interface.
 	</dd>
-
+	<dd>
+		<ul class="examples">
+			<li>
+				<a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/application.wadl">
+						<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/application.wadl</a>
+			</li>
+		</ul>
+	</dd>
 	<dt>catalogs</dt>
-	<dd><a href="./catalogs">request available catalogs</a>.</dd>
-
+	<dd>request available catalogs.</dd>
+	<dd>
+		<ul class="examples">
+			<li>
+				<a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/catalogs">
+						<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/catalogs</a>
+			</li>
+		</ul>
+	</dd>
 	<dt>contributors</dt>
-	<dd><a href="./contributors">request available contributors</a>.</dd>
-
+	<dd>
+		request available contributors
+	</dd>
+	<dd>
+		<ul class="examples">
+			<li>
+				<a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/contributors">
+						<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/contributors</a>
+			</li>
+		</ul>
+	</dd>
 	<dt>count</dt>
 	<dd>
-		to perform a count on a data request.
-		<p>
-			Count uses the same <a href="#parameters">parameters</a> as the query
-			method, and is available in these <a href="#format">formats</a>: plain
-			text (default), geojson, and xml.
-		</p>
+		to perform a count on a data request. Count uses the same
+		<a href="#parameters">parameters</a> as the query method, and is
+		availablein these <a href="#format">formats</a>: plain text (default),
+		geojson, and xml.
 	</dd>
-
+	<dd>
+		<ul>
+			<li><a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/count?format=geojson">
+					<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/count?format=geojson</a></li>
+			<li><a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/count?starttime=2014-01-01&endtime=2014-01-02">
+					<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/count?starttime=2014-01-01&endtime=2014-01-02</a></li>
+		</ul>
+	</dd>
 	<dt>query</dt>
 	<dd>
-		to submit a data request.
-	<p>
-		<a href="#parameters">See the Parameters section for supported url
-		parameters.</a>
-	</p>
+		to submit a data request. See the <a href="#parameters">parameters</a>
+		section for supported url parameters.
 	</dd>
-
+	<dd>
+		<ul class="examples">
+			<li>
+				<a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/query?format=geojson&starttime=2014-01-01&endtime=2014-01-02">
+						<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/query?format=geojson&starttime=2014-01-01&endtime=2014-01-02</a>
+			</li>
+			<li>
+				<a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/query?format=xml&starttime=2014-01-01&endtime=2014-01-02&minmagnitude=5">
+						<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/query?format=xml&starttime=2014-01-01&endtime=2014-01-02&minmagnitude=5</a>
+			</li>
+		</ul>
+	</dd>
 	<dt>version</dt>
-	<dd><a href="./version">request full service version number</a>.</dd>
-
+	<dd>request full service version number</dd>
+	<dd>
+		<ul class="examples">
+			<li>
+				<a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/version">
+						<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/version</a>
+			</li>
+		</ul>
+	</dd>
 </dl>
 
 
@@ -147,92 +184,106 @@ if (!isset($TEMPLATE)) {
 
 <h3>Formats</h3>
 <p>If no format is specified <em>quakeml</em> will be returned by default.</p>
+<table class="tabular parameters responsive">
+	<thead>
+		<tr>
+			<th>parameter</th>
+			<th>type</th>
+			<th>default</th>
+			<th>description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr id="format">
+			<td><code>format</code></td>
+			<td>String</td>
+			<td>quakeml</td>
+			<td>
+				Specify the output format.
 
-<dt id="format">format</dt>
-<dd>Specify the output format.
-	<dl>
+				<dl class="options vertical">
+					<dt><code>format=csv</code></dt>
+					<dd>
+						Response format is
+						<a href="<?php echo $FEED_HOST . $FEED_PATH; ?>/csv.php">CSV</a>.
+						Mime-type is &ldquo;text/csv&rdquo;.
+					</dd>
+					<dt><code><a href="#format-geojson">format=geojson</a></code></dt>
+					<dd>
+						Response format is
+						<a href="<?php echo $FEED_HOST . $FEED_PATH; ?>/geojson.php">
+						GeoJSON</a>. Mime-type is &ldquo;application/json&rdquo;.
+					</dd>
+					<dt><code><a href="#format-kml">format=kml</a></code></dt>
+					<dd>
+						Response format is
+						<a href="<?php echo $FEED_PATH . $FEED_PATH; ?>/kml.php">KML</a>.
+						Mime-type is &ldquo;vnd.google-earth.kml+xml&rdquo;.
+					</dd>
+					<dt><code><a href="#format-xml">format=quakeml</a></code></dt>
+					<dd>
+						Alias for "xml" format.
+					</dd>
+					<dt><code><a href="#format-text">format=text</a></code></dt>
+					<dd>
+						Response format is plain text. Mime-type is
+						&ldquo;text/plain&rdquo;.
+					</dd>
+					<dt><code><a href="#format-xml">format=xml</a></code></dt>
+					<dd>
+						The xml format is dependent upon the request <em>method</em> used.
+					</dd>
+				</dl>
+			</td>
+		</tr>
+	</tbody>
+</table>
 
-		<dt>csv</dt>
-		<dd>
-			Response format is
-			<a href="<?php echo $FEED_HOST . $FEED_PATH; ?>/csv.php">CSV</a>.
-			Mime-type is &ldquo;text/csv&rdquo;.
-			<br/>
-			<small>
-				NOTE: only summary event information is available in this format.
-			</small>
-		</dd>
 
-		<dt>geojson</dt>
-		<dd>
-			Response format is
-			<a href="<?php echo $FEED_HOST . $FEED_PATH; ?>/geojson.php">
-			GeoJSON</a>. Mime-type is &ldquo;application/json&rdquo;.
-			<dl>
-				<dt id="callback">callback</dt>
-				<dd>Convert GeoJSON output to a JSONP response using this callback.
-					Mime-type is &ldquo;text/javascript&rdquo;.
-				</dd>
-				<dt id="jsonerror">jsonerror</dt>
-				<dd>
-					Request JSON(P) formatted output even on API error results.
-					Accepts &ldquo;true&rdquo; or &ldquo;false&rdquo;. Default:
-					&ldquo;false&rdquo;
-				</dd>
-			</dl>
-		</dd>
+<h4 id="format-geojson">format=geojson</h4>
+<p>
+	When <code>format=geojson</code> is defined there are additional parameters
+	that can be specified that control how the geojson output is generated. The
+	additional web service parameters are:
+</p>
+<ul>
+	<li><a href="#callback">callback</a></li>
+	<li><a href="#jsonerror">jsonerror</a></li>
+</ul>
 
-		<dt>kml</dt>
-		<dd>
-			Response format is
-			<a href="<?php echo $FEED_PATH . $FEED_PATH; ?>/kml.php">KML</a>.
-			Mime-type is &ldquo;vnd.google-earth.kml+xml&rdquo;.
-			<dl>
-				<dt id="kmlanimated">kmlanimated</dt>
-				<dd>
-					Whether to include timestamp in generated kml, for google earth
-					animation support. &ldquo;false&rdquo; (default), or
-					&ldquo;true&rdquo;.
-				</dd>
-				<dt id="kmlcolorby">kmlcolorby</dt>
-				<dd>
-					How earthquakes are colored.
-					"age" (default), or "depth".
-				</dd>
-			</dl>
-		</dd>
 
-		<dt>quakeml</dt>
-		<dd>
-			Alias for "xml" format.
-		</dd>
+<h4 id="format-kml">format=kml</h4>
+<p>
+	When <code>format=kml</code> is defined there are additional parameters
+	that can be specified that control how the KML output is generated. The
+	additional web service parameters are:
+</p>
+<ul>
+	<li><a href="#kmlanimated">kmlanimated</a></li>
+	<li><a href="#kmlcolorby">kmlcolorby</a></li>
+</ul>
 
-		<dt>text</dt>
-		<dd>
-			This format is only available for the count and version methods.
-			Response format is plain text. Mime-type is &ldquo;text/plain&rdquo;.
-		</dd>
 
-		<dt>xml</dt>
-		<dd>
-			The xml format is dependent upon the request <em>method</em> used.
-			<dl>
-				<dt>method=query</dt>
-				<dd>
-					Response format is <a href="http://www.quakeml.org/">
-					Quakeml 1.2</a>.  Mime-type is "application/xml".
-				</dd>
-				<dt>method=count</dt>
-				<dd>
-					Response format is xml. Mime-type is &ldquo;application/xml&rdquo;.
-					This format is only available for the count method.
-				</dd>
-			</dl>
-		</dd>
+<h4 id="format-text">format=text</h4>
+<p>
+	This format is only available for the <code>count</code> and
+	<code>version</code> methods.
+</p>
 
-	</dl>
-</dd>
 
+<h4 id="format-xml">format=xml</h4>
+<p>The xml format is dependent upon the request <code>method</code> used.</p>
+<ul>
+	<li>
+		<code>method=query</code><br/>
+		Response format is <a href="http://www.quakeml.org/">Quakeml 1.2</a>.
+		Mime-type is "application/xml".
+	</li>
+	<li>
+		<code>method=count</code><br/>
+		Response format is xml. Mime-type is &ldquo;application/xml&rdquo;.
+	</li>
+</ul>
 
 
 <h3>Time</h3>
@@ -240,7 +291,6 @@ if (!isset($TEMPLATE)) {
 	All times use ISO8601 Date/Time format. Unless a timezone is specified, UTC
 	is assumed. Examples:
 </p>
-
 <ul>
 	<li>
 		<em><?php echo gmdate('Y-m-d'); ?></em>,
@@ -255,34 +305,53 @@ if (!isset($TEMPLATE)) {
 		Explicit timezone.
 	</li>
 </ul>
+<table class="tabular parameters responsive">
+	<thead>
+		<tr>
+			<th>parameter</th>
+			<th>type</th>
+			<th>default</th>
+			<th>description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>endtime</code></td>
+			<td>String</td>
+			<td>present time</td>
+			<td>
+				Limit to events on or before the specified end time.
+				<small>
+					NOTE: All times use ISO8601 Date/Time format. Unless a timezone is specified, UTC is assumed.
+				</small>
+			</td>
+		</tr>
+		<tr>
+			<td><code>starttime</code></td>
+			<td>String</td>
+			<td>NOW -
+			<?php echo ($DEFAULT_MAXEVENTAGE/86400); ?> days</td>
+			<td>
+				Limit to events on or after the specified start time.
+				<small>
+					NOTE: All times use ISO8601 Date/Time format. Unless a timezone is specified, UTC is assumed.
+				</small>
+			</td>
+		</tr>
+		<tr>
+			<td><code>updatedafter</code></td>
+			<td>String</td>
+			<td>null</td>
+			<td>
+				Limit to events updated after the specified time.
+				<small>
+					NOTE: All times use ISO8601 Date/Time format. Unless a timezone is specified, UTC is assumed.
+				</small>
+			</td>
+		</tr>
+	</tbody>
+</table>
 
-<dl>
-	<dt id="endtime">endtime</dt>
-	<dd>
-		ISO8601 Date/Time, e.g.
-		<?php echo str_replace("+00:00", "", gmdate("c")); ?>
-	</dd>
-	<dd>Limit to events on or before the specified end time.</dd>
-
-	<dt id="starttime">starttime</dt>
-	<dd>
-		ISO8601 Date/Time, e.g.
-		<?php echo str_replace("+00:00", "", gmdate("c")); ?>
-		<br/>
-		<small>
-			Default is NOW -
-			<?php echo ($DEFAULT_MAXEVENTAGE/86400); ?> days
-		</small>
-	</dd>
-	<dd>Limit to events on or after the specified start time.</dd>
-
-	<dt id="updatedafter">updatedafter</dt>
-	<dd>
-		ISO8601 Date/Time, e.g.
-		<?php echo str_replace("+00:00", "", gmdate("c")); ?>
-	</dd>
-	<dd>Limit to events updated after the specified time.</dd>
-</dl>
 
 <h3>Location</h3>
 <p>
@@ -290,349 +359,587 @@ if (!isset($TEMPLATE)) {
 	which may be empty, use with caution.
 </p>
 
+
 <h4>Rectangle</h4>
 <p>
 	Requests may use any combination of these parameters.
-	<br/>
-	<small>min values must be less than max values.</small>
-	<br/>
-	<small>
-		rectangles may cross the date line by using a minlongitude&lt;-180 or
-		maxlongitude&gt;180.
-	</small>
 </p>
+<table class="tabular parameters responsive">
+	<thead>
+		<tr>
+			<th>parameter</th>
+			<th>type</th>
+			<th>default</th>
+			<th>description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr id="minlatitude">
+			<td><code>minlatitude</code></td>
+			<td>Decimal <span class="range">[-90,90] degrees</span></td>
+			<td>null</td>
+			<td>
+				Limit to events with a latitude larger than the specified minimum.
+				<small>
+					NOTE: min values must be less than max values.
+				</small>
+			</td>
+		</tr>
+		<tr id="minlongitude">
+			<td><code>minlongitude</code></td>
+			<td>Decimal <span class="range">[-360,360] degrees</span></td>
+			<td>null</td>
+			<td>
+				Limit to events with a longitude larger than the specified minimum.
+				<small>
+					NOTE: rectangles may cross the date line by using a minlongitude &lt;
+					-180 or maxlongitude &gt; 180.
+				</small>
+				<small>
+					NOTE: min values must be less than max values.
+				</small>
+			</td>
+		</tr>
+		<tr id="maxlatitude">
+			<td><code>maxlatitude</code></td>
+			<td>Decimal <span class="range">[-90,90] degrees</span></td>
+			<td>null</td>
+			<td>
+				Limit to events with a latitude smaller than the specified maximum.
+				<small>
+					NOTE: min values must be less than max values.
+				</small>
+			</td>
+		</tr>
+		<tr id="maxlongitude">
+			<td><code>maxlongitude</code></td>
+			<td>Decimal <span class="range">[-360,360] degrees</span></td>
+			<td>null</td>
+			<td>
+				Limit to events with a longitude smaller than the specified maximum.
+				<small>
+					NOTE: rectangles may cross the date line by using a minlongitude &lt;
+					-180 or maxlongitude &gt; 180.
+				</small>
+				<small>
+					NOTE: min values must be less than max values.
+				</small>
+			</td>
+		</tr>
+	</tbody>
+</table>
 
-<dl>
-	<dt id="minlatitude">minlatitude</dt>
-	<dd>Decimal degrees: [-90,90]</dd>
-	<dd>Limit to events with a latitude larger than the specified minimum.</dd>
-
-	<dt id="minlongitude">minlongitude</dt>
-	<dd>Decimal degrees: [-360,360]</dd>
-	<dd>Limit to events with a longitude larger than the specified minimum.</dd>
-
-	<dt id="maxlatitude">maxlatitude</dt>
-	<dd>Decimal degrees: [-90,90]</dd>
-	<dd>Limit to events with a latitude smaller than the specified maximum.</dd>
-
-	<dt id="maxlongitude">maxlongitude</dt>
-	<dd>Decimal degrees: [-360,360]</dd>
-	<dd>Limit to events with a longitude smaller than the specified maximum.</dd>
-</dl>
 
 <h4>Circle</h4>
 <p>
 	Requests must include all of latitude, longitude, and maxradius to perform a
 	circle search.
 </p>
-<dl>
-	<dt id="latitude">latitude</dt>
-	<dd>Decimal degrees: [-90,90]</dd>
-	<dd>Specify the latitude to be used for a radius search.</dd>
+<table class="tabular parameters responsive">
+	<thead>
+		<tr>
+			<th>parameter</th>
+			<th>type</th>
+			<th>default</th>
+			<th>description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr id="latitude">
+			<td><code>latitude</code></td>
+			<td>Decimal <span class="range">[-90,90] degrees</span></td>
+			<td>null</td>
+			<td>
+				Specify the latitude to be used for a radius search.
+			</td>
+		</tr>
+		<tr id="longitude">
+			<td><code>longitude</code></td>
+			<td>Decimal <span class="range">[-180,180] degrees</span></td>
+			<td>null</td>
+			<td>
+				Specify the longitude to be used for a radius search.
+			</td>
+		</tr>
+		<tr id="maxradius">
+			<td><code>maxradius</code></td>
+			<td>Decimal <span class="range">[0, 180] degrees</span></td>
+			<td>null</td>
+			<td>
+				Limit to events within the specified maximum number of degrees from the
+				geographic point defined by the latitude and longitude parameters.
 
-	<dt id="longitude">longitude</dt>
-	<dd>Decimal degrees: [-180,180]</dd>
-	<dd>Specify the longitude to be used for a radius search.</dd>
+				<small>
+					NOTE: This option is mutually exclusive with <a href="#maxradiuskm">
+					maxradiuskm</a> and specifying both will result in an error.
+				</small>
+			</td>
+		</tr>
+		<tr id="maxradiuskm">
+			<td><code>maxradiuskm</code></td>
+			<td>Decimal <span class="range">[0, 20001.6] km</span></td>
+			<td>null</td>
+			<td>
+				Limit to events within the specified maximum number of kilometers from
+				the geographic point defined by the latitude and longitude parameters.
 
-	<dt id="maxradiuskm">maxradiuskm</dt>
-	<dd>Kilometers: [0, 20001.6]</dd>
-	<dd>
-		Limit to events within the specified maximum number of kilometers from the
-		geographic point defined by the latitude and longitude parameters. This
-		option is mutually exclusive with <a href="#maxradius">maxradius</a> and
-		specifying both will result in an error.
-	</dd>
+				<small>
+					NOTE: This option is mutually exclusive with <a href="#maxradius">
+					maxradius </a> and specifying both will result in an error.
+				</small>
+			</td>
+		</tr>
+		<tr id="minradius">
+			<td><code>minradius</code></td>
+			<td>Decimal <span class="range">[0, 180] degrees</span></td>
+			<td>null</td>
+			<td>
+				Limit to events further than the specified minimum number of degrees
+				from the geographic point defined by the latitude and longitude
+				parameters.
 
-	<dt id="minradius">minradius</dt>
-	<dd>Decimal degrees: [0,180].  Default 0.</dd>
-	<dd>
-		Limit to events further than the specified minimum number of degrees from
-		the geographic point defined by the latitude and longitude parameters. This
-		option is mutually exclusive with <a href="#minradiuskm">minradiuskm</a>
-		and specifying both will result in an error.
-	</dd>
+				<small>
+					NOTE: This option is mutually exclusive with <a href="#minradiuskm">
+					minradiuskm</a> and specifying both will result in an error.
+				</small>
+			</td>
+		</tr>
+		<tr id="minradiuskm">
+			<td><code>minradiuskm</code></td>
+			<td>Decimal <span class="range">[0, 20001.6] km</span></td>
+			<td>null</td>
+			<td>
+				Limit to events further than the specified minimum number of
+				kilometers from the geographic point defined by the latitude and
+				longitude parameters.
 
-	<dt id="minradiuskm">minradiuskm</dt>
-	<dd>Kilometers: [0, 20001.6]</dd>
-	<dd>
-		Limit to events further than the specified minimum number of kilometers
-		from the geographic point defined by the latitude and longitude parameters.
-		This option is mutually exclusive with <a href="#minradius">minradius</a>
-		and specifying both will result in an error.
-	</dd>
-
-	<dt id="maxradius">maxradius</dt>
-	<dd>Decimal degrees: [0,180]</dd>
-	<dd>
-		Limit to events within the specified maximum number of degrees from the
-		geographic point defined by the latitude and longitude parameters. This
-		option is mutually exclusive with <a href="#maxradiuskm">maxradiuskm</a>
-		and specifying both will result in an error.
-	</dd>
-</dl>
+				<small>
+					NOTE: This option is mutually exclusive with <a href="#minradius">minradius
+					</a> and specifying both will result in an error.
+				</small>
+			</td>
+		</tr>
+	</tbody>
+</table>
 
 
 <h3>Other</h3>
-<dl>
+<table class="tabular parameters responsive">
+	<thead>
+		<tr>
+			<th>parameter</th>
+			<th>type</th>
+			<th>default</th>
+			<th>description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr id="catalog">
+			<td><code>catalog</code></td>
+			<td>String</td>
+			<td>null</td>
+			<td>
+				Limit to events from a specified catalog. Use the <a href="./catalogs">Catalogs Method</a> to find available catalogs.
+				<small>
+					NOTE: when catalog and contributor are omitted, the most preferred
+					information from any catalog or contributor for the event is returned.
+				</small>
+			</td>
+		</tr>
+		<tr id="contributor">
+			<td><code>contributor</code></td>
+			<td>String</td>
+			<td>null</td>
+			<td>
+				Limit to events contributed by a specified contributor. Use the
+				<a href="./contributors">Contributors Method</a> to find available
+				contributors.
+				<small>
+					NOTE: when catalog and contributor are omitted, the most preferred
+					information from any catalog or contributor for the event is returned.
+				</small>
+			</td>
+		</tr>
+		<tr id="eventid">
+			<td><code>eventid</code></td>
+			<td>String</td>
+			<td>null</td>
+			<td>
+				Select a specific event by ID; event identifiers are data center
+				specific.
+				<small>
+					NOTE: Selecting a specific event implies includeallorigins,
+					includeallmagnitudes, and, additionally, associated moment tensor and
+					focal-mechanisms are included.
+				</small>
+			</td>
+		</tr>
+		<tr id="includeallmagnitudes">
+			<td><code>includeallmagnitudes</code></td>
+			<td>Boolean</td>
+			<td>false</td>
+			<td>
+				Specify if all magnitudes for the event should be included, default is data
+				center dependent but is suggested to be the preferred magnitude only.
+				<small>
+					NOTE: because magnitudes and origins are strongly associated, this
+					parameter is interchangable with includeallmagnitudes
+				</small>
+			</td>
+		</tr>
+		<tr id="includeallorigins">
+			<td><code>includeallorigins</code></td>
+			<td>Boolean</td>
+			<td>false</td>
+			<td>
+				Specify if all origins for the event should be included, default is data
+				center dependent but is suggested to be the preferred origin only.
+				<small>
+					NOTE: because magnitudes and origins are strongly associated,
+					this parameter is interchangable with includeallmagnitudes
+				</small>
+			</td>
+		</tr>
+		<tr id="includearrivals">
+			<td><code>includearrivals</code></td>
+			<td>Boolean</td>
+			<td>false</td>
+			<td>
+				Specify if phase arrivals should be included.
+				<small>NOTE: NOT CURRENTLY IMPLEMENTED</small>
+			</td>
+		</tr>
+		<tr id="includedeleted">
+			<td><code>includedeleted</code></td>
+			<td>Boolean</td>
+			<td>false</td>
+			<td>
+				Specify if deleted products should be incuded.
+				<small>
+					NOTE: Only works when specifying <a href="#eventid">eventid</a>
+					parameter.
+				</small>
+			</td>
+		</tr>
+		<tr id="includesuperseded">
+			<td><code>includesuperseded</code></td>
+			<td>Boolean</td>
+			<td>false</td>
+			<td>
+				Specify if superseded products should be included.
+				This also includes all deleted products, and is mutually exclusive to
+				the <a href="#includedeleted">includedeleted</a> parameter.
+				<small>
+					NOTE: Only works when specifying <a href="#eventid">eventid</a>
+					parameter.
+				</small>
+			</td>
+		</tr>
+		<tr id="limit">
+			<td><code>limit</code></td>
+			<td>Integer
+				<span class="range">[1,<?php echo $service->serviceLimit; ?>]</span>
+			</td>
+			<td>null</td>
+			<td>
+				Limit the results to the specified number of events.
+				<small>
+					NOTE: The service limits queries to <?php echo $service->serviceLimit; ?>,
+					and any that exceed this limit will generate a HTTP response code
+					&ldquo;400 Bad Request&rdquo;.
+				</small>
+			</td>
+		</tr>
+<!-- 		<tr>
+			<td>magnitudetype</td>
+			<td>Decimal <span class="range">[-100, 1000] km</span></td>
+			<td>null</td>
+			<td>
+				Specify a magnitude type to use for testing the minimum and maximum limits.
+				<small>
+					NOTE: this will only return events reported with this magnitude
+					type.
+				</small>
+			</td>
+		</tr> -->
+		<tr id="maxdepth">
+			<td><code>maxdepth</code></td>
+			<td>Decimal <span class="range">[-100, 1000] km</span></td>
+			<td>null</td>
+			<td>Limit to events with depth less than the specified maximum.</td>
+		</tr>
+		<tr id="maxmagnitude">
+			<td><code>maxmagnitude</code></td>
+			<td>Decimal <span class="range">[-100, 1000] km</span></td>
+			<td>null</td>
+			<td>Limit to events with a magnitude smaller than the specified maximum.</td>
+		</tr>
+		<tr id="mindepth">
+			<td><code>mindepth</code></td>
+			<td>Decimal <span class="range">[-100, 1000] km</span></td>
+			<td>null</td>
+			<td>Limit to events with depth more than the specified minimum.</td>
+		</tr>
+		<tr id="minmagnitude">
+			<td><code>minmagnitude</code></td>
+			<td>Decimal <span class="range">[-100, 1000] km</span></td>
+			<td>null</td>
+			<td>Limit to events with a magnitude larger than the specified minimum.</td>
+		</tr>
+		<tr id="offset">
+			<td><code>offset</code></td>
+			<td>Integer<span class="range">[1,&infin;)</span></td>
+			<td>1</td>
+			<td>Return results starting at the event count specified, starting at 1.</td>
+		</tr>
+		<tr id="orderby">
+			<td><code>orderby</code></td>
+			<td>String</td>
+			<td>time</td>
+			<td>Order the results. The allowed values are:
+					<dl class="vertical options">
+						<dt><code>orderby=time</code></dt>
+						<dd>order by origin descending time</dd>
 
-	<dt id="catalog">catalog</dt>
-	<dd>
-		Use the <a href="./catalogs">Catalogs Method</a> to find available catalogs.
-	</dd>
-	<dd>
-		Limit to events from a specified catalog.
-		<br/>
-		<small>
-			NOTE: when catalog and contributor are omitted, the most preferred
-			information from any catalog or contributor for the event is returned.
-		</small>
-	</dd>
+						<dt><code>orderby=time-asc</code></dt>
+						<dd>order by origin ascending time</dd>
 
-	<dt id="contributor">contributor</dt>
-	<dd>
-		Use the <a href="./contributors">Contributors Method</a> to find available
-		contributors.
-	</dd>
-	<dd>
-		Limit to events contributed by a specified contributor.
-		<br/>
-		<small>
-			NOTE: when catalog and contributor are omitted, the most preferred
-			information from any catalog or contributor for the event is returned.
-		</small>
-	</dd>
+						<dt><code>orderby=magnitude</code></dt>
+						<dd>order by descending magnitude</dd>
 
-	<dt id="eventid">eventid</dt>
-	<dd>Select a specific event by ID; event identifiers are data center specific.
-		<br/>
-		<small>
-			NOTE: Selecting a specific event implies includeallorigins,
-			includeallmagnitudes, and, additionally, associated moment tensor and
-			focal-mechanisms are included.
-		</small>
-	</dd>
-
-	<dt id="includeallmagnitudes">includeallmagnitudes</dt>
-	<dd>Boolean "true"/"false".  Default false.</dd>
-	<dd>
-		Specify if all magnitudes for the event should be included, default is data
-		center dependent but is suggested to be the preferred magnitude only.
-		<br/>
-		<small>
-			NOTE: because magnitudes and origins are strongly associated, this
-			parameter is interchangable with includeallmagnitudes
-		</small>
-	</dd>
-
-	<dt id="includeallorigins">includeallorigins</dt>
-	<dd>Boolean "true"/"false".  Default false.</dd>
-	<dd>
-		Specify if all origins for the event should be included, default is data
-		center dependent but is suggested to be the preferred origin only.
-		<br/>
-		<small>
-			NOTE: because magnitudes and origins are strongly associated,
-			this parameter is interchangable with includeallmagnitudes
-		</small>
-	</dd>
-
-	<dt id="includearrivals">includearrivals</dt>
-	<dd>Boolean "true"/"false".  Default false.</dd>
-	<dd>Specify if phase arrivals should be included.
-		<br/><small>NOTE: NOT CURRENTLY IMPLEMENTED</small>
-	</dd>
-
-	<dt id="includedeleted">includedeleted</dt>
-	<dd>Boolean &ldquo;true&rdquo;/&ldquo;false&rdquo;. Default false.</dd>
-	<dd>Specify if deleted products should be incuded.
-		<br/><small>
-			NOTE: Only works when specifying <a href="#eventid">eventid</a>
-			parameter.
-		</small>
-	</dd>
-
-	<dt id="includesuperseded">includesuperseded</dt>
-	<dd>Boolean &ldquo;true&rdquo;/&ldquo;false&rdquo;. Default false.</dd>
-	<dd>Specify if superseded products should be included.
-		This also includes all deleted products, and is mutually exclusive to
-		the <a href="#includedeleted">includedeleted</a> parameter.
-		<br/><small>
-			NOTE: Only works when specifying <a href="#eventid">eventid</a>
-			parameter.
-		</small>
-	</dd>
-
-	<dt id="limit">limit</dt>
-	<dd>
-		Integer: [1,<?php echo $service->serviceLimit; ?>]. Default unlimited.
-	</dd>
-	<dd>
-		Limit the results to the specified number of events.
-		<br/>
-		<small>
-			NOTE: The service limits queries to <?php echo $service->serviceLimit; ?>,
-			and any that exceed this limit will generate a HTTP response code
-			&ldquo;400 Bad Request&rdquo;.
-		</small>
-	</dd>
-
-	<dt id="maxdepth">maxdepth</dt>
-	<dd>Decimal kilometers: [-100, 1000]</dd>
-	<dd>Limit to events with depth less than the specified maximum.</dd>
-
-	<dt id="maxmagnitude">maxmagnitude</dt>
-	<dd>Decimal.</dd>
-	<dd>Limit to events with a magnitude smaller than the specified maximum.</dd>
-
-	<dt id="mindepth">mindepth</dt>
-	<dd>Decimal kilometers: [-100, 1000]</dd>
-	<dd>Limit to events with depth more than the specified minimum.</dd>
-
-	<dt id="minmagnitude">minmagnitude</dt>
-	<dd>Decimal.</dd>
-	<dd>Limit to events with a magnitude larger than the specified minimum.</dd>
-
-
-	<!-- TODO :: Conform magnitude type to FDSN spec
-	<dt id="magnitudetype">magnitudetype</dt>
-	<dd>
-		Specify a magnitude type to use for testing the minimum and maximum limits.
-		<br/>
-		<small>
-			NOTE: this will only return events reported with this magnitude
-			type.
-		</small>
-		<p>
-			Examples:&ldquo;Md&rdquo;, &ldquo;Ml&rdquo;, &ldquo;Ms&rdquo;,
-			&ldquo;Mw&rdquo;, &ldquo;Me&rdquo;, &ldquo;Mi&rdquo;,
-			&ldquo;Mb&rdquo;, &ldquo;MLg&rdquo;
-		</p>
-	</dd>
-	-->
-
-
-	<dt id="offset">offset</dt>
-	<dd>Integer: [1,&infin;]</dd>
-	<dd>Return results starting at the event count specified, starting at 1.</dd>
-
-	<dt id="orderby">orderby</dt>
-	<dd>Order the result.
-		<dl>
-			<dt>time</dt>
-			<dd>(Default) order by origin descending time</dd>
-			<dt>time-asc</dt>
-			<dd>order by origin ascending time</dd>
-			<dt>magnitude</dt>
-			<dd>order by descending magnitude</dd>
-			<dt>magnitude-asc</dt>
-			<dd>order by ascending magnitude</dd>
-		</dl>
-	</dd>
-
-</dl>
+						<dt><code>orderby=magnitude-asc</code></dt>
+						<dd>order by ascending magnitude</dd>
+					</dl>
+			</td>
+		</tr>
+	</tbody>
+</table>
 
 
 <h3 id="extensions">Extensions</h3>
-<dl>
+<table class="tabular parameters responsive">
+	<thead>
+		<tr>
+			<th>parameter</th>
+			<th>type</th>
+			<th>default</th>
+			<th>description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr id="alertlevel">
+			<td><code>alertlevel</code></td>
+			<td>String</td>
+			<td>all</td>
+			<td>
+				Limit to events with a specific PAGER alert level. The allowed values
+				are:
 
-	<dt id="alertlevel">alertlevel</dt>
-	<dd>
-		Limit to events with a specific PAGER alert level, default all.
-		<dl>
-			<dt>green</dt>
-			<dd>Limit to events with PAGER alert level "green".</dd>
-			<dt>yellow</dt>
-			<dd>Limit to events with PAGER alert level "yellow".</dd>
-			<dt>orange</dt>
-			<dd>Limit to events with PAGER alert level "orange".</dd>
-			<dt>red</dt>
-			<dd>Limit to events with PAGER alert level "red".</dd>
-		</dl>
-	</dd>
+				<dl class="vertical options">
+					<dt><code>alertlevel=green</code></dt>
+					<dd>Limit to events with PAGER alert level "green".</dd>
 
-	<dt id="eventtype">eventtype</dt>
-	<dd>
-		Limit to events of a specific type.
-		&ldquo;earthquake&ldquo; will filter non-earthquake events.
-	</dd>
+					<dt><code>alertlevel=yellow</code></dt>
+					<dd>Limit to events with PAGER alert level "yellow".</dd>
 
-	<dt id="maxcdi">maxcdi</dt>
-	<dd>Decimal: [0,12]</dd>
-	<dd>
-		Maximum value for Maximum Community Determined Intensity reported by DYFI.
-	</dd>
+					<dt><code>alertlevel=orange</code></dt>
+					<dd>Limit to events with PAGER alert level "orange".</dd>
 
-	<dt id="maxgap">maxgap</dt>
-	<dd>Decimal degrees [0,360]</dd>
-	<dd>Limit to events with no more than this azimuthal gap.</dd>
+					<dt><code>alertlevel=red</code></dt>
+					<dd>Limit to events with PAGER alert level "red".</dd>
+				</dl>
+			</td>
+		</tr>
+		<tr id="callback">
+			<td><code>callback</code></td>
+			<td>String</td>
+			<td>null</td>
+			<td>
+				Convert GeoJSON output to a JSONP response using this callback.
+				Mime-type is &ldquo;text/javascript&rdquo;.
 
-	<dt id="maxmmi">maxmmi</dt>
-	<dd>Decimal: [0,12]</dd>
-	<dd>
-		Maximum value for Maximum Modified Mercalli Intensity reported by ShakeMap.
-	</dd>
+				<small>
+					NOTE: Must be used with format=geojson
+				</small>
+			</td>
+		</tr>
+		<tr id="eventtype">
+			<td><code>eventtype</code></td>
+			<td>String</td>
+			<td>null</td>
+			<td>
+				Limit to events of a specific type.
 
-	<dt id="maxsig">maxsig</dt>
-	<dd>Positive integer.</dd>
-	<dd>Limit to events with no more than this significance.</dd>
+				<small>
+					NOTE: &ldquo;earthquake&ldquo; will filter non-earthquake events.
+				</small>
+			</td>
+		</tr>
+		<tr id="jsonerror">
+			<td><code>jsonerror</code></td>
+			<td>Boolean</td>
+			<td>false</td>
+			<td>
+				Request JSON(P) formatted output even on API error results.
 
-	<dt id="minmmi">minmmi</dt>
-	<dd>Decimal: [0,12]</dd>
-	<dd>
-		Minimum value for Maximum Modified Mercalli Intensity reported by ShakeMap.
-	</dd>
+				<small>
+					NOTE: Must be used with format=geojson
+				</small>
+			</td>
+		</tr>
+		<tr id="kmlanimated">
+			<td><code>kmlanimated</code></td>
+			<td>Boolean</td>
+			<td>false</td>
+			<td>
+				Whether to include timestamp in generated kml, for google earth
+				animation support.
 
+				<small>
+					NOTE: Must be used with format=kml
+				</small>
+			</td>
+		</tr>
+		<tr id="kmlcolorby">
+			<td><code>kmlcolorby</code></td>
+			<td>String</td>
+			<td>"age"</td>
+			<td>
+				How earthquakes are colored. Accepted values are:
 
-	<dt id="mincdi">mincdi</dt>
-	<dd>Decimal: [0,12]</dd>
-	<dd>
-		Minimum value for Maximum Community Determined Intensity reported by DYFI.
-	</dd>
+				<dl class="vertical options">
+					<dt><code>kmlcolorby=age</code></dt>
+					<dd>Color events in KML by age.</dd>
+					<dt><code>kmlcolorby=depth</code></dt>
+					<dd>Color events in KML by depth.</dd>
+					<dd></dd>
+				</dl>
 
-	<dt id="minfelt">minfelt</dt>
-	<dd>Positive Integer</dd>
-	<dd>Limit to events with this many DYFI responses.</dd>
+				<small>
+					NOTE: Must be used with format=kml
+				</small>
+			</td>
+		</tr>
+		<tr id="maxcdi">
+			<td><code>maxcdi</code></td>
+			<td>Decimal <span class="range">[0,12]</span></td>
+			<td>null</td>
+			<td>
+				Maximum value for Maximum Community Determined Intensity reported by
+				DYFI.
+			</td>
+		</tr>
+		<tr id="maxgap">
+			<td><code>maxgap</code></td>
+			<td>Decimal <span class="range">[0,360] degrees</span></td>
+			<td>null</td>
+			<td>
+				Limit to events with no more than this azimuthal gap.
+			</td>
+		</tr>
+		<tr id="maxmmi">
+			<td><code>maxmmi</code></td>
+			<td>Decimal <span class="range">[0,12]</span></td>
+			<td>null</td>
+			<td>
+				Maximum value for Maximum Modified Mercalli Intensity reported by ShakeMap.
+			</td>
+		</tr>
+		<tr id="maxsig">
+			<td><code>maxsig</code></td>
+			<td>Integer <span class="range">[0,12]</span></td>
+			<td>null</td>
+			<td>
+				Limit to events with no more than this significance.
+			</td>
+		</tr>
+		<tr id="mincdi">
+			<td><code>mincdi</code></td>
+			<td>Decimal</td>
+			<td>null</td>
+			<td>
+				Minimum value for Maximum Community Determined Intensity reported by DYFI.
+			</td>
+		</tr>
+		<tr id="minfelt">
+			<td><code>minfelt</code></td>
+			<td>Integer<span class="range">[1,&infin;)</span></td>
+			<td>null</td>
+			<td>
+				Limit to events with this many DYFI responses.
+			</td>
+		</tr>
+		<tr id="mingap">
+			<td><code>mingap</code></td>
+			<td>Decimal<span class="range">[0,360] degrees</span></td>
+			<td>null</td>
+			<td>
+				Limit to events with no less than this azimuthal gap.
+			</td>
+		</tr>
+		<tr id="minsig">
+			<td><code>minsig</code></td>
+			<td>Integer<span class="range">[1,&infin;)</span></td>
+			<td>null</td>
+			<td>
+				Limit to events with no less than this significance.
+			</td>
+		</tr>
+		<tr id="nodata">
+			<td><code>nodata</code></td>
+			<td>Integer <span class="range">(204|404)</span></td>
+			<td>204</td>
+			<td>
+				Define the error code that will be returned when no data is found.
+			</td>
+		</tr>
+		<tr id="producttype">
+			<td><code>producttype</code></td>
+			<td>String</td>
+			<td>null</td>
+			<td>
+				Limit to events that have this type of product associated.
+				Example producttypes:
 
-	<dt id="mingap">mingap</dt>
-	<dd>Decimal degrees [0,360]</dd>
-	<dd>Limit to events with no less than this azimuthal gap.</dd>
+				<!-- TODO? generate a feed that returns a complete list -->
+				<ul class="options">
+					<li>moment-tensor</li>
+					<li>focal-mechanism</li>
+					<li>shakemap</li>
+					<li>losspager</li>
+					<li>dyfi</li>
+				</ul>
+			</td>
+		</tr>
+		<tr id="productcode">
+			<td><code>productcode</code></td>
+			<td>String</td>
+			<td>null</td>
+			<td>
+				Return the event that is associated with the productcode. The event will
+				be returned even if the productcode is not the preferred code for the
+				event. Example productcodes:
+				<ul class="options">
+					<li>nn00458749</li>
+					<li>at00ndf1fr</li>
+				</ul>
+			</td>
+		</tr>
+		<tr id="reviewstatus">
+			<td><code>reviewstatus</code></td>
+			<td>String</td>
+			<td>all</td>
+			<td>
+				Limit to events with a specific review status. The different review
+				statuses are:
 
-	<dt id="minsig">minsig</dt>
-	<dd>Positive integer.</dd>
-	<dd>Limit to events with no less than this significance.</dd>
-
-	<dt id="nodata">nodata</dt>
-	<dd>Integer: (204|404). Default 204.</dd>
-	<dd>
-		Define the error code that will be returned when no data is found.
-	</dd>
-
-	<dt id="producttype">producttype</dt>
-	<dd>
-		Examples: &ldquo;moment-tensor&rdquo;, &ldquo;focal-mechanism&rdquo;,
-		&ldquo;shakemap&rdquo;, &ldquo;losspager&rdquo;, &ldquo;dyfi&rdquo;.
-	</dd>
-	<dd>Limit to events that have this type of product associated.</dd>
-
-	<dt id="productcode">productcode</dt>
-	<dd>
-		Examples: &ldquo;nn00458749&rdquo;, &ldquo;at00ndf1fr&rdquo;,
-		&ldquo;usb000skys&rdquo;.
-	</dd>
-	<dd>
-		Return the event that is associated with the productcode. The event will be
-		returned even if the productcode is not the preferred code for the event.
-	</dd>
-
-	<dt id="reviewstatus">reviewstatus</dt>
-	<dd>
-		Limit to events with a specific review status, default all.
-		<dl>
-			<dt>automatic</dt>
-			<dd>Limit to events with review status "automatic".</dd>
-			<dt>reviewed</dt>
-			<dd>Limit to events with review status "reviewed".</dd>
-		</dl>
-	</dd>
-
-</dl>
+				<dl class="vertical options">
+					<dt><code>reviewstatus=automatic</code></dt>
+					<dd>Limit to events with review status "automatic".</dd>
+					<dt><code>reviewstatus=reviewed</code></dt>
+					<dd>Limit to events with review status "reviewed".</dd>
+				</dl>
+			</td>
+		</tr>
+	</tbody>
+</table>
