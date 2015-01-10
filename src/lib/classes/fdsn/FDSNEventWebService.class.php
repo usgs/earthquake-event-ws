@@ -135,14 +135,19 @@ class FDSNEventWebService {
 		$eventid = $query->eventid;
 
 		// send caching headers
-		// default to 15 minutes
-		$CACHE_MAXAGE = 900;
-		$eventSeconds = substr($event->getTime(), 0, -3);
-		if ((time() - $eventSeconds) < 7*24*60*60) {
-			// if within past 7 days, only cache for 1 minute
+		$eventSeconds = intval($event->getTime() / 1000);
+		$eventAge = time() - $eventSeconds;
+		if ($eventAge <= 604800) {
+			// past 7 days, cache for 1 minute
 			$CACHE_MAXAGE = 60;
+		} else if ($eventAge <= 2592000) {
+			// past 30 days, cache for 15 minutes
+			$CACHE_MAXAGE = 900;
+		} else {
+			// older, cache for 1 day
+			$CACHE_MAXAGE = 86400;
 		}
-		include_once $APP_DIR . '/lib/cache.inc.php';
+		include $APP_DIR . '/lib/cache.inc.php';
 
 		$format = $query->format;
 		if ($format == 'geojson' && $query->callback !== null) {
