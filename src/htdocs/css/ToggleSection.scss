@@ -14,7 +14,6 @@ section.toggle-visible,
 /* Hide all children in a toggle element ... */
 .toggle > * {
 	display:none;
-	margin-left:5%;
 }
 
 /**
@@ -29,27 +28,25 @@ section.toggle-visible,
 .toggle > .toggle-control {
 	position:relative;
 	display:block;
-	margin:8px 0;
-	padding:4px 8px 3px 32px;
+	padding: 0 0 2px 32px;
 	cursor:pointer;
 	z-index:1;
 }
 
 /* Add the '+' symbol in front of the control element */
 .toggle > .toggle-control:before {
-	display:block;
-	position:absolute;
-	top:6px; left:6px;
-	width:18px; height:18px;
-	background-color:#FAFAFA;
-	border:1px solid #000;
-	text-align:center;
-	line-height:1.2;
-	content:'+';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1em;
+	border: 1px solid #000;
+	text-align: center;
+	content: '+';
+	font-family: monospace;
 }
 
 /* Switch to a '-' symbol when toggle is open */
 .toggle-visible > .toggle-control:before {
-	line-height:1.2;
 	content:'-';
 }
