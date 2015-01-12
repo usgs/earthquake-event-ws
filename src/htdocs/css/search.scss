@@ -1,48 +1,129 @@
 @import '../../../node_modules/hazdev-template/src/htdocs/site/earthquake/_variables';
-@import 'layout';
-@import 'n-up';   /* Provides .two-up and .three-up styles */
-@import 'fdsn-search';
-@import 'form';
+@import 'layout';   /* NESW layout styles for inputs */
+@import 'n-up';   /* .two-up and .three-up styles */
 
-@import 'ManagedModelView';
-@import 'ToggleSection';
+@import 'ManagedModelView';   /* geographic region summary/clear styles  */
+@import 'ToggleSection';   /* toggle-able sections styles */
 @import '/hazdev-webutils/src/mvc/ModalView.css';
 @import '../../../node_modules/hazdev-location-view/src/RegionView';
 @import '/leaflet/dist/leaflet.css';
 
+/* style form elements */
+label {
+	font-size: .8125em;
+	color: #777;
+}
+
+input[type="text"],
+input[type="number"] {
+	width: 100%;
+}
+
+/* style headers for different sections of form */
 h2[role="heading"] {
 	margin-left:$horizontal-spacing;
+	border-bottom: 1px solid #ddd;
+	padding: 0 0 0.5em;
 }
 
-.help {
-	margin:0;
+/* style header and footer sections */
+.header,
+.footer {
+	margin:1em 0 0;
+	background-color:#EEE;
+	padding:16px;
+}
+
+
+/* draw rectangle button */
+button.draw {
+	margin: 1em 0 0;
+	width: 100%;
+}
+
+/* help text styles */
+form .help {
+	margin: 0.5em 0 0;
 	color:#777;
 	font-size:.8em;
+	font-size:13px;
 }
 
+/* Hide output specfic options */
 .hidden {
 	display:none;
 }
 
-.button-as-link {
-	display:inline;
-	border:none;
-	background:none;
-	text-decoration:none;
-	margin:0;
-	padding:0;
-	font:normal 1em/1.5 'Arial';
-	cursor:pointer;
-	color:#00C;
-	text-decoration:underline;
+/* Indent sub-list for event type */
+.eqeventtype-list,
+.noneqeventtype-list {
+	margin-left: 2em;
 }
 
-.search-error {
-	display:none;
+
+/* style radio and checkbox lists */
+.label-checkbox {
+	line-height:2;
 }
-.show-errors .search-error {
+
+.no-style {
+  margin-top: 0;
+}
+
+ul.reviewstatus-list,
+ul.eventtype-list,
+ul.alertlevel-list,
+ul.catalog-list,
+ul.contributor-list,
+ul.producttype-list,
+ul.format-list,
+ul.orderby-list,
+ul.output-kml-list,
+ul.output-quakeml-list,
+ul.output-geojson-list {
+	margin-top: 1em;
+}
+
+/* region control dialog footer */
+.modal-dialog > .modal-footer {
+  line-height: 40px;
+  padding: 0.5em 1em;
+  background: #fff;
+  height: inherit;
+
+  button {
+    vertical-align:middle;
+  }
+}
+
+
+/* Output styles */
+.output-descriptor {
 	display:block;
+	color:#666;
+	font-size:.9em;
 }
-.show-errors input.error {
-	outline:2px solid #C10C0C;
+
+p.error {
+	color:#C10C0C;
+	font-weight:bold;
+}
+
+.label-checkbox {
+	display: block;
+	padding-left: 45px;
+	text-indent: -45px;
+}
+
+
+.regionview {
+	padding-bottom: 55px;
+}
+
+
+@media screen and (min-width: $breakpoint-stacking) {
+
+	.label-checkbox {
+		line-height:1.5;
+	}
 }
