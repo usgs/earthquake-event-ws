@@ -1,51 +1,33 @@
-.header,
-.footer {
-	display:block;
+/* Custom layout for regtangular region inputs */
+.region-square-details {
+  margin-left: -16px;
+
+  > li {
+    list-style:none;
+    display:block;
+    text-align:center;
+    width:50%;
+    padding-left: 16px;
+  }
+}
+
+.region-square-details > .region-square-details-north,
+.region-square-details > .region-square-details-south {
 	clear:left;
-	background-color:#EEE;
-	padding:16px;
+	margin:0 auto;
+	overflow: hidden; // reset block formatting context
 }
-
-.search-basic,
-.search-advanced,
-.search-output {
-	max-width:1344px;
-	line-height:1.3;
+.region-square-details-north > input,
+.region-square-details-south > input,
+.region-square-details-west > input,
+.region-square-details-east > input {
+	margin:0 auto;
 }
-
-.search-basic > h2,
-.search-advanced > h2,
-.search-output > h2 {
-	border-bottom:1px solid #333;
-	padding-left:8px;
+.region-square-details-east {
+	margin:0;
+	float:right;
 }
-
-.search-basic ul,
-.search-advanced ul,
-.search-output ul {
-	list-style:none;
-	padding:0;
-}
-
-.search-basic ul ul,
-.search-advanced ul ul,
-.search-output ul ul {
-	margin-left:16px;
-}
-
-.search-basic input[type="text"],
-.search-basic input[type="number"],
-.search-advanced input[type="text"],
-.search-advanced input[type="number"],
-.search-output input[type="text"],
-.search-output input[type="number"] {
-	width:60%;
-}
-
-section[role="group"] {
-	margin-top:16px;
-}
-
-section[role="group"]:last-child {
-	border-bottom:none;
+.region-square-details-west {
+	margin:0;
+	float:left;
 }
