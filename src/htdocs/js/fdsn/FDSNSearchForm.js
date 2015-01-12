@@ -643,7 +643,7 @@ define([
 
 			inputModel  = this.model.get(name).split(',');
 			classes = classes || [];
-			Util.addClass(list, name + '-list');
+			list.classList.add(name + '-list', 'no-style');
 			parentNode.removeChild(textInput);
 
 			for (i = 0, len = classes.length; i < len; i++) {
@@ -678,8 +678,7 @@ define([
 			    i, len;
 
 			inputModel = this.model.get('eventtype').split(',');
-			Util.addClass(list, 'eventtype-list');
-			// Util.addClass(list, 'two-up');
+			list.classList.add('eventtype-list', 'no-style');
 			parentNode.removeChild(textInput);
 
 			eventType = new EventTypeField({

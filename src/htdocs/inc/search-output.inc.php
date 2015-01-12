@@ -1,7 +1,7 @@
 <section class="one-of-two column" aria-labelledby="output-format">
 	<h3 id="output-format" class="label">Format</h3>
 
-	<ul class="format-list">
+	<ul class="no-style format-list">
 		<!-- Note: Map/List requires JS -->
 		<li>
 			<label for="output-format-csv" class="label-checkbox">
@@ -37,7 +37,7 @@
 			role="group" aria-labelledby="output-quakeml">
 	<h4 id="output-quakeml" class="label">QuakeML-Specific Options</h4>
 
-	<ul class="output-quakeml-list">
+	<ul class="no-style output-quakeml-list">
 		<li>
 			<label for="includeallorigins" class="label-checkbox">
 				<input id="includeallorigins" type="checkbox" value="true"
@@ -68,7 +68,7 @@
 			role="group" aria-labelledby="output-kml">
 	<h4 id="output-kml" class="label">KML-Specific Options</h4>
 
-	<ul class="output-kml-list">
+	<ul class="no-style output-kml-list">
 		<li>
 			<label for="kmlcolorby-age" class="label-checkbox">
 				<input id="kmlcolorby-age" type="radio" name="kmlcolorby"
@@ -83,7 +83,7 @@
 				Color by depth
 			</label>
 		</li>
-		<li style="margin-top:8px;">
+		<li>
 			<label for="kmlanimated" class="label-checkbox">
 				<input id="kmlanimated" type="checkbox" value="true"
 						name="kmlanimated"/>
@@ -97,7 +97,7 @@
 			role="group" aria-labelledby="output-geojson">
 	<h4 id="output-geojson" class="label">GeoJSON-Specific Options</h4>
 
-	<ul class="output-geojson-list">
+	<ul class="no-style output-geojson-list">
 		<li>
 			<label for="callback" class="label">Callback Option</label>
 			<input type="text" name="callback" id="callback"/>
@@ -115,7 +115,7 @@
 
 <section class="one-of-two column" aria-labelledby="output-orderby">
 	<h3 id="output-orderby" class="label">Order By</h3>
-	<ul class="orderby-list">
+	<ul class="no-style orderby-list">
 		<li>
 			<label for="orderby-time" class="label-checkbox">
 				<input id="orderby-time" type="radio" name="orderby"
@@ -130,7 +130,7 @@
 				Time - Oldest First
 			</label>
 		</li>
-		<li style="margin-top:8px;">
+		<li>
 			<label for="orderby-magnitude" class="label-checkbox">
 				<input id="orderby-magnitude" type="radio" name="orderby"
 						value="magnitude" aria-labelledby="output-orderby"/>
@@ -147,7 +147,7 @@
 	</ul>
 
 	<h3 class="label">Limit Results</h3>
-	<ul class="two-up">
+	<ul class="vertical no-style two-up">
 		<li>
 			<label for="limit" class="label">Number of Events</label>
 			<input type="number" step="any" name="limit" id="limit" min="1"

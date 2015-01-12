@@ -23,11 +23,11 @@ if (!isset($TEMPLATE)) {
 		id="fdsn-search-form" role="search">
 
 <header class="header" aria-label="Search form header">
-	<p class="help">
+	<small>
 		Search results are limited to
 		<?php echo number_format($MAX_SEARCH); ?> events. To get URL for a search,
 				click the search button, then copy the URL from the browser address bar.
-	</p>
+	</small>
 	<ul>
 		<li>
 			<a href="<?php echo $FDSN_HOST . $FDSN_PATH; ?>"

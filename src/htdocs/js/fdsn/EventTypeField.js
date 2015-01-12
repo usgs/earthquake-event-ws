@@ -33,14 +33,14 @@ define([
 						'<input type="checkbox" class="eqeventtype-control"/>',
 						'Earthquakes',
 					'</label>',
-					'<ul class="eqeventtype-list"></ul>',
+					'<ul class="eqeventtype-list no-style"></ul>',
 				'</li>',
 				'<li>',
 					'<label class="label-checkbox">',
 						'<input type="checkbox" class="noneqeventtype-control"/>',
 						'Non-Earthquakes',
 					'</label>',
-					'<ul class="noneqeventtype-list"></ul>',
+					'<ul class="noneqeventtype-list no-style"></ul>',
 				'</li>'
 			].join('');
 
