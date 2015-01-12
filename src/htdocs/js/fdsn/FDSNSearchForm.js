@@ -584,7 +584,7 @@ define([
 					form._enhanceField(data.contributors || [],
 							'contributor', form.formatter.formatContributor);
 					form._enhanceField(data.producttypes || [],
-							'producttype', form.formatter.formatProductType, ['two-up']);
+							'producttype', form.formatter.formatProductType);
 					form._enhanceEventType(data.eventtypes || []);
 
 					form._bindModelUpdate();
