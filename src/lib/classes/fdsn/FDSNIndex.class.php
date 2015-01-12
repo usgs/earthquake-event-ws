@@ -155,7 +155,9 @@ class FDSNIndex {
 					}
 				}
 
+				$row['event_type'] = str_replace('_',' ', $row['event_type']);
 				$event = $row;
+
 				if ($objects) {
 					$event = new EventSummary();
 					$event->eventIndexId = $row['eventid'];
