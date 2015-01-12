@@ -13,32 +13,30 @@
 <div class="one-of-two column">
 	<section aria-labelledby="datetime">
 		<h3 id="datetime" class="label">Date &amp; Time</h3>
-		<ul class="two-up">
-		<li>
-			<label for="starttime" class="label" id="datetime-starttime">
-				Start (UTC)
-			</label>
-			<input type="text" name="starttime" id="starttime"
-					placeholder="yyyy-mm-dd hh:mm:ss"
-					value="<?php print $starttime; ?>"
-					aria-labelledby="datetime datetime-starttime"/>
-		</li>
-
-		<li>
-			<label for="endtime" class="label" id="datetime-endtime">
-				End (UTC)
-			</label>
-			<input type="text" name="endtime" id="endtime"
-					placeholder="yyyy-mm-dd hh:mm:ss"
-					value="<?php print $endtime; ?>"
-					aria-labelledby="datetime datetime-endtime"/>
-		</li>
+		<ul class="vertical no-style">
+			<li>
+				<label for="starttime" class="label" id="datetime-starttime">
+					Start (UTC)
+				</label>
+				<input type="text" name="starttime" id="starttime"
+						placeholder="yyyy-mm-dd hh:mm:ss"
+						value="<?php print $starttime; ?>"
+						aria-labelledby="datetime datetime-starttime"/>
+			</li><li>
+				<label for="endtime" class="label" id="datetime-endtime">
+					End (UTC)
+				</label>
+				<input type="text" name="endtime" id="endtime"
+						placeholder="yyyy-mm-dd hh:mm:ss"
+						value="<?php print $endtime; ?>"
+						aria-labelledby="datetime datetime-endtime"/>
+			</li>
 		</ul>
 	</section>
 
 	<section aria-labelledby="magnitude">
 		<h3 id="magnitude" class="label">Magnitude</h3>
-		<ul class="two-up">
+		<ul class="vertical no-style two-up">
 			<li>
 				<label for="minmagnitude" class="label" id="magnitude-minmagnitude">
 					Minimum
@@ -46,8 +44,7 @@
 				<input type="number" step="any" name="minmagnitude" id="minmagnitude"
 						min="-1" max="10" step="0.1" value="6.0"
 						aria-labelledby="magnitude magnitude-minmagnitude"/>
-			</li>
-			<li>
+			</li><li>
 				<label for="maxmagnitude" class="label" id="magnitude-maxmagnitude">
 					Maximum
 				</label>
@@ -60,15 +57,13 @@
 
 	<section aria-labelledby="depth">
 		<h3 id="depth" class="label">Depth (km)</h3>
-
-		<ul class="two-up">
+		<ul class="vertical no-style two-up">
 			<li>
 				<label for="mindepth" class="label" id="depth-mindepth">Minimum</label>
 				<input type="number" step="any" name="mindepth" id="mindepth"
 						min="-100" max="1000" step="0.1"
 						aria-labelledby="depth depth-mindepth"/>
-			</li>
-			<li>
+			</li><li>
 				<label for="maxdepth" class="label" id="depth-maxdepth">Maximum</label>
 				<input type="number" step="any" name="maxdepth" id="maxdepth"
 						min="-100" max="1000" step="0.1"
@@ -81,7 +76,7 @@
 <div class="one-of-two column">
 	<section aria-labelledby="region">
 		<h3 id="region" class="label">Geographic Region</h3>
-		<p class="help region-description"></p>
+		<div class="region-description"></div>
 
 		<div class="fieldset" role="group" aria-labelledby="region-rectangle">
 			<h4 id="region-rectangle" class="label">Rectangle</h4>
@@ -92,7 +87,7 @@
 
 			<button type="button" class="draw orange">Draw Rectangle on Map</button>
 
-			<ul class="region-square-details">
+			<ul class="region-square-details no-style vertical">
 			<li class="region-square-details-north">
 				<label for="maxlatitude" class="label" id="rectangle-maxlatitude">
 					North
@@ -128,10 +123,13 @@
 
 		<div class="fieldset" role="group" aria-labelledby="region-circle">
 			<h4 id="region-circle" class="label">
-				Circle (or donut if specifying inner radius)
+				Circle/ Donut
 			</h4>
+			<p class="help">
+				Specify an inner radius to perform a donut search.
+			</p>
 
-			<ul class="two-up">
+			<ul class="vertical no-style two-up">
 				<li>
 					<label for="latitude" class="label" id="circle-latitude">
 						Center Latitude
