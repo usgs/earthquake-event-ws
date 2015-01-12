@@ -643,7 +643,9 @@ define([
 
 			inputModel  = this.model.get(name).split(',');
 			classes = classes || [];
-			list.classList.add(name + '-list', 'no-style');
+			list.classList.add(name + '-list');
+			// IE 11 bug, doesnt support multiple tokens
+			list.classList.add('no-style');
 			parentNode.removeChild(textInput);
 
 			for (i = 0, len = classes.length; i < len; i++) {
@@ -678,7 +680,9 @@ define([
 			    i, len;
 
 			inputModel = this.model.get('eventtype').split(',');
-			list.classList.add('eventtype-list', 'no-style');
+			list.classList.add('eventtype-list');
+			// IE 11 bug, doesnt support multiple tokens
+			list.classList.add('no-style');
 			parentNode.removeChild(textInput);
 
 			eventType = new EventTypeField({
