@@ -35,7 +35,8 @@ if (!isset($TEMPLATE)) {
 					Documents</a> section of the QuakeML website.
 			<a href="https://quake.ethz.ch/quakeml/Documents">
 				<img class="screenshot" src="images/screenshot_quakeml.png"
-						title="QuakeML UML class diagram" target="_blank" /></a>
+						title="QuakeML UML class diagram" alt="QuakeML UML class diagram"/>
+			</a>
 		</p>
 	</div>
 
