@@ -377,7 +377,7 @@ if (!isset($TEMPLATE)) {
 		<tr id="minlatitude">
 			<td><code>minlatitude</code></td>
 			<td>Decimal <span class="range">[-90,90] degrees</span></td>
-			<td>null</td>
+			<td>-90</td>
 			<td>
 				Limit to events with a latitude larger than the specified minimum.
 				<small>
@@ -388,7 +388,7 @@ if (!isset($TEMPLATE)) {
 		<tr id="minlongitude">
 			<td><code>minlongitude</code></td>
 			<td>Decimal <span class="range">[-360,360] degrees</span></td>
-			<td>null</td>
+			<td>-180</td>
 			<td>
 				Limit to events with a longitude larger than the specified minimum.
 				<small>
@@ -403,7 +403,7 @@ if (!isset($TEMPLATE)) {
 		<tr id="maxlatitude">
 			<td><code>maxlatitude</code></td>
 			<td>Decimal <span class="range">[-90,90] degrees</span></td>
-			<td>null</td>
+			<td>90</td>
 			<td>
 				Limit to events with a latitude smaller than the specified maximum.
 				<small>
@@ -414,7 +414,7 @@ if (!isset($TEMPLATE)) {
 		<tr id="maxlongitude">
 			<td><code>maxlongitude</code></td>
 			<td>Decimal <span class="range">[-360,360] degrees</span></td>
-			<td>null</td>
+			<td>180</td>
 			<td>
 				Limit to events with a longitude smaller than the specified maximum.
 				<small>
@@ -464,7 +464,7 @@ if (!isset($TEMPLATE)) {
 		<tr id="maxradius">
 			<td><code>maxradius</code></td>
 			<td>Decimal <span class="range">[0, 180] degrees</span></td>
-			<td>null</td>
+			<td>180</td>
 			<td>
 				Limit to events within the specified maximum number of degrees from the
 				geographic point defined by the latitude and longitude parameters.
@@ -478,7 +478,7 @@ if (!isset($TEMPLATE)) {
 		<tr id="maxradiuskm">
 			<td><code>maxradiuskm</code></td>
 			<td>Decimal <span class="range">[0, 20001.6] km</span></td>
-			<td>null</td>
+			<td>20001.6</td>
 			<td>
 				Limit to events within the specified maximum number of kilometers from
 				the geographic point defined by the latitude and longitude parameters.
@@ -492,7 +492,7 @@ if (!isset($TEMPLATE)) {
 		<tr id="minradius">
 			<td><code>minradius</code></td>
 			<td>Decimal <span class="range">[0, 180] degrees</span></td>
-			<td>null</td>
+			<td>0</td>
 			<td>
 				Limit to events further than the specified minimum number of degrees
 				from the geographic point defined by the latitude and longitude
@@ -507,7 +507,7 @@ if (!isset($TEMPLATE)) {
 		<tr id="minradiuskm">
 			<td><code>minradiuskm</code></td>
 			<td>Decimal <span class="range">[0, 20001.6] km</span></td>
-			<td>null</td>
+			<td>0</td>
 			<td>
 				Limit to events further than the specified minimum number of
 				kilometers from the geographic point defined by the latitude and
@@ -665,30 +665,30 @@ if (!isset($TEMPLATE)) {
 		<tr id="maxdepth">
 			<td><code>maxdepth</code></td>
 			<td>Decimal <span class="range">[-100, 1000] km</span></td>
-			<td>null</td>
+			<td>1000</td>
 			<td>Limit to events with depth less than the specified maximum.</td>
 		</tr>
 		<tr id="maxmagnitude">
 			<td><code>maxmagnitude</code></td>
-			<td>Decimal <span class="range">[-100, 1000] km</span></td>
+			<td>Decimal</td>
 			<td>null</td>
 			<td>Limit to events with a magnitude smaller than the specified maximum.</td>
 		</tr>
 		<tr id="mindepth">
 			<td><code>mindepth</code></td>
 			<td>Decimal <span class="range">[-100, 1000] km</span></td>
-			<td>null</td>
+			<td>-100</td>
 			<td>Limit to events with depth more than the specified minimum.</td>
 		</tr>
 		<tr id="minmagnitude">
 			<td><code>minmagnitude</code></td>
-			<td>Decimal <span class="range">[-100, 1000] km</span></td>
+			<td>Decimal</td>
 			<td>null</td>
 			<td>Limit to events with a magnitude larger than the specified minimum.</td>
 		</tr>
 		<tr id="offset">
 			<td><code>offset</code></td>
-			<td>Integer<span class="range">[1,&infin;)</span></td>
+			<td>Integer<span class="range">[1,&infin;]</span></td>
 			<td>1</td>
 			<td>Return results starting at the event count specified, starting at 1.</td>
 		</tr>
@@ -730,7 +730,7 @@ if (!isset($TEMPLATE)) {
 		<tr id="alertlevel">
 			<td><code>alertlevel</code></td>
 			<td>String</td>
-			<td>all</td>
+			<td>null</td>
 			<td>
 				Limit to events with a specific PAGER alert level. The allowed values
 				are:
@@ -771,7 +771,7 @@ if (!isset($TEMPLATE)) {
 				Limit to events of a specific type.
 
 				<small>
-					NOTE: &ldquo;earthquake&ldquo; will filter non-earthquake events.
+					NOTE: &ldquo;earthquake&rdquo; will filter non-earthquake events.
 				</small>
 			</td>
 		</tr>
@@ -803,7 +803,7 @@ if (!isset($TEMPLATE)) {
 		<tr id="kmlcolorby">
 			<td><code>kmlcolorby</code></td>
 			<td>String</td>
-			<td>"age"</td>
+			<td>age</td>
 			<td>
 				How earthquakes are colored. Accepted values are:
 
@@ -847,7 +847,7 @@ if (!isset($TEMPLATE)) {
 		</tr>
 		<tr id="maxsig">
 			<td><code>maxsig</code></td>
-			<td>Integer <span class="range">[0,12]</span></td>
+			<td>Integer</td>
 			<td>null</td>
 			<td>
 				Limit to events with no more than this significance.
@@ -863,7 +863,7 @@ if (!isset($TEMPLATE)) {
 		</tr>
 		<tr id="minfelt">
 			<td><code>minfelt</code></td>
-			<td>Integer<span class="range">[1,&infin;)</span></td>
+			<td>Integer<span class="range">[1,&infin;]</span></td>
 			<td>null</td>
 			<td>
 				Limit to events with this many DYFI responses.
@@ -879,7 +879,7 @@ if (!isset($TEMPLATE)) {
 		</tr>
 		<tr id="minsig">
 			<td><code>minsig</code></td>
-			<td>Integer<span class="range">[1,&infin;)</span></td>
+			<td>Integer</td>
 			<td>null</td>
 			<td>
 				Limit to events with no less than this significance.
