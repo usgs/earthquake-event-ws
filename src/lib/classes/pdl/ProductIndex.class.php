@@ -565,7 +565,7 @@ class ProductIndex {
 		$event->setOffset($eventRow[self::EVENT_SUMMARY_OFFSET]);
 		$event->setSignificance($eventRow[self::EVENT_SUMMARY_SIGNIFICANCE]);
 		$event->setStatus($eventRow[self::EVENT_STATUS]);
-		$event->setEventType($eventRow[self::EVENT_SUMMARY_EVENT_TYPE]);
+		$event->setEventType(str_replace('_', ' ', $eventRow[self::EVENT_SUMMARY_EVENT_TYPE]));
 		$event->setAzimuthalGap($eventRow[self::EVENT_SUMMARY_AZ_GAP]);
 		$event->setNumStationsUsed($eventRow[self::EVENT_SUMMARY_NUM_STATIONS_USED]);
 		$event->setMinimumDistance($eventRow[self::EVENT_SUMMARY_MINIMUM_DISTANCE]);
