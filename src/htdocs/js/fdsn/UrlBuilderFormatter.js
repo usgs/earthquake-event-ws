@@ -29,7 +29,7 @@ define([
 		'pr': 'PR - Red Sismica de Puerto Rico',
 		'pt': 'PT - Pacific Tsunami Warning Center',
 		'se': 'SE - Virginia Tech',
-		'us': 'US - National Earthquake Information Center',
+		'us': 'US - National Earthquake Information Center, PDE',
 		'uu': 'UU - University of Utah',
 		'uw': 'UW - University of Washington'
 	};
@@ -47,7 +47,7 @@ define([
 		'pr': 'PR - Red Sismica de Puerto Rico',
 		'pt': 'PT - Pacific Tsunami Warning Center',
 		'se': 'SE - Virginia Tech',
-		'us': 'US - National Earthquake Information Center',
+		'us': 'US - National Earthquake Information Center, PDE',
 		'uu': 'UU - University of Utah',
 		'uw': 'UW - University of Washington',
 		'atlas': 'ShakeMap Atlas',
