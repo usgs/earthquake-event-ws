@@ -140,8 +140,8 @@ if (!isset($TEMPLATE)) {
 		<ul>
 			<li><a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/count?format=geojson">
 					<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/count?format=geojson</a></li>
-			<li><a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/count?starttime=2014-01-01&endtime=2014-01-02">
-					<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/count?starttime=2014-01-01&endtime=2014-01-02</a></li>
+			<li><a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/count?starttime=2014-01-01&amp;endtime=2014-01-02">
+					<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/count?starttime=2014-01-01&amp;endtime=2014-01-02</a></li>
 		</ul>
 	</dd>
 	<dt>query</dt>
@@ -152,12 +152,12 @@ if (!isset($TEMPLATE)) {
 	<dd>
 		<ul class="examples">
 			<li>
-				<a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/query?format=geojson&starttime=2014-01-01&endtime=2014-01-02">
-						<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/query?format=geojson&starttime=2014-01-01&endtime=2014-01-02</a>
+				<a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/query?format=geojson&amp;starttime=2014-01-01&amp;endtime=2014-01-02">
+						<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/query?format=geojson&amp;starttime=2014-01-01&amp;endtime=2014-01-02</a>
 			</li>
 			<li>
-				<a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/query?format=xml&starttime=2014-01-01&endtime=2014-01-02&minmagnitude=5">
-						<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/query?format=xml&starttime=2014-01-01&endtime=2014-01-02&minmagnitude=5</a>
+				<a href="<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/query?format=xml&amp;starttime=2014-01-01&amp;endtime=2014-01-02&amp;minmagnitude=5">
+						<?php echo $HOST_URL_PREFIX . $FDSN_PATH; ?>/query?format=xml&amp;starttime=2014-01-01&amp;endtime=2014-01-02&amp;minmagnitude=5</a>
 			</li>
 		</ul>
 	</dd>
