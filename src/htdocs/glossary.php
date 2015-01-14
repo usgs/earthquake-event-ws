@@ -420,9 +420,11 @@ if (!isset($TEMPLATE)) {
 					<dt>Description</dt>
 					<dd>
 						Time when the event occurred. Times are reported in <em>
-						milliseconds</em> since the <abbr title="January 1, 1970">epoch
-						</abbr>. In certain output formats, the date is formatted for
-						readability.
+						milliseconds</em> since the epoch (
+						<code>1970-01-01T00:00:00.000Z</code>), and do not include
+						<a href="http://www.nist.gov/pml/div688/leapseconds.cfm">leap
+								seconds</a>.
+						In certain output formats, the date is formatted for readability.
 					</dd>
 				</dl>
 			</dd>
