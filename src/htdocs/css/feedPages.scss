@@ -1,21 +1,14 @@
-@import 'format';
-
 img.screenshot {
 	border:1px solid #999;
 	display:block;
 	position:relative;
-	margin:20px 0;
+	margin:1em 0 0;
 }
 
-a:hover img.screenshot {
-	border:1px solid #00f;
+dl.kml-description > dt {
+	margin: 1em 0 0;
 }
 
-dl.kml-description dt {
-	font-weight:bold;
-	margin-bottom:5px;
-}
-
-dl.kml-description dd {
-	margin-bottom:10px;
+pre > code > a {
+  word-wrap: normal;
 }

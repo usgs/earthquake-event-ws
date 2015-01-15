@@ -1,41 +1,35 @@
-#contents li {
-	display:block;
-	margin:0;
-}
-
-
+/* glossary styles */
 .typelist > dt {
-	color:#333;
-	font-weight:bold;
-}
+	color: #333;
+	font-size: 1.2em;
+	font-weight: bold;
 
-.typelist > dd > dl {
-	padding-left:16px;
-	padding-bottom:8px;
-	border-bottom:1px solid #EEE;
-	margin-bottom:8px;
+	padding-top: 1em;
+	border-top: 1px solid #ddd;
+	margin-top: 1em;
 }
 
 .typelist > dd > dl > dt {
-	margin-right:16px;
-	margin-top:2px;
-	color:#999;
-	font-weight:bold;
+	color: #999;
+	font-size: 0.8125em;
+	font-weight: 400;
+	margin-top: 1em;
 }
 
-.typelist > dd > dl > dd > dl > dt {
-	font-weight:bold;
-	margin-top:1em;
+.typelist > dd > dl > dd {
+	margin: 0;
 }
 
-.typelist dd.datatype,
-.monospace {
-	font-family:Monaco, Courier, monospace;
-	font-size:.9em;
+dd.datatype {
+	font-family: Monaco, Courier, monospace;
+	font-size: 0.9em;
 }
 
-h3 {
-	clear:both;
-	border-bottom:1px solid #000;
-	padding:0 0 5px 0;
+/* lists within <dd> elements */
+ul.attribute-list > li {
+	margin: 1em 0;
+
+	> em {
+		display: block;
+	}
 }

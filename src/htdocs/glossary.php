@@ -10,13 +10,13 @@ if (!isset($TEMPLATE)) {
 }
 ?>
 
-<div class="row right-to-left">
-	<section id="contents" class="column one-of-five">
+<div class="row">
+	<section id="contents" class="column one-of-two">
 		<h2>Event Terms</h2>
 		<ul>
 			<li><a href="#alert">alert</a></li>
-			<li><a href="#cdi">cdi</a><li>
-			<li><a href="#code">code</a><li>
+			<li><a href="#cdi">cdi</a></li>
+			<li><a href="#code">code</a></li>
 			<li><a href="#depth">depth</a></li>
 			<li><a href="#detail">detail</a></li>
 			<li><a href="#dmin">dmin</a></li>
@@ -44,7 +44,8 @@ if (!isset($TEMPLATE)) {
 			<li><a href="#updated">updated</a></li>
 			<li><a href="#url">url</a></li>
 		</ul>
-
+</section>
+<section class="column one-of-two">
 		<h2>Metadata Terms</h2>
 		<ul>
 			<li><a href="#metadata_api">api</a></li>
@@ -65,10 +66,12 @@ if (!isset($TEMPLATE)) {
 			<li><a href="#product_status">status</a></li>
 		</ul>
 	</section>
+</div>
 
-	<section class="column four-of-five">
+<div class="row">
+	<section class="column one-of-one">
 		<h2>Event Terms</h2>
-		<dl class="typelist">
+		<dl class="typelist vertical">
 			<dt id="alert">alert</dt>
 			<dd>
 				<dl>
@@ -510,7 +513,7 @@ if (!isset($TEMPLATE)) {
 		</dl>
 
 		<h2>Metadata Terms</h2>
-		<dl class="typelist">
+		<dl class="typelist vertical">
 			<dt id="metadata_api">api</dt>
 			<dd>
 				<dl>
@@ -586,7 +589,7 @@ if (!isset($TEMPLATE)) {
 		</dl>
 
 		<h2>Product Terms</h2>
-		<dl class="typelist">
+		<dl class="typelist vertical">
 			<dt id="product_content">content</dt>
 			<dd>
 				<dl>
@@ -595,28 +598,30 @@ if (!isset($TEMPLATE)) {
 					<dd>
 						A file or group of bytes associated with a product.
 
-						<dl>
-							<dt>contentType</dt>
-							<dd>String mime type of this content</dd>
-
-							<dt>lastModified</dt>
-							<dd>Millisecond timestamp when this content was modified.</dd>
-
-							<dt>length</dt>
-							<dd>Integer number of bytes in this content.</dd>
-
-							<dt>&lt;path&gt;</dt>
-							<dd>
+						<ul class="attribute-list">
+							<li>
+								<em>contentType</em>
+								String mime type of this content.
+							</li>
+							<li>
+								<em>lastModified</em>
+								Millisecond timestamp when this content was modified.
+							</li>
+							<li>
+								<em>length</em>
+								Integer number of bytes in this content.
+							</li>
+							<li>
+								<em>&lt;path&gt;</em>
 								String relative path within this product, frequently a filename.
-							</dd>
-
-							<dt>url</dt>
-							<dd>
+							</li>
+							<li>
+								<em>url</em>
 								Link to download this content.
 								When <code>&lt;path&gt;</code> is empty (""),
-									there will be <code>bytes</code> property with content inline.
-							</dd>
-						</dl>
+								there will be <code>bytes</code> property with content inline.
+							</li>
+						</ul>
 					</dd>
 				</dl>
 			</dd>
@@ -630,40 +635,36 @@ if (!isset($TEMPLATE)) {
 						Unique identifier for a specific version of a product.
 
 						The id is made of of these four attributes:
-						<dl>
-							<dt>source</dt>
-							<dd>
-								The product contributor, usually a
-								<a href="#net">network code</a>.
-							</dd>
 
-							<dt>type</dt>
-							<dd>
+						<ul class="attribute-list">
+							<li>
+								<em>source</em>
+								The product contributor, usually a <a href="#net">network code</a>.
+							</li>
+							<li>
+								<em>type</em>
 								The type of product.
 								See <a href="http://ehppdl1.cr.usgs.gov/userguide/products/"
 									>http://ehppdl1.cr.usgs.gov/userguide/products/</a>
 									for a list of product types.
-							</dd>
-
-							<dt>code</dt>
-							<dd>
+							</li>
+							<li>
+								<em>code</em>
 								A unique identifier from the product <code>source</code>, for
 								this <code>type</code> of product.
-							</dd>
-
-							<dt>updateTime</dt>
-							<dd>
+							</li>
+							<li>
+								<em>updateTime</em>
 								A millisecond timestamp that indicates when this version of the
 								product was created.
-								<p>
-									Two products with the same <code>source</code>,
-									<code>type</code>, and <code>code</code>, with different
-									<code>updateTime</code>s indicate different versions of the
-									same product. The latest updateTime for a product supersedes
-									any earlier updateTime for the same product.
-								</p>
-							</dd>
-						</dl>
+								<br />
+								Two products with the same <code>source</code>,
+								<code>type</code>, and <code>code</code>, with different
+								<code>updateTime</code>s indicate different versions of the
+								same product. The latest updateTime for a product supersedes
+								any earlier updateTime for the same product.
+							</li>
+						</ul>
 					</dd>
 				</dl>
 			</dd>
@@ -675,18 +676,19 @@ if (!isset($TEMPLATE)) {
 					<dt>Description</dt>
 					<dd>
 						Products have zero or more links, which consist of:
-						<dl>
-							<dt>&lt;relation&gt;</dt>
-							<dd>
-								Relation describes how the link is related to the product.
-							</dd>
 
-							<dt>href</dt>
-							<dd>
+						<ul class="attribute-list">
+							<li>
+								<em>&lt;relation&gt;</em>
+								Relation describes how the link is related to the product.
+							</li>
+							<li>
+								<em>href</em>
 								Link is a URI, and may be a URL or a URN depending on product
 								type and <code>relation</code>.
-							</dd>
-						</dl>
+							</li>
+						</ul>
+
 						Links vary depending on <a href="#product_id">product type</a>.
 					</dd>
 				</dl>
