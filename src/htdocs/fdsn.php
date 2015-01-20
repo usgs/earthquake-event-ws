@@ -131,7 +131,7 @@ if (!isset($TEMPLATE)) {
 	</dd>
 	<dt>count</dt>
 	<dd>
-		to perform a count on a data request. Count uses the same 
+		to perform a count on a data request. Count uses the same
 		<a href="#parameters">parameters</a> as the query method, and is
 		availablein these <a href="#format">formats</a>: plain text (default),
 		geojson, and xml.
