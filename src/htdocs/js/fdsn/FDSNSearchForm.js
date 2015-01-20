@@ -584,7 +584,7 @@ define([
 					form._enhanceField(data.contributors || [],
 							'contributor', form.formatter.formatContributor);
 					form._enhanceField(data.producttypes || [],
-							'producttype', form.formatter.formatProductType, ['two-up']);
+							'producttype', form.formatter.formatProductType);
 					form._enhanceEventType(data.eventtypes || []);
 
 					form._bindModelUpdate();
@@ -643,7 +643,9 @@ define([
 
 			inputModel  = this.model.get(name).split(',');
 			classes = classes || [];
-			Util.addClass(list, name + '-list');
+			list.classList.add(name + '-list');
+			// IE 11 bug, doesnt support multiple tokens
+			list.classList.add('no-style');
 			parentNode.removeChild(textInput);
 
 			for (i = 0, len = classes.length; i < len; i++) {
@@ -678,8 +680,9 @@ define([
 			    i, len;
 
 			inputModel = this.model.get('eventtype').split(',');
-			Util.addClass(list, 'eventtype-list');
-			// Util.addClass(list, 'two-up');
+			list.classList.add('eventtype-list');
+			// IE 11 bug, doesnt support multiple tokens
+			list.classList.add('no-style');
 			parentNode.removeChild(textInput);
 
 			eventType = new EventTypeField({

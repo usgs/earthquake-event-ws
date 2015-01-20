@@ -59,7 +59,7 @@ define([
 			var fieldName = null;
 
 			this._el.innerHTML = [
-				'<span class="managedmodelview-message">',
+				'<span class="managedmodelview-message help">',
 					this._options.clearedText,
 				'</span>',
 				'<span class="managedmodelview-control" style="display:none;">',

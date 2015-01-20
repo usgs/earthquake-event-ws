@@ -1,10 +1,10 @@
 .managedmodelview {
-	position:relative;
+  margin: 0.5em 0 0;
 }
 
 .managedmodelview-control {
-	position:absolute;
-	right:5px;
+  display: block;
+  font-size: 0.8125em;
 
 	color:#009;
 	text-decoration:underline;
