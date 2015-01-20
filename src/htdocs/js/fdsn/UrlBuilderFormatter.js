@@ -20,12 +20,12 @@ define([
 		'at': 'AT - Alaska Tsunami Warning Center',
 		'ci': 'CI - California Institute of Technology',
 		'hv': 'HV - Hawaiian Volcano Observatory',
+    'iscgem': 'ISC-GEM',
 		'ld': 'LD - Lamont-Doherty Cooperative Seismographic Network',
 		'mb': 'MB - Montana Bureau of Mines and Geology',
 		'nc': 'NC - Northern California Seismic System',
 		'nm': 'NM - St. Louis University',
 		'nn': 'NN - University of Nevada',
-		'pde': 'PDE - NEIC',
 		'pr': 'PR - Red Sismica de Puerto Rico',
 		'pt': 'PT - Pacific Tsunami Warning Center',
 		'se': 'SE - Virginia Tech',
@@ -34,7 +34,6 @@ define([
 		'uw': 'UW - University of Washington'
 	};
 	var KNOWN_CONTRIBUTORS = {
-		'pde': 'PDE - NEIC',
 		'ak': 'AK - Alaska Earthquake Information Center',
 		'at': 'AT - Alaska Tsunami Warning Center',
 		'ci': 'CI - California Institute of Technology',
