@@ -11,6 +11,12 @@ if (!isset($TEMPLATE)) {
 }
 ?>
 
+<h2>v1.0.18 <small>2015-01-20</small></h2>
+<ul>
+	<li>Change default expires for static resources to 1 day.</li>
+	<li>Replace event type underscore with spaces.</li>
+</ul>
+
 <h2>v1.0.17 <small>2014-12-16</small></h2>
 <ul>
 	<li>Added plain text feed format.</li>
