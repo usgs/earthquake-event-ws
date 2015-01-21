@@ -65,14 +65,5 @@ if ( ($server_port == 80 && $server_protocol == 'http://') || ($server_port == 4
 // by default searches and feeds are local
 $FDSN_HOST = '';
 $FEED_HOST = '';
-if (strpos($HOST_URL_PREFIX, 'earthquake.usgs.gov') !== FALSE) {
-	// on earthquake, searches are on comcat
-	$FDSN_HOST = 'http://comcat.cr.usgs.gov';
-}
-if (strpos($HOST_URL_PREFIX, 'comcat') !== FALSE) {
-	// on comcat, feeds are on earthquake
-	$FEED_HOST = 'http://earthquake.usgs.gov';
-}
-
 $FEED_URL = $FEED_HOST . $FEED_PATH;
 $FDSN_URL = $FDSN_HOST . $FDSN_PATH;
