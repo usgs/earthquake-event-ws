@@ -51,24 +51,6 @@ RewriteRule ^' . $SEARCH_PATH . '/(js|css|lib)/(.*) ' . $FEED_PATH .
 ## END: EQ Search URL Hijacking
 
 
-## DONT ALLOW SEARCH ON EARTHQUAKE, need new split architecture first.
-## split architecture routing should eliminate need for this section.
-
-RewriteCond %{HTTP_HOST} earthquake.usgs.gov
-RewriteRule ' . $FDSN_PATH . ' - [R=404,L]
-
-## END DONT ALLOW SEARCH ON EARTHQUAKE
-
-## DONT ALLOW FEEDS ON COMCAT, need new split architecture first.
-## split architecture routing should eliminate need for this section.
-
-RewriteCond %{HTTP_HOST} comcat.cr.usgs.gov
-# but allow images in feeds
-RewriteCond $1 !images
-RewriteRule ' . $FEED_PATH . '(.*) - [R=404,L]
-
-## END DONT ALLOW FEEDS ON COMCAT
-
 # forbid cache busting query strings
 RewriteCond %{QUERY_STRING} ^.+
 RewriteRule ^' . $FEED_PATH . '/(summary|detail)/.* - [F,L]
