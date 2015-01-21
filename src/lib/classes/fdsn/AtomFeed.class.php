@@ -66,8 +66,9 @@ class AtomFeed extends AbstractFeed {
 		$link = '';
 		if ($event !== null && strpos($event['producttypes'], ',cap,') !== FALSE) {
 			$link = '<link rel="alternate" type="application/cap+xml" href="' .
-					self::getEventDetailLink($event['eventSource'] . $event['eventSourceCode']) .
-					'.cap"/>';
+					self::getEventDetailFeed($event['eventSource'] . $event['eventSourceCode'],
+							'cap') .
+					'"/>';
 		}
 		return $link;
 	}
