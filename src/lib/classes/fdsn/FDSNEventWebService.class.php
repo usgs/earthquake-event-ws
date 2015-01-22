@@ -474,7 +474,7 @@ class FDSNEventWebService {
 			} else if ($name ==='updatedafter') {
 				$query->updatedafter = $this->validateTime($name, $value);
 			} else if ($name ==='format') {
-				$query->format = $this->validateEnumerated($name, $value, array('quakeml','geojson','csv','kml', 'kmlraw', 'xml', 'text'));
+				$query->format = $this->validateEnumerated($name, $value, array('quakeml','geojson','csv','kml', 'kmlraw', 'xml', 'text', 'cap'));
 			} else if ($name ==='callback') {
 				$query->callback = $value;
 			} else if ($name ==='eventtype') {
@@ -627,6 +627,10 @@ class FDSNEventWebService {
 			if ($query->includesuperseded) {
 				$this->error(self::BAD_REQUEST, 'Cannot use includesuperseded parameter unless format is geojson.');
 			}
+		}
+
+		if ($query->format === 'cap' && $query->eventid === null) {
+			$this->error(self::BAD_REQUEST, 'Cannot use cap format without eventid parameter.');
 		}
 
 		// validate detail specific parameters
