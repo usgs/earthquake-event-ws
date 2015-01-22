@@ -11,6 +11,8 @@ if( $event == null ) {
 	return;
 }
 
+global $storage;
+
 
 $content = null;
 

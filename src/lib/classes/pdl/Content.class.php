@@ -54,6 +54,8 @@ class Content {
 			return $this->bytes;
 		} else if (file_exists($this->file)) {
 			return file_get_contents($this->file);
+		} else if ($this->url !== null) {
+			return file_get_contents($this->url);
 		} else {
 			return null;
 		}

@@ -20,7 +20,7 @@ try {
 
 
 	if (!in_array($format, array('quakeml', 'geojson', 'geojsonp', 'kml',
-				'kmlraw', 'xml'))) {
+				'kmlraw', 'xml', 'cap'))) {
 		throw new Exception('Unknown format "' . $format . '"');
 	}
 
