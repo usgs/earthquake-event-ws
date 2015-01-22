@@ -291,6 +291,12 @@ class FDSNEventWebService {
 	}
 
 	public function error($code, $message, $isDetail = false) {
+		global $APP_DIR;
+
+		// only cache errors for 60 seconds
+		$CACHE_MAXAGE = 60;
+		include $APP_DIR . '/lib/cache.inc.php';
+
 		if ($this->redirect !== false && $isDetail &&
 				($code === self::NO_DATA || $code === self::NOT_FOUND)) {
 
