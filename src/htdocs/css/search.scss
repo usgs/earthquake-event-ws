@@ -5,7 +5,7 @@
 @import 'ManagedModelView';   /* geographic region summary/clear styles  */
 @import 'ToggleSection';   /* toggle-able sections styles */
 @import '/hazdev-webutils/src/mvc/ModalView.css';
-@import '../../../node_modules/hazdev-location-view/src/RegionView';
+@import '../../../node_modules/hazdev-location-view/src/locationview/RegionView';
 @import '/leaflet/dist/leaflet.css';
 
 /* style form elements */

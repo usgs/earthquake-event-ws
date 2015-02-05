@@ -2,6 +2,7 @@
 
 var config = require('./config');
 
+/* do we need this?? */
 var replace = {
   dist: {
     src: [
@@ -14,10 +15,10 @@ var replace = {
       //   from: 'requirejs/require.js',
       //   to: 'lib/requirejs/require.js'
       // },
-      {
-        from: 'html5shiv-dist/html5shiv.js',
-        to: 'lib/html5shiv/html5shiv.js'
-      }
+      // {
+      //   from: 'html5shiv-dist/html5shiv.js',
+      //   to: 'lib/html5shiv/html5shiv.js'
+      // }
     ]
   }
 };

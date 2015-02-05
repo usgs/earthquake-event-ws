@@ -1,40 +1,16 @@
-require.config({
-	baseUrl: '..',
-	paths: {
-		mocha: 'mocha/mocha',
-		chai: 'chai/chai',
-		sinon: 'sinon/pkg/sinon'
-	},
-	shim: {
-		mocha: {
-			exports: 'mocha'
-		},
-		chai: {
-			deps: ['mocha'],
-			exports: 'chai'
-		},
-		sinon: {
-			exports: 'sinon'
-		}
-	}
-});
+/* global mocha */
 
-require([
-	'mocha',
-], function (
-	mocha
-) {
+(function () {
 	'use strict';
 
 	mocha.setup('bdd');
+	mocha.reporter('html');
 
-	// Add each test class here as they are implemented
-	require([
-	], function () {
-		if (window.mochaPhantomJS) {
-			window.mochaPhantomJS.run();
-		} else {
-			mocha.run();
-		}
-	});
-});
+
+	if (window.mochaPhantomJS) {
+		window.mochaPhantomJS.run();
+	} else {
+		mocha.run();
+	}
+
+})(this);

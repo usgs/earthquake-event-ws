@@ -9,7 +9,7 @@ var browserify = {
       paths: [
         process.cwd() + '/' + config.src,
         process.cwd() + '/node_modules',
-        process.cwd() + '/node_modules/hazdev-location-view',
+        process.cwd() + '/node_modules/hazdev-location-view/src',
         process.cwd() + '/node_modules/hazdev-webutils/src'
       ]
     }
@@ -24,8 +24,8 @@ var browserify = {
     }
   },
   test: {
-    src: config.test + '/index.js',
-    dest: config.build + '/' + config.test + '/index.js',
+    src: config.test + '/test.js',
+    dest: config.build + '/' + config.test + '/test.js',
     options: {
       external: [
         'js/search'

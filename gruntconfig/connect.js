@@ -102,17 +102,15 @@ var mountPHP = function (dir, options) {
 var iniConfig = require('ini').parse(require('fs')
         .readFileSync('./src/conf/config.ini', 'utf-8'));
 
-var connect= {
+var connect = {
   options: {
     hostname: 'localhost'
   },
   build: {
     options: {
-      base: [
-        config.build + '/' + config.src + '/htdocs'
-      ],
+      base: config.build + '/' + config.src + '/htdocs',
       livereload: true,
-      open: 'http://localhost:8000/' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
+      open: 'http://localhost:8000' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
       port: 8000,
       middleware: function (connect, options) {
         return [
@@ -128,9 +126,7 @@ var connect= {
   },
   test: {
     options: {
-      base: [
-        config.build + '/' + config.test
-      ],
+      base: config.build + '/' + config.test,
       open: 'http://localhost:8001/test.html',
       port: 8001,
       middleware: function (connect, options) {
@@ -147,11 +143,9 @@ var connect= {
   },
   dist: {
     options: {
-      base: [
-        config.dist + '/htdocs'
-      ],
+      base: config.dist + '/htdocs',
       keepalive: true,
-      open: 'http://localhost:8002/' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
+      open: 'http://localhost:8002' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
       port: 8002,
       middleware: function (connect, options) {
         return [

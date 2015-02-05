@@ -1,833 +1,819 @@
-/* global define, window, document */
-define([
-	'fdsn/FDSNModel',
-	'fdsn/FDSNModelValidator',
-	'fdsn/SelectField',
-	'fdsn/EventTypeField',
-	'fdsn/UrlBuilderFormatter',
-	'fdsn/ManagedModelView',
-	'fdsn/ToggleSection',
-	'fdsn/UrlManager',
-	'util/Util',
-	'util/Xhr',
-	'mvc/ModalView',
-	'locationview/RegionView'
-], function (
-	FDSNModel,
-	FDSNModelValidator,
-	SelectField,
-	EventTypeField,
-	UrlBuilderFormatter,
-	ManagedModelView,
-	ToggleSection,
-	UrlManager,
-	Util,
-	Xhr,
-	ModalView,
-	RegionView
-) {
-	'use strict';
+/* global window, document */
 
-	// Static counter to increment each time a JSONP callback is created. This
-	// allows unique callback to be generated and executed in global scope
-	//var CALLBACK_COUNT = 0;
+'use strict';
 
-	var FDSNSearchForm = function (options) {
-		// Pull conf options off the options and store as instance variables
-		this._el = options.el || document.createElement('div');
-		this.fieldDataUrl = options.fieldDataUrl || null;
-		this.model = options.model || new FDSNModel();
+var FDSNModel = require('./FDSNModel'),
+		FDSNModelValidator = require('./FDSNModelValidator'),
+		SelectField = require('./SelectField'),
+		EventTypeField = require('./EventTypeField'),
+		UrlBuilderFormatter = require('./UrlBuilderFormatter'),
+		ManagedModelView = require('./ManagedModelView'),
+		ToggleSection = require('./ToggleSection'),
+		UrlManager = require('./UrlManager'),
+		Util = require('util/Util'),
+		Xhr = require('util/Xhr'),
+		ModalView = require('mvc/ModalView'),
+		RegionView = require('locationview/RegionView');
 
-		if (options.hasOwnProperty('fdsnHost')) {
-			this.fdsnHost = options.fdsnHost;
+// Static counter to increment each time a JSONP callback is created. This
+// allows unique callback to be generated and executed in global scope
+//var CALLBACK_COUNT = 0;
+
+var FDSNSearchForm = function (options) {
+	// Pull conf options off the options and store as instance variables
+	this._el = options.el || document.createElement('div');
+	this.fieldDataUrl = options.fieldDataUrl || null;
+	this.model = options.model || new FDSNModel();
+
+	if (options.hasOwnProperty('fdsnHost')) {
+		this.fdsnHost = options.fdsnHost;
+	} else {
+		this.fdsnHost = 'http://' + window.location.host;
+	}
+
+	if (options.hasOwnProperty('fdsnPath')) {
+		this.fdsnPath = options.fdsnPath;
+	} else {
+		this.fdsnPath = '/fdsnws/event/1';
+	}
+
+	// Formatting field display text (catalogs, contributors, etc...)
+	this.formatter = new UrlBuilderFormatter();
+
+	// Validator to auto-validate the model
+	this.validator = new FDSNModelValidator({model: this.model});
+
+	// Initialize the FDSNSearchForm
+	this._initialize();
+};
+
+FDSNSearchForm.prototype = {
+	// --------------------------------------------------
+	// Public methods
+	// --------------------------------------------------
+
+	// --------------------------------------------------
+	// Event handlers
+	// --------------------------------------------------
+
+	onSubmit: function () {
+		var form = this;
+
+		if (this.validator.isValid()) {
+			window.location = this._serializeFormToUrl();
 		} else {
-			this.fdsnHost = 'http://' + window.location.host;
-		}
 
-		if (options.hasOwnProperty('fdsnPath')) {
-			this.fdsnPath = options.fdsnPath;
-		} else {
-			this.fdsnPath = '/fdsnws/event/1';
-		}
+			// Some errors during submission, show them
+			Util.addClass(this._el, 'show-errors');
 
-		// Formatting field display text (catalogs, contributors, etc...)
-		this.formatter = new UrlBuilderFormatter();
+			(new ModalView(this._formatSearchErrors(
+					this.validator.getErrors()), {
+				title: 'Form Errors',
+				classes: ['modal-error'],
+				buttons: [
+					{
+						text: 'Edit Search',
+						title: 'Go back to form and edit search',
+						callback: function (evt, dialog) {
+							var error = form._el.querySelector('input.error'),
+							    fields = null,
+							    field = null,
+							    section = null,
+							    i = 0, len = 0;
 
-		// Validator to auto-validate the model
-		this.validator = new FDSNModelValidator({model: this.model});
+							dialog.hide();
 
-		// Initialize the FDSNSearchForm
-		this._initialize();
-	};
+							// Make error fields visible (might be in collapsed secion)
+							fields = Array.prototype.slice.call(
+									form._el.querySelectorAll('.error'), 0);
+							len = fields.length;
 
-	FDSNSearchForm.prototype = {
-		// --------------------------------------------------
-		// Public methods
-		// --------------------------------------------------
+							for (i = 0; i < len; i++) {
+								field = fields[i];
+								section = Util.getParentNode(field, 'SECTION', form._el);
 
-		// --------------------------------------------------
-		// Event handlers
-		// --------------------------------------------------
-
-		onSubmit: function () {
-			var form = this;
-
-			if (this.validator.isValid()) {
-				window.location = this._serializeFormToUrl();
-			} else {
-
-				// Some errors during submission, show them
-				Util.addClass(this._el, 'show-errors');
-
-				(new ModalView(this._formatSearchErrors(
-						this.validator.getErrors()), {
-					title: 'Form Errors',
-					classes: ['modal-error'],
-					buttons: [
-						{
-							text: 'Edit Search',
-							title: 'Go back to form and edit search',
-							callback: function (evt, dialog) {
-								var error = form._el.querySelector('input.error'),
-								    fields = null,
-								    field = null,
-								    section = null,
-								    i = 0, len = 0;
-
-								dialog.hide();
-
-								// Make error fields visible (might be in collapsed secion)
-								fields = Array.prototype.slice.call(
-										form._el.querySelectorAll('.error'), 0);
-								len = fields.length;
-
-								for (i = 0; i < len; i++) {
-									field = fields[i];
-									section = Util.getParentNode(field, 'SECTION', form._el);
-
-									if (section !== null && Util.hasClass(section, 'toggle') &&
-											!Util.hasClass(section, 'toggle-visible')) {
-										Util.addClass(section, 'toggle-visible');
-									}
+								if (section !== null && Util.hasClass(section, 'toggle') &&
+										!Util.hasClass(section, 'toggle-visible')) {
+									Util.addClass(section, 'toggle-visible');
 								}
+							}
 
-								// Focus first error field
-								error.focus();
-							},
-						}
-					]
-				})).show();
+							// Focus first error field
+							error.focus();
+						},
+					}
+				]
+			})).show();
+		}
+	},
+
+	onModelChange: function () {
+		var fields = this._el.querySelectorAll('.error'),
+		    searchError = this._el.querySelector('.search-error'),
+		    i = 0,
+		    len = fields.length;
+
+		// Clear any previously marked error fields
+		for (; i < len; i++) {
+			Util.removeClass(fields.item(i), 'error');
+		}
+
+		if (!this.validator.isValid()) {
+			searchError.innerHTML =
+				this._formatSearchErrors(this.validator.getErrors());
+		} else {
+			searchError.innerHTML = '';
+			Util.removeClass(this._el, 'show-errors');
+		}
+	},
+
+	onModelFormatChange: function () {
+		var format = this.model.get('format'),
+		    fmtMap = null,
+		    text = null;
+
+		fmtMap = {
+				maplist: 'Map &amp; List',
+				csv: 'CSV',
+				kml: 'KML',
+				quakeml: 'QuakeML',
+				geojson: 'GeoJSON'
+			};
+
+		text = (fmtMap.hasOwnProperty(format)) ? fmtMap[format] : format;
+
+		this._el.querySelector('.output-descriptor').innerHTML =
+				'Output Format: ' + text;
+	},
+
+	// --------------------------------------------------
+	// "Private" methods
+	// --------------------------------------------------
+
+	/**
+	 * Initializes the form.
+	 *
+	 */
+	_initialize: function () {
+		this._enableToggleFields();
+
+		this._enableRegionControl();
+		this._enableOutputDetailsToggle();
+
+		this._bindModel();
+		this._addSubmitHandler();
+
+		this._fetchFieldData();
+	},
+
+	_formatSearchErrors: function (errors) {
+		var errorMarkup = [],
+		    fields = null,
+		    field = null,
+		    key = null,
+		    message = null,
+		    i = null;
+
+		for (key in errors) {
+			errorMarkup.push('<li>', key, '<ul>');
+			for (message in errors[key]) {
+				errorMarkup.push('<li>', message, '</li>');
+
+				// Mark the field in the UI
+				fields = errors[key][message];
+				for (i = 0; i < fields.length; i++) {
+					field = this._el.querySelector('#' + fields[i]);
+					if (field !== null) {
+						Util.addClass(field, 'error');
+					}
+				}
 			}
-		},
+			errorMarkup.push('</ul></li>');
 
-		onModelChange: function () {
-			var fields = this._el.querySelectorAll('.error'),
-			    searchError = this._el.querySelector('.search-error'),
-			    i = 0,
-			    len = fields.length;
+		}
 
-			// Clear any previously marked error fields
-			for (; i < len; i++) {
-				Util.removeClass(fields.item(i), 'error');
-			}
+		return [
+			'<p class="error">',
+				'The current combination of search parameters contains one or ',
+				'more errors.',
+			'</p>',
+			'<ul class="search-errors">', errorMarkup.join(''), '</ul>'
+		].join('');
+	},
 
-			if (!this.validator.isValid()) {
-				searchError.innerHTML =
-					this._formatSearchErrors(this.validator.getErrors());
-			} else {
-				searchError.innerHTML = '';
-				Util.removeClass(this._el, 'show-errors');
-			}
-		},
-
-		onModelFormatChange: function () {
-			var format = this.model.get('format'),
-			    fmtMap = null,
-			    text = null;
-
-			fmtMap = {
-					maplist: 'Map &amp; List',
-					csv: 'CSV',
-					kml: 'KML',
-					quakeml: 'QuakeML',
-					geojson: 'GeoJSON'
-				};
-
-			text = (fmtMap.hasOwnProperty(format)) ? fmtMap[format] : format;
-
-			this._el.querySelector('.output-descriptor').innerHTML =
-					'Output Format: ' + text;
-		},
+	_trimSearch: function (params) {
 
 		// --------------------------------------------------
-		// "Private" methods
+		// Not errors, but clear these out for clean searches
 		// --------------------------------------------------
 
-		/**
-		 * Initializes the form.
-		 *
-		 */
-		_initialize: function () {
-			this._enableToggleFields();
-
-			this._enableRegionControl();
-			this._enableOutputDetailsToggle();
-
-			this._bindModel();
-			this._addSubmitHandler();
-
-			this._fetchFieldData();
-		},
-
-		_formatSearchErrors: function (errors) {
-			var errorMarkup = [],
-			    fields = null,
-			    field = null,
-			    key = null,
-			    message = null,
-			    i = null;
-
-			for (key in errors) {
-				errorMarkup.push('<li>', key, '<ul>');
-				for (message in errors[key]) {
-					errorMarkup.push('<li>', message, '</li>');
-
-					// Mark the field in the UI
-					fields = errors[key][message];
-					for (i = 0; i < fields.length; i++) {
-						field = this._el.querySelector('#' + fields[i]);
-						if (field !== null) {
-							Util.addClass(field, 'error');
-						}
-					}
-				}
-				errorMarkup.push('</ul></li>');
-
+		if (params.format !== 'kml') {
+			if (params.hasOwnProperty('kmlcolorby')) {
+				// Not an error, but strip from serialized data
+				delete params.kmlcolorby;
 			}
-
-			return [
-				'<p class="error">',
-					'The current combination of search parameters contains one or ',
-					'more errors.',
-				'</p>',
-				'<ul class="search-errors">', errorMarkup.join(''), '</ul>'
-			].join('');
-		},
-
-		_trimSearch: function (params) {
-
-			// --------------------------------------------------
-			// Not errors, but clear these out for clean searches
-			// --------------------------------------------------
-
-			if (params.format !== 'kml') {
-				if (params.hasOwnProperty('kmlcolorby')) {
-					// Not an error, but strip from serialized data
-					delete params.kmlcolorby;
-				}
-				if (params.hasOwnProperty('kmlanimated')) {
-					// Not an error, but strip from serialized data
-					delete params.kmlanimated;
-				}
+			if (params.hasOwnProperty('kmlanimated')) {
+				// Not an error, but strip from serialized data
+				delete params.kmlanimated;
 			}
+		}
 
-			if (params.format !== 'quakeml') {
-				if (params.hasOwnProperty('includeallorigins')) {
-					delete params.includeallorigins;
-				}
-				if (params.hasOwnProperty('includeallmagnitudes')) {
-					delete params.includeallmagnitudes;
-				}
-				// TODO :: Implement includearrivals
-				//if (params.hasOwnProperty('includearrivals')) {
-					//delete params.includearrivals;
-				//}
+		if (params.format !== 'quakeml') {
+			if (params.hasOwnProperty('includeallorigins')) {
+				delete params.includeallorigins;
 			}
-
-			if (params.format !== 'geojson') {
-				if (params.hasOwnProperty('callback')) {
-					delete params.callback;
-				}
-				if (params.hasOwnProperty('jsonerror')) {
-					delete params.jsonerror;
-				}
+			if (params.hasOwnProperty('includeallmagnitudes')) {
+				delete params.includeallmagnitudes;
 			}
-
-			return params;
-		},
-
-		_serializeFormToUrl: function () {
-			var url = this.fdsnHost + this.fdsnPath + '/query',
-			    search = this._trimSearch(this.model.getNonEmpty()),
-			    maplistsort = 'newest', searchsort = this.model.get('orderby'),
-					mapposition = [[], []],
-			    searchString = [], key = null,
-			    format = search.format;
-
-			delete search.format;
-
-			if (format === 'maplist') {
-				// TODO :: Streamline this mapping
-				if (searchsort === 'time-asc') {
-					maplistsort = 'oldest';
-				} else if (searchsort === 'magnitude') {
-					maplistsort = 'largest';
-				} else if (searchsort === 'magnitude-asc') {
-					maplistsort = 'smallest';
-				}
-
-				// Set map position based on search extent, or use full world
-				// TODO :: Parse cirle extent as well
-				if (search.hasOwnProperty('minlatitude')) {
-					mapposition[0].push(parseFloat(search.minlatitude));
-				} else {
-					mapposition[0].push(-85.0);
-				}
-
-				if (search.hasOwnProperty('minlongitude')) {
-					mapposition[0].push(parseFloat(search.minlongitude));
-				} else {
-					mapposition[0].push(0.0);
-				}
-
-				if (search.hasOwnProperty('maxlatitude')) {
-					mapposition[1].push(parseFloat(search.maxlatitude));
-				} else {
-					mapposition[1].push(85.0);
-				}
-
-				if (search.hasOwnProperty('maxlongitude')) {
-					mapposition[1].push(parseFloat(search.maxlongitude));
-				} else {
-					mapposition[1].push(360.0);
-				}
-
-
-				url = window.location.protocol + '//' + window.location.host +
-						'/earthquakes/map/#' + window.escape(UrlManager.parseSettings({
-							viewModes: {help: false, list: true, map: true, settings: false},
-							sort: maplistsort,
-							mapposition: mapposition
-						}, {
-							id: '' + (new Date()).getTime(),
-							name: 'Search Results',
-							isSearch: true,
-							params: search
-						}).substring(1));
-
-			} else {
-
-				for (key in search) {
-					if (search.hasOwnProperty(key)) {
-						searchString.push(key + '=' + search[key]);
-					}
-				}
-
-				url += '.' + format + '?' + searchString.join('&');
-			}
-
-			return url;
-		},
-
-		_bindModel: function () {
-			var nonEmptyParams = null, parsedUrl = null;
-
-			this.model.on('change', this.onModelChange, this);
-			this.model.on('change:format', this.onModelFormatChange, this);
-
-			// Bind the form fields to the model
-			this._bindInput('starttime');
-			this._bindInput('endtime');
-
-			this._bindInput('minmagnitude');
-			this._bindInput('maxmagnitude');
-
-			this._bindInput('maxlatitude');
-			this._bindInput('minlongitude');
-			this._bindInput('maxlongitude');
-			this._bindInput('minlatitude');
-
-			this._bindInput('latitude');
-			this._bindInput('longitude');
-			this._bindInput('minradiuskm');
-			this._bindInput('maxradiuskm');
-
-
-			this._bindInput('mindepth');
-			this._bindInput('maxdepth');
-
-			this._bindInput('mingap');
-			this._bindInput('maxgap');
-
-			this._bindRadio('reviewstatus');
-			// TODO :: Conform magnitude type to FDSN spec
-			//this._bindInput('magnitudetype');
-			this._bindInput('eventtype');
-
-			this._bindInput('minsig');
-			this._bindInput('maxsig');
-
-			this._bindRadio('alertlevel');
-
-			this._bindInput('minmmi');
-			this._bindInput('maxmmi');
-
-			this._bindInput('mincdi');
-			this._bindInput('maxcdi');
-			this._bindInput('minfelt');
-
-			this._bindInput('catalog');
-			this._bindInput('contributor');
-			this._bindInput('producttype');
-
-
-			this._bindRadio('format');
-			this._bindRadio('output-quakeml');
-			this._bindRadio('output-kml');
-
-			this._bindRadio('orderby');
-
-			this._bindInput('callback');
-			this._bindInput('limit');
-			this._bindInput('offset');
-
-
-			if (window.location.hash !== '') {
-				// Update the model with information from the hash
-				parsedUrl = UrlManager.parseUrl();
-				parsedUrl = parsedUrl.search || {};
-				parsedUrl = parsedUrl.params || null;
-
-				// If parsing a hash, that contains an existing search
-				// want to clear default values (if not specified)
-				if (parsedUrl !== null) {
-					if (!parsedUrl.hasOwnProperty('starttime')) {
-						parsedUrl.starttime = '';
-					}
-					if (!parsedUrl.hasOwnProperty('endtime')) {
-						parsedUrl.endtime = '';
-					}
-					if (!parsedUrl.hasOwnProperty('minmagnitude')) {
-						parsedUrl.minmagnitude = '';
-					}
-
-					this.model.setAll(parsedUrl);
-				}
-			}
-
-			// Expand collapsed sections if any of their parameters are set
-			nonEmptyParams = this.model.getNonEmpty();
-			// TODO :: Conform magnitude type to FDSN spec
-			//if (nonEmptyParams.hasOwnProperty('magnitudetype')) {
-				//Util.addClass(this._el.querySelector('#magtype').parentNode,
-						//'toggle-visible');
+			// TODO :: Implement includearrivals
+			//if (params.hasOwnProperty('includearrivals')) {
+				//delete params.includearrivals;
 			//}
+		}
 
-			if (nonEmptyParams.hasOwnProperty('minsig') ||
-					nonEmptyParams.hasOwnProperty('maxsig') ||
-					nonEmptyParams.hasOwnProperty('alertlevel') ||
-					nonEmptyParams.hasOwnProperty('minmmi') ||
-					nonEmptyParams.hasOwnProperty('maxmmi') ||
-					nonEmptyParams.hasOwnProperty('mincdi') ||
-					nonEmptyParams.hasOwnProperty('maxcdi') ||
-					nonEmptyParams.hasOwnProperty('minfelt')) {
-				Util.addClass(this._el.querySelector('#impact').parentNode,
-						'toggle-visible');
+		if (params.format !== 'geojson') {
+			if (params.hasOwnProperty('callback')) {
+				delete params.callback;
+			}
+			if (params.hasOwnProperty('jsonerror')) {
+				delete params.jsonerror;
+			}
+		}
+
+		return params;
+	},
+
+	_serializeFormToUrl: function () {
+		var url = this.fdsnHost + this.fdsnPath + '/query',
+		    search = this._trimSearch(this.model.getNonEmpty()),
+		    maplistsort = 'newest', searchsort = this.model.get('orderby'),
+				mapposition = [[], []],
+		    searchString = [], key = null,
+		    format = search.format;
+
+		delete search.format;
+
+		if (format === 'maplist') {
+			// TODO :: Streamline this mapping
+			if (searchsort === 'time-asc') {
+				maplistsort = 'oldest';
+			} else if (searchsort === 'magnitude') {
+				maplistsort = 'largest';
+			} else if (searchsort === 'magnitude-asc') {
+				maplistsort = 'smallest';
 			}
 
-		},
-
-		_bindModelUpdate: function () {
-			var nonEmptyParams = null;
-
-			this._bindRadio('eventtype');
-
-			this._bindRadio('catalog');
-			this._bindRadio('contributor');
-			this._bindRadio('producttype');
-
-			// Expand collapsed sections if any of their parameters are set
-			nonEmptyParams = this.model.getNonEmpty();
-
-			if (nonEmptyParams.hasOwnProperty('eventtype')) {
-				Util.addClass(this._el.querySelector('#evttype').parentNode,
-						'toggle-visible');
+			// Set map position based on search extent, or use full world
+			// TODO :: Parse cirle extent as well
+			if (search.hasOwnProperty('minlatitude')) {
+				mapposition[0].push(parseFloat(search.minlatitude));
+			} else {
+				mapposition[0].push(-85.0);
 			}
-			if (nonEmptyParams.hasOwnProperty('catalog')) {
-				Util.addClass(this._el.querySelector('#cat').parentNode,
-						'toggle-visible');
+
+			if (search.hasOwnProperty('minlongitude')) {
+				mapposition[0].push(parseFloat(search.minlongitude));
+			} else {
+				mapposition[0].push(0.0);
 			}
-			if (nonEmptyParams.hasOwnProperty('contributor')) {
-				Util.addClass(this._el.querySelector('#contrib').parentNode,
-						'toggle-visible');
+
+			if (search.hasOwnProperty('maxlatitude')) {
+				mapposition[1].push(parseFloat(search.maxlatitude));
+			} else {
+				mapposition[1].push(85.0);
 			}
-			if (nonEmptyParams.hasOwnProperty('producttype')) {
-				Util.addClass(this._el.querySelector('#prodtype').parentNode,
-						'toggle-visible');
+
+			if (search.hasOwnProperty('maxlongitude')) {
+				mapposition[1].push(parseFloat(search.maxlongitude));
+			} else {
+				mapposition[1].push(360.0);
 			}
-		},
 
-		_bindInput: function (inputId) {
-			var form = this,
-			    eventName = 'change:' + inputId,
-			    input = this._el.querySelector('#' + inputId),
-			    onModelChange = null, onViewChange = null;
 
-			onModelChange = function (newValue) {
-				input.value = newValue;
-			};
+			url = window.location.protocol + '//' + window.location.host +
+					'/earthquakes/map/#' + window.escape(UrlManager.parseSettings({
+						viewModes: {help: false, list: true, map: true, settings: false},
+						sort: maplistsort,
+						mapposition: mapposition
+					}, {
+						id: '' + (new Date()).getTime(),
+						name: 'Search Results',
+						isSearch: true,
+						params: search
+					}).substring(1));
 
-			onViewChange = function () {
-				var o = {};
-				o[inputId] = input.value;
+		} else {
 
-				form.model.set(o);
-			};
+			for (key in search) {
+				if (search.hasOwnProperty(key)) {
+					searchString.push(key + '=' + search[key]);
+				}
+			}
 
-			// Update the view when the model changes
-			this.model.on(eventName, onModelChange, this);
+			url += '.' + format + '?' + searchString.join('&');
+		}
 
-			// Update the model when the view changes
-			Util.addEvent(input, 'change', onViewChange);
+		return url;
+	},
 
-			// Update the model with value in the form
-			onViewChange();
-		},
+	_bindModel: function () {
+		var nonEmptyParams = null, parsedUrl = null;
 
-		_bindRadio: function (inputId) {
-			var form = this,
-			    eventName = 'change:' + inputId,
-			    list = this._el.querySelector('.' + inputId + '-list'),
+		this.model.on('change', this.onModelChange, this);
+		this.model.on('change:format', this.onModelFormatChange, this);
+
+		// Bind the form fields to the model
+		this._bindInput('starttime');
+		this._bindInput('endtime');
+
+		this._bindInput('minmagnitude');
+		this._bindInput('maxmagnitude');
+
+		this._bindInput('maxlatitude');
+		this._bindInput('minlongitude');
+		this._bindInput('maxlongitude');
+		this._bindInput('minlatitude');
+
+		this._bindInput('latitude');
+		this._bindInput('longitude');
+		this._bindInput('minradiuskm');
+		this._bindInput('maxradiuskm');
+
+
+		this._bindInput('mindepth');
+		this._bindInput('maxdepth');
+
+		this._bindInput('mingap');
+		this._bindInput('maxgap');
+
+		this._bindRadio('reviewstatus');
+		// TODO :: Conform magnitude type to FDSN spec
+		//this._bindInput('magnitudetype');
+		this._bindInput('eventtype');
+
+		this._bindInput('minsig');
+		this._bindInput('maxsig');
+
+		this._bindRadio('alertlevel');
+
+		this._bindInput('minmmi');
+		this._bindInput('maxmmi');
+
+		this._bindInput('mincdi');
+		this._bindInput('maxcdi');
+		this._bindInput('minfelt');
+
+		this._bindInput('catalog');
+		this._bindInput('contributor');
+		this._bindInput('producttype');
+
+
+		this._bindRadio('format');
+		this._bindRadio('output-quakeml');
+		this._bindRadio('output-kml');
+
+		this._bindRadio('orderby');
+
+		this._bindInput('callback');
+		this._bindInput('limit');
+		this._bindInput('offset');
+
+
+		if (window.location.hash !== '') {
+			// Update the model with information from the hash
+			parsedUrl = UrlManager.parseUrl();
+			parsedUrl = parsedUrl.search || {};
+			parsedUrl = parsedUrl.params || null;
+
+			// If parsing a hash, that contains an existing search
+			// want to clear default values (if not specified)
+			if (parsedUrl !== null) {
+				if (!parsedUrl.hasOwnProperty('starttime')) {
+					parsedUrl.starttime = '';
+				}
+				if (!parsedUrl.hasOwnProperty('endtime')) {
+					parsedUrl.endtime = '';
+				}
+				if (!parsedUrl.hasOwnProperty('minmagnitude')) {
+					parsedUrl.minmagnitude = '';
+				}
+
+				this.model.setAll(parsedUrl);
+			}
+		}
+
+		// Expand collapsed sections if any of their parameters are set
+		nonEmptyParams = this.model.getNonEmpty();
+		// TODO :: Conform magnitude type to FDSN spec
+		//if (nonEmptyParams.hasOwnProperty('magnitudetype')) {
+			//Util.addClass(this._el.querySelector('#magtype').parentNode,
+					//'toggle-visible');
+		//}
+
+		if (nonEmptyParams.hasOwnProperty('minsig') ||
+				nonEmptyParams.hasOwnProperty('maxsig') ||
+				nonEmptyParams.hasOwnProperty('alertlevel') ||
+				nonEmptyParams.hasOwnProperty('minmmi') ||
+				nonEmptyParams.hasOwnProperty('maxmmi') ||
+				nonEmptyParams.hasOwnProperty('mincdi') ||
+				nonEmptyParams.hasOwnProperty('maxcdi') ||
+				nonEmptyParams.hasOwnProperty('minfelt')) {
+			Util.addClass(this._el.querySelector('#impact').parentNode,
+					'toggle-visible');
+		}
+
+	},
+
+	_bindModelUpdate: function () {
+		var nonEmptyParams = null;
+
+		this._bindRadio('eventtype');
+
+		this._bindRadio('catalog');
+		this._bindRadio('contributor');
+		this._bindRadio('producttype');
+
+		// Expand collapsed sections if any of their parameters are set
+		nonEmptyParams = this.model.getNonEmpty();
+
+		if (nonEmptyParams.hasOwnProperty('eventtype')) {
+			Util.addClass(this._el.querySelector('#evttype').parentNode,
+					'toggle-visible');
+		}
+		if (nonEmptyParams.hasOwnProperty('catalog')) {
+			Util.addClass(this._el.querySelector('#cat').parentNode,
+					'toggle-visible');
+		}
+		if (nonEmptyParams.hasOwnProperty('contributor')) {
+			Util.addClass(this._el.querySelector('#contrib').parentNode,
+					'toggle-visible');
+		}
+		if (nonEmptyParams.hasOwnProperty('producttype')) {
+			Util.addClass(this._el.querySelector('#prodtype').parentNode,
+					'toggle-visible');
+		}
+	},
+
+	_bindInput: function (inputId) {
+		var form = this,
+		    eventName = 'change:' + inputId,
+		    input = this._el.querySelector('#' + inputId),
+		    onModelChange = null, onViewChange = null;
+
+		onModelChange = function (newValue) {
+			input.value = newValue;
+		};
+
+		onViewChange = function () {
+			var o = {};
+			o[inputId] = input.value;
+
+			form.model.set(o);
+		};
+
+		// Update the view when the model changes
+		this.model.on(eventName, onModelChange, this);
+
+		// Update the model when the view changes
+		Util.addEvent(input, 'change', onViewChange);
+
+		// Update the model with value in the form
+		onViewChange();
+	},
+
+	_bindRadio: function (inputId) {
+		var form = this,
+		    eventName = 'change:' + inputId,
+		    list = this._el.querySelector('.' + inputId + '-list'),
+		    inputs = list.querySelectorAll('input'),
+		    input = null, i = 0, numInputs = inputs.length,
+		    onModelChange = null, onViewChange = null;
+
+
+		onModelChange = function (newValue) {
+			var values = newValue.split(','), // TODO :: Handle commas in values
+			    numValues = values.length,
 			    inputs = list.querySelectorAll('input'),
-			    input = null, i = 0, numInputs = inputs.length,
-			    onModelChange = null, onViewChange = null;
+			    numInputs = inputs.length,
+			    i = 0, j = 0, input = null;
 
-
-			onModelChange = function (newValue) {
-				var values = newValue.split(','), // TODO :: Handle commas in values
-				    numValues = values.length,
-				    inputs = list.querySelectorAll('input'),
-				    numInputs = inputs.length,
-				    i = 0, j = 0, input = null;
-
-				for (; i < numInputs; i++) {
-					input = inputs.item(i);
-
-					for (j = 0; j < numValues; j++) {
-						/* jshint eqeqeq: false */
-						if (input.value == values[j]) {
-							input.checked = true;
-							break;
-						}
-						/* jshint eqeqeq: true */
-					}
-				}
-
-			};
-
-			onViewChange = function () {
-				var values = {}, valueName = null, input = null,
-				    inputs = list.querySelectorAll('input'),
-				    numInputs = inputs.length,
-				    i = 0, key = null;
-
-				for (; i < numInputs; i++) {
-					input = inputs.item(i);
-					valueName = input.getAttribute('name');
-
-					// Skip unnamed inputs. These are UI convenience controls
-					if (valueName) {
-						if (!values.hasOwnProperty(valueName)) {
-							values[valueName] = [];
-						}
-
-						if (input.checked) {
-							values[valueName].push(input.value);
-						}
-					}
-
-				}
-
-				for (key in values) {
-					if (values.hasOwnProperty(key)) {
-						values[key] = values[key].join(',');
-					}
-				}
-
-				form.model.set(values);
-			};
-
-			// Update the view when the model changes
-			this.model.on(eventName, onModelChange, this);
-
-			// Update the model when the view changes
 			for (; i < numInputs; i++) {
 				input = inputs.item(i);
-				// Only radios and checkboxes here
-				if (input.type === 'checkbox' || input.type === 'radio') {
-					Util.addEvent(inputs.item(i), 'change', onViewChange);
+
+				for (j = 0; j < numValues; j++) {
+					/* jshint eqeqeq: false */
+					if (input.value == values[j]) {
+						input.checked = true;
+						break;
+					}
+					/* jshint eqeqeq: true */
 				}
 			}
 
-			// Update model with current information in form
-			onViewChange();
-		},
+		};
 
-		_fetchFieldData: function () {
-			var form = this;
+		onViewChange = function () {
+			var values = {}, valueName = null, input = null,
+			    inputs = list.querySelectorAll('input'),
+			    numInputs = inputs.length,
+			    i = 0, key = null;
 
-			Xhr.ajax({
-				url: this.fieldDataUrl,
-				success: function (data) {
-					form._enhanceField(data.catalogs || [],
-							'catalog', form.formatter.formatCatalog);
-					form._enhanceField(data.contributors || [],
-							'contributor', form.formatter.formatContributor);
-					form._enhanceField(data.producttypes || [],
-							'producttype', form.formatter.formatProductType);
-					form._enhanceEventType(data.eventtypes || []);
+			for (; i < numInputs; i++) {
+				input = inputs.item(i);
+				valueName = input.getAttribute('name');
 
-					form._bindModelUpdate();
+				// Skip unnamed inputs. These are UI convenience controls
+				if (valueName) {
+					if (!values.hasOwnProperty(valueName)) {
+						values[valueName] = [];
+					}
+
+					if (input.checked) {
+						values[valueName].push(input.value);
+					}
 				}
-			});
-		},
 
-		/**
-		 * Looks for all toggle-able elements in the form and makes them as such.
-		 *
-		 */
-		_enableToggleFields: function () {
-			var toggles = this._el.querySelectorAll('.toggle-control'),
-			    i = 0, len = toggles.length,
-			    t = null, s = null;
-
-			for (; i < len; i++) {
-				t = toggles[i];
-				s = t.parentNode;
-
-				new ToggleSection({control: t, section: s});
-			}
-		},
-
-
-		_addSubmitHandler: function () {
-			var form = this;
-
-			// Prevent early submission through <enter> key
-			Util.addEvent(this._el, 'keydown', function (evt) {
-				var code = evt.keyCode || evt.charCode;
-				if (code === 13 && this.id !== 'fdsn-submit') {
-					evt.preventDefault();
-					return false;
-				}
-			});
-
-			// Add event handler for form submission
-			Util.addEvent(this._el, 'submit', (function () {
-				return function (evt) {
-					form.onSubmit();
-					evt.preventDefault();
-					return false;
-				};
-			})(this));
-		},
-
-		_enhanceField: function (fields, name, format, classes) {
-			var textInput = this._el.querySelector('#' + name),
-			    parentNode = textInput.parentNode,
-			    list = parentNode.appendChild(document.createElement('ul')),
-			    inputModel,
-			    element,
-			    selectField,
-			    i, len;
-
-			inputModel  = this.model.get(name).split(',');
-			classes = classes || [];
-			list.classList.add(name + '-list');
-			// IE 11 bug, doesnt support multiple tokens
-			list.classList.add('no-style');
-			parentNode.removeChild(textInput);
-
-			for (i = 0, len = classes.length; i < len; i++) {
-				Util.addClass(list, classes[i]);
 			}
 
-			selectField = new SelectField({
-				el: list,
-				id: name,
-				fields: fields,
-				type: 'radio',
-				formatDisplay: format
-			});
-
-			len = inputModel.length;
-			for (i = 0; i < len; i++) {
-				element = this._el.querySelector('#' +
-					selectField._getFieldId(inputModel[i]));
-				if (element !== null) {
-					element.checked = true;
+			for (key in values) {
+				if (values.hasOwnProperty(key)) {
+					values[key] = values[key].join(',');
 				}
 			}
-		},
 
-		_enhanceEventType: function (fields) {
-			var textInput = this._el.querySelector('#eventtype'),
-			    parentNode = textInput.parentNode,
-			    list = parentNode.appendChild(document.createElement('ul')),
-			    inputModel,
-			    element,
-			    eventType,
-			    i, len;
+			form.model.set(values);
+		};
 
-			inputModel = this.model.get('eventtype').split(',');
-			list.classList.add('eventtype-list');
-			// IE 11 bug, doesnt support multiple tokens
-			list.classList.add('no-style');
-			parentNode.removeChild(textInput);
+		// Update the view when the model changes
+		this.model.on(eventName, onModelChange, this);
 
-			eventType = new EventTypeField({
-				el: list,
-				id: 'eventtype',
-				fields: fields,
-				type: 'checkbox',
-				formatDisplay: this.formatter.formatEventType
-			});
-
-			len = inputModel.length;
-			for (i = 0; i < len; i++) {
-				element = this._el.querySelector('#' +
-						eventType._getFieldId(inputModel[i]));
-				if (element !== null) {
-					element.checked = true;
-				}
+		// Update the model when the view changes
+		for (; i < numInputs; i++) {
+			input = inputs.item(i);
+			// Only radios and checkboxes here
+			if (input.type === 'checkbox' || input.type === 'radio') {
+				Util.addEvent(inputs.item(i), 'change', onViewChange);
 			}
-		},
-
-		_enableRegionControl: function () {
-			var drawRectangleButton = this._el.querySelector('.draw'),
-			    maxLatitude = document.querySelector('#maxlatitude'),
-			    minLatitude = document.querySelector('#minlatitude'),
-			    maxLongitude = document.querySelector('#maxlongitude'),
-			    minLongitude = document.querySelector('#minlongitude'),
-			    regionView,
-			    _onRegionCallback,
-			    _model;
-
-			_model = this.model;
-
-			this._regionControl = new ManagedModelView({
-				clearedText: 'Currently searching entire world',
-				filledText: 'Currently searching custom region',
-				controlText: 'Clear Region',
-				el: this._el.querySelector('.region-description'),
-				model: _model,
-				fields: {
-					'maxlatitude': '',
-					'minlatitude': '',
-					'maxlongitude': '',
-					'minlongitude': '',
-					'latitude': '',
-					'longitude': '',
-					'minradiuskm': '',
-					'maxradiuskm': ''
-				}
-			});
-
-			// set form values on callback from regionview
-			_onRegionCallback = function (region) {
-				_model.set({
-					maxlatitude: region.get('north'),
-					minlatitude: region.get('south'),
-					maxlongitude: region.get('east'),
-					minlongitude: region.get('west')
-				});
-			};
-
-			// Initialize RegionView
-			regionView = new RegionView({
-				onRegionCallback: _onRegionCallback
-			});
-
-			// Add rectangle controls for drawing on map
-			drawRectangleButton.addEventListener('click', function () {
-				var region = null,
-				    north,
-				    south,
-				    east,
-				    west;
-
-				north = (maxLatitude.value === '') ? null : parseFloat(maxLatitude.value);
-				south = (minLatitude.value === '') ? null : parseFloat(minLatitude.value);
-				east = (maxLongitude.value === '') ? null : parseFloat(maxLongitude.value);
-				west = (minLongitude.value === '') ? null : parseFloat(minLongitude.value);
-
-				if (north === null &&south === null && east === null && west === null ) {
-					regionView.show({region: null});
-				} else {
-					region = {
-						north: north,
-						south: south,
-						east:  east,
-						west:  west
-					};
-					regionView.show({region: region});
-				}
-			});
-		},
-
-		_enableOutputDetailsToggle: function () {
-			var list = this._el.querySelector('.format-list'),
-			    map = document.createElement('li'),
-			    csv = this._el.querySelector('#output-format-csv'),
-			    kml = this._el.querySelector('#output-format-kml'),
-			    quakeml = this._el.querySelector('#output-format-quakeml'),
-			    geojson = this._el.querySelector('#output-format-geojson'),
-			    kmlD = this._el.querySelector('#output-format-kml-details'),
-			    quakemlD = this._el.querySelector('#output-format-quakeml-details'),
-			    geojsonD = this._el.querySelector('#output-format-geojson-details'),
-			    handler = null;
-
-			/* jshint -W015 */
-			map.innerHTML = [
-				'<label for="output-format-maplist" class="label-checkbox">',
-					'<input id="output-format-maplist" type="radio" name="format" ',
-							'value="maplist" checked/> ',
-					'Map &amp; List',
-				'</label>'
-			].join('');
-			/* jshint +W015 */
-			list.insertBefore(map, list.firstChild);
-
-
-			handler = function () {
-				if (kml.checked) {
-					Util.removeClass(kmlD, 'hidden');
-					Util.addClass(quakemlD, 'hidden');
-					Util.addClass(geojsonD, 'hidden');
-				} else if (quakeml.checked) {
-					Util.addClass(kmlD, 'hidden');
-					Util.removeClass(quakemlD, 'hidden');
-					Util.addClass(geojsonD, 'hidden');
-				} else if (geojson.checked) {
-					Util.addClass(kmlD, 'hidden');
-					Util.addClass(quakemlD, 'hidden');
-					Util.removeClass(geojsonD, 'hidden');
-				} else {
-					Util.addClass(kmlD, 'hidden');
-					Util.addClass(quakemlD, 'hidden');
-					Util.addClass(geojsonD, 'hidden');
-				}
-			};
-
-			Util.addEvent(map.querySelector('input'), 'change', handler);
-			Util.addEvent(csv, 'change', handler);
-			Util.addEvent(kml, 'change', handler);
-			Util.addEvent(quakeml, 'change', handler);
-			Util.addEvent(geojson, 'change', handler);
-
-			handler(); // Ensure proper visibility of output format details
 		}
-	};
 
-	return FDSNSearchForm;
-});
+		// Update model with current information in form
+		onViewChange();
+	},
+
+	_fetchFieldData: function () {
+		var form = this;
+
+		Xhr.ajax({
+			url: this.fieldDataUrl,
+			success: function (data) {
+				form._enhanceField(data.catalogs || [],
+						'catalog', form.formatter.formatCatalog);
+				form._enhanceField(data.contributors || [],
+						'contributor', form.formatter.formatContributor);
+				form._enhanceField(data.producttypes || [],
+						'producttype', form.formatter.formatProductType);
+				form._enhanceEventType(data.eventtypes || []);
+
+				form._bindModelUpdate();
+			}
+		});
+	},
+
+	/**
+	 * Looks for all toggle-able elements in the form and makes them as such.
+	 *
+	 */
+	_enableToggleFields: function () {
+		var toggles = this._el.querySelectorAll('.toggle-control'),
+		    i = 0, len = toggles.length,
+		    t = null, s = null;
+
+		for (; i < len; i++) {
+			t = toggles[i];
+			s = t.parentNode;
+
+			new ToggleSection({control: t, section: s});
+		}
+	},
+
+
+	_addSubmitHandler: function () {
+		var form = this;
+
+		// Prevent early submission through <enter> key
+		Util.addEvent(this._el, 'keydown', function (evt) {
+			var code = evt.keyCode || evt.charCode;
+			if (code === 13 && this.id !== 'fdsn-submit') {
+				evt.preventDefault();
+				return false;
+			}
+		});
+
+		// Add event handler for form submission
+		Util.addEvent(this._el, 'submit', (function () {
+			return function (evt) {
+				form.onSubmit();
+				evt.preventDefault();
+				return false;
+			};
+		})(this));
+	},
+
+	_enhanceField: function (fields, name, format, classes) {
+		var textInput = this._el.querySelector('#' + name),
+		    parentNode = textInput.parentNode,
+		    list = parentNode.appendChild(document.createElement('ul')),
+		    inputModel,
+		    element,
+		    selectField,
+		    i, len;
+
+		inputModel  = this.model.get(name).split(',');
+		classes = classes || [];
+		list.classList.add(name + '-list');
+		// IE 11 bug, doesnt support multiple tokens
+		list.classList.add('no-style');
+		parentNode.removeChild(textInput);
+
+		for (i = 0, len = classes.length; i < len; i++) {
+			Util.addClass(list, classes[i]);
+		}
+
+		selectField = new SelectField({
+			el: list,
+			id: name,
+			fields: fields,
+			type: 'radio',
+			formatDisplay: format
+		});
+
+		len = inputModel.length;
+		for (i = 0; i < len; i++) {
+			element = this._el.querySelector('#' +
+				selectField._getFieldId(inputModel[i]));
+			if (element !== null) {
+				element.checked = true;
+			}
+		}
+	},
+
+	_enhanceEventType: function (fields) {
+		var textInput = this._el.querySelector('#eventtype'),
+		    parentNode = textInput.parentNode,
+		    list = parentNode.appendChild(document.createElement('ul')),
+		    inputModel,
+		    element,
+		    eventType,
+		    i, len;
+
+		inputModel = this.model.get('eventtype').split(',');
+		list.classList.add('eventtype-list');
+		// IE 11 bug, doesnt support multiple tokens
+		list.classList.add('no-style');
+		parentNode.removeChild(textInput);
+
+		eventType = new EventTypeField({
+			el: list,
+			id: 'eventtype',
+			fields: fields,
+			type: 'checkbox',
+			formatDisplay: this.formatter.formatEventType
+		});
+
+		len = inputModel.length;
+		for (i = 0; i < len; i++) {
+			element = this._el.querySelector('#' +
+					eventType._getFieldId(inputModel[i]));
+			if (element !== null) {
+				element.checked = true;
+			}
+		}
+	},
+
+	_enableRegionControl: function () {
+		var drawRectangleButton = this._el.querySelector('.draw'),
+		    maxLatitude = document.querySelector('#maxlatitude'),
+		    minLatitude = document.querySelector('#minlatitude'),
+		    maxLongitude = document.querySelector('#maxlongitude'),
+		    minLongitude = document.querySelector('#minlongitude'),
+		    regionView,
+		    _onRegionCallback,
+		    _model;
+
+		_model = this.model;
+
+		this._regionControl = new ManagedModelView({
+			clearedText: 'Currently searching entire world',
+			filledText: 'Currently searching custom region',
+			controlText: 'Clear Region',
+			el: this._el.querySelector('.region-description'),
+			model: _model,
+			fields: {
+				'maxlatitude': '',
+				'minlatitude': '',
+				'maxlongitude': '',
+				'minlongitude': '',
+				'latitude': '',
+				'longitude': '',
+				'minradiuskm': '',
+				'maxradiuskm': ''
+			}
+		});
+
+		// set form values on callback from regionview
+		_onRegionCallback = function (region) {
+			_model.set({
+				maxlatitude: region.get('north'),
+				minlatitude: region.get('south'),
+				maxlongitude: region.get('east'),
+				minlongitude: region.get('west')
+			});
+		};
+
+		// Initialize RegionView
+		regionView = new RegionView({
+			onRegionCallback: _onRegionCallback
+		});
+
+		// Add rectangle controls for drawing on map
+		drawRectangleButton.addEventListener('click', function () {
+			var region = null,
+			    north,
+			    south,
+			    east,
+			    west;
+
+			north = (maxLatitude.value === '') ? null : parseFloat(maxLatitude.value);
+			south = (minLatitude.value === '') ? null : parseFloat(minLatitude.value);
+			east = (maxLongitude.value === '') ? null : parseFloat(maxLongitude.value);
+			west = (minLongitude.value === '') ? null : parseFloat(minLongitude.value);
+
+			if (north === null &&south === null && east === null && west === null ) {
+				regionView.show({region: null});
+			} else {
+				region = {
+					north: north,
+					south: south,
+					east:  east,
+					west:  west
+				};
+				regionView.show({region: region});
+			}
+		});
+	},
+
+	_enableOutputDetailsToggle: function () {
+		var list = this._el.querySelector('.format-list'),
+		    map = document.createElement('li'),
+		    csv = this._el.querySelector('#output-format-csv'),
+		    kml = this._el.querySelector('#output-format-kml'),
+		    quakeml = this._el.querySelector('#output-format-quakeml'),
+		    geojson = this._el.querySelector('#output-format-geojson'),
+		    kmlD = this._el.querySelector('#output-format-kml-details'),
+		    quakemlD = this._el.querySelector('#output-format-quakeml-details'),
+		    geojsonD = this._el.querySelector('#output-format-geojson-details'),
+		    handler = null;
+
+		/* jshint -W015 */
+		map.innerHTML = [
+			'<label for="output-format-maplist" class="label-checkbox">',
+				'<input id="output-format-maplist" type="radio" name="format" ',
+						'value="maplist" checked/> ',
+				'Map &amp; List',
+			'</label>'
+		].join('');
+		/* jshint +W015 */
+		list.insertBefore(map, list.firstChild);
+
+
+		handler = function () {
+			if (kml.checked) {
+				Util.removeClass(kmlD, 'hidden');
+				Util.addClass(quakemlD, 'hidden');
+				Util.addClass(geojsonD, 'hidden');
+			} else if (quakeml.checked) {
+				Util.addClass(kmlD, 'hidden');
+				Util.removeClass(quakemlD, 'hidden');
+				Util.addClass(geojsonD, 'hidden');
+			} else if (geojson.checked) {
+				Util.addClass(kmlD, 'hidden');
+				Util.addClass(quakemlD, 'hidden');
+				Util.removeClass(geojsonD, 'hidden');
+			} else {
+				Util.addClass(kmlD, 'hidden');
+				Util.addClass(quakemlD, 'hidden');
+				Util.addClass(geojsonD, 'hidden');
+			}
+		};
+
+		Util.addEvent(map.querySelector('input'), 'change', handler);
+		Util.addEvent(csv, 'change', handler);
+		Util.addEvent(kml, 'change', handler);
+		Util.addEvent(quakeml, 'change', handler);
+		Util.addEvent(geojson, 'change', handler);
+
+		handler(); // Ensure proper visibility of output format details
+	}
+};
+
+module.exports = FDSNSearchForm;
