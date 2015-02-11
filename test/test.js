@@ -6,6 +6,7 @@
 	mocha.setup('bdd');
 	mocha.reporter('html');
 
+  // TODO, create test classes
 
 	if (window.mochaPhantomJS) {
 		window.mochaPhantomJS.run();

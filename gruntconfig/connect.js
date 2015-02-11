@@ -85,10 +85,6 @@ var corsMiddleware = function (req, res, next) {
   return next();
 };
 
-var mountFolder = function (connect, dir) {
-  return connect.static(require('path').resolve(dir));
-};
-
 var mountPHP = function (dir, options) {
   options = options || {
     '.php': 'php-cgi',
@@ -96,6 +92,7 @@ var mountPHP = function (dir, options) {
       'PHPRC': process.cwd() + '/node_modules/hazdev-template/src/conf/php.ini'
     }
   };
+
   return gateway(require('path').resolve(dir), options);
 };
 
@@ -104,46 +101,43 @@ var iniConfig = require('ini').parse(require('fs')
 
 var connect = {
   options: {
-    hostname: 'localhost'
+    hostname: '*'
   },
   build: {
     options: {
-      base: config.build + '/' + config.src + '/htdocs',
+      base: [
+        config.build + '/' + config.src + '/htdocs',
+        'node_modules'
+      ],
       livereload: true,
       open: 'http://localhost:8000' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
       port: 8000,
       middleware: function (connect, options) {
         return [
+          lrSnippet,
           rewriteMiddleware,
           corsMiddleware,
-          mountPHP(options.base),
-          mountFolder(connect, options.base),
-          mountFolder(connect, '.tmp'),
-          mountFolder(connect, 'node_modules')
+          mountPHP(options.base[0])
         ];
       }
     }
   },
   test: {
     options: {
-      base: config.build + '/' + config.test,
+      base: [
+        config.build + '/' + config.test,
+        config.build + '/' + config.src + '/htdocs',
+        'node_modules'
+      ],
       open: 'http://localhost:8001/test.html',
-      port: 8001,
-      middleware: function (connect, options) {
-        return [
-          rewriteMiddleware,
-          corsMiddleware,
-          mountPHP(options.base),
-          mountFolder(connect, options.base),
-          mountFolder(connect, '.tmp'),
-          mountFolder(connect, 'node_modules')
-        ];
-      }
+      port: 8001
     }
   },
   dist: {
     options: {
-      base: config.dist + '/htdocs',
+      base: [
+        config.dist + '/htdocs'
+      ],
       keepalive: true,
       open: 'http://localhost:8002' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
       port: 8002,
@@ -151,10 +145,7 @@ var connect = {
         return [
           rewriteMiddleware,
           corsMiddleware,
-          mountPHP(options.base),
-          mountFolder(connect, options.base),
-          mountFolder(connect, '.tmp'),
-          mountFolder(connect, 'node_modules')
+          mountPHP(options.base[0])
         ];
       }
     }
