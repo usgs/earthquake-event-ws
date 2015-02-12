@@ -9,7 +9,7 @@ var uglify = {
 };
 
 // uglify main bundle
-uglify.dist.files[config.dist + '/htdocs/js/earthquake-event-ws.js'] =
-    config.build + '/' + config.src + '/htdocs/js/earthquake-event-ws.js';
+uglify.dist.files[config.dist + '/htdocs/js/search.js'] =
+    config.build + '/' + config.src + '/htdocs/js/search.js';
 
 module.exports = uglify;

@@ -6,7 +6,7 @@ var compass = {
   build: {
     options: {
       sassDir: config.src + '/htdocs/css',
-      specify: config.src + '/htdocs/css/earthquake-event-ws.scss',
+      specify: config.src + '/htdocs/css/*.scss',
       cssDir: config.build + '/' + config.src + '/htdocs/css',
       environment: 'development'
     }
