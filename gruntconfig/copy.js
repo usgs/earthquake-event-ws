@@ -23,6 +23,7 @@ var copy = {
         dest: config.build + '/' + config.src + '/htdocs',
         src: [
           'images/*.{png,gif,jpg,jpeg}',
+          '**/*.html',
           '**/*.php'
         ]
       },
