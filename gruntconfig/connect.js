@@ -75,7 +75,7 @@ if (!iniConfig.hasOwnProperty('OFFSITE_HOST') ||
 }
 
 var rewriteMiddleware = rewriteModule.getMiddleware(rewrites
-    /*,{verbose:true}/**/);
+    /*,{verbose:true}*/);
 
 // middleware to send CORS headers
 var corsMiddleware = function (req, res, next) {
@@ -113,12 +113,17 @@ var connect = {
       open: 'http://localhost:8000' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
       port: 8000,
       middleware: function (connect, options) {
-        return [
-          lrSnippet,
-          rewriteMiddleware,
-          corsMiddleware,
-          mountPHP(options.base[0])
-        ];
+        var middlewares = [rewriteMiddleware, corsMiddleware],
+            paths = options.base,
+            path;
+
+        for (var i = 0; i < paths.length; i++) {
+          path = paths[i];
+          middlewares.push(mountPHP(path));
+          middlewares.push(connect.static(path));
+        }
+
+        return middlewares;
       }
     }
   },
@@ -130,7 +135,20 @@ var connect = {
         'node_modules'
       ],
       open: 'http://localhost:8001/test.html',
-      port: 8001
+      port: 8001,
+      middleware: function (connect, options) {
+        var middlewares = [],
+            paths = options.base,
+            path;
+
+        for (var i = 0; i < paths.length; i++) {
+          path = paths[i];
+          middlewares.push(mountPHP(path));
+          middlewares.push(connect.static(path));
+        }
+
+        return middlewares;
+      }
     }
   },
   dist: {
@@ -142,11 +160,17 @@ var connect = {
       open: 'http://localhost:8002' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
       port: 8002,
       middleware: function (connect, options) {
-        return [
-          rewriteMiddleware,
-          corsMiddleware,
-          mountPHP(options.base[0])
-        ];
+        var middlewares = [rewriteMiddleware, corsMiddleware],
+            paths = options.base,
+            path;
+
+        for (var i = 0; i < paths.length; i++) {
+          path = paths[i];
+          middlewares.push(mountPHP(path));
+          middlewares.push(connect.static(path));
+        }
+
+        return middlewares;
       }
     }
   }
