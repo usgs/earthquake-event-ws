@@ -5,6 +5,10 @@ var config = require('./config');
 var compass = {
   build: {
     options: {
+      importPath: [
+        'node_modules/hazdev-location-view/src',
+        'node_modules/hazdev-template/src/htdocs/site'
+      ],
       sassDir: config.src + '/htdocs/css',
       specify: config.src + '/htdocs/css/*.scss',
       cssDir: config.build + '/' + config.src + '/htdocs/css',
