@@ -4,12 +4,9 @@ var config = require('./config');
 
 var uglify = {
   dist: {
-    files: {}
+    src: config.build + '/' + config.src + '/htdocs/js/search.js',
+    dest: config.dist + '/htdocs/js/search.js'
   }
 };
-
-// uglify main bundle
-uglify.dist.files[config.dist + '/htdocs/js/search.js'] =
-    config.build + '/' + config.src + '/htdocs/js/search.js';
 
 module.exports = uglify;
