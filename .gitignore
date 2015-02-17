@@ -1,6 +1,5 @@
 .build
 .DS_Store
-.tmp
 .sass-cache
 dist
 node_modules
