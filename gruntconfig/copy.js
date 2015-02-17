@@ -86,46 +86,4 @@ var copy = {
   }
 };
 
-  // app: {
-  //   expand: true,
-  //   cwd: config.src + '/htdocs',
-  //   dest: config.build + '/' + config.src + '/htdocs',
-  //   src: [
-  //     'images/*.{png,gif,jpg,jpeg}',
-  //     '**/*.php'
-  //   ]
-  // },
-  // conf: {
-  //   expand: true,
-  //   cwd: config.src + '/conf',
-  //   dest: config.build + '/' + config.src + '/conf',
-  //   src: [
-  //     '**/*',
-  //     '!**/*.orig'
-  //   ]
-  // },
-  // lib: {
-  //   expand: true,
-  //   cwd: config.src + '/lib',
-  //   dest: config.build + '/' + config.src + '/lib',
-  //   src: [
-  //     '**/*'
-  //   ]
-  // },
-  // css: {
-  //   expand: true,
-  //   cwd: config.src + '/css',
-  //   dest: config.build + '/' + config.src + '/htdocs/css',
-  //   src: [
-  //     'search.css'
-  //   ]
-  //   options: {
-  //     process: function (content, srcpath) {
-  //       return content.replace(
-  //           '@import url(/hazdev-webutils/src/ModalView.css);',
-  //           '');
-  //     }
-  //   }
-  // }
-
 module.exports = copy;
