@@ -152,7 +152,8 @@ var connect = {
   dist: {
     options: {
       base: [
-        config.dist + '/htdocs'
+        config.dist + '/htdocs',
+        'node_modules'
       ],
       keepalive: true,
       open: 'http://localhost:8002' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
