@@ -3,10 +3,10 @@
 (function () {
 	'use strict';
 
-	mocha.setup('bdd');
+	mocha.ui('bdd');
 	mocha.reporter('html');
 
-  // TODO, create test classes
+  // TODO, create tests
 
 	if (window.mochaPhantomJS) {
 		window.mochaPhantomJS.run();
