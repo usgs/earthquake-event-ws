@@ -162,25 +162,31 @@ var _formatValue = function (value, known) {
 
 
 var UrlBuilderFormatter = function () {
-};
+	var _this;
 
+	_this = Object.create({});
 
-UrlBuilderFormatter.prototype = {
-	formatMagnitudeType: function (value) {
+	_this.formatMagnitudeType = function (value) {
 		return _formatValue(value, KNOWN_MAGNITUDE_TYPES);
-	},
-	formatCatalog: function (value) {
+	};
+
+	_this.formatCatalog = function (value) {
 		return _formatValue(value, KNOWN_CATALOGS);
-	},
-	formatContributor: function (value) {
+	};
+
+	_this.formatContributor = function (value) {
 		return _formatValue(value, KNOWN_CONTRIBUTORS);
-	},
-	formatEventType: function (value) {
+	};
+
+	_this.formatEventType = function (value) {
 		return _formatValue(value, KNOWN_EVENT_TYPES);
-	},
-	formatProductType: function (value) {
+	};
+
+	_this.formatProductType = function (value) {
 		return _formatValue(value, KNOWN_PRODUCT_TYPES);
-	}
+	};
+
+	return _this;
 };
 
 module.exports = UrlBuilderFormatter;

@@ -23,75 +23,81 @@ var DEFAULTS = {
 };
 
 var SelectField = function (options) {
-	options = Util.extend({}, DEFAULTS, options);
 
-	this._el = options.el || document.createElement('ul');
-	this._type = options.type;
-	this._fields = options.fields;
-	this._id = options.id || 'select-field-' + (DEFAULT_FIELD_ID++);
-	this._formatDisplay = options.formatDisplay;
-	this._formatValue = options.formatValue;
-	this._allowAny = options.allowAny;
-	this._allowAnyText = options.allowAnyText;
-	this._allowAnyValue = options.allowAnyValue;
+	var _this,
+			_initialize,
+			_createFields;
 
-	if (options.wrapper !== '') {
-		this._startWrapper = '<' + options.wrapper + '>';
-		this._endWrapper = '</' + options.wrapper + '>';
-	} else {
-		this._startWrapper = '';
-		this._endWrapper = '';
-	}
+	_this = {};
 
-	this._initialize();
-};
+	_initialize = function () {
+		options = Util.extend({}, DEFAULTS, options);
 
-SelectField.prototype = {
-	_initialize: function () {
-		this._createFields();
-	},
+		_this.el = options.el || document.createElement('ul');
+		_this._type = options.type;
+		_this._fields = options.fields;
+		_this._id = options.id || 'select-field-' + (DEFAULT_FIELD_ID++);
+		_this._formatDisplay = options.formatDisplay;
+		_this._formatValue = options.formatValue;
+		_this._allowAny = options.allowAny;
+		_this._allowAnyText = options.allowAnyText;
+		_this._allowAnyValue = options.allowAnyValue;
 
-	_createFields: function () {
+		if (options.wrapper !== '') {
+			_this._startWrapper = '<' + options.wrapper + '>';
+			_this._endWrapper = '</' + options.wrapper + '>';
+		} else {
+			_this._startWrapper = '';
+			_this._endWrapper = '';
+		}
+
+		_createFields();
+	};
+
+	_createFields = function () {
 		var i = 0,
-		    len = this._fields.length,
+		    len = _this._fields.length,
 		    markup = [];
 
-		if (this._type === 'radio' && this._allowAny === true) {
-			markup.push(this._createField(this._allowAnyText,
-					this._allowAnyValue, true));
+		if (_this._type === 'radio' && _this._allowAny === true) {
+			markup.push(_this._createField(_this._allowAnyText,
+					_this._allowAnyValue, true));
 		}
 		for (; i < len; i++) {
-			markup.push(this._createField(this._fields[i]));
+			markup.push(_this._createField(_this._fields[i]));
 		}
 
-		this._el.innerHTML = markup.join('');
-	},
+		_this.el.innerHTML = markup.join('');
+	};
 
-	_createField: function (name, value, checked) {
+	_this._createField = function (name, value, checked) {
 		var valueStr = null,
 		    textStr = null;
 
-		valueStr = this._formatValue(
+		valueStr = _this._formatValue(
 				(typeof value !== 'undefined') ? value : name);
-		textStr = this._formatDisplay(name);
+		textStr = _this._formatDisplay(name);
 
 		return [
-			this._startWrapper,
+			_this._startWrapper,
 			'<label class="label-checkbox">',
-				'<input type="', this._type, '" name="', this._id, '" id="',
-						this._getFieldId((valueStr === '') ? textStr : valueStr),
+				'<input type="', _this._type, '" name="', _this._id, '" id="',
+						_this._getFieldId((valueStr === '') ? textStr : valueStr),
 						'" value="', valueStr, '"', ((checked)?' checked':''),'/>',
 				textStr,
 			'</label>',
-			this._endWrapper
+			_this._endWrapper
 		].join('');
-	},
+	};
 
-	_getFieldId: function (value) {
+	_this._getFieldId = function (value) {
 		//replace spaces with double underscore in case one value uses underscore
 		//and another uses a space, that are otherwise the same
-		return this._id + '-' + value.replace(/ /g, '__');
-	}
+		return _this._id + '-' + value.replace(/ /g, '__');
+	};
+
+	_initialize();
+	return _this;
 };
 
 module.exports = SelectField;

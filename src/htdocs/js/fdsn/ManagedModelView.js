@@ -40,76 +40,81 @@ var DEFAULTS = {
 };
 
 var ManagedModelView = function (options) {
-	this._options = Util.extend({}, DEFAULTS, options);
-	this._fields = this._options.fields;
-	this._el = this._options.el || document.createElement('p');
-	this._model = this._options.model || new Model();
-	Util.addClass(this._el, 'managedmodelview');
+	var _this,
+			_initialize,
+			_isClear,
+			_onControlClick,
+			_onFieldChange;
 
-	this._initialize();
-};
+	//constructor: ManagedModelView,
 
-ManagedModelView.prototype = {
-	constructor: ManagedModelView,
+	_this = {};
 
-	_initialize: function () {
+	_initialize = function () {
 		var fieldName = null;
 
-		this._el.innerHTML = [
+		options = Util.extend({}, DEFAULTS, options);
+		_this._fields = options.fields;
+		_this.el = options.el || document.createElement('p');
+		_this._model = options.model || new Model();
+		_this.el.classList.add('managedmodelview');
+
+		_this.el.innerHTML = [
 			'<span class="managedmodelview-message help">',
-				this._options.clearedText,
+				options.clearedText,
 			'</span>',
 			'<span class="managedmodelview-control" style="display:none;">',
-				this._options.controlText,
+				options.controlText,
 			'</span>'
 		].join('');
 
-		this._message = this._el.querySelector('.managedmodelview-message');
-		this._control = this._el.querySelector('.managedmodelview-control');
+		_this._message = _this.el.querySelector('.managedmodelview-message');
+		_this._control = _this.el.querySelector('.managedmodelview-control');
 
 		// Bind to the control
-		Util.addEvent(this._control, 'click', (function (view) {
+		_this._control.addEventListener('click', (function () {
 			return function () {
-				view._onControlClick();
+				_onControlClick();
 			};
-		})(this));
+		})(_this));
 
 		// Bind to the model
-		for (fieldName in this._fields) {
-			this._model.on('change:' + fieldName, this._onFieldChange, this);
+		for (fieldName in _this._fields) {
+			_this._model.on('change:' + fieldName, _onFieldChange, _this);
 		}
+	};
 
-	},
-
-	_isClear: function () {
+	_isClear = function () {
 		var fieldName = null;
 
-		for (fieldName in this._fields) {
-			if (this._model.get(fieldName) !== this._fields[fieldName]) {
+		for (fieldName in _this._fields) {
+			if (_this._model.get(fieldName) !== _this._fields[fieldName]) {
 				return false;
 			}
 		}
 
 		return true;
-	},
+	};
 
-	_onFieldChange: function () {
-		if (this._isClear()) {
+	_onFieldChange = function () {
+		if (_isClear()) {
 			// Update message and hide control
-			this._message.innerHTML = this._options.clearedText;
-			this._control.style.display = 'none';
+			_this._message.innerHTML = options.clearedText;
+			_this._control.style.display = 'none';
 		} else {
 			// Update message and show control
-			this._message.innerHTML = this._options.filledText;
-			this._control.style.display = '';
+			_this._message.innerHTML = options.filledText;
+			_this._control.style.display = '';
 		}
-	},
+	};
 
-	_onControlClick: function () {
+	_onControlClick = function () {
 		// Set model back to defaults
-		this._model.set(this._fields);
-	}
+		_this._model.set(_this._fields);
+	};
 
+	_initialize();
+	return _this;
 };
 
 module.exports = ManagedModelView;

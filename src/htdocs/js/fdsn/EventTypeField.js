@@ -9,20 +9,26 @@ var EQ_EVENT_TYPES = {
 };
 
 var EventTypeField = function (options) {
-	// Call parent constructor
-	SelectField.call(this, options);
-};
+	var _this,
+			_initialize,
+			_createContainers,
+			_createFields,
+			_getKey,
+			_isEqEventType;
 
-EventTypeField.prototype = Util.extend({}, SelectField.prototype, {
-	_initialize: function () {
-		this._createContainers();
-		this._createFields();
-	},
+	_this = SelectField(options);
 
-	_createContainers: function () {
+	_initialize = function () {
+		options = Util.extend({}, SelectField.prototype, options);
+
+		_createContainers();
+		_createFields();
+	};
+
+	_createContainers = function () {
 		var eqcontainer, noneqcontainer;
 
-		this._el.innerHTML = [
+		_this.el.innerHTML = [
 			'<li>',
 				'<label class="label-checkbox">',
 					'<input type="checkbox" class="eqeventtype-control"/>',
@@ -39,64 +45,68 @@ EventTypeField.prototype = Util.extend({}, SelectField.prototype, {
 			'</li>'
 		].join('');
 
-		this._eqcontainer = eqcontainer =
-				this._el.querySelector('.eqeventtype-list');
-		this._noneqcontainer = noneqcontainer =
-				this._el.querySelector('.noneqeventtype-list');
+		_this._eqcontainer = eqcontainer =
+				_this.el.querySelector('.eqeventtype-list');
+		_this._noneqcontainer = noneqcontainer =
+				_this.el.querySelector('.noneqeventtype-list');
 
-		Util.addEvent(this._el.querySelector('.eqeventtype-control'), 'change',
+		_this.el.querySelector('.eqeventtype-control').addEventListener('change',
 		function () {
 			var inputs = eqcontainer.querySelectorAll('input'),
 			    i = 0, len = inputs.length,
-			    checked = this.checked;
+			    checked = _this.checked;
 
 			for (; i < len; i++) {
 				inputs[i].checked = checked;
 			}
 		});
 
-		Util.addEvent(this._el.querySelector('.noneqeventtype-control'), 'change',
+		_this.el.querySelector('.noneqeventtype-control').addEventListener('change',
 		function () {
 			var inputs = noneqcontainer.querySelectorAll('input'),
 			    i = 0, len = inputs.length,
-			    checked = this.checked;
+			    checked = _this.checked;
 
 			for (; i < len; i++) {
 				inputs[i].checked = checked;
 			}
 		});
-	},
+	};
 
-	_createFields: function () {
+	_createFields = function () {
 		var i = 0,
-		    len = this._fields.length,
+		    len = _this._fields.length,
 		    field = null,
 		    eqmarkup = [],
 		    noneqmarkup = [];
 
 		for (; i < len; i++) {
-			field = this._fields[i];
+			field = _this._fields[i];
 
-			if (this._isEqEventType(field)) {
-				eqmarkup.push(this._createField(field));
+			if (_isEqEventType(field)) {
+				eqmarkup.push(_this._createField(field));
 			} else {
-				noneqmarkup.push(this._createField(field));
+				noneqmarkup.push(_this._createField(field));
 			}
 		}
 
-		this._eqcontainer.innerHTML = eqmarkup.join('');
-		this._noneqcontainer.innerHTML = noneqmarkup.join('');
-	},
+		_this._eqcontainer.innerHTML = eqmarkup.join('');
+		_this._noneqcontainer.innerHTML = noneqmarkup.join('');
+	};
 
-	_isEqEventType: function (type) {
-		var key = this._getKey(type);
+	_isEqEventType = function (type) {
+		var key = _getKey(type);
 
 		return (key in EQ_EVENT_TYPES);
-	},
+	};
 
-	_getKey: function (type) {
+	_getKey = function (type) {
 		return type.replace(/ /g, '_');
-	}
-});
+	};
+
+	_initialize();
+	return _this;
+
+};
 
 module.exports = EventTypeField;

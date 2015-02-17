@@ -117,60 +117,75 @@ var DEFAULTS = {
 };
 
 var FDSNModelValidator = function (options) {
-	options = Util.extend({}, DEFAULTS, options);
+	var _this,
+			_initialize,
 
-	this._model = options.model || new FDSNModel();
-	this._errors = _validate(this._model.getNonEmpty(), {});
-	this._model.on('change', this._onModelChange, this);
-};
+			getErrors,
+			getErrorFields,
 
-/**
- * @return {Object}
- *      An object hash of {fieldName: errorMessage} for current errors on
- *      this._model.
- */
-FDSNModelValidator.prototype.getErrors = function () {
-	return this._errors;
-};
+			_onModelChange;
 
-/**
- * @return {Array}
- *      An array containing the name of the fields that are currently in an
- *      error state.
- */
-FDSNModelValidator.prototype.getErrorFields = function () {
-	var fields = [],
-	    key = null;
+	_this = Object.create({});
 
-	for (key in this._errors) {
-		fields.push(key);
-	}
+	_initialize = function () {
+		options = Util.extend({}, DEFAULTS, options);
 
-	return fields;
-};
+		_this._model = options.model || FDSNModel();
+		_this._errors = _validate(_this._model.getNonEmpty(), {});
+		_this._model.on('change', _onModelChange, _this);
+	};
 
-/**
- * @return {Boolean}
- *      True if the combination of field values in this._model currently
- *      valid, false otherwise.
- */
-FDSNModelValidator.prototype.isValid = function () {
-	var key = null;
+	/**
+	 * @return {Object}
+	 *      An object hash of {fieldName: errorMessage} for current errors on
+	 *      _this._model.
+	 */
+	getErrors = function () {
+		return _this._errors;
+	};
 
-	for (key in this._errors) {
-		// If any keys in this._errors, then not valid
-		return false;
-	}
+	/**
+	 * @return {Array}
+	 *      An array containing the name of the fields that are currently in an
+	 *      error state.
+	 */
+	getErrorFields = function () {
+		var fields = [],
+		    key = null;
 
-	return true;
-};
+		for (key in _this._errors) {
+			fields.push(key);
+		}
 
-/**
- * Event handler when this._model changes. Auto-validates the model new model
- *
- */
-FDSNModelValidator.prototype._onModelChange = function () {
-	this._errors = _validate(this._model.getNonEmpty());
+		return fields;
+	};
+
+	/**
+	 * @return {Boolean}
+	 *      True if the combination of field values in _this._model currently
+	 *      valid, false otherwise.
+	 */
+	_this.isValid = function () {
+		var key = null;
+
+		for (key in _this._errors) {
+			// If any keys in _this._errors, then not valid
+			return false;
+		}
+
+		return true;
+	};
+
+	/**
+	 * Event handler when _this._model changes. Auto-validates the model new model
+	 *
+	 */
+	_onModelChange = function () {
+		_this._errors = _validate(this._model.getNonEmpty());
+	};
+
+	_initialize();
+	return _this;
 };
 
 module.exports = FDSNModelValidator;

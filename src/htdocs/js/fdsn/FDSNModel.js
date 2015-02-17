@@ -3,10 +3,6 @@
 var Model = require('mvc/Model'),
 		Util = require('util/Util');
 
-// Default configuration options
-var DEFAULTS = {
-};
-
 var NUMERIC_TYPES = {
 	maxlatitude: true,
 	minlatitude: true,
@@ -140,71 +136,74 @@ var _formatDateTime = function (stamp) {
 	}
 };
 
-var FDSNModel = function (data, options) {
-	// Extend default options
-	this._options = Util.extend({}, DEFAULTS, options);
+var FDSNModel = function (data) {
+	var _this,
+			_parentSet;
 
-	// Call parent constructor
-	Model.call(this, Util.extend({}, DEFAULT_DATA, data));
-};
+	_this = Model(Util.extend({}, DEFAULT_DATA, data));
+	data = null;
 
-FDSNModel.prototype = Object.create(Model.prototype);
+	// Keep a reference to Model.set()
+	_parentSet = _this.set;
 
-FDSNModel.prototype.set = function (params, options) {
-	var key = null;
+	_this.set = function (params, options) {
+		var key = null;
 
-	// Format date/time stamps (if possible)
-	if (params.hasOwnProperty('starttime') && params.starttime !== '') {
-		params.starttime = _formatDateTime(params.starttime);
-	}
-	if (params.hasOwnProperty('endtime') && params.endtime !== '') {
-		params.endtime = _formatDateTime(params.endtime);
-	}
-
-	// Convert numeric types to numbers (for comparison later)
-	for (key in params) {
-		if (NUMERIC_TYPES.hasOwnProperty(key) && params[key] !== null &&
-				params[key] !== '') {
-			params[key] = Number(params[key]);
+		// Format date/time stamps (if possible)
+		if (params.hasOwnProperty('starttime') && params.starttime !== '') {
+			params.starttime = _formatDateTime(params.starttime);
 		}
-	}
-
-	Model.prototype.set.call(this, params, options);
-};
-
-/**
- * A lot like generic "set" method, however the given params are extended by
- * the defaults thus clearing/resetting any parameter that is not explicitely
- * specified in {params}.
- *
- * @param params {Object}
- *      A hash of params to set.
- */
-FDSNModel.prototype.setAll = function (params) {
-	this.set(Util.extend({}, DEFAULTS, params));
-};
-
-/**
- * Returns an object containing non-empty, non-null key-value pairs from this
- * model's attributes.
- *
- * @return {Object}
- */
-FDSNModel.prototype.getNonEmpty = function (model) {
-	var nonEmpty = {},
-	    key = null;
-
-	model = model || this._model;
-
-	for (key in model) {
-		if (model.hasOwnProperty(key) && typeof model[key] !== 'undefined' &&
-				model[key] !== null && model[key] !== '') {
-
-			nonEmpty[key] = model[key];
+		if (params.hasOwnProperty('endtime') && params.endtime !== '') {
+			params.endtime = _formatDateTime(params.endtime);
 		}
-	}
 
-	return nonEmpty;
+		// Convert numeric types to numbers (for comparison later)
+		for (key in params) {
+			if (NUMERIC_TYPES.hasOwnProperty(key) && params[key] !== null &&
+					params[key] !== '') {
+				params[key] = Number(params[key]);
+			}
+		}
+
+		_parentSet(params, options);
+	};
+
+	/**
+	 * A lot like generic "set" method, however the given params are extended by
+	 * the defaults thus clearing/resetting any parameter that is not explicitely
+	 * specified in {params}.
+	 *
+	 * @param params {Object}
+	 *      A hash of params to set.
+	 */
+	_this.setAll = function (params) {
+		_this.set(Util.extend({}, DEFAULT_DATA, params));
+	};
+
+	/**
+	 * Returns an object containing non-empty, non-null key-value pairs from this
+	 * model's attributes.
+	 *
+	 * @return {Object}
+	 */
+	_this.getNonEmpty = function (model) {
+		var nonEmpty = {},
+		    key = null;
+
+		model = model || _this.get();
+
+		for (key in model) {
+			if (model.hasOwnProperty(key) && typeof model[key] !== 'undefined' &&
+					model[key] !== null && model[key] !== '') {
+
+				nonEmpty[key] = model[key];
+			}
+		}
+
+		return nonEmpty;
+	};
+
+	return _this;
 };
 
 module.exports = FDSNModel;
