@@ -125,7 +125,7 @@ var FDSNModelValidator = function (options) {
 
 			_onModelChange;
 
-	_this = Object.create({});
+	_this = {};
 
 	_initialize = function () {
 		options = Util.extend({}, DEFAULTS, options);

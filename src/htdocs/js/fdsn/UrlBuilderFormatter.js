@@ -164,7 +164,7 @@ var _formatValue = function (value, known) {
 var UrlBuilderFormatter = function () {
 	var _this;
 
-	_this = Object.create({});
+	_this = {};
 
 	_this.formatMagnitudeType = function (value) {
 		return _formatValue(value, KNOWN_MAGNITUDE_TYPES);

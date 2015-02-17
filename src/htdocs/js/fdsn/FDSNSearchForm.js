@@ -41,7 +41,7 @@ var FDSNSearchForm = function (options) {
 			onModelFormatChange,
 			onSubmit;
 
-		_this = Object.create({});
+		_this = {};
 
 
 	// --------------------------------------------------
