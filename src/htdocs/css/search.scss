@@ -1,12 +1,15 @@
-@import 'earthquake/_variables';
+@import 'site/earthquake/_variables';
 @import 'layout';   /* NESW layout styles for inputs */
 @import 'n-up';   /* .two-up and .three-up styles */
 
 @import 'ManagedModelView';   /* geographic region summary/clear styles  */
 @import 'ToggleSection';   /* toggle-able sections styles */
-@import '/hazdev-webutils/src/mvc/ModalView.css';
+@import 'mvc/ModalView';
 @import 'locationview/RegionView';
-@import '/leaflet/dist/leaflet.css';
+@import 'locationview/RectangleControl';
+@import 'locationview/RectangleCoordinateView';
+@import 'locationview/RectangleOverlayView';
+@import 'locationview/LeafletShim';
 
 /* style form elements */
 label {
