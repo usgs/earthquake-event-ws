@@ -32,7 +32,7 @@
     "grunt-mocha-phantomjs": "^0.6.0",
     "grunt-open": "~0.2.0",
     "grunt-text-replace": "~0.3.6",
-    "hazdev-location-view": "emartinez-usgs/hazdev-location-view#b-merged",
+    "hazdev-location-view": "usgs/hazdev-location-view",
     "hazdev-template": "usgs/hazdev-template",
     "hazdev-webutils": "usgs/hazdev-webutils",
     "http-rewrite-middleware": "~0.1.5",
