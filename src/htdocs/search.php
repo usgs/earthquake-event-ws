@@ -3,6 +3,7 @@ if (!isset($TEMPLATE)) {
 	$TITLE = 'Search Earthquake Archives';
 	$NAVIGATION = true;
 	$HEAD = '
+		<link rel="stylesheet" href="css/leaflet.css"/>
 		<link rel="stylesheet" href="css/search.css"/>
 	';
 
