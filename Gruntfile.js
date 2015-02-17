@@ -13,24 +13,20 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('test', [
-    'copy:test',
+    'concurrent:test', // browserify:test, copy:test
     'connect:test',
     'mocha_phantomjs'
   ]);
 
   grunt.registerTask('build', [
-    'browserify',
-    'concurrent:predist', /// jshint:scripts, jshint:test, compass
-    'compass:build',
-    'copy:build',
-    'replace',
+    'jshint',
+    'concurrent:build', // browserify:build, compass:build, copy:build
     'connect:build'
   ]);
 
   grunt.registerTask('dist', [
     'build',
-    'concurrent:dist', /// htmlmin:dist, copy:dist, uglify
-    'cssmin:dist',
+    'concurrent:dist', // htmlmin:dist, copy:dist, uglify, cssmin:dist
     'connect:dist'
   ]);
 

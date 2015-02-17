@@ -10,11 +10,12 @@ var browserify = {
         process.cwd() + '/' + config.src,
         process.cwd() + '/node_modules',
         process.cwd() + '/node_modules/hazdev-location-view/src',
-        process.cwd() + '/node_modules/hazdev-webutils/src'
+        process.cwd() + '/node_modules/hazdev-webutils/src',
+        process.cwd() + '/node_modules/hazdev-template/dist'
       ]
     }
   },
-  source: {
+  build: {
     src: config.src + '/htdocs/js/search.js',
     dest: config.build + '/' + config.src + '/htdocs/js/search.js',
     options: {

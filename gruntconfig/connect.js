@@ -2,8 +2,6 @@
 
 var config = require('./config');
 
-var LIVE_RELOAD_PORT = 35729;
-var lrSnippet = require('connect-livereload')({port: LIVE_RELOAD_PORT});
 var gateway = require('gateway');
 var rewriteModule = require('http-rewrite-middleware');
 
@@ -89,7 +87,7 @@ var mountPHP = function (dir, options) {
   options = options || {
     '.php': 'php-cgi',
     'env': {
-      'PHPRC': process.cwd() + '/node_modules/hazdev-template/src/conf/php.ini'
+      'PHPRC': process.cwd() + '/node_modules/hazdev-template/dist/conf/php.ini'
     }
   };
 

@@ -1,17 +1,20 @@
 'use strict';
 
 var concurrent = {
-  scripts: ['jshint:scripts', 'mocha_phantomjs'],
-  tests: ['jshint:tests', 'mocha_phantomjs'],
-  predist: [
-    'jshint:scripts',
-    'jshint:tests',
-    'compass'
+  build: [
+    'browserify:build',
+    'compass:build',
+    'copy:build'
   ],
   dist: [
     'htmlmin:dist',
     'uglify',
-    'copy:dist'
+    'copy:dist',
+    'cssmin:dist'
+  ],
+  test: [
+    'browserify:test',
+    'copy:test'
   ]
 };
 

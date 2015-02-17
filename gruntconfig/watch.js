@@ -7,10 +7,7 @@ var watch = {
     files: [
       config.src + '/htdocs/js/**/*.js'
     ],
-    tasks: ['concurrent:scripts'],
-    options: {
-      livereload: true
-    }
+    tasks: ['jshint:scripts', 'browserify:build']
   },
   scss: {
     files: [
@@ -23,17 +20,23 @@ var watch = {
       config.test + '/*.html',
       config.test + '/**/*.js'
     ],
-    tasks: ['concurrent:tests']
+    tasks: ['jshint:test', 'browserify:test', 'copy:test']
+  },
+  resources: {
+    files: [
+      config.src + '/conf/**/*',
+      config.src + '/lib/**/*',
+      config.src + '/htdocs/**/*',
+      '!' + config.src + '/htdocs/**/*.{js,scss}'
+    ],
+    tasks: ['copy:build']
   },
   livereload: {
     options: {
       livereload: true
     },
     files: [
-      config.src + '/htdocs/**/*.html',
-      config.src + '/htdocs/css/**/*.css',
-      config.src + '/htdocs/img/**/*.{png,jpg,jpeg,gif}',
-      config.build + config.src + '/css/**/*.css'
+      config.build + '/' + config.src + '/htdocs/**/*'
     ]
   },
   gruntfile: {

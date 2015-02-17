@@ -43,6 +43,14 @@ var copy = {
         src: [
           '**/*'
         ]
+      },
+      {
+        expand: true,
+        cwd: 'node_modules/leaflet/dist',
+        dest: config.build + '/' + config.src + '/htdocs/css',
+        src: [
+          'leaflet.css'
+        ]
       }
     ]
   },
