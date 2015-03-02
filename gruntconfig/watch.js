@@ -20,7 +20,7 @@ var watch = {
       config.test + '/*.html',
       config.test + '/**/*.js'
     ],
-    tasks: ['jshint:test', 'browserify:test', 'copy:test']
+    tasks: ['jshint:tests', 'browserify:test', 'copy:test']
   },
   resources: {
     files: [
