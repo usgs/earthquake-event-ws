@@ -104,23 +104,17 @@ var connect = {
   build: {
     options: {
       base: [
-        config.build + '/' + config.src + '/htdocs',
-        'node_modules'
+        config.build + '/' + config.src + '/htdocs'
       ],
       livereload: true,
       open: 'http://localhost:8000' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
       port: 8000,
-      middleware: function (connect, options) {
-        var middlewares = [rewriteMiddleware, corsMiddleware],
-            paths = options.base,
-            path;
-
-        for (var i = 0; i < paths.length; i++) {
-          path = paths[i];
-          middlewares.push(mountPHP(path));
-          middlewares.push(connect.static(path));
-        }
-
+      middleware: function (connect, options, middlewares) {
+        middlewares.unshift(
+          corsMiddleware,
+          rewriteMiddleware,
+          mountPHP(options.base[0])
+        );
         return middlewares;
       }
     }
@@ -134,17 +128,12 @@ var connect = {
       ],
       open: 'http://localhost:8001/test.html',
       port: 8001,
-      middleware: function (connect, options) {
-        var middlewares = [],
-            paths = options.base,
-            path;
-
-        for (var i = 0; i < paths.length; i++) {
-          path = paths[i];
-          middlewares.push(mountPHP(path));
-          middlewares.push(connect.static(path));
-        }
-
+      middleware: function (connect, options, middlewares) {
+        middlewares.unshift(
+          corsMiddleware,
+          rewriteMiddleware,
+          mountPHP(options.base[0])
+        );
         return middlewares;
       }
     }
@@ -152,23 +141,17 @@ var connect = {
   dist: {
     options: {
       base: [
-        config.dist + '/htdocs',
-        'node_modules'
+        config.dist + '/htdocs'
       ],
       keepalive: true,
       open: 'http://localhost:8002' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
       port: 8002,
-      middleware: function (connect, options) {
-        var middlewares = [rewriteMiddleware, corsMiddleware],
-            paths = options.base,
-            path;
-
-        for (var i = 0; i < paths.length; i++) {
-          path = paths[i];
-          middlewares.push(mountPHP(path));
-          middlewares.push(connect.static(path));
-        }
-
+      middleware: function (connect, options, middlewares) {
+        middlewares.unshift(
+          corsMiddleware,
+          rewriteMiddleware,
+          mountPHP(options.base[0])
+        );
         return middlewares;
       }
     }
