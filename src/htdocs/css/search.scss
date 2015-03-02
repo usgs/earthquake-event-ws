@@ -13,60 +13,60 @@
 
 /* style form elements */
 label {
-	font-size: .8125em;
-	color: #777;
+  font-size: .8125em;
+  color: #777;
 }
 
 input[type="text"],
 input[type="number"] {
-	width: 100%;
+  width: 100%;
 }
 
 /* style headers for different sections of form */
 h2[role="heading"] {
-	margin-left:$horizontal-spacing;
-	border-bottom: 1px solid #ddd;
-	padding: 0 0 0.5em;
+  margin-left:$horizontal-spacing;
+  border-bottom: 1px solid #ddd;
+  padding: 0 0 0.5em;
 }
 
 /* style header and footer sections */
 .header,
 .footer {
-	margin:1em 0 0;
-	background-color:#EEE;
-	padding:16px;
+  margin:1em 0 0;
+  background-color:#EEE;
+  padding:16px;
 }
 
 
 /* draw rectangle button */
 button.draw {
-	margin: 1em 0 0;
-	width: 100%;
+  margin: 1em 0 0;
+  width: 100%;
 }
 
 /* help text styles */
 form .help {
-	margin: 0.5em 0 0;
-	color:#777;
-	font-size:.8em;
-	font-size:13px;
+  margin: 0.5em 0 0;
+  color:#777;
+  font-size:.8em;
+  font-size:13px;
 }
 
 /* Hide output specfic options */
 .hidden {
-	display:none;
+  display:none;
 }
 
 /* Indent sub-list for event type */
 .eqeventtype-list,
 .noneqeventtype-list {
-	margin-left: 2em;
+  margin-left: 2em;
 }
 
 
 /* style radio and checkbox lists */
 .label-checkbox {
-	line-height:2;
+  line-height:2;
 }
 
 .no-style {
@@ -84,7 +84,7 @@ ul.orderby-list,
 ul.output-kml-list,
 ul.output-quakeml-list,
 ul.output-geojson-list {
-	margin-top: 1em;
+  margin-top: 1em;
 }
 
 /* region control dialog footer */
@@ -102,31 +102,31 @@ ul.output-geojson-list {
 
 /* Output styles */
 .output-descriptor {
-	display:block;
-	color:#666;
-	font-size:.9em;
+  display:block;
+  color:#666;
+  font-size:.9em;
 }
 
 p.error {
-	color:#C10C0C;
-	font-weight:bold;
+  color:#C10C0C;
+  font-weight:bold;
 }
 
 .label-checkbox {
-	display: block;
-	padding-left: 45px;
-	text-indent: -45px;
+  display: block;
+  padding-left: 45px;
+  text-indent: -45px;
 }
 
 
 .regionview {
-	padding-bottom: 55px;
+  padding-bottom: 55px;
 }
 
 
 @media screen and (min-width: $breakpoint-stacking) {
 
-	.label-checkbox {
-		line-height:1.5;
-	}
+  .label-checkbox {
+    line-height:1.5;
+  }
 }

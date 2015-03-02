@@ -13,10 +13,10 @@ BEGIN
     WHERE s.eventid = in_eventid AND
       s.`type`='impact-link' AND
       EXISTS (
-	SELECT * from productSummaryProperty
-	WHERE productSummaryIndexId=s.id AND
-	  name='addon-code' AND
-	  UPPER(value) LIKE 'TSUNAMILINK%'
+  SELECT * from productSummaryProperty
+  WHERE productSummaryIndexId=s.id AND
+    name='addon-code' AND
+    UPPER(value) LIKE 'TSUNAMILINK%'
       );
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 

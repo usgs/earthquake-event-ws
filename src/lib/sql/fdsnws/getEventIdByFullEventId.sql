@@ -27,28 +27,28 @@ BEGIN
     DECLARE l_done INT DEFAULT 0;
 
     DECLARE cur_sources CURSOR FOR
-	SELECT DISTINCT eventSource
-	FROM productSummary
-	-- ignore empty sources; only looking for non-empty
-	WHERE eventSource IS NOT NULL
-	AND eventSource <> '';
+  SELECT DISTINCT eventSource
+  FROM productSummary
+  -- ignore empty sources; only looking for non-empty
+  WHERE eventSource IS NOT NULL
+  AND eventSource <> '';
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET l_done = 1;
 
     -- loop over all known event sources
     OPEN cur_sources;
     cur_sources_loop: LOOP
-	FETCH cur_sources INTO l_eventSource;
-	IF l_done = 1 THEN
-	    -- no more sources
-	    CLOSE cur_sources;
-	    LEAVE cur_sources_loop;
-	END IF;
+  FETCH cur_sources INTO l_eventSource;
+  IF l_done = 1 THEN
+      -- no more sources
+      CLOSE cur_sources;
+      LEAVE cur_sources_loop;
+  END IF;
 
         -- check if _fullEventId starts with l_eventSource
         SET l_source = SUBSTRING(_fullEventId, 1, LENGTH(l_eventSource));
         IF l_source = l_eventSource THEN
-	    -- _fullEventId starts with this source, now check if there is an
-	    -- event with this code
+      -- _fullEventId starts with this source, now check if there is an
+      -- event with this code
             SET l_code = SUBSTRING(_fullEventId, LENGTH(l_eventSource) + 1);
             SET l_event_id = getEventIdBySourceAndCode(l_source, l_code);
             IF l_event_id IS NOT NULL THEN

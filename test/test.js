@@ -1,17 +1,17 @@
 /* global mocha */
 
 (function () {
-	'use strict';
+  'use strict';
 
-	mocha.ui('bdd');
-	mocha.reporter('html');
+  mocha.ui('bdd');
+  mocha.reporter('html');
 
   // TODO, create tests
 
-	if (window.mochaPhantomJS) {
-		window.mochaPhantomJS.run();
-	} else {
-		mocha.run();
-	}
+  if (window.mochaPhantomJS) {
+    window.mochaPhantomJS.run();
+  } else {
+    mocha.run();
+  }
 
 })(this);

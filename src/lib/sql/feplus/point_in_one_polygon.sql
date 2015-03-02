@@ -40,15 +40,15 @@ BEGIN
       -- on end point, return true
       RETURN 1;
     ELSEIF (( (poly1X <= pX) && (pX < poly2X) ) ||
-	( (poly2X <= pX) && (pX < poly1X) )) THEN
+  ( (poly2X <= pX) && (pX < poly1X) )) THEN
       -- between x values, test y
       SET y_intercept = poly1Y + (poly2Y - poly1Y) * (pX - poly1X) / (poly2X - poly1X);
       IF y_intercept = pY THEN
-	-- on segment, return true
-	RETURN 1;
+  -- on segment, return true
+  RETURN 1;
       ELSEIF pY > y_intercept THEN
-	-- above segment, toggle result
-	SET result = !result;
+  -- above segment, toggle result
+  SET result = !result;
       END IF;
     END IF;
 

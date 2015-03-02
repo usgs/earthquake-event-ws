@@ -3,12 +3,12 @@
 PHP=`which php`;
 
 if [ $? -ne 0 ]; then
-	read -p 'Could not find PHP. Path to php executable: ' PHP;
+  read -p 'Could not find PHP. Path to php executable: ' PHP;
 fi
 
 if [ -z "${PHP}" ]; then
-	echo 'Could not install. No PHP found.';
-	exit -1;
+  echo 'Could not install. No PHP found.';
+  exit -1;
 fi
 
 cd `dirname $0`;
@@ -18,89 +18,89 @@ $PHP pre-install.php
 # install script dependencies as part of pre-install
 read -p 'Install mysql scripts? (y/n) [n]: ' INSTALL_MYSQL
 case $INSTALL_MYSQL in
-		""|n|N|no|NO|No*)
-		;;
-		*)
-			# path to mysql executable
-			MYSQL=`which mysql`
-			if [ -z "${MYSQL}" ]
-			then
-				read -p "Mysql not found on path, enter mysql command: " MYSQL
-			fi
+    ""|n|N|no|NO|No*)
+    ;;
+    *)
+      # path to mysql executable
+      MYSQL=`which mysql`
+      if [ -z "${MYSQL}" ]
+      then
+        read -p "Mysql not found on path, enter mysql command: " MYSQL
+      fi
 
-			# read defaults from existing config
-			DEFAULT_HOST=`egrep '^db_hostname = ' ../conf/config.ini | sed 's/^.*=[ ]*//;s/[ ]*$//'`
-			DEFAULT_DB=`egrep '^db_name = ' ../conf/config.ini | sed 's/^.*=[ ]*//;s/[ ]*$//'`
+      # read defaults from existing config
+      DEFAULT_HOST=`egrep '^db_hostname = ' ../conf/config.ini | sed 's/^.*=[ ]*//;s/[ ]*$//'`
+      DEFAULT_DB=`egrep '^db_name = ' ../conf/config.ini | sed 's/^.*=[ ]*//;s/[ ]*$//'`
 
-			# install db host
-			read -p "Mysql hostname [$DEFAULT_HOST]: " MYSQL_HOST
-			if [ -z "${MYSQL_HOST}" ]
-			then
-				MYSQL_HOST=$DEFAULT_HOST;
-			fi
+      # install db host
+      read -p "Mysql hostname [$DEFAULT_HOST]: " MYSQL_HOST
+      if [ -z "${MYSQL_HOST}" ]
+      then
+        MYSQL_HOST=$DEFAULT_HOST;
+      fi
 
-			# install db name
-			read -p "Mysql database [$DEFAULT_DB]: " MYSQL_DB
-			if [ -z "${MYSQL_DB}" ]
-			then
-				MYSQL_DB=$DEFAULT_DB;
-			fi
+      # install db name
+      read -p "Mysql database [$DEFAULT_DB]: " MYSQL_DB
+      if [ -z "${MYSQL_DB}" ]
+      then
+        MYSQL_DB=$DEFAULT_DB;
+      fi
 
-			# admin db username
-			read -p 'Mysql user with permission to run scripts: ' MYSQL_USER
-			if [ -z "${MYSQL_USER}" ]
-			then
-				echo 'No user entered, exiting';
-				exit 1;
-			fi
-			# admin db password
-			read -s -p "Password for mysql user '${MYSQL_USER}': " MYSQL_PASS
-			echo
-			if [ -z "${MYSQL_PASS}" ]
-			then
-				echo 'No password entered, exiting';
-				exit 1;
-			fi
+      # admin db username
+      read -p 'Mysql user with permission to run scripts: ' MYSQL_USER
+      if [ -z "${MYSQL_USER}" ]
+      then
+        echo 'No user entered, exiting';
+        exit 1;
+      fi
+      # admin db password
+      read -s -p "Password for mysql user '${MYSQL_USER}': " MYSQL_PASS
+      echo
+      if [ -z "${MYSQL_PASS}" ]
+      then
+        echo 'No password entered, exiting';
+        exit 1;
+      fi
 
-			# verify which components to install
-			CREATE_MYSQL_INSTALLER="${PHP} sql/create_mysql_installer.php";
+      # verify which components to install
+      CREATE_MYSQL_INSTALLER="${PHP} sql/create_mysql_installer.php";
 
-			read -p 'Include PDL indexer base schema? (y/n) [y]: ' ANSWER;
-			case ANSWER in
-				n|N|no|NO|No*)
-					CREATE_MYSQL_INSTALLER="${CREATE_MYSQL_INSTALLER} --without-indexer";
-				;;
-				*)
-				;;
-			esac
+      read -p 'Include PDL indexer base schema? (y/n) [y]: ' ANSWER;
+      case ANSWER in
+        n|N|no|NO|No*)
+          CREATE_MYSQL_INSTALLER="${CREATE_MYSQL_INSTALLER} --without-indexer";
+        ;;
+        *)
+        ;;
+      esac
 
-			read -p 'Include FE+ schema and routines? (y/n) [y]: ' ANSWER;
-			case ANSWER in
-				n|N|no|NO|No*)
-					CREATE_MYSQL_INSTALLER="${CREATE_MYSQL_INSTALLER} --without-feplus";
-				;;
-				*)
-				;;
-			esac
+      read -p 'Include FE+ schema and routines? (y/n) [y]: ' ANSWER;
+      case ANSWER in
+        n|N|no|NO|No*)
+          CREATE_MYSQL_INSTALLER="${CREATE_MYSQL_INSTALLER} --without-feplus";
+        ;;
+        *)
+        ;;
+      esac
 
-			read -p 'Include FDSN schema and routines? (y/n) [y]: ' ANSWER;
-			case ANSWER in
-				n|N|no|NO|No*)
-					CREATE_MYSQL_INSTALLER="${CREATE_MYSQL_INSTALLER} --without-fdsnws";
-				;;
-				*)
-				;;
-			esac
+      read -p 'Include FDSN schema and routines? (y/n) [y]: ' ANSWER;
+      case ANSWER in
+        n|N|no|NO|No*)
+          CREATE_MYSQL_INSTALLER="${CREATE_MYSQL_INSTALLER} --without-fdsnws";
+        ;;
+        *)
+        ;;
+      esac
 
-			echo "Creating SQL install script with: ${CREATE_MYSQL_INSTALLER}";
-			`$CREATE_MYSQL_INSTALLER`;
-			echo 'done';
+      echo "Creating SQL install script with: ${CREATE_MYSQL_INSTALLER}";
+      `$CREATE_MYSQL_INSTALLER`;
+      echo 'done';
 
-			# install scripts
-			echo "running sql/install_mysql.sql";
-			$MYSQL -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASS $MYSQL_DB < sql/install_mysql.sql;
-			echo "done"
-		;;
+      # install scripts
+      echo "running sql/install_mysql.sql";
+      $MYSQL -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASS $MYSQL_DB < sql/install_mysql.sql;
+      echo "done"
+    ;;
 esac;
 
 

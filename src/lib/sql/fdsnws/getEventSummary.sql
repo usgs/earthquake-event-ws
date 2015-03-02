@@ -48,7 +48,7 @@ BEGIN
     FROM preferredProduct ps
     WHERE ps.eventId=in_eventid
       AND ps.type IN ('losspager', 'origin', 'shakemap', 'dyfi', 'geoserve',
-	  'significance');
+    'significance');
 
   -- used to look up event location for region name
   DECLARE cur_location CURSOR FOR
@@ -109,9 +109,9 @@ BEGIN
     CALL getProductProperty(origin_id, 'review-status', out_review_status);
     CALL getProductProperty(origin_id, 'event-type', out_event_type);
     CALL getProductProperty(origin_id, 'num-stations-used',
-	out_num_stations_used);
+  out_num_stations_used);
     CALL getProductProperty(origin_id, 'minimum-distance',
-	out_minimum_distance);
+  out_minimum_distance);
     CALL getProductProperty(origin_id, 'standard-error', out_standard_error);
     IF out_event_type IS NULL THEN
       SET out_event_type = 'earthquake';
@@ -164,11 +164,11 @@ BEGIN
     SET pager_sig = 0;
     IF out_alertlevel IS NOT NULL THEN
       IF out_alertlevel = 'red' THEN
-	SET pager_sig = 2000;
+  SET pager_sig = 2000;
       ELSEIF out_alertlevel = 'orange' THEN
-	SET pager_sig = 1000;
+  SET pager_sig = 1000;
       ELSEIF out_alertlevel = 'yellow' THEN
-	SET pager_sig = 650;
+  SET pager_sig = 650;
       END IF;
     END IF;
 

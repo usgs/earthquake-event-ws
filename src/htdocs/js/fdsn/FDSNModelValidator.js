@@ -1,191 +1,191 @@
 'use strict';
 
 var FDSNModel = require('./FDSNModel'),
-		Util = require('util/Util');
+    Util = require('util/Util');
 
 var FIELD_LABELS = {
-	maxlatitude: 'Rectangle Latitude',
-	minlatitude: 'Rectangle Latitude',
-	maxlongitude: 'Rectangle Longitude',
-	minlongitude: 'Rectangle Longitude',
+  maxlatitude: 'Rectangle Latitude',
+  minlatitude: 'Rectangle Latitude',
+  maxlongitude: 'Rectangle Longitude',
+  minlongitude: 'Rectangle Longitude',
 
-	minradiuskm: 'Circle',
-	maxradiuskm: 'Circle',
+  minradiuskm: 'Circle',
+  maxradiuskm: 'Circle',
 
-	mindepth: 'Depth',
-	maxdepth: 'Depth',
+  mindepth: 'Depth',
+  maxdepth: 'Depth',
 
-	mingap: 'Azimuthal Gap',
-	maxgap: 'Azimuthal Gap',
+  mingap: 'Azimuthal Gap',
+  maxgap: 'Azimuthal Gap',
 
-	minsig: 'Significance',
-	maxsig: 'Significance',
+  minsig: 'Significance',
+  maxsig: 'Significance',
 
-	minmmi: 'ShakeMap MMI',
-	maxmmi: 'ShakeMap MMI',
+  minmmi: 'ShakeMap MMI',
+  maxmmi: 'ShakeMap MMI',
 
-	mincdi: 'Did You Feel It CDI',
-	maxcdi: 'Did You Feel It CDI',
-	minfelt: 'Number of DYFI? Responses'
+  mincdi: 'Did You Feel It CDI',
+  maxcdi: 'Did You Feel It CDI',
+  minfelt: 'Number of DYFI? Responses'
 };
 
 var _setError = function (errors, errorName, errorMessage, errorField) {
-	var errorList;
+  var errorList;
 
-	// Don't add null-keyed or null-valued errors
-	if (errorName === null || errorMessage === null) {
-		return errors;
-	}
+  // Don't add null-keyed or null-valued errors
+  if (errorName === null || errorMessage === null) {
+    return errors;
+  }
 
-	errorList = errors.hasOwnProperty(errorName) ? errors[errorName] : {};
+  errorList = errors.hasOwnProperty(errorName) ? errors[errorName] : {};
 
-	if (!errorList.hasOwnProperty(errorMessage)) {
-		errorList[errorMessage] = [];
-	}
+  if (!errorList.hasOwnProperty(errorMessage)) {
+    errorList[errorMessage] = [];
+  }
 
-	errorList[errorMessage].push(errorField);
+  errorList[errorMessage].push(errorField);
 
-	errors[errorName] = errorList;
+  errors[errorName] = errorList;
 
-	return errors;
+  return errors;
 };
 
 var _validate = function (params) {
-	var errors = {},
-	    key = null,
-	    otherKey = null,
-	    value = null;
+  var errors = {},
+      key = null,
+      otherKey = null,
+      value = null;
 
-	// --- Check min/max field pairings -- //
+  // --- Check min/max field pairings -- //
 
-	for (key in params) {
-		value = params[key];
+  for (key in params) {
+    value = params[key];
 
-		if (key.indexOf('min') === 0) {
-			otherKey = key.replace('min', 'max');
+    if (key.indexOf('min') === 0) {
+      otherKey = key.replace('min', 'max');
 
-			if (params.hasOwnProperty(otherKey) &&
-					params[key] > params[otherKey]) {
-				_setError(errors, FIELD_LABELS[key] || key.replace('min', ''),
-						'Minimum must be smaller than maximum.', key);
-			}
+      if (params.hasOwnProperty(otherKey) &&
+          params[key] > params[otherKey]) {
+        _setError(errors, FIELD_LABELS[key] || key.replace('min', ''),
+            'Minimum must be smaller than maximum.', key);
+      }
 
-		} else if (key.indexOf('max') === 0) {
-			otherKey = key.replace('max', 'min');
+    } else if (key.indexOf('max') === 0) {
+      otherKey = key.replace('max', 'min');
 
-			if (params.hasOwnProperty(otherKey) &&
-					params[otherKey] > params[key]) {
-				_setError(errors, FIELD_LABELS[key] || key.replace('max', ''),
-						'Minimum must be smaller than maximum.', key);
-			}
+      if (params.hasOwnProperty(otherKey) &&
+          params[otherKey] > params[key]) {
+        _setError(errors, FIELD_LABELS[key] || key.replace('max', ''),
+            'Minimum must be smaller than maximum.', key);
+      }
 
-		}
+    }
 
-	}
+  }
 
-	// -- Check for field combination completeness (as appropriate) -- //
-	if (params.hasOwnProperty('latitude') ||
-			params.hasOwnProperty('longitude') ||
-			params.hasOwnProperty('minradiuskm') ||
-			params.hasOwnProperty('maxradiuskm')) {
+  // -- Check for field combination completeness (as appropriate) -- //
+  if (params.hasOwnProperty('latitude') ||
+      params.hasOwnProperty('longitude') ||
+      params.hasOwnProperty('minradiuskm') ||
+      params.hasOwnProperty('maxradiuskm')) {
 
-		// Trying to do a circle search. Make sure minimum set of fields are set.
-		if (!params.hasOwnProperty('latitude')) {
-			_setError(errors, 'Circle',
-					'Center latitude/longitude must be specified together.',
-					'latitude');
-		}
-		if (!params.hasOwnProperty('longitude')) {
-			_setError(errors, 'Circle',
-					'Center latitude/longitude must be specified together.',
-					'longitude');
-		}
+    // Trying to do a circle search. Make sure minimum set of fields are set.
+    if (!params.hasOwnProperty('latitude')) {
+      _setError(errors, 'Circle',
+          'Center latitude/longitude must be specified together.',
+          'latitude');
+    }
+    if (!params.hasOwnProperty('longitude')) {
+      _setError(errors, 'Circle',
+          'Center latitude/longitude must be specified together.',
+          'longitude');
+    }
 
-		if (!params.hasOwnProperty('maxradiuskm')) {
-			_setError(errors, 'Circle',
-					'Circle searches require an outer radius.', 'maxradiuskm');
-		}
-	}
+    if (!params.hasOwnProperty('maxradiuskm')) {
+      _setError(errors, 'Circle',
+          'Circle searches require an outer radius.', 'maxradiuskm');
+    }
+  }
 
-	// TODO :: Other tests?
+  // TODO :: Other tests?
 
-	return errors;
+  return errors;
 };
 
 var DEFAULTS = {
-	// TODO :: Anything?
+  // TODO :: Anything?
 };
 
 var FDSNModelValidator = function (options) {
-	var _this,
-			_initialize,
+  var _this,
+      _initialize,
 
-			getErrors,
-			getErrorFields,
+      getErrors,
+      getErrorFields,
 
-			_onModelChange;
+      _onModelChange;
 
-	_this = {};
+  _this = {};
 
-	_initialize = function () {
-		options = Util.extend({}, DEFAULTS, options);
+  _initialize = function () {
+    options = Util.extend({}, DEFAULTS, options);
 
-		_this._model = options.model || FDSNModel();
-		_this._errors = _validate(_this._model.getNonEmpty(), {});
-		_this._model.on('change', _onModelChange, _this);
-	};
+    _this._model = options.model || FDSNModel();
+    _this._errors = _validate(_this._model.getNonEmpty(), {});
+    _this._model.on('change', _onModelChange, _this);
+  };
 
-	/**
-	 * @return {Object}
-	 *      An object hash of {fieldName: errorMessage} for current errors on
-	 *      _this._model.
-	 */
-	getErrors = function () {
-		return _this._errors;
-	};
+  /**
+   * @return {Object}
+   *      An object hash of {fieldName: errorMessage} for current errors on
+   *      _this._model.
+   */
+  getErrors = function () {
+    return _this._errors;
+  };
 
-	/**
-	 * @return {Array}
-	 *      An array containing the name of the fields that are currently in an
-	 *      error state.
-	 */
-	getErrorFields = function () {
-		var fields = [],
-		    key = null;
+  /**
+   * @return {Array}
+   *      An array containing the name of the fields that are currently in an
+   *      error state.
+   */
+  getErrorFields = function () {
+    var fields = [],
+        key = null;
 
-		for (key in _this._errors) {
-			fields.push(key);
-		}
+    for (key in _this._errors) {
+      fields.push(key);
+    }
 
-		return fields;
-	};
+    return fields;
+  };
 
-	/**
-	 * @return {Boolean}
-	 *      True if the combination of field values in _this._model currently
-	 *      valid, false otherwise.
-	 */
-	_this.isValid = function () {
-		var key = null;
+  /**
+   * @return {Boolean}
+   *      True if the combination of field values in _this._model currently
+   *      valid, false otherwise.
+   */
+  _this.isValid = function () {
+    var key = null;
 
-		for (key in _this._errors) {
-			// If any keys in _this._errors, then not valid
-			return false;
-		}
+    for (key in _this._errors) {
+      // If any keys in _this._errors, then not valid
+      return false;
+    }
 
-		return true;
-	};
+    return true;
+  };
 
-	/**
-	 * Event handler when _this._model changes. Auto-validates the model new model
-	 *
-	 */
-	_onModelChange = function () {
-		_this._errors = _validate(this._model.getNonEmpty());
-	};
+  /**
+   * Event handler when _this._model changes. Auto-validates the model new model
+   *
+   */
+  _onModelChange = function () {
+    _this._errors = _validate(this._model.getNonEmpty());
+  };
 
-	_initialize();
-	return _this;
+  _initialize();
+  return _this;
 };
 
 module.exports = FDSNModelValidator;

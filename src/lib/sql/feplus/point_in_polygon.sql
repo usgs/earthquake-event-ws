@@ -20,7 +20,7 @@ BEGIN
     WHILE i <= n DO
       SET result = point_in_one_polygon(p, GeometryN(poly, i));
       IF result = 1 THEN
-	RETURN result;
+  RETURN result;
       END IF;
 
       SET i = i + 1;

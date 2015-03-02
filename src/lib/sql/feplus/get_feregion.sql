@@ -29,7 +29,7 @@ BEGIN
   OPEN cur_points;
   cur_points_loop: LOOP
     FETCH cur_points INTO out_s, out_m, out_l, out_e, out_h, out_area,
-	out_shape, out_feregion, out_priority, out_dataset;
+  out_shape, out_feregion, out_priority, out_dataset;
     IF done = 1 THEN
       CLOSE cur_points;
       LEAVE cur_points_loop;

@@ -3,87 +3,87 @@
 
 abstract class AbstractFeed {
 
-	public $formatter;
+  public $formatter;
 
-	public function __construct() {
-		$this->formatter = new Formatter();
-	}
-
-
-	// functions to be overridden by subclasses
-	public function getMimeType() { return 'text/plain'; }
-	public abstract function getHeader ($query);
-	public abstract function getEntry ($event);
-	public abstract function getFooter ();
+  public function __construct() {
+    $this->formatter = new Formatter();
+  }
 
 
-	public static function getFeedUrlPrefix() {
-		global $HOST_URL_PREFIX;
-		global $FEED_PATH;
-		return $HOST_URL_PREFIX . $FEED_PATH;
-	}
-
-	public static function getServiceUrl() {
-		global $HOST_URL_PREFIX;
-		global $FDSN_PATH;
-		return $HOST_URL_PREFIX . $FDSN_PATH . '/';
-	}
-
-	public static function getEventDetailLink($eventid) {
-		global $CONFIG;
-		global $HOST_URL_PREFIX;
-		return $HOST_URL_PREFIX . $CONFIG['EVENT_PATH'] . '/' . $eventid;
-	}
-
-	public static function getEventDetailFeed($eventid, $format) {
-		global $HOST_URL_PREFIX;
-		global $FDSN_PATH;
-		global $FEED_PATH;
-
-		if (strpos($_SERVER['REQUEST_URI'], $FDSN_PATH) !== FALSE) {
-			// if on fdsn, stay on fdsn
-			if ($format === 'geojsonp') {
-				// fdsn doesn't support geojsonp format, users can append callback manually
-				$format = 'geojson';
-			}
-			return $HOST_URL_PREFIX . $FDSN_PATH . '/query?eventid=' . $eventid . '&format=' . $format;
-		} else {
-			// on feeds
-			return $HOST_URL_PREFIX . $FEED_PATH . '/detail/' . $eventid . '.' . $format;
-		}
-	}
-
-	public function getEventTitle($event) {
-		$eventtype = $this->formatter->formatEventType($event['event_type']);
-
-		return
-				$this->formatter->formatMagnitude($event['eventMagnitude']) . 
-				($eventtype !== 'Earthquake' ? ' ' . $eventtype : '') .
-				' - ' . $event['region'];
-	}
+  // functions to be overridden by subclasses
+  public function getMimeType() { return 'text/plain'; }
+  public abstract function getHeader ($query);
+  public abstract function getEntry ($event);
+  public abstract function getFooter ();
 
 
-	protected function getQuickSummaryCSS() {
-		$css = '
+  public static function getFeedUrlPrefix() {
+    global $HOST_URL_PREFIX;
+    global $FEED_PATH;
+    return $HOST_URL_PREFIX . $FEED_PATH;
+  }
+
+  public static function getServiceUrl() {
+    global $HOST_URL_PREFIX;
+    global $FDSN_PATH;
+    return $HOST_URL_PREFIX . $FDSN_PATH . '/';
+  }
+
+  public static function getEventDetailLink($eventid) {
+    global $CONFIG;
+    global $HOST_URL_PREFIX;
+    return $HOST_URL_PREFIX . $CONFIG['EVENT_PATH'] . '/' . $eventid;
+  }
+
+  public static function getEventDetailFeed($eventid, $format) {
+    global $HOST_URL_PREFIX;
+    global $FDSN_PATH;
+    global $FEED_PATH;
+
+    if (strpos($_SERVER['REQUEST_URI'], $FDSN_PATH) !== FALSE) {
+      // if on fdsn, stay on fdsn
+      if ($format === 'geojsonp') {
+        // fdsn doesn't support geojsonp format, users can append callback manually
+        $format = 'geojson';
+      }
+      return $HOST_URL_PREFIX . $FDSN_PATH . '/query?eventid=' . $eventid . '&format=' . $format;
+    } else {
+      // on feeds
+      return $HOST_URL_PREFIX . $FEED_PATH . '/detail/' . $eventid . '.' . $format;
+    }
+  }
+
+  public function getEventTitle($event) {
+    $eventtype = $this->formatter->formatEventType($event['event_type']);
+
+    return
+        $this->formatter->formatMagnitude($event['eventMagnitude']) . 
+        ($eventtype !== 'Earthquake' ? ' ' . $eventtype : '') .
+        ' - ' . $event['region'];
+  }
+
+
+  protected function getQuickSummaryCSS() {
+    $css = '
 h2 {
-	margin-bottom:0;
-	font-size:16px;
-	font-weight:bold;
+  margin-bottom:0;
+  font-size:16px;
+  font-weight:bold;
 }
 
 .quicksummary {
-	float:left;
+  float:left;
 }
 .quicksummary > a {
-	float:left;
-	display:block;
-	padding:4px;
-	margin-right:8px;
-	text-decoration:none;
-	border:1px solid #333;
+  float:left;
+  display:block;
+  padding:4px;
+  margin-right:8px;
+  text-decoration:none;
+  border:1px solid #333;
 }
 .quicksummary > a.tsunamilogo {
-	padding:0;
+  padding:0;
 }
 
 .roman { font-family:Georgia, Times, serif; }
@@ -106,118 +106,118 @@ h2 {
 .mmi-XII{color:#FFF; background-color:#C80F0A;}
 
 dl {
-	clear:left;
-	font-family: Helvetica;
-	line-height: 1.3;
+  clear:left;
+  font-family: Helvetica;
+  line-height: 1.3;
 }
 dt {
-	color: #999;
-	margin-top: .5em;
+  color: #999;
+  margin-top: .5em;
 }
 dd {
-	margin: 0;
+  margin: 0;
 }
 
 .links{clear:both;line-height:1.3;}
 ';
 
-		$css = str_replace("\n", "", $css);
-		$css = str_replace("\t", "", $css);
-		$css = str_replace(" ", "", $css);
+    $css = str_replace("\n", "", $css);
+    $css = str_replace("\t", "", $css);
+    $css = str_replace(" ", "", $css);
 
-		return $css;
-	}
-
-
-	protected function getQuickSummary($event, $includeLocation=true) {
-		static $romans = array('I', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII');
-
-		$content = '';
-		$eventpage = self::getEventDetailLink($event['eventSource'] . $event['eventSourceCode']);
+    return $css;
+  }
 
 
-		// QUICK SUMMARY
+  protected function getQuickSummary($event, $includeLocation=true) {
+    static $romans = array('I', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII');
 
-		$alertlevel = null;
-		$maxmmi = null;
-		$feltreports = null;
-		$feltmmi = null;
-		$tsunamiflag = (intval($event['tsunami']) == 1);
+    $content = '';
+    $eventpage = self::getEventDetailLink($event['eventSource'] . $event['eventSourceCode']);
 
-		if ($event['alertlevel'] != '') {
-			$alertlevel = strtolower($event['alertlevel']);
-		}
-		if ($event['maxmmi'] != '') {
-			$maxmmi = round($event['maxmmi']);
-		}
-		if ($event['maxcdi'] != '') {
-			$feltmmi = round($event['maxcdi']);
-		}
-		if ($event['num_responses'] != '') {
-			$feltreports = $event['num_responses'];
-		}
 
-		$summaries = array();
+    // QUICK SUMMARY
 
-		if ($alertlevel !== null) {
-			$summaries[] = '<a'
-				. ' href="' . $eventpage . '#pager"'
-				. ' title="PAGER estimated impact alert level"'
-				. ' class="pager-' . $alertlevel . '"'
-				. '>PAGER - <strong class="roman">' . strtoupper($alertlevel) . '</strong></a>';
-		}
+    $alertlevel = null;
+    $maxmmi = null;
+    $feltreports = null;
+    $feltmmi = null;
+    $tsunamiflag = (intval($event['tsunami']) == 1);
 
-		if ($maxmmi !== null) {
-			$romanmmi = $romans[$maxmmi];
-			$summaries[] .= '<a'
-				. ' href="' . $eventpage . '#shakemap"'
-				. ' title="ShakeMap maximum estimated intensity"'
-				. ' class="mmi-' . $romanmmi . '"'
-				. '>ShakeMap - <strong class="roman">' . $romanmmi . '</strong></a>';
-		}
+    if ($event['alertlevel'] != '') {
+      $alertlevel = strtolower($event['alertlevel']);
+    }
+    if ($event['maxmmi'] != '') {
+      $maxmmi = round($event['maxmmi']);
+    }
+    if ($event['maxcdi'] != '') {
+      $feltmmi = round($event['maxcdi']);
+    }
+    if ($event['num_responses'] != '') {
+      $feltreports = $event['num_responses'];
+    }
 
-		if ($feltmmi !== null) {
-			$romanmmi = $romans[$feltmmi];
-			$summaries[] .= '<a'
-				. ' href="' . $eventpage . '#dyfi"'
-				. ' class="mmi-' . $romanmmi . '"'
-				. ' title="Did You Feel It? maximum reported intensity ('
-				. $feltreports . ' reports)"'
-				. '>DYFI? - <strong class="roman">' . $romanmmi . '</strong></a>';
-		}
+    $summaries = array();
 
-		if ($tsunamiflag) {
-			$summaries[] .= '<a class="tsunamilogo"' .
-					' href="http://www.tsunami.gov/"' .
-					' title="Tsunami Warning Center">' .
-					' <img src="' .
-						self::getFeedUrlPrefix() .
-						'/images/tsunami-wave-warning.jpg" alt="Tsunami Warning Center"/>' .
-					'</a>';
-		}
+    if ($alertlevel !== null) {
+      $summaries[] = '<a'
+        . ' href="' . $eventpage . '#pager"'
+        . ' title="PAGER estimated impact alert level"'
+        . ' class="pager-' . $alertlevel . '"'
+        . '>PAGER - <strong class="roman">' . strtoupper($alertlevel) . '</strong></a>';
+    }
 
-		if (count($summaries) > 0) {
-			$content .= '<p class="quicksummary">' .
-					implode(' ', $summaries) .
-					'</p>';
-		}
+    if ($maxmmi !== null) {
+      $romanmmi = $romans[$maxmmi];
+      $summaries[] .= '<a'
+        . ' href="' . $eventpage . '#shakemap"'
+        . ' title="ShakeMap maximum estimated intensity"'
+        . ' class="mmi-' . $romanmmi . '"'
+        . '>ShakeMap - <strong class="roman">' . $romanmmi . '</strong></a>';
+    }
 
-		$content .= '<dl>' .
-				'<dt>Time</dt>' .
-				'<dd>' . $this->formatter->formatDate($event['eventTime']) . '</dd>' .
-				'<dd>' . $this->formatter->formatDate($event['eventTime'], $event['offset']) . ' at epicenter</dd>' .
-				($includeLocation ?
-					'<dt>Location</dt>' .
-					'<dd>' . $this->formatter->formatLatitude($event['eventLatitude']) .
-							' ' . $this->formatter->formatLongitude($event['eventLongitude']) . '</dd>'
-					: ''
-				) .
-				'<dt>Depth</dt>' .
-				'<dd>' . $this->formatter->formatDepth($event['eventDepth']) . '</dd>' .
-				'</dl>';
+    if ($feltmmi !== null) {
+      $romanmmi = $romans[$feltmmi];
+      $summaries[] .= '<a'
+        . ' href="' . $eventpage . '#dyfi"'
+        . ' class="mmi-' . $romanmmi . '"'
+        . ' title="Did You Feel It? maximum reported intensity ('
+        . $feltreports . ' reports)"'
+        . '>DYFI? - <strong class="roman">' . $romanmmi . '</strong></a>';
+    }
 
-		return $content;
-	}
+    if ($tsunamiflag) {
+      $summaries[] .= '<a class="tsunamilogo"' .
+          ' href="http://www.tsunami.gov/"' .
+          ' title="Tsunami Warning Center">' .
+          ' <img src="' .
+            self::getFeedUrlPrefix() .
+            '/images/tsunami-wave-warning.jpg" alt="Tsunami Warning Center"/>' .
+          '</a>';
+    }
+
+    if (count($summaries) > 0) {
+      $content .= '<p class="quicksummary">' .
+          implode(' ', $summaries) .
+          '</p>';
+    }
+
+    $content .= '<dl>' .
+        '<dt>Time</dt>' .
+        '<dd>' . $this->formatter->formatDate($event['eventTime']) . '</dd>' .
+        '<dd>' . $this->formatter->formatDate($event['eventTime'], $event['offset']) . ' at epicenter</dd>' .
+        ($includeLocation ?
+          '<dt>Location</dt>' .
+          '<dd>' . $this->formatter->formatLatitude($event['eventLatitude']) .
+              ' ' . $this->formatter->formatLongitude($event['eventLongitude']) . '</dd>'
+          : ''
+        ) .
+        '<dt>Depth</dt>' .
+        '<dd>' . $this->formatter->formatDepth($event['eventDepth']) . '</dd>' .
+        '</dl>';
+
+    return $content;
+  }
 
 }
 

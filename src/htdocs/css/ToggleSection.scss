@@ -1,19 +1,19 @@
 /* Basic toggle styles */
 section.toggle, /* Just for more specificity. */
 .toggle {
-	margin:0;
-	padding:0;
+  margin:0;
+  padding:0;
 }
 
 /* When content is visible, some space looks better */
 section.toggle-visible,
 .toggle-visible {
-	padding-bottom:12px;
+  padding-bottom:12px;
 }
 
 /* Hide all children in a toggle element ... */
 .toggle > * {
-	display:none;
+  display:none;
 }
 
 /**
@@ -21,32 +21,32 @@ section.toggle-visible,
  * control element).
  */
 .toggle-visible > * {
-	display:block;
+  display:block;
 }
 
 /* The toggle controller element styles */
 .toggle > .toggle-control {
-	position:relative;
-	display:block;
-	padding: 0 0 2px 32px;
-	cursor:pointer;
-	z-index:1;
+  position:relative;
+  display:block;
+  padding: 0 0 2px 32px;
+  cursor:pointer;
+  z-index:1;
 }
 
 /* Add the '+' symbol in front of the control element */
 .toggle > .toggle-control:before {
-	display: block;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 1em;
-	border: 1px solid #000;
-	text-align: center;
-	content: '+';
-	font-family: monospace;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1em;
+  border: 1px solid #000;
+  text-align: center;
+  content: '+';
+  font-family: monospace;
 }
 
 /* Switch to a '-' symbol when toggle is open */
 .toggle-visible > .toggle-control:before {
-	content:'-';
+  content:'-';
 }

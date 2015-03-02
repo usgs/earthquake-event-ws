@@ -13,21 +13,21 @@
 
 .region-square-details > .region-square-details-north,
 .region-square-details > .region-square-details-south {
-	clear:left;
-	margin:0 auto;
-	overflow: hidden; // reset block formatting context
+  clear:left;
+  margin:0 auto;
+  overflow: hidden; // reset block formatting context
 }
 .region-square-details-north > input,
 .region-square-details-south > input,
 .region-square-details-west > input,
 .region-square-details-east > input {
-	margin:0 auto;
+  margin:0 auto;
 }
 .region-square-details-east {
-	margin:0;
-	float:right;
+  margin:0;
+  float:right;
 }
 .region-square-details-west {
-	margin:0;
-	float:left;
+  margin:0;
+  float:left;
 }
