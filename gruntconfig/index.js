@@ -16,17 +16,18 @@ var config = {
 
   tasks: [
     'grunt-browserify',
+    'grunt-concurrent',
+    'grunt-connect-proxy',
     'grunt-contrib-clean',
     'grunt-contrib-compass',
-    'grunt-concurrent',
     'grunt-contrib-connect',
     'grunt-contrib-copy',
     'grunt-contrib-cssmin',
     'grunt-contrib-htmlmin',
     'grunt-contrib-jshint',
-    'grunt-mocha-phantomjs',
     'grunt-contrib-uglify',
-    'grunt-contrib-watch'
+    'grunt-contrib-watch',
+    'grunt-mocha-phantomjs'
   ]
 };
 

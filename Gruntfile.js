@@ -18,21 +18,29 @@ module.exports = function (grunt) {
     'mocha_phantomjs'
   ]);
 
+  grunt.registerTask('dev', [
+    'build',
+    'connect:template',
+    'configureProxies:build',
+    'connect:build'
+  ]);
+
   grunt.registerTask('build', [
     'jshint',
-    'concurrent:build', // browserify:build, compass:build, copy:build
-    'connect:build'
+    'concurrent:build' // browserify:build, compass:build, copy:build
   ]);
 
   grunt.registerTask('dist', [
     'build',
     'concurrent:dist', // htmlmin:dist, copy:dist, uglify, cssmin:dist
+    'connect:template',
+    'configureProxies:dist',
     'connect:dist'
   ]);
 
   grunt.registerTask('default', [
     'clean',
-    'build',
+    'dev',
     'test',
     'watch'
   ]);

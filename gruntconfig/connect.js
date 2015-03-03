@@ -9,11 +9,6 @@ var iniConfig = require('ini').parse(require('fs')
     .readFileSync('./src/conf/config.ini', 'utf-8'));
 
 var rewrites = [
-  // Template
-  {
-    from: '^/theme/(.*)$',
-    to: '/hazdev-template/dist/htdocs/$1'
-  },
 
   // Search pages
   {
@@ -75,6 +70,8 @@ if (!iniConfig.hasOwnProperty('OFFSITE_HOST') ||
 var rewriteMiddleware = rewriteModule.getMiddleware(rewrites
     /*,{verbose:true}*/);
 
+var proxyMiddleware = require('grunt-connect-proxy/lib/utils').proxyRequest;
+
 // middleware to send CORS headers
 var corsMiddleware = function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -101,6 +98,16 @@ var connect = {
   options: {
     hostname: '*'
   },
+  proxies: [
+    {
+      context: '/theme/',
+      host: 'localhost',
+      port: 8003,
+      rewrite: {
+        '^/theme': ''
+      }
+    }
+  ],
   build: {
     options: {
       base: [
@@ -113,6 +120,7 @@ var connect = {
         middlewares.unshift(
           corsMiddleware,
           rewriteMiddleware,
+          proxyMiddleware,
           mountPHP(options.base[0])
         );
         return middlewares;
@@ -150,10 +158,17 @@ var connect = {
         middlewares.unshift(
           corsMiddleware,
           rewriteMiddleware,
+          proxyMiddleware,
           mountPHP(options.base[0])
         );
         return middlewares;
       }
+    }
+  },
+  template: {
+    options: {
+      base: ['node_modules/hazdev-template/dist/htdocs'],
+      port: 8003
     }
   }
 };
