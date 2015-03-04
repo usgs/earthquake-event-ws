@@ -2,14 +2,14 @@
 
 'use strict';
 
-var FDSNModel = require('./FDSNModel'),
-    FDSNModelValidator = require('./FDSNModelValidator'),
-    SelectField = require('./SelectField'),
-    EventTypeField = require('./EventTypeField'),
-    UrlBuilderFormatter = require('./UrlBuilderFormatter'),
-    ManagedModelView = require('./ManagedModelView'),
-    ToggleSection = require('./ToggleSection'),
-    UrlManager = require('./UrlManager'),
+var FDSNModel = require('fdsn/FDSNModel'),
+    FDSNModelValidator = require('fdsn/FDSNModelValidator'),
+    SelectField = require('fdsn/SelectField'),
+    EventTypeField = require('fdsn/EventTypeField'),
+    UrlBuilderFormatter = require('fdsn/UrlBuilderFormatter'),
+    ManagedModelView = require('fdsn/ManagedModelView'),
+    ToggleSection = require('fdsn/ToggleSection'),
+    UrlManager = require('fdsn/UrlManager'),
     Util = require('util/Util'),
     Xhr = require('util/Xhr'),
     ModalView = require('mvc/ModalView'),

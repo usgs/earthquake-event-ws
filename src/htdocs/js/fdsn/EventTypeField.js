@@ -1,6 +1,6 @@
 'use strict';
 
-var SelectField = require('./SelectField'),
+var SelectField = require('fdsn/SelectField'),
     Util = require('util/Util');
 
 var EQ_EVENT_TYPES = {

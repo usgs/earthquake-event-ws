@@ -1,6 +1,6 @@
 'use strict';
 
-var FDSNModel = require('./FDSNModel'),
+var FDSNModel = require('fdsn/FDSNModel'),
     Util = require('util/Util');
 
 var FIELD_LABELS = {

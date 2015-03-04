@@ -7,6 +7,7 @@
   mocha.reporter('html');
 
   // TODO, create tests
+  require('./spec/FDSNSearchFormTest');
 
   if (window.mochaPhantomJS) {
     window.mochaPhantomJS.run();

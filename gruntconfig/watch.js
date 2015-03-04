@@ -7,7 +7,7 @@ var watch = {
     files: [
       config.src + '/htdocs/js/**/*.js'
     ],
-    tasks: ['jshint:scripts', 'browserify:build']
+    tasks: ['jshint:scripts', 'browserify:build', 'browserify:bundle']
   },
   scss: {
     files: [
@@ -15,12 +15,17 @@ var watch = {
     ],
     tasks: ['compass:build']
   },
-  tests: {
+  test_js: {
     files: [
-      config.test + '/*.html',
       config.test + '/**/*.js'
     ],
     tasks: ['jshint:tests', 'browserify:test', 'copy:test']
+  },
+  test_html: {
+    files: [
+      config.test + '/*.html'
+    ],
+    tasks: ['copy:test']
   },
   resources: {
     files: [
@@ -41,7 +46,8 @@ var watch = {
   },
   gruntfile: {
     files: [
-      'Gruntfile.js'
+      'Gruntfile.js',
+      'gruntconfig/**/*'
     ],
     tasks: ['jshint:gruntfile']
   }
