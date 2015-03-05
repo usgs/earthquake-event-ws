@@ -24,6 +24,7 @@ var FDSNModel = require('fdsn/FDSNModel'),
 var FDSNSearchForm = function (options) {
   var _this,
       _initialize,
+      _el,
       
       _addSubmitHandler,
       _bindInput,
@@ -56,7 +57,7 @@ var FDSNSearchForm = function (options) {
   _initialize = function () {
 
     // Pull conf options off the options and store as instance variables
-    _this.el = options.el || document.createElement('div');
+    _el = options.el || document.createElement('div');
     _this.fieldDataUrl = options.fieldDataUrl || null;
     _this.model = options.model || FDSNModel();
 
@@ -106,7 +107,7 @@ var FDSNSearchForm = function (options) {
         // Mark the field in the UI
         fields = errors[key][message];
         for (i = 0; i < fields.length; i++) {
-          field = _this.el.querySelector('#' + fields[i]);
+          field = _el.querySelector('#' + fields[i]);
           if (field !== null) {
             field.classList.add('error');
           }
@@ -330,7 +331,7 @@ var FDSNSearchForm = function (options) {
     nonEmptyParams = _this.model.getNonEmpty();
     // TODO :: Conform magnitude type to FDSN spec
     //if (nonEmptyParams.hasOwnProperty('magnitudetype')) {
-      //Util.addClass(_this.el.querySelector('#magtype').parentNode,
+      //Util.addClass(_el.querySelector('#magtype').parentNode,
           //'toggle-visible');
     //}
 
@@ -342,7 +343,7 @@ var FDSNSearchForm = function (options) {
         nonEmptyParams.hasOwnProperty('mincdi') ||
         nonEmptyParams.hasOwnProperty('maxcdi') ||
         nonEmptyParams.hasOwnProperty('minfelt')) {
-      _this.el.querySelector('#impact').parentNode.classList.add(
+      _el.querySelector('#impact').parentNode.classList.add(
           'toggle-visible');
     }
 
@@ -361,27 +362,26 @@ var FDSNSearchForm = function (options) {
     nonEmptyParams = _this.model.getNonEmpty();
 
     if (nonEmptyParams.hasOwnProperty('eventtype')) {
-      _this.el.querySelector('#evttype').parentNode.classList.add(
+      _el.querySelector('#evttype').parentNode.classList.add(
           'toggle-visible');
     }
     if (nonEmptyParams.hasOwnProperty('catalog')) {
-      _this.el.querySelector('#cat').parentNode.classList.add(
+      _el.querySelector('#cat').parentNode.classList.add(
           'toggle-visible');
     }
     if (nonEmptyParams.hasOwnProperty('contributor')) {
-      _this.el.querySelector('#contrib').parentNode.classList.add(
+      _el.querySelector('#contrib').parentNode.classList.add(
           'toggle-visible');
     }
     if (nonEmptyParams.hasOwnProperty('producttype')) {
-      _this.el.querySelector('#prodtype').parentNode.classList.add(
+      _el.querySelector('#prodtype').parentNode.classList.add(
           'toggle-visible');
     }
   };
 
   _bindInput = function (inputId) {
-    var form = _this,
-        eventName = 'change:' + inputId,
-        input = _this.el.querySelector('#' + inputId),
+    var eventName = 'change:' + inputId,
+        input = _el.querySelector('#' + inputId),
         onModelChange = null, onViewChange = null;
 
     onModelChange = function (newValue) {
@@ -392,7 +392,7 @@ var FDSNSearchForm = function (options) {
       var o = {};
       o[inputId] = input.value;
 
-      form.model.set(o);
+      _this.model.set(o);
     };
 
     // Update the view when the model changes
@@ -406,9 +406,8 @@ var FDSNSearchForm = function (options) {
   };
 
   _bindRadio = function (inputId) {
-    var form = _this,
-        eventName = 'change:' + inputId,
-        list = _this.el.querySelector('.' + inputId + '-list'),
+    var eventName = 'change:' + inputId,
+        list = _el.querySelector('.' + inputId + '-list'),
         inputs = list.querySelectorAll('input'),
         input = null, i = 0, numInputs = inputs.length,
         onModelChange = null, onViewChange = null;
@@ -465,7 +464,7 @@ var FDSNSearchForm = function (options) {
         }
       }
 
-      form.model.set(values);
+      _this.model.set(values);
     };
 
     // Update the view when the model changes
@@ -485,20 +484,19 @@ var FDSNSearchForm = function (options) {
   };
 
   _fetchFieldData = function () {
-    var form = _this;
 
     Xhr.ajax({
       url: _this.fieldDataUrl,
       success: function (data) {
-        form._enhanceField(data.catalogs || [],
-            'catalog', form.formatter.formatCatalog);
-        form._enhanceField(data.contributors || [],
-            'contributor', form.formatter.formatContributor);
-        form._enhanceField(data.producttypes || [],
-            'producttype', form.formatter.formatProductType);
-        form._enhanceEventType(data.eventtypes || []);
+        _this._enhanceField(data.catalogs || [],
+            'catalog', _this.formatter.formatCatalog);
+        _this._enhanceField(data.contributors || [],
+            'contributor', _this.formatter.formatContributor);
+        _this._enhanceField(data.producttypes || [],
+            'producttype', _this.formatter.formatProductType);
+        _this._enhanceEventType(data.eventtypes || []);
 
-        form._bindModelUpdate();
+        _this._bindModelUpdate();
       }
     });
   };
@@ -508,7 +506,7 @@ var FDSNSearchForm = function (options) {
    *
    */
   _enableToggleFields = function () {
-    var toggles = _this.el.querySelectorAll('.toggle-control'),
+    var toggles = _el.querySelectorAll('.toggle-control'),
         i = 0, len = toggles.length,
         t = null, s = null;
 
@@ -522,10 +520,8 @@ var FDSNSearchForm = function (options) {
 
 
   _addSubmitHandler = function () {
-    var form = _this;
-
     // Prevent early submission through <enter> key
-    _this.el.addEventListener('keydown', function (evt) {
+    _el.addEventListener('keydown', function (evt) {
       var code = evt.keyCode || evt.charCode;
       if (code === 13 && _this.id !== 'fdsn-submit') {
         evt.preventDefault();
@@ -534,17 +530,17 @@ var FDSNSearchForm = function (options) {
     });
 
     // Add event handler for form submission
-    _this.el.addEventListener('submit', (function () {
-      return function (evt) {
-        form.onSubmit();
+    _el.addEventListener('submit',
+      function (evt) {
+        onSubmit();
         evt.preventDefault();
         return false;
-      };
-    })(this));
+      }
+    );
   };
 
   _this._enhanceField = function (fields, name, format, classes) {
-    var textInput = _this.el.querySelector('#' + name),
+    var textInput = _el.querySelector('#' + name),
         parentNode = textInput.parentNode,
         list = parentNode.appendChild(document.createElement('ul')),
         inputModel,
@@ -573,7 +569,7 @@ var FDSNSearchForm = function (options) {
 
     len = inputModel.length;
     for (i = 0; i < len; i++) {
-      element = _this.el.querySelector('#' +
+      element = _el.querySelector('#' +
         selectField._getFieldId(inputModel[i]));
       if (element !== null) {
         element.checked = true;
@@ -582,7 +578,7 @@ var FDSNSearchForm = function (options) {
   };
 
   _this._enhanceEventType = function (fields) {
-    var textInput = _this.el.querySelector('#eventtype'),
+    var textInput = _el.querySelector('#eventtype'),
         parentNode = textInput.parentNode,
         list = parentNode.appendChild(document.createElement('ul')),
         inputModel,
@@ -606,7 +602,7 @@ var FDSNSearchForm = function (options) {
 
     len = inputModel.length;
     for (i = 0; i < len; i++) {
-      element = _this.el.querySelector('#' +
+      element = _el.querySelector('#' +
           eventType._getFieldId(inputModel[i]));
       if (element !== null) {
         element.checked = true;
@@ -615,7 +611,7 @@ var FDSNSearchForm = function (options) {
   };
 
   _enableRegionControl = function () {
-    var drawRectangleButton = _this.el.querySelector('.draw'),
+    var drawRectangleButton = _el.querySelector('.draw'),
         maxLatitude = document.querySelector('#maxlatitude'),
         minLatitude = document.querySelector('#minlatitude'),
         maxLongitude = document.querySelector('#maxlongitude'),
@@ -630,7 +626,7 @@ var FDSNSearchForm = function (options) {
       clearedText: 'Currently searching entire world',
       filledText: 'Currently searching custom region',
       controlText: 'Clear Region',
-      el: _this.el.querySelector('.region-description'),
+      el: _el.querySelector('.region-description'),
       model: _model,
       fields: {
         'maxlatitude': '',
@@ -687,15 +683,15 @@ var FDSNSearchForm = function (options) {
   };
 
   _enableOutputDetailsToggle = function () {
-    var list = _this.el.querySelector('.format-list'),
+    var list = _el.querySelector('.format-list'),
         map = document.createElement('li'),
-        csv = _this.el.querySelector('#output-format-csv'),
-        kml = _this.el.querySelector('#output-format-kml'),
-        quakeml = _this.el.querySelector('#output-format-quakeml'),
-        geojson = _this.el.querySelector('#output-format-geojson'),
-        kmlD = _this.el.querySelector('#output-format-kml-details'),
-        quakemlD = _this.el.querySelector('#output-format-quakeml-details'),
-        geojsonD = _this.el.querySelector('#output-format-geojson-details'),
+        csv = _el.querySelector('#output-format-csv'),
+        kml = _el.querySelector('#output-format-kml'),
+        quakeml = _el.querySelector('#output-format-quakeml'),
+        geojson = _el.querySelector('#output-format-geojson'),
+        kmlD = _el.querySelector('#output-format-kml-details'),
+        quakemlD = _el.querySelector('#output-format-quakeml-details'),
+        geojsonD = _el.querySelector('#output-format-geojson-details'),
         handler = null;
 
     /* jshint -W015 */
@@ -744,14 +740,13 @@ var FDSNSearchForm = function (options) {
   // --------------------------------------------------
 
   onSubmit = function () {
-    var form = _this;
 
     if (_this.validator.isValid()) {
       window.location = _serializeFormToUrl();
     } else {
 
       // Some errors during submission, show them
-      _this.el.classList.add('show-errors');
+      _el.classList.add('show-errors');
 
       (new ModalView(this._formatSearchErrors(
           _this.validator.getErrors()), {
@@ -762,7 +757,7 @@ var FDSNSearchForm = function (options) {
             text: 'Edit Search',
             title: 'Go back to form and edit search',
             callback: function (evt, dialog) {
-              var error = form._el.querySelector('input.error'),
+              var error = _el.querySelector('input.error'),
                   fields = null,
                   field = null,
                   section = null,
@@ -772,12 +767,12 @@ var FDSNSearchForm = function (options) {
 
               // Make error fields visible (might be in collapsed secion)
               fields = Array.prototype.slice.call(
-                  form._el.querySelectorAll('.error'), 0);
+                  _this._el.querySelectorAll('.error'), 0);
               len = fields.length;
 
               for (i = 0; i < len; i++) {
                 field = fields[i];
-                section = Util.getParentNode(field, 'SECTION', form._el);
+                section = Util.getParentNode(field, 'SECTION', _this._el);
 
                 if (section !== null && section.classList.contains('toggle') &&
                     !section.classList.contains('toggle-visible')) {
@@ -795,8 +790,8 @@ var FDSNSearchForm = function (options) {
   };
 
   onModelChange = function () {
-    var fields = _this.el.querySelectorAll('.error'),
-        searchError = _this.el.querySelector('.search-error'),
+    var fields = _el.querySelectorAll('.error'),
+        searchError = _el.querySelector('.search-error'),
         i = 0,
         len = fields.length;
 
@@ -810,7 +805,7 @@ var FDSNSearchForm = function (options) {
         _formatSearchErrors(_this.validator.getErrors());
     } else {
       searchError.innerHTML = '';
-      _this.el.classList.remove('show-errors');
+      _el.classList.remove('show-errors');
     }
   };
 
@@ -829,7 +824,7 @@ var FDSNSearchForm = function (options) {
 
     text = (fmtMap.hasOwnProperty(format)) ? fmtMap[format] : format;
 
-    _this.el.querySelector('.output-descriptor').innerHTML =
+    _el.querySelector('.output-descriptor').innerHTML =
         'Output Format: ' + text;
   };
 
