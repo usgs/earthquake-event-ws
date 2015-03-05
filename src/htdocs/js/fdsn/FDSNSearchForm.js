@@ -25,6 +25,12 @@ var FDSNSearchForm = function (options) {
   var _this,
       _initialize,
       _el,
+      _fieldDataUrl,
+      _model,
+      _fdsnHost,
+      _fdsnPath,
+      _formatter,
+      _validator,
       
       _addSubmitHandler,
       _bindInput,
@@ -58,26 +64,26 @@ var FDSNSearchForm = function (options) {
 
     // Pull conf options off the options and store as instance variables
     _el = options.el || document.createElement('div');
-    _this.fieldDataUrl = options.fieldDataUrl || null;
-    _this.model = options.model || FDSNModel();
+    _fieldDataUrl = options.fieldDataUrl || null;
+    _model = options.model || FDSNModel();
 
     if (options.hasOwnProperty('fdsnHost')) {
-      _this.fdsnHost = options.fdsnHost;
+      _fdsnHost = options.fdsnHost;
     } else {
-      _this.fdsnHost = 'http://' + window.location.host;
+      _fdsnHost = 'http://' + window.location.host;
     }
 
     if (options.hasOwnProperty('fdsnPath')) {
-      _this.fdsnPath = options.fdsnPath;
+      _fdsnPath = options.fdsnPath;
     } else {
-      _this.fdsnPath = '/fdsnws/event/1';
+      _fdsnPath = '/fdsnws/event/1';
     }
 
     // Formatting field display text (catalogs, contributors, etc...)
-    _this.formatter = UrlBuilderFormatter();
+    _formatter = UrlBuilderFormatter();
 
     // Validator to auto-validate the model
-    _this.validator = FDSNModelValidator({model: _this.model});
+    _validator = FDSNModelValidator({model: _model});
 
     // Create the form
     _enableToggleFields();
@@ -169,9 +175,9 @@ var FDSNSearchForm = function (options) {
   };
 
   _serializeFormToUrl = function () {
-    var url = _this.fdsnHost + _this.fdsnPath + '/query',
-        search = _trimSearch(_this.model.getNonEmpty()),
-        maplistsort = 'newest', searchsort = _this.model.get('orderby'),
+    var url = _fdsnHost + _fdsnPath + '/query',
+        search = _trimSearch(_model.getNonEmpty()),
+        maplistsort = 'newest', searchsort = _model.get('orderby'),
         mapposition = [[], []],
         searchString = [], key = null,
         format = search.format;
@@ -244,8 +250,8 @@ var FDSNSearchForm = function (options) {
   _bindModel = function () {
     var nonEmptyParams = null, parsedUrl = null;
 
-    _this.model.on('change', onModelChange, _this);
-    _this.model.on('change:format', onModelFormatChange, _this);
+    _model.on('change', onModelChange, _this);
+    _model.on('change:format', onModelFormatChange, _this);
 
     // Bind the form fields to the model
     _bindInput('starttime');
@@ -323,12 +329,12 @@ var FDSNSearchForm = function (options) {
           parsedUrl.minmagnitude = '';
         }
 
-        _this.model.setAll(parsedUrl);
+        _model.setAll(parsedUrl);
       }
     }
 
     // Expand collapsed sections if any of their parameters are set
-    nonEmptyParams = _this.model.getNonEmpty();
+    nonEmptyParams = _model.getNonEmpty();
     // TODO :: Conform magnitude type to FDSN spec
     //if (nonEmptyParams.hasOwnProperty('magnitudetype')) {
       //Util.addClass(_el.querySelector('#magtype').parentNode,
@@ -359,7 +365,7 @@ var FDSNSearchForm = function (options) {
     _bindRadio('producttype');
 
     // Expand collapsed sections if any of their parameters are set
-    nonEmptyParams = _this.model.getNonEmpty();
+    nonEmptyParams = _model.getNonEmpty();
 
     if (nonEmptyParams.hasOwnProperty('eventtype')) {
       _el.querySelector('#evttype').parentNode.classList.add(
@@ -392,11 +398,11 @@ var FDSNSearchForm = function (options) {
       var o = {};
       o[inputId] = input.value;
 
-      _this.model.set(o);
+      _model.set(o);
     };
 
     // Update the view when the model changes
-    _this.model.on(eventName, onModelChange, _this);
+    _model.on(eventName, onModelChange, _this);
 
     // Update the model when the view changes
     input.addEventListener('change', onViewChange);
@@ -464,11 +470,11 @@ var FDSNSearchForm = function (options) {
         }
       }
 
-      _this.model.set(values);
+      _model.set(values);
     };
 
     // Update the view when the model changes
-    _this.model.on(eventName, onModelChange, _this);
+    _model.on(eventName, onModelChange, _this);
 
     // Update the model when the view changes
     for (; i < numInputs; i++) {
@@ -486,14 +492,14 @@ var FDSNSearchForm = function (options) {
   _fetchFieldData = function () {
 
     Xhr.ajax({
-      url: _this.fieldDataUrl,
+      url: _fieldDataUrl,
       success: function (data) {
         _this._enhanceField(data.catalogs || [],
-            'catalog', _this.formatter.formatCatalog);
+            'catalog', _formatter.formatCatalog);
         _this._enhanceField(data.contributors || [],
-            'contributor', _this.formatter.formatContributor);
+            'contributor', _formatter.formatContributor);
         _this._enhanceField(data.producttypes || [],
-            'producttype', _this.formatter.formatProductType);
+            'producttype', _formatter.formatProductType);
         _this._enhanceEventType(data.eventtypes || []);
 
         _this._bindModelUpdate();
@@ -548,7 +554,7 @@ var FDSNSearchForm = function (options) {
         selectField,
         i, len;
 
-    inputModel  = (_this.model.get(name) || '').split(',');
+    inputModel  = (_model.get(name) || '').split(',');
     classes = classes || [];
     list.classList.add(name + '-list');
     // IE 11 bug, doesnt support multiple tokens
@@ -586,7 +592,7 @@ var FDSNSearchForm = function (options) {
         eventType,
         i, len;
 
-    inputModel = (_this.model.get('eventtype') || '').split(',');
+    inputModel = (_model.get('eventtype') || '').split(',');
     list.classList.add('eventtype-list');
     // IE 11 bug, doesnt support multiple tokens
     list.classList.add('no-style');
@@ -597,7 +603,7 @@ var FDSNSearchForm = function (options) {
       id: 'eventtype',
       fields: fields,
       type: 'checkbox',
-      formatDisplay: _this.formatter.formatEventType
+      formatDisplay: _formatter.formatEventType
     });
 
     len = inputModel.length;
@@ -617,10 +623,7 @@ var FDSNSearchForm = function (options) {
         maxLongitude = document.querySelector('#maxlongitude'),
         minLongitude = document.querySelector('#minlongitude'),
         regionView,
-        _onRegionCallback,
-        _model;
-
-    _model = _this.model;
+        _onRegionCallback;
 
     _this._regionControl = ManagedModelView({
       clearedText: 'Currently searching entire world',
@@ -741,7 +744,7 @@ var FDSNSearchForm = function (options) {
 
   onSubmit = function () {
 
-    if (_this.validator.isValid()) {
+    if (_validator.isValid()) {
       window.location = _serializeFormToUrl();
     } else {
 
@@ -749,7 +752,7 @@ var FDSNSearchForm = function (options) {
       _el.classList.add('show-errors');
 
       (new ModalView(this._formatSearchErrors(
-          _this.validator.getErrors()), {
+          _validator.getErrors()), {
         title: 'Form Errors',
         classes: ['modal-error'],
         buttons: [
@@ -767,12 +770,12 @@ var FDSNSearchForm = function (options) {
 
               // Make error fields visible (might be in collapsed secion)
               fields = Array.prototype.slice.call(
-                  _this._el.querySelectorAll('.error'), 0);
+                  _el.querySelectorAll('.error'), 0);
               len = fields.length;
 
               for (i = 0; i < len; i++) {
                 field = fields[i];
-                section = Util.getParentNode(field, 'SECTION', _this._el);
+                section = Util.getParentNode(field, 'SECTION', _el);
 
                 if (section !== null && section.classList.contains('toggle') &&
                     !section.classList.contains('toggle-visible')) {
@@ -800,9 +803,9 @@ var FDSNSearchForm = function (options) {
       fields.item(i).classList.remove('error');
     }
 
-    if (!_this.validator.isValid()) {
+    if (!_validator.isValid()) {
       searchError.innerHTML =
-        _formatSearchErrors(_this.validator.getErrors());
+        _formatSearchErrors(_validator.getErrors());
     } else {
       searchError.innerHTML = '';
       _el.classList.remove('show-errors');
@@ -810,7 +813,7 @@ var FDSNSearchForm = function (options) {
   };
 
   onModelFormatChange = function () {
-    var format = _this.model.get('format'),
+    var format = _model.get('format'),
         fmtMap = null,
         text = null;
 
