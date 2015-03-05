@@ -80,7 +80,7 @@ var DEFAULT_DATA = {
   catalog: null,
   contributor: null,
 
-  format: null,
+  format: 'maplist',
 
   kmlcolorby: null,
   kmlanimated: null,
