@@ -414,7 +414,7 @@ var FDSNSearchForm = function (options) {
 
 
     onModelChange = function (newValue) {
-      var values = newValue.split(','), // TODO :: Handle commas in values
+      var values = (newValue || '').split(','), // TODO :: Handle commas in values
           numValues = values.length,
           inputs = list.querySelectorAll('input'),
           numInputs = inputs.length,
@@ -548,7 +548,7 @@ var FDSNSearchForm = function (options) {
         selectField,
         i, len;
 
-    inputModel  = _this.model.get(name).split(',');
+    inputModel  = (_this.model.get(name) || '').split(',');
     classes = classes || [];
     list.classList.add(name + '-list');
     // IE 11 bug, doesnt support multiple tokens
@@ -586,7 +586,7 @@ var FDSNSearchForm = function (options) {
         eventType,
         i, len;
 
-    inputModel = _this.model.get('eventtype').split(',');
+    inputModel = (_this.model.get('eventtype') || '').split(',');
     list.classList.add('eventtype-list');
     // IE 11 bug, doesnt support multiple tokens
     list.classList.add('no-style');
