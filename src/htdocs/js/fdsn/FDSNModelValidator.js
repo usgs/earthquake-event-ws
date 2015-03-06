@@ -117,11 +117,13 @@ var DEFAULTS = {
 };
 
 var FDSNModelValidator = function (options) {
-  var _this,
-      _initialize,
+  var _errors,
+      _model,
+      _this,
 
-      getErrors,
-      getErrorFields,
+      _getErrors,
+      _getErrorFields,
+      _initialize,
 
       _onModelChange;
 
@@ -130,9 +132,9 @@ var FDSNModelValidator = function (options) {
   _initialize = function () {
     options = Util.extend({}, DEFAULTS, options);
 
-    _this._model = options.model || FDSNModel();
-    _this._errors = _validate(_this._model.getNonEmpty(), {});
-    _this._model.on('change', _onModelChange, _this);
+    _model = options.model || FDSNModel();
+    _errors = _validate(_model.getNonEmpty(), {});
+    _model.on('change', _onModelChange);
   };
 
   /**
@@ -140,8 +142,8 @@ var FDSNModelValidator = function (options) {
    *      An object hash of {fieldName: errorMessage} for current errors on
    *      _this._model.
    */
-  getErrors = function () {
-    return _this._errors;
+  _getErrors = function () {
+    return _errors;
   };
 
   /**
@@ -149,11 +151,11 @@ var FDSNModelValidator = function (options) {
    *      An array containing the name of the fields that are currently in an
    *      error state.
    */
-  getErrorFields = function () {
+  _getErrorFields = function () {
     var fields = [],
         key = null;
 
-    for (key in _this._errors) {
+    for (key in _errors) {
       fields.push(key);
     }
 
@@ -168,7 +170,7 @@ var FDSNModelValidator = function (options) {
   _this.isValid = function () {
     var key = null;
 
-    for (key in _this._errors) {
+    for (key in _errors) {
       // If any keys in _this._errors, then not valid
       return false;
     }
@@ -181,7 +183,7 @@ var FDSNModelValidator = function (options) {
    *
    */
   _onModelChange = function () {
-    _this._errors = _validate(this._model.getNonEmpty());
+    _errors = _validate(_model.getNonEmpty());
   };
 
   _initialize();
