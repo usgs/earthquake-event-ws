@@ -656,7 +656,21 @@ class ProductIndex {
 
     $summaryIndexIds = $this->getSummaryIndexIds($indexId, $resultType);
     if (count($summaryIndexIds) == 0) {
-      // event has no products, assume it does not exist
+      // event has no products, could not exist or be deleted
+
+      if ($resultType < ProductIndexQuery::RESULT_TYPE_CURRENT_WITH_DELETE) {
+
+        // Have not considered deleted yet
+        $summaryIndexIds = $this->getSummaryIndexIds($indexId,
+            ProductIndexQuery::RESULT_TYPE_CURRENT_WITH_DELETE);
+
+        if (count($summaryIndexIds) != 0) {
+          // Found products when considering deletes. Event is deleted.
+          return $event;
+        }
+      }
+
+      // Checked if deleted, so must not exist
       return null;
     }
 
