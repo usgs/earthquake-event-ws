@@ -10,14 +10,17 @@ var EQ_EVENT_TYPES = {
 
 var EventTypeField = function (options) {
   var _eqcontainer,
+      _eqcontrol,
       _initialize,
       _noneqcontainer,
+      _noneqcontrol,
       _this,
 
       _createContainers,
       _createFields,
       _getKey,
-      _isEqEventType;
+      _isEqEventType,
+      _toggleAll;
 
   _this = SelectField(options);
 
@@ -49,28 +52,21 @@ var EventTypeField = function (options) {
 
     _eqcontainer = _this.el.querySelector('.eqeventtype-list');
     _noneqcontainer = _this.el.querySelector('.noneqeventtype-list');
+    _eqcontrol = _this.el.querySelector('.eqeventtype-control');
+    _noneqcontrol = _this.el.querySelector('.noneqeventtype-control');
 
-    _this.el.querySelector('.eqeventtype-control').addEventListener('change',
-    function () {
-      var inputs = _eqcontainer.querySelectorAll('input'),
-          i = 0, len = inputs.length,
-          checked = this.checked;
+    _eqcontrol.addEventListener('change', _toggleAll);
+    _noneqcontrol.addEventListener('change', _toggleAll);
+  };
 
-      for (; i < len; i++) {
-        inputs[i].checked = checked;
-      }
-    });
+  _toggleAll = function () {
+    var inputs = this.parentElement.nextSibling.querySelectorAll('input'),
+        i = 0, len = inputs.length,
+        checked = this.checked;
 
-    _this.el.querySelector('.noneqeventtype-control').addEventListener('change',
-    function () {
-      var inputs = _noneqcontainer.querySelectorAll('input'),
-          i = 0, len = inputs.length,
-          checked = this.checked;
-
-      for (; i < len; i++) {
-        inputs[i].checked = checked;
-      }
-    });
+    for (; i < len; i++) {
+      inputs[i].checked = checked;
+    }
   };
 
   _createFields = function () {
