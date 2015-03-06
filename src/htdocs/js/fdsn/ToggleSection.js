@@ -1,5 +1,3 @@
-/* global document */
-
 'use strict';
 
 var Util = require('util/Util');
@@ -14,8 +12,12 @@ var DEFAULTS = {
 
 var ToggleSection = function (options) {
 
-  var _this,
-      _initialize;
+  var _control,
+      _section,
+      _this,
+
+      _initialize,
+      _onControlClick;
 
   _this = {};
 
@@ -25,39 +27,35 @@ var ToggleSection = function (options) {
 
     options = Util.extend({}, DEFAULTS, options);
 
-    _this._section = options.section || document.createElement('section');
-    _this._control = options.control || document.createElement('control');
-  
+    _section = options.section;
+    _control = options.control;
+
     // Add basic classes
-    if (_this._section.classList.contains(TOGGLE_CLASS)) {
-      _this._section.classList.add(TOGGLE_CLASS);
+    if (_section.classList.contains(TOGGLE_CLASS)) {
+      _section.classList.add(TOGGLE_CLASS);
     }
-    if (_this._control.classList.contains(TOGGLE_CONTROL_CLASS)) {
-      _this._control.classList.add(TOGGLE_CONTROL_CLASS);
+    if (_control.classList.contains(TOGGLE_CONTROL_CLASS)) {
+      _control.classList.add(TOGGLE_CONTROL_CLASS);
     }
 
     if (options.defaultVisible === true &&
-        !_this._section.classList.contains(TOGGLE_VISIBLE_CLASS)) {
+        !_section.classList.contains(TOGGLE_VISIBLE_CLASS)) {
       // Does want section visible by default
-      _this._section.classList.add(TOGGLE_VISIBLE_CLASS);
+      _section.classList.add(TOGGLE_VISIBLE_CLASS);
     } else if (options.defaultVisible === false &&
-        _this._section.classList.contains(TOGGLE_VISIBLE_CLASS)) {
+        _section.classList.contains(TOGGLE_VISIBLE_CLASS)) {
       // Does not want section visible by default
-      _this._section.classList.remove(TOGGLE_VISIBLE_CLASS);
+      _section.classList.remove(TOGGLE_VISIBLE_CLASS);
     }
 
-    _this._control.addEventListener('click', (function (view) {
-      return function (evt) {
-        view._onControlClick(evt, _this);
-      };
-    })(_this));
+    _control.addEventListener('click', _onControlClick);
   };
 
-  _this._onControlClick = function () {
-    if (_this._section.classList.contains(TOGGLE_VISIBLE_CLASS)) {
-      _this._section.classList.remove(TOGGLE_VISIBLE_CLASS);
+  _onControlClick = function () {
+    if (_section.classList.contains(TOGGLE_VISIBLE_CLASS)) {
+      _section.classList.remove(TOGGLE_VISIBLE_CLASS);
     } else {
-      _this._section.classList.add(TOGGLE_VISIBLE_CLASS);
+      _section.classList.add(TOGGLE_VISIBLE_CLASS);
     }
   };
 
