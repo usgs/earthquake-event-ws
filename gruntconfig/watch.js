@@ -38,7 +38,7 @@ var watch = {
   },
   livereload: {
     options: {
-      livereload: true
+      livereload: config.liveReloadPort
     },
     files: [
       config.build + '/' + config.src + '/htdocs/**/*'

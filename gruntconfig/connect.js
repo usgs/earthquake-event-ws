@@ -113,7 +113,7 @@ var connect = {
       base: [
         config.build + '/' + config.src + '/htdocs'
       ],
-      livereload: true,
+      livereload: config.liveReloadPort,
       open: 'http://localhost:8000' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
       port: 8000,
       middleware: function (connect, options, middlewares) {
