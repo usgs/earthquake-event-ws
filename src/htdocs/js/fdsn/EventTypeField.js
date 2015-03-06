@@ -9,8 +9,11 @@ var EQ_EVENT_TYPES = {
 };
 
 var EventTypeField = function (options) {
-  var _this,
+  var _eqcontainer,
       _initialize,
+      _noneqcontainer,
+      _this,
+
       _createContainers,
       _createFields,
       _getKey,
@@ -26,7 +29,6 @@ var EventTypeField = function (options) {
   };
 
   _createContainers = function () {
-    var eqcontainer, noneqcontainer;
 
     _this.el.innerHTML = [
       '<li>',
@@ -45,16 +47,14 @@ var EventTypeField = function (options) {
       '</li>'
     ].join('');
 
-    _this._eqcontainer = eqcontainer =
-        _this.el.querySelector('.eqeventtype-list');
-    _this._noneqcontainer = noneqcontainer =
-        _this.el.querySelector('.noneqeventtype-list');
+    _eqcontainer = _this.el.querySelector('.eqeventtype-list');
+    _noneqcontainer = _this.el.querySelector('.noneqeventtype-list');
 
     _this.el.querySelector('.eqeventtype-control').addEventListener('change',
     function () {
-      var inputs = eqcontainer.querySelectorAll('input'),
+      var inputs = _eqcontainer.querySelectorAll('input'),
           i = 0, len = inputs.length,
-          checked = _this.checked;
+          checked = this.checked;
 
       for (; i < len; i++) {
         inputs[i].checked = checked;
@@ -63,9 +63,9 @@ var EventTypeField = function (options) {
 
     _this.el.querySelector('.noneqeventtype-control').addEventListener('change',
     function () {
-      var inputs = noneqcontainer.querySelectorAll('input'),
+      var inputs = _noneqcontainer.querySelectorAll('input'),
           i = 0, len = inputs.length,
-          checked = _this.checked;
+          checked = this.checked;
 
       for (; i < len; i++) {
         inputs[i].checked = checked;
@@ -90,8 +90,8 @@ var EventTypeField = function (options) {
       }
     }
 
-    _this._eqcontainer.innerHTML = eqmarkup.join('');
-    _this._noneqcontainer.innerHTML = noneqmarkup.join('');
+    _eqcontainer.innerHTML = eqmarkup.join('');
+    _noneqcontainer.innerHTML = noneqmarkup.join('');
   };
 
   _isEqEventType = function (type) {

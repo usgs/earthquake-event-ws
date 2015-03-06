@@ -28,7 +28,6 @@ var SelectField = function (options) {
       _allowAnyText,
       _allowAnyValue,
       _endWrapper,
-      _fields,
       _id,
       _initialize,
       _startWrapper,
@@ -45,9 +44,9 @@ var SelectField = function (options) {
     options = Util.extend({}, DEFAULTS, options);
 
     _this.el = options.el || document.createElement('ul');
+    _this._fields = options.fields;
 
     _type = options.type;
-    _fields = options.fields;
     _id = options.id || 'select-field-' + (DEFAULT_FIELD_ID++);
     _formatDisplay = options.formatDisplay;
     _formatValue = options.formatValue;
@@ -68,7 +67,7 @@ var SelectField = function (options) {
 
   _createFields = function () {
     var i = 0,
-        len = _fields.length,
+        len = _this._fields.length,
         markup = [];
 
     if (_type === 'radio' && _allowAny === true) {
@@ -76,7 +75,7 @@ var SelectField = function (options) {
           _allowAnyValue, true));
     }
     for (; i < len; i++) {
-      markup.push(_this._createField(_fields[i]));
+      markup.push(_this._createField(_this._fields[i]));
     }
 
     _this.el.innerHTML = markup.join('');
