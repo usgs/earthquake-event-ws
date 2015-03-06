@@ -40,13 +40,16 @@ var DEFAULTS = {
 };
 
 var ManagedModelView = function (options) {
-  var _this,
-      _initialize,
+  var _control,
+      _fields,
       _isClear,
+      _message,
+      _model,
       _onControlClick,
-      _onFieldChange;
+      _onFieldChange,
+      _this,
 
-  //constructor: ManagedModelView,
+      _initialize;
 
   _this = {};
 
@@ -54,11 +57,11 @@ var ManagedModelView = function (options) {
     var fieldName = null;
 
     options = Util.extend({}, DEFAULTS, options);
-    _this._fields = options.fields;
-    _this.el = options.el || document.createElement('p');
-    _this._model = options.model || new Model();
-    _this.el.classList.add('managedmodelview');
+    _fields = options.fields;
+    _model = options.model || new Model();
 
+    _this.el = options.el || document.createElement('p');
+    _this.el.classList.add('managedmodelview');
     _this.el.innerHTML = [
       '<span class="managedmodelview-message help">',
         options.clearedText,
@@ -68,27 +71,23 @@ var ManagedModelView = function (options) {
       '</span>'
     ].join('');
 
-    _this._message = _this.el.querySelector('.managedmodelview-message');
-    _this._control = _this.el.querySelector('.managedmodelview-control');
+    _message = _this.el.querySelector('.managedmodelview-message');
+    _control = _this.el.querySelector('.managedmodelview-control');
 
     // Bind to the control
-    _this._control.addEventListener('click', (function () {
-      return function () {
-        _onControlClick();
-      };
-    })(_this));
+    _control.addEventListener('click', _onControlClick);
 
     // Bind to the model
-    for (fieldName in _this._fields) {
-      _this._model.on('change:' + fieldName, _onFieldChange, _this);
+    for (fieldName in _fields) {
+      _model.on('change:' + fieldName, _onFieldChange);
     }
   };
 
   _isClear = function () {
     var fieldName = null;
 
-    for (fieldName in _this._fields) {
-      if (_this._model.get(fieldName) !== _this._fields[fieldName]) {
+    for (fieldName in _fields) {
+      if (_model.get(fieldName) !== _fields[fieldName]) {
         return false;
       }
     }
@@ -99,18 +98,18 @@ var ManagedModelView = function (options) {
   _onFieldChange = function () {
     if (_isClear()) {
       // Update message and hide control
-      _this._message.innerHTML = options.clearedText;
-      _this._control.style.display = 'none';
+      _message.innerHTML = options.clearedText;
+      _control.style.display = 'none';
     } else {
       // Update message and show control
-      _this._message.innerHTML = options.filledText;
-      _this._control.style.display = '';
+      _message.innerHTML = options.filledText;
+      _control.style.display = '';
     }
   };
 
   _onControlClick = function () {
     // Set model back to defaults
-    _this._model.set(_this._fields);
+    _model.set(_fields);
   };
 
   _initialize();
