@@ -22,31 +22,34 @@ var FDSNModel = require('fdsn/FDSNModel'),
 
 
 var FDSNSearchForm = function (options) {
-  var _this,
-      _initialize,
-      _el,
+  var _el,
       _fieldDataUrl,
-      _model,
       _fdsnHost,
       _fdsnPath,
       _formatter,
+      _model,
+      _regionControl,
+      _this,
       _validator,
       
       _addSubmitHandler,
       _bindInput,
       _bindModel,
+      _bindModelUpdate,
       _bindRadio,
       _enableOutputDetailsToggle,
       _enableRegionControl,
       _enableToggleFields,
+      _enhanceField,
+      _enhanceEventType,
       _fetchFieldData,
       _formatSearchErrors,
+      _initialize,
+      _onModelChange,
+      _onModelFormatChange,
+      _onSubmit,
       _serializeFormToUrl,
-      _trimSearch,
-
-      onModelChange,
-      onModelFormatChange,
-      onSubmit;
+      _trimSearch;
 
     _this = {};
 
@@ -250,8 +253,8 @@ var FDSNSearchForm = function (options) {
   _bindModel = function () {
     var nonEmptyParams = null, parsedUrl = null;
 
-    _model.on('change', onModelChange, _this);
-    _model.on('change:format', onModelFormatChange, _this);
+    _model.on('change', _onModelChange);
+    _model.on('change:format', _onModelFormatChange);
 
     // Bind the form fields to the model
     _bindInput('starttime');
@@ -355,7 +358,7 @@ var FDSNSearchForm = function (options) {
 
   };
 
-  _this._bindModelUpdate = function () {
+  _bindModelUpdate = function () {
     var nonEmptyParams = null;
 
     _bindRadio('eventtype');
@@ -402,7 +405,7 @@ var FDSNSearchForm = function (options) {
     };
 
     // Update the view when the model changes
-    _model.on(eventName, onModelChange, _this);
+    _model.on(eventName, onModelChange);
 
     // Update the model when the view changes
     input.addEventListener('change', onViewChange);
@@ -474,7 +477,7 @@ var FDSNSearchForm = function (options) {
     };
 
     // Update the view when the model changes
-    _model.on(eventName, onModelChange, _this);
+    _model.on(eventName, onModelChange);
 
     // Update the model when the view changes
     for (; i < numInputs; i++) {
@@ -494,15 +497,15 @@ var FDSNSearchForm = function (options) {
     Xhr.ajax({
       url: _fieldDataUrl,
       success: function (data) {
-        _this._enhanceField(data.catalogs || [],
+        _enhanceField(data.catalogs || [],
             'catalog', _formatter.formatCatalog);
-        _this._enhanceField(data.contributors || [],
+        _enhanceField(data.contributors || [],
             'contributor', _formatter.formatContributor);
-        _this._enhanceField(data.producttypes || [],
+        _enhanceField(data.producttypes || [],
             'producttype', _formatter.formatProductType);
-        _this._enhanceEventType(data.eventtypes || []);
+        _enhanceEventType(data.eventtypes || []);
 
-        _this._bindModelUpdate();
+        _bindModelUpdate();
       }
     });
   };
@@ -529,7 +532,7 @@ var FDSNSearchForm = function (options) {
     // Prevent early submission through <enter> key
     _el.addEventListener('keydown', function (evt) {
       var code = evt.keyCode || evt.charCode;
-      if (code === 13 && _this.id !== 'fdsn-submit') {
+      if (code === 13 && this.id !== 'fdsn-submit') {
         evt.preventDefault();
         return false;
       }
@@ -538,14 +541,14 @@ var FDSNSearchForm = function (options) {
     // Add event handler for form submission
     _el.addEventListener('submit',
       function (evt) {
-        onSubmit();
+        _onSubmit();
         evt.preventDefault();
         return false;
       }
     );
   };
 
-  _this._enhanceField = function (fields, name, format, classes) {
+  _enhanceField = function (fields, name, format, classes) {
     var textInput = _el.querySelector('#' + name),
         parentNode = textInput.parentNode,
         list = parentNode.appendChild(document.createElement('ul')),
@@ -583,7 +586,7 @@ var FDSNSearchForm = function (options) {
     }
   };
 
-  _this._enhanceEventType = function (fields) {
+  _enhanceEventType = function (fields) {
     var textInput = _el.querySelector('#eventtype'),
         parentNode = textInput.parentNode,
         list = parentNode.appendChild(document.createElement('ul')),
@@ -625,7 +628,7 @@ var FDSNSearchForm = function (options) {
         regionView,
         _onRegionCallback;
 
-    _this._regionControl = ManagedModelView({
+    _regionControl = ManagedModelView({
       clearedText: 'Currently searching entire world',
       filledText: 'Currently searching custom region',
       controlText: 'Clear Region',
@@ -742,7 +745,7 @@ var FDSNSearchForm = function (options) {
   // Event handlers
   // --------------------------------------------------
 
-  onSubmit = function () {
+  _onSubmit = function () {
 
     if (_validator.isValid()) {
       window.location = _serializeFormToUrl();
@@ -751,7 +754,7 @@ var FDSNSearchForm = function (options) {
       // Some errors during submission, show them
       _el.classList.add('show-errors');
 
-      (new ModalView(this._formatSearchErrors(
+      (new ModalView(_formatSearchErrors(
           _validator.getErrors()), {
         title: 'Form Errors',
         classes: ['modal-error'],
@@ -792,7 +795,7 @@ var FDSNSearchForm = function (options) {
     }
   };
 
-  onModelChange = function () {
+  _onModelChange = function () {
     var fields = _el.querySelectorAll('.error'),
         searchError = _el.querySelector('.search-error'),
         i = 0,
@@ -812,7 +815,7 @@ var FDSNSearchForm = function (options) {
     }
   };
 
-  onModelFormatChange = function () {
+  _onModelFormatChange = function () {
     var format = _model.get('format'),
         fmtMap = null,
         text = null;
