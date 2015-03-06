@@ -137,8 +137,8 @@ var _formatDateTime = function (stamp) {
 };
 
 var FDSNModel = function (data) {
-  var _this,
-      _parentSet;
+  var _parentSet,
+      _this;
 
   _this = Model(Util.extend({}, DEFAULT_DATA, data));
   data = null;

@@ -42,14 +42,14 @@ var DEFAULTS = {
 var ManagedModelView = function (options) {
   var _control,
       _fields,
-      _isClear,
       _message,
       _model,
-      _onControlClick,
-      _onFieldChange,
       _this,
 
-      _initialize;
+      _initialize,
+      _isClear,
+      _onControlClick,
+      _onFieldChange;
 
   _this = {};
 

@@ -121,10 +121,9 @@ var FDSNModelValidator = function (options) {
       _model,
       _this,
 
-      _getErrors,
       _getErrorFields,
+      _getErrors,
       _initialize,
-
       _onModelChange;
 
   _this = {};

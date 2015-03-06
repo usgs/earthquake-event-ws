@@ -11,7 +11,6 @@ var EQ_EVENT_TYPES = {
 var EventTypeField = function (options) {
   var _eqcontainer,
       _eqcontrol,
-      _initialize,
       _noneqcontainer,
       _noneqcontrol,
       _this,
@@ -19,6 +18,7 @@ var EventTypeField = function (options) {
       _createContainers,
       _createFields,
       _getKey,
+      _initialize,
       _isEqEventType,
       _toggleAll;
 

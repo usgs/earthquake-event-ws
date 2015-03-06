@@ -29,14 +29,14 @@ var SelectField = function (options) {
       _allowAnyValue,
       _endWrapper,
       _id,
-      _initialize,
       _startWrapper,
       _this,
       _type,
 
       _createFields,
       _formatDisplay,
-      _formatValue;
+      _formatValue,
+      _initialize;
 
   _this = {};
 
