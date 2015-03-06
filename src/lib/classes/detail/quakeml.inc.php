@@ -1,7 +1,7 @@
 <?php
 
 /*
-NOTE: detail.php and FDSNEventWebService::query currently do not use this file. 
+NOTE: detail.php and FDSNEventWebService::query currently do not use this file.
 However, it may be desirable to merge quakeml contributions, instead of just index properties, in the future...
 */
 
@@ -11,7 +11,7 @@ if( $event == null ) {
   print '{"message": "Event not found."}';
   return;
 } else if ($event->isDeleted()) {
-  header('HTTP/1.0 404 Not Found');
+  header('HTTP/1.0 410 Gone');
   print '{"message": "Event deleted."}';
   return;
 }
@@ -59,7 +59,7 @@ if (!function_exists("quakeml_element")) {
       $info .= '<version>' . $version . '</version>';
     }
     $info .= '</creationInfo>';
-    
+
     return $info;
   }
 
@@ -96,12 +96,12 @@ echo '<event catalog:datasource="anss" catalog:eventsource="' . $source . '" cat
 
   // output each origin product
   foreach ($origins as $origin) {
-  
+
     $id = $origin->getId();
     $props = $origin->getProperties();
-  
+
     $publicID = quakeml_publicid($id);
-  
+
     if ($preferredOriginID === null) {
       $preferredOriginID = $publicID;
       if (isset($props['magnitude'])) {
@@ -111,7 +111,7 @@ echo '<event catalog:datasource="anss" catalog:eventsource="' . $source . '" cat
 
     // output origin
     echo '<origin catalog:datasource="' . $id->getSource() . '" catalog:eventsource="' . $props["eventsource"] . '" catalog:eventid="' . $props["eventsourcecode"] . '" catalog:dataid="' . $id->getCode() . '" publicID="' . $publicID . '">';
-  
+
       echo quakeml_element('time/value', 'eventtime', $props);
       echo quakeml_element('longitude/value', 'longitude', $props);
       echo quakeml_element('latitude/value', 'latitude', $props);
@@ -119,7 +119,7 @@ echo '<event catalog:datasource="anss" catalog:eventsource="' . $source . '" cat
       if (isset($props["depth"])) {
         echo '<depth>';
         echo '<value>' . ($props["depth"]*1000) . '</value>';
-        
+
         if (isset($props["vertical-error"])) {
           echo '<uncertainty>' . ($props["vertical-error"]*1000) . '</uncertainty>';
         }
@@ -135,9 +135,9 @@ echo '<event catalog:datasource="anss" catalog:eventsource="' . $source . '" cat
       if ($quality != '') {
         echo '<quality>' . $quality . '</quality>';
       }
-    
+
       echo quakeml_creationinfo($id->getSource(), $origin->getUpdateTime(), $origin->getVersion());
-    
+
       echo '<evaluationMode>';
       if (isset($props["review-status"]) && strtoupper($props["review-status"]) == "REVIEWED") {
         echo 'manual';
@@ -145,23 +145,23 @@ echo '<event catalog:datasource="anss" catalog:eventsource="' . $source . '" cat
         echo 'automatic';
       }
       echo '</evaluationMode>';
-  
+
     echo '</origin>';
 
 
     // output magnitude
     if (isset($props['magnitude'])) {
       echo '<magnitude catalog:datasource="' . $id->getSource() . '" catalog:eventsource="' . $props["eventsource"] . '" catalog:eventid="' . $props["eventsourcecode"] . '" catalog:dataid="' . $id->getCode() . '" publicID="' . $publicID . '/magnitude">';
-  
+
         echo '<mag>';
           echo '<value>' . $props['magnitude'] . '</value>';
           echo quakeml_element('uncertainty', 'magnitude-error', $props);
         echo '</mag>';
-    
+
         echo quakeml_element('type', 'magnitude-type', $props);
         echo quakeml_element('stationCount', 'magnitude-num-stations-used', $props);
         echo quakeml_element('azimuthalGap', 'magnitude-azimuthal-gap', $props);
-    
+
         echo '<originID>' . $publicID . '</originID>';
         echo '<evaluationMode>';
         if (isset($props["review-status"]) && strtoupper($props["review-status"]) == "REVIEWED") {
@@ -170,13 +170,13 @@ echo '<event catalog:datasource="anss" catalog:eventsource="' . $source . '" cat
           echo 'automatic';
         }
         echo '</evaluationMode>';
-    
+
         echo quakeml_creationinfo(
-            isset($props['magnitude-source']) ? $props['magnitude-source'] : null, 
+            isset($props['magnitude-source']) ? $props['magnitude-source'] : null,
             null,
             null
           );
-  
+
       echo '</magnitude>';
     }
   }
@@ -195,7 +195,7 @@ echo '<event catalog:datasource="anss" catalog:eventsource="' . $source . '" cat
 
       // fm and mt may have nodal planes
       if (isset($props['nodal-plane-1-strike'])) {
-        
+
         echo '<nodalPlanes>';
         echo '<nodalPlane1>';
           echo quakeml_element('strike/value', 'nodal-plane-1-strike', $props);
@@ -249,7 +249,7 @@ echo '<event catalog:datasource="anss" catalog:eventsource="' . $source . '" cat
       echo '</evaluationMode>';
 
       echo quakeml_creationinfo(
-          isset($props['beachball-source']) ? $props['beachball-source'] : null, 
+          isset($props['beachball-source']) ? $props['beachball-source'] : null,
           $id->getUpdateTime(),
           isset($props['version']) ? $props['version'] : null
         );
@@ -257,7 +257,7 @@ echo '<event catalog:datasource="anss" catalog:eventsource="' . $source . '" cat
     echo '</focalMechanism>';
 
 
-    // mt derived origin 
+    // mt derived origin
     if ($derivedOriginID !== null) {
       echo '<origin publicID="' . $derivedOriginID . '">';
         echo quakeml_element('time/value', 'derived-eventtime', $props);

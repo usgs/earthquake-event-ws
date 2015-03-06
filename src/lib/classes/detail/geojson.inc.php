@@ -7,7 +7,7 @@ if( $event == null ) {
   print '{"message": "Event not found."}';
   return;
 } else if ($event->isDeleted()) {
-  header('HTTP/1.0 404 Not Found');
+  header('HTTP/1.0 410 Gone');
   print '{"message": "Event deleted."}';
   return;
 }
