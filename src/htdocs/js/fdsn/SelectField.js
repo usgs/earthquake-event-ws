@@ -24,9 +24,20 @@ var DEFAULTS = {
 
 var SelectField = function (options) {
 
-  var _this,
+  var _allowAny,
+      _allowAnyText,
+      _allowAnyValue,
+      _endWrapper,
+      _fields,
+      _id,
       _initialize,
-      _createFields;
+      _startWrapper,
+      _this,
+      _type,
+
+      _createFields,
+      _formatDisplay,
+      _formatValue;
 
   _this = {};
 
@@ -34,21 +45,22 @@ var SelectField = function (options) {
     options = Util.extend({}, DEFAULTS, options);
 
     _this.el = options.el || document.createElement('ul');
-    _this._type = options.type;
-    _this._fields = options.fields;
-    _this._id = options.id || 'select-field-' + (DEFAULT_FIELD_ID++);
-    _this._formatDisplay = options.formatDisplay;
-    _this._formatValue = options.formatValue;
-    _this._allowAny = options.allowAny;
-    _this._allowAnyText = options.allowAnyText;
-    _this._allowAnyValue = options.allowAnyValue;
+
+    _type = options.type;
+    _fields = options.fields;
+    _id = options.id || 'select-field-' + (DEFAULT_FIELD_ID++);
+    _formatDisplay = options.formatDisplay;
+    _formatValue = options.formatValue;
+    _allowAny = options.allowAny;
+    _allowAnyText = options.allowAnyText;
+    _allowAnyValue = options.allowAnyValue;
 
     if (options.wrapper !== '') {
-      _this._startWrapper = '<' + options.wrapper + '>';
-      _this._endWrapper = '</' + options.wrapper + '>';
+      _startWrapper = '<' + options.wrapper + '>';
+      _endWrapper = '</' + options.wrapper + '>';
     } else {
-      _this._startWrapper = '';
-      _this._endWrapper = '';
+      _startWrapper = '';
+      _endWrapper = '';
     }
 
     _createFields();
@@ -56,15 +68,15 @@ var SelectField = function (options) {
 
   _createFields = function () {
     var i = 0,
-        len = _this._fields.length,
+        len = _fields.length,
         markup = [];
 
-    if (_this._type === 'radio' && _this._allowAny === true) {
-      markup.push(_this._createField(_this._allowAnyText,
-          _this._allowAnyValue, true));
+    if (_type === 'radio' && _allowAny === true) {
+      markup.push(_this._createField(_allowAnyText,
+          _allowAnyValue, true));
     }
     for (; i < len; i++) {
-      markup.push(_this._createField(_this._fields[i]));
+      markup.push(_this._createField(_fields[i]));
     }
 
     _this.el.innerHTML = markup.join('');
@@ -74,26 +86,26 @@ var SelectField = function (options) {
     var valueStr = null,
         textStr = null;
 
-    valueStr = _this._formatValue(
+    valueStr = _formatValue(
         (typeof value !== 'undefined') ? value : name);
-    textStr = _this._formatDisplay(name);
+    textStr = _formatDisplay(name);
 
     return [
-      _this._startWrapper,
+      _startWrapper,
       '<label class="label-checkbox">',
-        '<input type="', _this._type, '" name="', _this._id, '" id="',
+        '<input type="', _type, '" name="', _id, '" id="',
             _this._getFieldId((valueStr === '') ? textStr : valueStr),
             '" value="', valueStr, '"', ((checked)?' checked':''),'/>',
         textStr,
       '</label>',
-      _this._endWrapper
+      _endWrapper
     ].join('');
   };
 
   _this._getFieldId = function (value) {
     //replace spaces with double underscore in case one value uses underscore
     //and another uses a space, that are otherwise the same
-    return _this._id + '-' + value.replace(/ /g, '__');
+    return _id + '-' + value.replace(/ /g, '__');
   };
 
   _initialize();
