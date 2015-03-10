@@ -4,10 +4,6 @@ if($event == null ) {
   header('HTTP/1.0 404 Not Found');
   print '<h1>Event not found</h1>';
   return;
-} else if ($event->isDeleted()) {
-  header('HTTP/1.0 410 Gone');
-  print '<h1>Event deleted</h1>';
-  return;
 }
 
 header('Content-Type: application/vnd.google-earth.kml+xml');

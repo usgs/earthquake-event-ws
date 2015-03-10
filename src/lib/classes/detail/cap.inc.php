@@ -5,10 +5,6 @@ if( $event == null ) {
   header('HTTP/1.0 404 Not Found');
   echo 'Event not found';
   return;
-} else if ($event->isDeleted()) {
-  header('HTTP/1.0 410 Gone');
-  echo 'Event deleted';
-  return;
 }
 
 global $storage;
