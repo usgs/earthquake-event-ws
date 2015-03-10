@@ -24,23 +24,6 @@ if (!isset($TEMPLATE)) {
     id="fdsn-search-form" role="search">
 
 <header class="header" aria-label="Search form header">
-<<<<<<< HEAD
-  <small>
-    Search results are limited to
-    <?php echo number_format($MAX_SEARCH); ?> events. To get URL for a search,
-        click the search button, then copy the URL from the browser address bar.
-  </small>
-  <ul>
-    <li>
-      <a href="<?php echo $FDSN_HOST . $FDSN_PATH; ?>"
-          target="_blank">Help</a>
-    </li>
-    <li>
-      <a href="/earthquakes/map/doc_aboutdata.php"
-          >About ANSS Comprehensive Catalog</a>
-    </li>
-  </ul>
-=======
 	<small>
 		Search results are limited to
 		<?php echo number_format($MAX_SEARCH); ?> events. To get URL for a search,
@@ -56,7 +39,6 @@ if (!isset($TEMPLATE)) {
 					>About the ANSS Comprehensive Catalog and Important Caveats</a>
 		</li>
 	</ul>
->>>>>>> updated ANSS text
 </header>
 
 <section class="search-basic row" aria-labelledby="search-basic">
