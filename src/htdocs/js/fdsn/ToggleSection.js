@@ -1,67 +1,67 @@
-/* global define, document */
-define([
-	'util/Util'
-], function (
-	Util
-) {
-	'use strict';
+'use strict';
 
-	var TOGGLE_CLASS = 'toggle',
-	    TOGGLE_VISIBLE_CLASS = 'toggle-visible',
-			TOGGLE_CONTROL_CLASS = 'toggle-control';
+var Util = require('util/Util');
 
-	var DEFAULTS = {
-		defaultVisible: false
-	};
+var TOGGLE_CLASS = 'toggle',
+    TOGGLE_VISIBLE_CLASS = 'toggle-visible',
+    TOGGLE_CONTROL_CLASS = 'toggle-control';
 
-	var ToggleSection = function (options) {
-		this._options = Util.extend({}, DEFAULTS, options);
+var DEFAULTS = {
+  defaultVisible: false
+};
 
-		this._section = options.section || document.createElement('section');
-		this._control = options.control || document.createElement('control');
+var ToggleSection = function (options) {
 
-		this._initialize();
-	};
+  var _control,
+      _section,
+      _this,
 
-	ToggleSection.prototype = {
-		constructor: ToggleSection,
+      _initialize,
+      _onControlClick;
 
-		_initialize: function () {
+  _this = {};
 
-			// Add basic classes
-			if (!Util.hasClass(this._section, TOGGLE_CLASS)) {
-				Util.addClass(this._section, TOGGLE_CLASS);
-			}
-			if (!Util.hasClass(this._control, TOGGLE_CONTROL_CLASS)) {
-				Util.addClass(this._control, TOGGLE_CONTROL_CLASS);
-			}
+  //constructor: ToggleSection,
 
-			if (this._options.defaultVisible === true &&
-					!Util.hasClass(this._section, TOGGLE_VISIBLE_CLASS)) {
-				// Does want section visible by default
-				Util.addClass(this._section, TOGGLE_VISIBLE_CLASS);
-			} else if (this._options.defaultVisible === false &&
-					Util.hasClass(this._section, TOGGLE_VISIBLE_CLASS)) {
-				// Does not want section visible by default
-				Util.removeClass(this._section, TOGGLE_VISIBLE_CLASS);
-			}
+  _initialize = function () {
 
-			Util.addEvent(this._control, 'click', (function (view) {
-				return function (evt) {
-					view._onControlClick(evt, this);
-				};
-			})(this));
-		},
+    options = Util.extend({}, DEFAULTS, options);
 
-		_onControlClick: function () {
-			if (Util.hasClass(this._section, TOGGLE_VISIBLE_CLASS)) {
-				Util.removeClass(this._section, TOGGLE_VISIBLE_CLASS);
-			} else {
-				Util.addClass(this._section, TOGGLE_VISIBLE_CLASS);
-			}
-		}
+    _section = options.section;
+    _control = options.control;
 
-	};
+    // Add basic classes
+    if (!_section.classList.contains(TOGGLE_CLASS)) {
+      _section.classList.add(TOGGLE_CLASS);
+    }
+    if (!_control.classList.contains(TOGGLE_CONTROL_CLASS)) {
+      _control.classList.add(TOGGLE_CONTROL_CLASS);
+    }
 
-	return ToggleSection;
-});
+    if (options.defaultVisible === true &&
+        !_section.classList.contains(TOGGLE_VISIBLE_CLASS)) {
+      // Does want section visible by default
+      _section.classList.add(TOGGLE_VISIBLE_CLASS);
+    } else if (options.defaultVisible === false &&
+        _section.classList.contains(TOGGLE_VISIBLE_CLASS)) {
+      // Does not want section visible by default
+      _section.classList.remove(TOGGLE_VISIBLE_CLASS);
+    }
+
+    _control.addEventListener('click', _onControlClick);
+  };
+
+  _onControlClick = function () {
+    if (_section.classList.contains(TOGGLE_VISIBLE_CLASS)) {
+      _section.classList.remove(TOGGLE_VISIBLE_CLASS);
+    } else {
+      _section.classList.add(TOGGLE_VISIBLE_CLASS);
+    }
+  };
+
+  _initialize();
+  return _this;
+};
+
+module.exports = ToggleSection;
+

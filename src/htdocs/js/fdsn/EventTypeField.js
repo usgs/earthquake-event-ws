@@ -1,108 +1,108 @@
-/* global define */
-define([
-	'fdsn/SelectField',
-	'util/Util'
-], function (
-	SelectField,
-	Util
-) {
-	'use strict';
+'use strict';
 
-	var EQ_EVENT_TYPES = {
-		'earthquake': true,
-		'induced or triggered event': true
-	};
+var SelectField = require('fdsn/SelectField'),
+    Util = require('util/Util');
 
-	var EventTypeField = function (options) {
-		// Call parent constructor
-		SelectField.call(this, options);
-	};
+var EQ_EVENT_TYPES = {
+  'earthquake': true,
+  'induced or triggered event': true
+};
 
-	EventTypeField.prototype = Util.extend({}, SelectField.prototype, {
-		_initialize: function () {
-			this._createContainers();
-			this._createFields();
-		},
+var EventTypeField = function (options) {
+  var _eqcontainer,
+      _eqcontrol,
+      _noneqcontainer,
+      _noneqcontrol,
+      _this,
 
-		_createContainers: function () {
-			var eqcontainer, noneqcontainer;
+      _createContainers,
+      _createFields,
+      _getKey,
+      _initialize,
+      _isEqEventType,
+      _toggleAll;
 
-			this._el.innerHTML = [
-				'<li>',
-					'<label class="label-checkbox">',
-						'<input type="checkbox" class="eqeventtype-control"/>',
-						'Earthquakes',
-					'</label>',
-					'<ul class="eqeventtype-list no-style"></ul>',
-				'</li>',
-				'<li>',
-					'<label class="label-checkbox">',
-						'<input type="checkbox" class="noneqeventtype-control"/>',
-						'Non-Earthquakes',
-					'</label>',
-					'<ul class="noneqeventtype-list no-style"></ul>',
-				'</li>'
-			].join('');
+  _this = SelectField(options);
 
-			this._eqcontainer = eqcontainer =
-					this._el.querySelector('.eqeventtype-list');
-			this._noneqcontainer = noneqcontainer =
-					this._el.querySelector('.noneqeventtype-list');
+  _initialize = function () {
+    options = Util.extend({}, SelectField.prototype, options);
 
-			Util.addEvent(this._el.querySelector('.eqeventtype-control'), 'change',
-			function () {
-				var inputs = eqcontainer.querySelectorAll('input'),
-				    i = 0, len = inputs.length,
-				    checked = this.checked;
+    _createContainers();
+    _createFields();
+  };
 
-				for (; i < len; i++) {
-					inputs[i].checked = checked;
-				}
-			});
+  _createContainers = function () {
 
-			Util.addEvent(this._el.querySelector('.noneqeventtype-control'), 'change',
-			function () {
-				var inputs = noneqcontainer.querySelectorAll('input'),
-				    i = 0, len = inputs.length,
-				    checked = this.checked;
+    _this.el.innerHTML = [
+      '<li>',
+        '<label class="label-checkbox">',
+          '<input type="checkbox" class="eqeventtype-control"/>',
+          'Earthquakes',
+        '</label>',
+        '<ul class="eqeventtype-list no-style"></ul>',
+      '</li>',
+      '<li>',
+        '<label class="label-checkbox">',
+          '<input type="checkbox" class="noneqeventtype-control"/>',
+          'Non-Earthquakes',
+        '</label>',
+        '<ul class="noneqeventtype-list no-style"></ul>',
+      '</li>'
+    ].join('');
 
-				for (; i < len; i++) {
-					inputs[i].checked = checked;
-				}
-			});
-		},
+    _eqcontainer = _this.el.querySelector('.eqeventtype-list');
+    _noneqcontainer = _this.el.querySelector('.noneqeventtype-list');
+    _eqcontrol = _this.el.querySelector('.eqeventtype-control');
+    _noneqcontrol = _this.el.querySelector('.noneqeventtype-control');
 
-		_createFields: function () {
-			var i = 0,
-			    len = this._fields.length,
-			    field = null,
-			    eqmarkup = [],
-			    noneqmarkup = [];
+    _eqcontrol.addEventListener('change', _toggleAll);
+    _noneqcontrol.addEventListener('change', _toggleAll);
+  };
 
-			for (; i < len; i++) {
-				field = this._fields[i];
+  _toggleAll = function () {
+    var inputs = this.parentElement.nextSibling.querySelectorAll('input'),
+        i = 0, len = inputs.length,
+        checked = this.checked;
 
-				if (this._isEqEventType(field)) {
-					eqmarkup.push(this._createField(field));
-				} else {
-					noneqmarkup.push(this._createField(field));
-				}
-			}
+    for (; i < len; i++) {
+      inputs[i].checked = checked;
+    }
+  };
 
-			this._eqcontainer.innerHTML = eqmarkup.join('');
-			this._noneqcontainer.innerHTML = noneqmarkup.join('');
-		},
+  _createFields = function () {
+    var i = 0,
+        len = _this._fields.length,
+        field = null,
+        eqmarkup = [],
+        noneqmarkup = [];
 
-		_isEqEventType: function (type) {
-			var key = this._getKey(type);
+    for (; i < len; i++) {
+      field = _this._fields[i];
 
-			return (key in EQ_EVENT_TYPES);
-		},
+      if (_isEqEventType(field)) {
+        eqmarkup.push(_this._createField(field));
+      } else {
+        noneqmarkup.push(_this._createField(field));
+      }
+    }
 
-		_getKey: function (type) {
-			return type.replace(/ /g, '_');
-		}
-	});
+    _eqcontainer.innerHTML = eqmarkup.join('');
+    _noneqcontainer.innerHTML = noneqmarkup.join('');
+  };
 
-	return EventTypeField;
-});
+  _isEqEventType = function (type) {
+    var key = _getKey(type);
+
+    return (key in EQ_EVENT_TYPES);
+  };
+
+  _getKey = function (type) {
+    return type.replace(/ /g, '_');
+  };
+
+  _initialize();
+  return _this;
+
+};
+
+module.exports = EventTypeField;

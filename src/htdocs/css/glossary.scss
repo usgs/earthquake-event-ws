@@ -1,35 +1,35 @@
 /* glossary styles */
 .typelist > dt {
-	color: #333;
-	font-size: 1.2em;
-	font-weight: bold;
+  color: #333;
+  font-size: 1.2em;
+  font-weight: bold;
 
-	padding-top: 1em;
-	border-top: 1px solid #ddd;
-	margin-top: 1em;
+  padding-top: 1em;
+  border-top: 1px solid #ddd;
+  margin-top: 1em;
 }
 
 .typelist > dd > dl > dt {
-	color: #999;
-	font-size: 0.8125em;
-	font-weight: 400;
-	margin-top: 1em;
+  color: #999;
+  font-size: 0.8125em;
+  font-weight: 400;
+  margin-top: 1em;
 }
 
 .typelist > dd > dl > dd {
-	margin: 0;
+  margin: 0;
 }
 
 dd.datatype {
-	font-family: Monaco, Courier, monospace;
-	font-size: 0.9em;
+  font-family: Monaco, Courier, monospace;
+  font-size: 0.9em;
 }
 
 /* lists within <dd> elements */
 ul.attribute-list > li {
-	margin: 1em 0;
+  margin: 1em 0;
 
-	> em {
-		display: block;
-	}
+  > em {
+    display: block;
+  }
 }

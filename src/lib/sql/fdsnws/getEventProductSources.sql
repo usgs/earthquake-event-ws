@@ -29,7 +29,7 @@ BEGIN
     END IF;
 
     SET out_productsources = CONCAT(COALESCE(out_productsources, ''), ',',
-	l_source);
+  l_source);
   END LOOP cur_products_loop;
 
   IF out_productsources <> '' THEN

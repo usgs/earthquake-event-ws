@@ -31,9 +31,9 @@ BEGIN
 
     -- build list of product types
     SET out_eventids = CONCAT(COALESCE(out_eventids, ''), ',', l_source,
-	l_code);
+  l_code);
     SET out_eventsources = CONCAT(COALESCE(out_eventsources, ''), ',',
-	l_source);
+  l_source);
   END LOOP cur_ids_loop;
 
   IF out_eventids <> '' THEN

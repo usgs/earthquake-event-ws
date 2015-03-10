@@ -46,7 +46,7 @@ RewriteEngine on
 RewriteRule ^/earthquakes/eqarchives/epic/ ' . $SEARCH_PATH . '/ [R=301]
 RewriteRule ^' . $SEARCH_PATH . '/$ ' . $FEED_PATH . '/search.php [L,PT]
 RewriteRule ^' . $SEARCH_PATH . '/(js|css|lib)/(.*) ' . $FEED_PATH .
-		'/$1/$2 [L,PT]
+    '/$1/$2 [L,PT]
 
 ## END: EQ Search URL Hijacking
 
@@ -57,68 +57,68 @@ RewriteRule ^' . $FEED_PATH . '/(summary|detail)/.* - [F,L]
 
 # detail is EVENTID.FORMAT
 RewriteRule ^' . $FEED_PATH . '/detail/([^\./]+)\.([^/\.]+)$ ' . $FEED_PATH .
-		'/detail.php?eventid=$1&format=$2 [L,PT]
+    '/detail.php?eventid=$1&format=$2 [L,PT]
 # summary is PARAMS.FORMAT
 RewriteRule ^' . $FEED_PATH . '/summary/([^/]+)\.([^/\.]+)$ ' . $FEED_PATH .
-		'/summary.php?params=$1&format=$2 [L,PT]
+    '/summary.php?params=$1&format=$2 [L,PT]
 
 
 # fdsn event webservice
 RewriteRule ^' . $FDSN_PATH . '$ ' . $FDSN_PATH . '/ [R=301,L]
 RewriteRule ^' . $FDSN_PATH . '/query\.([^/]*)$ ' . $FEED_PATH .
-		'/fdsn.php?method=query&format=$1 [L,QSA,PT]
+    '/fdsn.php?method=query&format=$1 [L,QSA,PT]
 RewriteRule ^' . $FDSN_PATH . '/([^/]*)$ ' . $FEED_PATH .
-		'/fdsn.php?method=$1 [L,QSA,PT]
+    '/fdsn.php?method=$1 [L,QSA,PT]
 
 Alias ' . $FEED_PATH . ' ' . $HTDOCS_DIR . '
 Alias ' . $storage_url . ' ' . $storage_directory . '
 
 <Directory ' . $HTDOCS_DIR . '>
-	Order allow,deny
-	Allow from all
+  Order allow,deny
+  Allow from all
 </Directory>
 
 <Directory ' . $storage_directory . '>
-	Order allow,deny
-	Allow from all
-	ExpiresActive on
-	ExpiresDefault "access plus 10 years"
+  Order allow,deny
+  Allow from all
+  ExpiresActive on
+  ExpiresDefault "access plus 10 years"
 
-	# prevent php execution in product contents
-	<IfModule mod_php5.c>
-		php_flag engine off
-	</IfModule>
+  # prevent php execution in product contents
+  <IfModule mod_php5.c>
+    php_flag engine off
+  </IfModule>
 
-	# only allow GET access
-	<LimitExcept GET>
-		Order allow,deny
-		Deny from all
-	</LimitExcept>
+  # only allow GET access
+  <LimitExcept GET>
+    Order allow,deny
+    Deny from all
+  </LimitExcept>
 
-	# block query strings
-	RewriteCond %{QUERY_STRING} ^.+
-	RewriteRule .* - [F,L]
+  # block query strings
+  RewriteCond %{QUERY_STRING} ^.+
+  RewriteRule .* - [F,L]
 </Directory>
 
 <Location ' . $FEED_PATH . '/>
-	SetEnv APP_URL_PATH ' . $FEED_PATH . '
-	SetEnv APP_WEB_DIR ' . $HTDOCS_DIR . '
-	ExpiresActive on
-	ExpiresDefault "access plus 1 days"
+  SetEnv APP_URL_PATH ' . $FEED_PATH . '
+  SetEnv APP_WEB_DIR ' . $HTDOCS_DIR . '
+  ExpiresActive on
+  ExpiresDefault "access plus 1 days"
 
-	# only allow GET access
-	<LimitExcept GET>
-		Order allow,deny
-		Deny from all
-	</LimitExcept>
+  # only allow GET access
+  <LimitExcept GET>
+    Order allow,deny
+    Deny from all
+  </LimitExcept>
 </Location>
 
 <Location ' . $FDSN_PATH . '/>
-	# only allow GET access
-	<LimitExcept GET>
-		Order allow,deny
-		Deny from all
-	</LimitExcept>
+  # only allow GET access
+  <LimitExcept GET>
+    Order allow,deny
+    Deny from all
+  </LimitExcept>
 </Location>
 ';
 

@@ -6,21 +6,21 @@
 
 .two-up > li,
 .three-up > li {
-	float: left;
+  float: left;
   padding-left:16px;
 }
 
 .two-up > li {
-	width:50%;
+  width:50%;
 }
 .three-up > li {
-	width:33%;
+  width:33%;
 }
 
 /* Clear fix */
 .two-up:after,
 .three-up:after {
-	display:block;
-	content:' ';
-	clear:left;
+  display:block;
+  content:' ';
+  clear:left;
 }

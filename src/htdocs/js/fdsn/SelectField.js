@@ -1,100 +1,114 @@
-/* global define, document */
-define([
-	'util/Util'
-], function (
-	Util
-) {
-	'use strict';
+/* global document */
 
-	var DEFAULT_FIELD_ID = 0;
+'use strict';
 
-	var DEFAULTS = {
-		// NOTE :: Don't specify a default "el" because that will cause all
-		// SelectFields to share a single element. Not good.
+var Util = require('util/Util');
 
-		type: 'radio', // "checkbox" or "radio"
-		fields: [],    // list of field information
-		wrapper: 'li', // wrapper to put around each field item
+var DEFAULT_FIELD_ID = 0;
 
-		formatDisplay: function (value) { return value; },
-		formatValue: function (value) { return value; },
+var DEFAULTS = {
+  // NOTE :: Don't specify a default "el" because that will cause all
+  // SelectFields to share a single element. Not good.
 
-		allowAny: true, // only used for radio groups
-		allowAnyText: 'Any',
-		allowAnyValue: ''
-	};
+  type: 'radio', // "checkbox" or "radio"
+  fields: [],    // list of field information
+  wrapper: 'li', // wrapper to put around each field item
 
-	var SelectField = function (options) {
-		options = Util.extend({}, DEFAULTS, options);
+  formatDisplay: function (value) { return value; },
+  formatValue: function (value) { return value; },
 
-		this._el = options.el || document.createElement('ul');
-		this._type = options.type;
-		this._fields = options.fields;
-		this._id = options.id || 'select-field-' + (DEFAULT_FIELD_ID++);
-		this._formatDisplay = options.formatDisplay;
-		this._formatValue = options.formatValue;
-		this._allowAny = options.allowAny;
-		this._allowAnyText = options.allowAnyText;
-		this._allowAnyValue = options.allowAnyValue;
+  allowAny: true, // only used for radio groups
+  allowAnyText: 'Any',
+  allowAnyValue: ''
+};
 
-		if (options.wrapper !== '') {
-			this._startWrapper = '<' + options.wrapper + '>';
-			this._endWrapper = '</' + options.wrapper + '>';
-		} else {
-			this._startWrapper = '';
-			this._endWrapper = '';
-		}
+var SelectField = function (options) {
 
-		this._initialize();
-	};
+  var _allowAny,
+      _allowAnyText,
+      _allowAnyValue,
+      _endWrapper,
+      _id,
+      _startWrapper,
+      _this,
+      _type,
 
-	SelectField.prototype = {
-		_initialize: function () {
-			this._createFields();
-		},
+      _createFields,
+      _formatDisplay,
+      _formatValue,
+      _initialize;
 
-		_createFields: function () {
-			var i = 0,
-			    len = this._fields.length,
-			    markup = [];
+  _this = {};
 
-			if (this._type === 'radio' && this._allowAny === true) {
-				markup.push(this._createField(this._allowAnyText,
-						this._allowAnyValue, true));
-			}
-			for (; i < len; i++) {
-				markup.push(this._createField(this._fields[i]));
-			}
+  _initialize = function () {
+    options = Util.extend({}, DEFAULTS, options);
 
-			this._el.innerHTML = markup.join('');
-		},
+    _this.el = options.el || document.createElement('ul');
+    _this._fields = options.fields;
 
-		_createField: function (name, value, checked) {
-			var valueStr = null,
-			    textStr = null;
+    _type = options.type;
+    _id = options.id || 'select-field-' + (DEFAULT_FIELD_ID++);
+    _formatDisplay = options.formatDisplay;
+    _formatValue = options.formatValue;
+    _allowAny = options.allowAny;
+    _allowAnyText = options.allowAnyText;
+    _allowAnyValue = options.allowAnyValue;
 
-			valueStr = this._formatValue(
-					(typeof value !== 'undefined') ? value : name);
-			textStr = this._formatDisplay(name);
+    if (options.wrapper !== '') {
+      _startWrapper = '<' + options.wrapper + '>';
+      _endWrapper = '</' + options.wrapper + '>';
+    } else {
+      _startWrapper = '';
+      _endWrapper = '';
+    }
 
-			return [
-				this._startWrapper,
-				'<label class="label-checkbox">',
-					'<input type="', this._type, '" name="', this._id, '" id="',
-							this._getFieldId((valueStr === '') ? textStr : valueStr),
-							'" value="', valueStr, '"', ((checked)?' checked':''),'/>',
-					textStr,
-				'</label>',
-				this._endWrapper
-			].join('');
-		},
+    _createFields();
+  };
 
-		_getFieldId: function (value) {
-			//replace spaces with double underscore in case one value uses underscore
-			//and another uses a space, that are otherwise the same
-			return this._id + '-' + value.replace(/ /g, '__');
-		}
-	};
+  _createFields = function () {
+    var i = 0,
+        len = _this._fields.length,
+        markup = [];
 
-	return SelectField;
-});
+    if (_type === 'radio' && _allowAny === true) {
+      markup.push(_this._createField(_allowAnyText,
+          _allowAnyValue, true));
+    }
+    for (; i < len; i++) {
+      markup.push(_this._createField(_this._fields[i]));
+    }
+
+    _this.el.innerHTML = markup.join('');
+  };
+
+  _this._createField = function (name, value, checked) {
+    var valueStr = null,
+        textStr = null;
+
+    valueStr = _formatValue(
+        (typeof value !== 'undefined') ? value : name);
+    textStr = _formatDisplay(name);
+
+    return [
+      _startWrapper,
+      '<label class="label-checkbox">',
+        '<input type="', _type, '" name="', _id, '" id="',
+            _this._getFieldId((valueStr === '') ? textStr : valueStr),
+            '" value="', valueStr, '"', ((checked)?' checked':''),'/>',
+        textStr,
+      '</label>',
+      _endWrapper
+    ].join('');
+  };
+
+  _this._getFieldId = function (value) {
+    //replace spaces with double underscore in case one value uses underscore
+    //and another uses a space, that are otherwise the same
+    return _id + '-' + value.replace(/ /g, '__');
+  };
+
+  _initialize();
+  return _this;
+};
+
+module.exports = SelectField;

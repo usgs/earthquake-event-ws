@@ -1,216 +1,209 @@
-/* global define */
-define([
-	'mvc/Model',
-	'util/Util'
-], function (
-	Model,
-	Util
-) {
-	'use strict';
+'use strict';
 
-	// Default configuration options
-	var DEFAULTS = {
-	};
+var Model = require('mvc/Model'),
+    Util = require('util/Util');
 
-	var NUMERIC_TYPES = {
-		maxlatitude: true,
-		minlatitude: true,
-		maxlongitude: true,
-		minlongitude: true,
+var NUMERIC_TYPES = {
+  maxlatitude: true,
+  minlatitude: true,
+  maxlongitude: true,
+  minlongitude: true,
 
-		latitude: true,
-		longitude: true,
-		minradiuskm: true,
-		maxradiuskm: true,
+  latitude: true,
+  longitude: true,
+  minradiuskm: true,
+  maxradiuskm: true,
 
-		minmagnitude: true,
-		maxmagnitude: true,
+  minmagnitude: true,
+  maxmagnitude: true,
 
-		mindepth: true,
-		maxdepth: true,
+  mindepth: true,
+  maxdepth: true,
 
-		mingap: true,
-		maxgap: true,
+  mingap: true,
+  maxgap: true,
 
-		minsig: true,
-		maxsig: true,
+  minsig: true,
+  maxsig: true,
 
-		minmmi: true,
-		maxmmi: true,
+  minmmi: true,
+  maxmmi: true,
 
-		mincdi: true,
-		maxcdi: true,
-		minfelt: true,
+  mincdi: true,
+  maxcdi: true,
+  minfelt: true,
 
-		limit: true,
-		offset: true
-	};
+  limit: true,
+  offset: true
+};
 
-	// Enumeration of all FDSN fields
-	var DEFAULT_DATA = {
-		starttime: '',
-		enddtime: '',
+// Enumeration of all FDSN fields
+var DEFAULT_DATA = {
+  starttime: '',
+  enddtime: '',
 
-		maxlatitude: null,
-		minlatitude: null,
-		maxlongitude: null,
-		minlongitude: null,
+  maxlatitude: null,
+  minlatitude: null,
+  maxlongitude: null,
+  minlongitude: null,
 
-		latitude: null,
-		longitude: null,
-		minradiuskm: null,
-		maxradiuskm: null,
+  latitude: null,
+  longitude: null,
+  minradiuskm: null,
+  maxradiuskm: null,
 
-		minmagnitude: '',
-		maxmagnitdue: null,
+  minmagnitude: '',
+  maxmagnitdue: null,
 
-		mindepth: null,
-		maxdepth: null,
+  mindepth: null,
+  maxdepth: null,
 
-		mingap: null,
-		maxgap: null,
+  mingap: null,
+  maxgap: null,
 
-		reviewstatus: null,
-		//magnitudetype: null,
-		eventtype: null,
+  reviewstatus: null,
+  //magnitudetype: null,
+  eventtype: null,
 
-		minsig: null,
-		maxsig: null,
+  minsig: null,
+  maxsig: null,
 
-		alertlevel: null,
+  alertlevel: null,
 
-		minmmi: null,
-		maxmmi: null,
+  minmmi: null,
+  maxmmi: null,
 
-		mincdi: null,
-		maxcdi: null,
-		minfelt: null,
+  mincdi: null,
+  maxcdi: null,
+  minfelt: null,
 
-		catalog: null,
-		contributor: null,
+  catalog: null,
+  contributor: null,
 
-		format: null,
+  format: 'maplist',
 
-		kmlcolorby: null,
-		kmlanimated: null,
+  kmlcolorby: null,
+  kmlanimated: null,
 
-		callback: null,
-		jsonerror: null,
+  callback: null,
+  jsonerror: null,
 
-		includeallorigins: null,
-		includeallmagnitudes: null
-		// TODO :: Implement includearrivals
-		//includearrivals: null
-	};
+  includeallorigins: null,
+  includeallmagnitudes: null
+  // TODO :: Implement includearrivals
+  //includearrivals: null
+};
 
-	var _formatDateTime = function (stamp) {
-		var parts = stamp.split(/( |T)/),
-		    ymd = parts[0] || '',
-		    hms = parts[1] || '',
-		    formattedStamp = null,
-		    year = null, month = null, day = null,
-		    hours = null, minutes = null, seconds = null;
+var _formatDateTime = function (stamp) {
+  var parts = stamp.split(/( |T)/),
+      ymd = parts[0] || '',
+      hms = parts[1] || '',
+      formattedStamp = null,
+      year = null, month = null, day = null,
+      hours = null, minutes = null, seconds = null;
 
-		try {
+  try {
 
-			if (parts.length > 2) {
-				throw 'Invalid date format';
-			}
+    if (parts.length > 2) {
+      throw 'Invalid date format';
+    }
 
-			ymd = ymd.split('-');
-			hms = hms.split(':');
+    ymd = ymd.split('-');
+    hms = hms.split(':');
 
-			// Use Date.UTC to perform date math on input values
-			formattedStamp = new Date(Date.UTC(ymd[0] || 0, (ymd[1] - 1) || 0,
-					ymd[2] || 1, hms[0] || 0, hms[1] || 0, hms[2] || 0));
+    // Use Date.UTC to perform date math on input values
+    formattedStamp = new Date(Date.UTC(ymd[0] || 0, (ymd[1] - 1) || 0,
+        ymd[2] || 1, hms[0] || 0, hms[1] || 0, hms[2] || 0));
 
-			year = formattedStamp.getUTCFullYear();
-			month = formattedStamp.getUTCMonth() + 1;
-			day = formattedStamp.getUTCDate();
-			hours = formattedStamp.getUTCHours();
-			minutes = formattedStamp.getUTCMinutes();
-			seconds = formattedStamp.getUTCSeconds();
+    year = formattedStamp.getUTCFullYear();
+    month = formattedStamp.getUTCMonth() + 1;
+    day = formattedStamp.getUTCDate();
+    hours = formattedStamp.getUTCHours();
+    minutes = formattedStamp.getUTCMinutes();
+    seconds = formattedStamp.getUTCSeconds();
 
-			if (month < 10) { month = '0' + month; }
-			if (day < 10) { day = '0' + day; }
-			if (hours < 10) { hours = '0' + hours; }
-			if (minutes < 10) { minutes = '0' + minutes; }
-			if (seconds < 10) { seconds = '0' + seconds; }
+    if (month < 10) { month = '0' + month; }
+    if (day < 10) { day = '0' + day; }
+    if (hours < 10) { hours = '0' + hours; }
+    if (minutes < 10) { minutes = '0' + minutes; }
+    if (seconds < 10) { seconds = '0' + seconds; }
 
-			return year + '-' + month + '-' + day + ' ' + hours + ':' +
-					minutes + ':' + seconds;
-		} catch (e) {
-			// Couldn't parse, use original, let server try
-			return stamp;
-		}
-	};
+    return year + '-' + month + '-' + day + ' ' + hours + ':' +
+        minutes + ':' + seconds;
+  } catch (e) {
+    // Couldn't parse, use original, let server try
+    return stamp;
+  }
+};
 
-	var FDSNModel = function (data, options) {
-		// Extend default options
-		this._options = Util.extend({}, DEFAULTS, options);
+var FDSNModel = function (data) {
+  var _parentSet,
+      _this;
 
-		// Call parent constructor
-		Model.call(this, Util.extend({}, DEFAULT_DATA, data));
-	};
+  _this = Model(Util.extend({}, DEFAULT_DATA, data));
+  data = null;
 
-	FDSNModel.prototype = Object.create(Model.prototype);
+  // Keep a reference to Model.set()
+  _parentSet = _this.set;
 
-	FDSNModel.prototype.set = function (params, options) {
-		var key = null;
+  _this.set = function (params, options) {
+    var key = null;
 
-		// Format date/time stamps (if possible)
-		if (params.hasOwnProperty('starttime') && params.starttime !== '') {
-			params.starttime = _formatDateTime(params.starttime);
-		}
-		if (params.hasOwnProperty('endtime') && params.endtime !== '') {
-			params.endtime = _formatDateTime(params.endtime);
-		}
+    // Format date/time stamps (if possible)
+    if (params.hasOwnProperty('starttime') && params.starttime !== '') {
+      params.starttime = _formatDateTime(params.starttime);
+    }
+    if (params.hasOwnProperty('endtime') && params.endtime !== '') {
+      params.endtime = _formatDateTime(params.endtime);
+    }
 
-		// Convert numeric types to numbers (for comparison later)
-		for (key in params) {
-			if (NUMERIC_TYPES.hasOwnProperty(key) && params[key] !== null &&
-					params[key] !== '') {
-				params[key] = Number(params[key]);
-			}
-		}
+    // Convert numeric types to numbers (for comparison later)
+    for (key in params) {
+      if (NUMERIC_TYPES.hasOwnProperty(key) && params[key] !== null &&
+          params[key] !== '') {
+        params[key] = Number(params[key]);
+      }
+    }
 
-		Model.prototype.set.call(this, params, options);
-	};
+    _parentSet(params, options);
+  };
 
-	/**
-	 * A lot like generic "set" method, however the given params are extended by
-	 * the defaults thus clearing/resetting any parameter that is not explicitely
-	 * specified in {params}.
-	 *
-	 * @param params {Object}
-	 *      A hash of params to set.
-	 */
-	FDSNModel.prototype.setAll = function (params) {
-		this.set(Util.extend({}, DEFAULTS, params));
-	};
+  /**
+   * A lot like generic "set" method, however the given params are extended by
+   * the defaults thus clearing/resetting any parameter that is not explicitely
+   * specified in {params}.
+   *
+   * @param params {Object}
+   *      A hash of params to set.
+   */
+  _this.setAll = function (params) {
+    _this.set(Util.extend({}, DEFAULT_DATA, params));
+  };
 
-	/**
-	 * Returns an object containing non-empty, non-null key-value pairs from this
-	 * model's attributes.
-	 *
-	 * @return {Object}
-	 */
-	FDSNModel.prototype.getNonEmpty = function (model) {
-		var nonEmpty = {},
-		    key = null;
+  /**
+   * Returns an object containing non-empty, non-null key-value pairs from this
+   * model's attributes.
+   *
+   * @return {Object}
+   */
+  _this.getNonEmpty = function (model) {
+    var nonEmpty = {},
+        key = null;
 
-		model = model || this._model;
+    model = model || _this.get();
 
-		for (key in model) {
-			if (model.hasOwnProperty(key) && typeof model[key] !== 'undefined' &&
-					model[key] !== null && model[key] !== '') {
+    for (key in model) {
+      if (model.hasOwnProperty(key) && typeof model[key] !== 'undefined' &&
+          model[key] !== null && model[key] !== '') {
 
-				nonEmpty[key] = model[key];
-			}
-		}
+        nonEmpty[key] = model[key];
+      }
+    }
 
-		return nonEmpty;
-	};
+    return nonEmpty;
+  };
 
-	return FDSNModel;
-});
+  return _this;
+};
+
+module.exports = FDSNModel;

@@ -12,8 +12,8 @@ WHERE ps.eventId IS NOT NULL
     AND (
       preferred > ps.preferred
       OR (
-	preferred = ps.preferred
-	AND updateTime > ps.updateTime
+  preferred = ps.preferred
+  AND updateTime > ps.updateTime
       )
     )
   );

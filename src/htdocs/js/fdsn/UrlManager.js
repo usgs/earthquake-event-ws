@@ -1,85 +1,81 @@
-/* global define, escape, unescape */
-define([
-], function(
-) {
-	'use strict';
+/* global escape, unescape */
 
-	var UrlManager = {
+'use strict';
 
-		// strip URL hash from URL
-	  getHash: function(url){
+var UrlManager = {
 
-			if (typeof url === 'undefined' || url === null){
-				url = window.location.hash;
-			}
+  // strip URL hash from URL
+  getHash: function(url){
 
-			if (url.indexOf('#') === -1) {
-				return null;
-			}
+    if (typeof url === 'undefined' || url === null){
+      url = window.location.hash;
+    }
 
-			var hash = url.substr(url.indexOf('#') + 1, url.length - url.indexOf('#'));
+    if (url.indexOf('#') === -1) {
+      return null;
+    }
 
-			// Fix URL encoding of settings hash
-			hash = unescape(hash);
+    var hash = url.substr(url.indexOf('#') + 1, url.length - url.indexOf('#'));
 
-			return hash;
-		},
+    // Fix URL encoding of settings hash
+    hash = unescape(hash);
 
-		// get settings hash from settings object
-		getSettingsHash: function(settings) {
+    return hash;
+  },
 
-			return JSON.stringify(settings);
-		},
+  // get settings hash from settings object
+  getSettingsHash: function(settings) {
 
-		// set hash using anonymous settings object
-		setHash: function(settings) {
+    return JSON.stringify(settings);
+  },
 
-			var hash = UrlManager.getSettingsHash(settings);
+  // set hash using anonymous settings object
+  setHash: function(settings) {
 
-			if (hash === null){
-				return null;
-			}
+    var hash = UrlManager.getSettingsHash(settings);
 
-			// set the url hash based on settings
-			window.location.hash = escape(hash);
-		},
+    if (hash === null){
+      return null;
+    }
 
-		// parse hash into anonymous object
-		parseUrl: function(url){
+    // set the url hash based on settings
+    window.location.hash = escape(hash);
+  },
 
-			var hash = UrlManager.getHash(url);
+  // parse hash into anonymous object
+  parseUrl: function(url){
 
-			return JSON.parse(hash);
-		},
+    var hash = UrlManager.getHash(url);
 
-		parseSettings: function(settings, search){
+    return JSON.parse(hash);
+  },
 
-			// todo for loop
-			var obj = {
-					'feed':              settings.feed,
-					'sort':              settings.sort,
-					'basemap':           settings.basemap,
-					'restrictListToMap': settings.restrictListToMap,
-					'timeZone':          settings.timeZone,
-					'mapposition':       settings.mapposition,
-					'overlays':          settings.overlays,
-					'viewModes':         settings.viewModes
-			};
+  parseSettings: function(settings, search){
+
+    // todo for loop
+    var obj = {
+        'feed':              settings.feed,
+        'sort':              settings.sort,
+        'basemap':           settings.basemap,
+        'restrictListToMap': settings.restrictListToMap,
+        'timeZone':          settings.timeZone,
+        'mapposition':       settings.mapposition,
+        'overlays':          settings.overlays,
+        'viewModes':         settings.viewModes
+    };
 
 
-			if (search) {
-				obj.feed = search.id;
-				obj.autoUpdate = false ;
-				obj.search = search;
-			} else {
-				obj.autoUpdate = true;
-			}
+    if (search) {
+      obj.feed = search.id;
+      obj.autoUpdate = false ;
+      obj.search = search;
+    } else {
+      obj.autoUpdate = true;
+    }
 
-			return '#' + UrlManager.getSettingsHash(obj);
-		}
+    return '#' + UrlManager.getSettingsHash(obj);
+  }
 
-	};
+};
 
-	return UrlManager;
-
-});
+module.exports = UrlManager;
