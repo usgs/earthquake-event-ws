@@ -532,7 +532,7 @@ var FDSNSearchForm = function (options) {
     // Prevent early submission through <enter> key
     _el.addEventListener('keydown', function (evt) {
       var code = evt.keyCode || evt.charCode;
-      if (code === 13 && document.activeElement.id !== 'fdsn-submit') {
+      if (code === 13 && evt.target.id !== 'fdsn-submit') {
         evt.preventDefault();
         return false;
       }
