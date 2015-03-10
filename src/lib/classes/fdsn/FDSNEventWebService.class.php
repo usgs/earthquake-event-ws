@@ -14,14 +14,18 @@ class FDSNEventWebService {
   const NO_DATA = 204;
   const BAD_REQUEST = 400;
   const NOT_FOUND = 404;
+  const CONFLICT = 409;
   const NOT_IMPLEMENTED = 501;
   const SERVICE_UNAVAILABLE = 503;
+
+  private $CONFLICT_DETAILS;
 
   // status message text
   public static $statusMessage = array(
     self::NO_DATA => 'No Data',
     self::BAD_REQUEST => 'Bad Request',
     self::NOT_FOUND => 'Not Found',
+    self::CONFLICT => 'Conflict',
     self::NOT_IMPLEMENTED => 'Not Implemented',
     self::SERVICE_UNAVAILABLE => 'Service Unavailable'
   );
@@ -36,6 +40,10 @@ class FDSNEventWebService {
    */
   public function __construct($index, $redirect=false) {
     $this->index = $index;
+
+    $this->CONFLICT_DETAILS = 'The requested event has been deleted. To ' .
+        'see information for deleted events, perform a search and use the ' .
+        '"includedeleted" option.';
 
     global $CONFIG;
     $this->version = $CONFIG['FDSN_VERSION'];
@@ -70,6 +78,17 @@ class FDSNEventWebService {
     // check how many results would be returned
     $count = $this->index->getEventCount($query);
     if ($count === 0) {
+
+      // Verify this is not just a query for purely deleted events
+      if (!$query->includedeleted) {
+        $query->includedeleted = true;
+
+        if ($this->index->getEventCount($query) !== 0) {
+          $this->error(self::CONFLICT, $this->CONFLICT_DETAILS,
+              $query->eventid);
+        }
+      }
+
       // adhere to specification for default format
       // allow empty feeds in other formats.
       if ($query->format === 'quakeml' || $query->format === 'xml') {
@@ -130,6 +149,10 @@ class FDSNEventWebService {
         $this->error(self::NOT_FOUND, self::$statusMessage[self::NOT_FOUND],
             true);
       }
+    }
+
+    if ($event->isDeleted() && !$query->includedeleted) {
+      $this->error(self::CONFLICT, $this->CONFLICT_DETAILS, true);
     }
 
     $eventid = $query->eventid;

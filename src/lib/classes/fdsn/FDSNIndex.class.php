@@ -290,9 +290,11 @@ class FDSNIndex {
     $magnitudeColumn = 'e.magnitude';
     $updatedColumn = 'es.lastModified';
 
-    // hide deleted events
-    $where[] = "upper(e.status) <> 'DELETE'";
-    $where[] = "upper(ps.status) <> 'DELETE'";
+    if ($query->eventid === null || !$query->includedeleted) {
+      // hide deleted events
+      $where[] = "upper(e.status) <> 'DELETE'";
+      $where[] = "upper(ps.status) <> 'DELETE'";
+    }
 
     if ($query->eventid !== null) {
       // function call gives horrible performance in where,
@@ -612,4 +614,3 @@ class FDSNIndex {
   }
 
 }
-
