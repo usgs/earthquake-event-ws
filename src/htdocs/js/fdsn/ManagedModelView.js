@@ -58,7 +58,7 @@ var ManagedModelView = function (options) {
 
     options = Util.extend({}, DEFAULTS, options);
     _fields = options.fields;
-    _model = options.model || new Model();
+    _model = options.model || Model();
 
     _this.el = options.el || document.createElement('p');
     _this.el.classList.add('managedmodelview');

@@ -523,7 +523,7 @@ var FDSNSearchForm = function (options) {
       t = toggles[i];
       s = t.parentNode;
 
-      new ToggleSection({control: t, section: s});
+      ToggleSection({control: t, section: s});
     }
   };
 
@@ -568,7 +568,7 @@ var FDSNSearchForm = function (options) {
       list.classList.addClass(classes[i]);
     }
 
-    selectField = new SelectField({
+    selectField = SelectField({
       el: list,
       id: name,
       fields: fields,
@@ -601,7 +601,7 @@ var FDSNSearchForm = function (options) {
     list.classList.add('no-style');
     parentNode.removeChild(textInput);
 
-    eventType = new EventTypeField({
+    eventType = EventTypeField({
       el: list,
       id: 'eventtype',
       fields: fields,
@@ -657,7 +657,7 @@ var FDSNSearchForm = function (options) {
     };
 
     // Initialize RegionView
-    regionView = new RegionView({
+    regionView = RegionView({
       onRegionCallback: _onRegionCallback
     });
 
@@ -754,7 +754,7 @@ var FDSNSearchForm = function (options) {
       // Some errors during submission, show them
       _el.classList.add('show-errors');
 
-      (new ModalView(_formatSearchErrors(
+      (ModalView(_formatSearchErrors(
           _validator.getErrors()), {
         title: 'Form Errors',
         classes: ['modal-error'],
