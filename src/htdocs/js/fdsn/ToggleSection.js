@@ -31,10 +31,10 @@ var ToggleSection = function (options) {
     _control = options.control;
 
     // Add basic classes
-    if (_section.classList.contains(TOGGLE_CLASS)) {
+    if (!_section.classList.contains(TOGGLE_CLASS)) {
       _section.classList.add(TOGGLE_CLASS);
     }
-    if (_control.classList.contains(TOGGLE_CONTROL_CLASS)) {
+    if (!_control.classList.contains(TOGGLE_CONTROL_CLASS)) {
       _control.classList.add(TOGGLE_CONTROL_CLASS);
     }
 
