@@ -561,6 +561,16 @@ class FDSNIndex {
           $query->productcode !== null ) {
 
         $from .= ' JOIN productSummary contributed on (e.id=contributed.eventid)';
+        // latest version of product
+        $where[] = ' NOT EXISTS (' .
+            'SELECT * FROM productSummary' .
+            ' WHERE source=contributed.source' .
+            ' AND type=contributed.type' .
+            ' AND code=contributed.code' .
+            ' AND updateTime>contributed.updateTime' .
+            ')';
+        // and not deleted
+        $where[] = "upper(contributed.status) <> 'DELETE'";
 
         if ($query->producttype !== null) {
           $where[] = 'contributed.type=?';
