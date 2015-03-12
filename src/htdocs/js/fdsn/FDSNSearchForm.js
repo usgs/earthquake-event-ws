@@ -648,11 +648,29 @@ var FDSNSearchForm = function (options) {
 
     // set form values on callback from regionview
     _onRegionCallback = function (region) {
+      var maxlat = region.get('north'),
+          minlat = region.get('south'),
+          maxlng = region.get('east'),
+          minlng = region.get('west');
+      
+      if ((maxlat || maxlat === 0.0) && !isNaN(maxlat)) {
+        maxlat = parseFloat(maxlat.toFixed(3));
+      }
+      if ((minlat || minlat === 0.0) && !isNaN(minlat)) {
+        minlat = parseFloat(minlat.toFixed(3));
+      }
+      if ((maxlng || maxlng === 0.0) && !isNaN(maxlng)) {
+        maxlng = parseFloat(maxlng.toFixed(3));
+      }
+      if ((minlng || minlng === 0.0) && !isNaN(minlng)) {
+        minlng = parseFloat(minlng.toFixed(3));
+      }
+
       _model.set({
-        maxlatitude: region.get('north'),
-        minlatitude: region.get('south'),
-        maxlongitude: region.get('east'),
-        minlongitude: region.get('west')
+        maxlatitude: maxlat,
+        minlatitude: minlat,
+        maxlongitude: maxlng,
+        minlongitude: minlng
       });
     };
 
