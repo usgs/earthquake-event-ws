@@ -44,6 +44,7 @@ RewriteEngine on
 
 # Only ever offered for v1.0, so just need to redirect that version
 RewriteRule ^/earthquakes/eqarchives/epic/ ' . $SEARCH_PATH . '/ [R=301]
+RewriteRule ^' . $SEARCH_PATH . '$ ' . $SEARCH_PATH . '/ [R=301]
 RewriteRule ^' . $SEARCH_PATH . '/$ ' . $FEED_PATH . '/search.php [L,PT]
 RewriteRule ^' . $SEARCH_PATH . '/(js|css|lib)/(.*) ' . $FEED_PATH .
     '/$1/$2 [L,PT]
