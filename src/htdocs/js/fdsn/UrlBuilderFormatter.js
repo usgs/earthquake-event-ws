@@ -13,7 +13,7 @@ var KNOWN_MAGNITUDE_TYPES = {
 };
 var KNOWN_CATALOGS = {
   'ak': 'AK - Alaska Earthquake Information Center',
-  'at': 'AT - Alaska Tsunami Warning Center',
+  'at': 'AT - National Tsunami Warning Center',
   'ci': 'CI - California Institute of Technology',
   'hv': 'HV - Hawaiian Volcano Observatory',
   'iscgem': 'ISC-GEM',
@@ -31,7 +31,7 @@ var KNOWN_CATALOGS = {
 };
 var KNOWN_CONTRIBUTORS = {
   'ak': 'AK - Alaska Earthquake Information Center',
-  'at': 'AT - Alaska Tsunami Warning Center',
+  'at': 'AT - National Tsunami Warning Center',
   'ci': 'CI - California Institute of Technology',
   'hv': 'HV - Hawaiian Volcano Observatory',
   'ld': 'LD - Lamont-Doherty Cooperative Seismographic Network',
