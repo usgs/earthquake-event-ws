@@ -122,6 +122,12 @@ class QuakemlFeed extends AbstractFeed {
         $type = 'quarry blast';
       } else if ($type === 'nuke') {
         $type = 'nuclear explosion';
+      } else if ($type === 'shot') {
+        $type = 'mining explosion';
+      } else if ($type === 'rockfall') {
+        $type = 'landslide';
+      } else if ($type === 'rockburst') {
+        $type = 'rock burst';
       } else if ($type === 'sonicboom') {
         $type = 'sonic boom';
       }
