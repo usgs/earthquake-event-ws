@@ -24,7 +24,8 @@ var copy = {
         src: [
           'images/*.{png,gif,jpg,jpeg}',
           '**/*.html',
-          '**/*.php'
+          '**/*.php',
+          '**/*.kmz'
         ]
       },
       {
@@ -70,7 +71,8 @@ var copy = {
         dest: config.dist + '/',
         src: [
           'images/*.{png,gif,jpg,jpeg}',
-          '**/*.php'
+          '**/*.php',
+          '**/*.kmz'
         ]
       },
       {
