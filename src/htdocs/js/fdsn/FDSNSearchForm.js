@@ -31,7 +31,7 @@ var FDSNSearchForm = function (options) {
       _regionControl,
       _this,
       _validator,
-      
+
       _addSubmitHandler,
       _bindInput,
       _bindModel,
@@ -625,7 +625,6 @@ var FDSNSearchForm = function (options) {
         minLatitude = document.querySelector('#minlatitude'),
         maxLongitude = document.querySelector('#maxlongitude'),
         minLongitude = document.querySelector('#minlongitude'),
-        regionView,
         _onRegionCallback;
 
     _regionControl = ManagedModelView({
@@ -652,7 +651,7 @@ var FDSNSearchForm = function (options) {
           minlat = region.get('south'),
           maxlng = region.get('east'),
           minlng = region.get('west');
-      
+
       if ((maxlat || maxlat === 0.0) && !isNaN(maxlat)) {
         maxlat = parseFloat(maxlat.toFixed(3));
       }
@@ -674,11 +673,6 @@ var FDSNSearchForm = function (options) {
       });
     };
 
-    // Initialize RegionView
-    regionView = RegionView({
-      onRegionCallback: _onRegionCallback
-    });
-
     // Add rectangle controls for drawing on map
     drawRectangleButton.addEventListener('click', function () {
       var region = null,
@@ -692,17 +686,21 @@ var FDSNSearchForm = function (options) {
       east = (maxLongitude.value === '') ? null : parseFloat(maxLongitude.value);
       west = (minLongitude.value === '') ? null : parseFloat(minLongitude.value);
 
-      if (north === null &&south === null && east === null && west === null ) {
-        regionView.show({region: null});
-      } else {
+      if (north !== null || south !== null || east !== null || west !== null) {
         region = {
           north: north,
           south: south,
           east:  east,
           west:  west
         };
-        regionView.show({region: region});
       }
+
+      RegionView({
+        onRegionCallback: _onRegionCallback
+      }).show({
+        region: region,
+        enableRectangleControl: true
+      });
     });
   };
 
