@@ -14,32 +14,32 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "chai": "~1.7.0",
-    "gateway": "~0.2.1",
+    "chai": "^2.1.2",
+    "gateway": "^1.0.0",
     "grunt": "^0.4.5",
-    "grunt-browserify": "^3.3.0",
-    "grunt-concurrent": "~0.3.0",
+    "grunt-browserify": "^3.5.0",
+    "grunt-concurrent": "^1.0.0",
     "grunt-connect-proxy": "^0.1.11",
-    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-compass": "^1.0.1",
     "grunt-contrib-connect": "^0.9.0",
-    "grunt-contrib-copy": "~0.5.0",
-    "grunt-contrib-cssmin": "~0.6.1",
-    "grunt-contrib-htmlmin": "~0.1.3",
-    "grunt-contrib-jshint": "~0.6.0",
-    "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-watch": "~0.4.4",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-cssmin": "^0.12.2",
+    "grunt-contrib-htmlmin": "^0.4.0",
+    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-contrib-uglify": "^0.8.0",
+    "grunt-contrib-watch": "^0.6.1",
     "grunt-mocha-phantomjs": "^0.6.1",
     "hazdev-location-view": "usgs/hazdev-location-view",
     "hazdev-template": "usgs/hazdev-template",
     "hazdev-webutils": "usgs/hazdev-webutils",
-    "http-rewrite-middleware": "~0.1.5",
-    "ini": "~1.1.0",
+    "http-rewrite-middleware": "^0.1.6",
+    "ini": "^1.3.3",
     "leaflet": "^0.7.3",
-    "mocha": "^2.1.0",
-    "sinon": "~1.7.3"
+    "mocha": "^2.2.1",
+    "sinon": "^1.14.1"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.10.0"
   }
 }
