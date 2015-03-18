@@ -114,6 +114,23 @@ class QuakemlFeed extends AbstractFeed {
     $type = $event['event_type'];
     if ($type === null || $type === '') {
       $type = 'earthquake';
+    } else {
+      // remove underscores
+      $type = str_replace('_', ' ', $type);
+      // map EQXML types
+      if ($type === 'quarry') {
+        $type = 'quarry blast';
+      } else if ($type === 'nuke') {
+        $type = 'nuclear explosion';
+      } else if ($type === 'shot') {
+        $type = 'mining explosion';
+      } else if ($type === 'rockfall') {
+        $type = 'landslide';
+      } else if ($type === 'rockburst') {
+        $type = 'rock burst';
+      } else if ($type === 'sonicboom') {
+        $type = 'sonic boom';
+      }
     }
     $entry .= $this->getElement('type', $type);
 
