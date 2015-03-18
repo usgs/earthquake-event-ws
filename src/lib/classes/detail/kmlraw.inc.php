@@ -60,7 +60,10 @@
     $smp = $sm['properties'];
     $smc = $sm['contents'];
 
-    if (isset($smc['download/contours.kmz'])) {
+    if (isset($smc['download/cont_mi.kmz'])) {
+      $smcont = $smc['download/cont_mi.kmz'];
+      $include_sm = true;
+    } else if (isset($smc['download/contours.kmz'])) {
       $smcont = $smc['download/contours.kmz'];
       $include_sm = true;
     }
