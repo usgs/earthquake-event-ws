@@ -18,15 +18,17 @@
   // Used for translating MMI integers to roman numerals
   $ROMANS = array('I', 'I', 'II', 'III', 'IV', 'V', 'VI',
       'VII', 'VIII', 'IX', 'X');
-  // Used for adding contour files
-  $CONTOURS = array(
-      'Intensity' => 'download/cont_mi.kmz',
-      'PGA' => 'download/cont_pga.kmz',
-      'PGV' => 'download/cont_pgv.kmz',
-      'PGA03' => 'download/cont_psa03.kmz',
-      'PGA10' => 'download/cont_psa10.kmz',
-      'PGA30' => 'download/cont_psa30.kmz'
-    );
+
+  $SHAKEMAP_CONTOURS_COMPONENT = 1;
+  $SHAKEMAP_CONTOURS_COMPOSITE = 2;
+  $SHAKEMAP_CONTOURS = array(
+    'Intensity' => 'download/cont_mi.kmz',
+    'PGA (%g)' => 'download/cont_pga.kmz',
+    'PGV (cm/s)' => 'download/cont_pgv.kmz',
+    'PSA 0.30 (%g)' => 'download/cont_psa03.kmz',
+    'PSA 1.00 (%g)' => 'download/cont_psa10.kmz',
+    'PSA 3.00 (%g)' => 'download/cont_psa30.kmz'
+  );
 
   $authid = $event->getSource() . $event->getSourceCode();
 
@@ -53,7 +55,7 @@
   $event = $event->toArray($storage);
 
 
-  $smcont = array();
+  $smcont = null;
   $smfault = null;
   $smover = null;
   $smo = null;
@@ -69,13 +71,11 @@
     $smp = $sm['properties'];
     $smc = $sm['contents'];
 
-    foreach ($CONTOURS as $key => $value) {
-      if (isset($smc[$value])) {
-        $smcont[$key] = $smc[$value];
-      }
-    }
-
-    if (count($smcont) > 0) {
+    if (isset($smc['download/cont_mi.kmz'])) {
+      $smcont = $SHAKEMAP_CONTOURS_COMPONENT;
+      $include_sm = true;
+    } else if (isset($smc['download/contours.kmz'])) {
+      $smcont = $SHAKEMAP_CONTOURS_COMPOSITE;
       $include_sm = true;
     }
 
@@ -277,26 +277,51 @@
 
       if ($smcont) {
 
-        echo '<Folder>' .
-            '<name>Contours</name>' .
-            '<visibility>1</visibility>' .
-            '<Style><ListStyle>' .
-            '<listItemType>radioFolder</listItemType>' .
-            '</ListStyle></Style>';
+        if ($smcont === $SHAKEMAP_CONTOURS_COMPOSITE) {
+          $smcont = $smc['download/contours.kmz'];
 
-        foreach ($smcont as $name => $contour) {
-
+          // Use combined shakemap contours file
           echo '<NetworkLink>' .
-              '<name>' . $name . ' Contours</name>' .
-              '<visibility>1</visibility>' .
-              '<Link>' .
-                '<href>' . $contour['url'] . '</href>' .
+              '<name>Contours</name>' .
+              '<visibility>1</visibility>';
+
+          echo '<Style><ListStyle>' .
+              '<listItemType>radioFolder</listItemType>' .
+              '</ListStyle></Style>';
+
+          echo '<Link>' .
+                '<href>' . $smcont['url'] . '</href>' .
                 '<viewRefreshMode>never</viewRefreshMode>' .
               '</Link>' .
-              '</NetworkLink>';
-        }
+            '</NetworkLink>';
+        } else if ($smcont === $SHAKEMAP_CONTOURS_COMPONENT) {
+          echo '<Folder>' .
+              '<name>Contours</name>' .
+              '<Style><ListStyle>' .
+                '<listItemType>radioFolder</listItemType>' .
+              '</ListStyle></Style>';
 
-        echo '</Folder>';
+          foreach ($SHAKEMAP_CONTOURS as $name => $key) {
+            if (isset($smc[$key])) {
+              $smcont = $smc[$key];
+
+              echo '<NetworkLink>' .
+                  '<name>' . $name . '</name>';
+
+              if ($key !== 'download/cont_mi.kmz') {
+                echo '<visibility>0</visibility>';
+              }
+
+              echo '<Link>' .
+                  '<href>' . $smcont['url'] . '</href>' .
+                  '<viewRefreshMode>never</viewRefreshMode>' .
+                '</Link>' .
+              '</NetworkLink>';
+            }
+          }
+
+          echo '</Folder>';
+        }
       }
 
       if ($smfault) {
