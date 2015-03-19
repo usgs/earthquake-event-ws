@@ -42,8 +42,6 @@ class ProductStorage {
     $xml = $directory . '/' . self::$PRODUCT_XML_FILENAME;
     $url = $this->getProductURL($productid) . '/' . self::$PRODUCT_XML_FILENAME;
 
-    echo $url . "\n";
-
     //parse xml
     try {
       if (is_file($xml)) { // Prefer local files
