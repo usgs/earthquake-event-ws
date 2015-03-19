@@ -18,6 +18,15 @@
   // Used for translating MMI integers to roman numerals
   $ROMANS = array('I', 'I', 'II', 'III', 'IV', 'V', 'VI',
       'VII', 'VIII', 'IX', 'X');
+  // Used for adding contour files
+  $CONTOURS = array(
+      'Intensity' => 'download/cont_mi.kmz',
+      'PGA' => 'download/cont_pga.kmz',
+      'PGV' => 'download/cont_pgv.kmz',
+      'PGA03' => 'download/cont_psa03.kmz',
+      'PGA10' => 'download/cont_psa10.kmz',
+      'PGA30' => 'download/cont_psa30.kmz'
+    );
 
   $authid = $event->getSource() . $event->getSourceCode();
 
@@ -44,7 +53,7 @@
   $event = $event->toArray($storage);
 
 
-  $smcont = null;
+  $smcont = array();
   $smfault = null;
   $smover = null;
   $smo = null;
@@ -60,8 +69,13 @@
     $smp = $sm['properties'];
     $smc = $sm['contents'];
 
-    if (isset($smc['download/contours.kmz'])) {
-      $smcont = $smc['download/contours.kmz'];
+    foreach ($CONTOURS as $key => $value) {
+      if (isset($smc[$value])) {
+        $smcont[$key] = $smc[$value];
+      }
+    }
+
+    if (count($smcont) > 0) {
       $include_sm = true;
     }
 
@@ -262,17 +276,27 @@
           '</name>';
 
       if ($smcont) {
-        echo '<NetworkLink>' .
+
+        echo '<Folder>' .
             '<name>Contours</name>' .
             '<visibility>1</visibility>' .
             '<Style><ListStyle>' .
-              '<listItemType>radioFolder</listItemType>' .
-            '</ListStyle></Style>' .
-            '<Link>' .
-              '<href>' . $smcont['url'] . '</href>' .
-              '<viewRefreshMode>never</viewRefreshMode>' .
-            '</Link>' .
-          '</NetworkLink>';
+            '<listItemType>radioFolder</listItemType>' .
+            '</ListStyle></Style>';
+
+        foreach ($smcont as $name => $contour) {
+
+          echo '<NetworkLink>' .
+              '<name>' . $name . ' Contours</name>' .
+              '<visibility>1</visibility>' .
+              '<Link>' .
+                '<href>' . $contour['url'] . '</href>' .
+                '<viewRefreshMode>never</viewRefreshMode>' .
+              '</Link>' .
+              '</NetworkLink>';
+        }
+
+        echo '</Folder>';
       }
 
       if ($smfault) {
