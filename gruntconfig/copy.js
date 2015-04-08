@@ -16,6 +16,9 @@ var copy = {
     ]
   },
   build: {
+    options: {
+      mode: true
+    },
     files: [
       {
         expand: true,
@@ -64,17 +67,10 @@ var copy = {
     ]
   },
   dist: {
+    options: {
+      mode: true
+    },
     files: [
-      {
-        expand: true,
-        cwd: config.build + '/' + config.src + '/',
-        dest: config.dist + '/',
-        src: [
-          'images/*.{png,gif,jpg,jpeg}',
-          '**/*.php',
-          '**/*.kmz'
-        ]
-      },
       {
         expand: true,
         cwd: config.build + '/' + config.src + '/',
@@ -82,14 +78,6 @@ var copy = {
         src: [
           '**/*',
           '!**/*.orig'
-        ]
-      },
-      {
-        expand: true,
-        cwd: config.build + '/' + config.src + '/',
-        dest: config.dist + '/',
-        src: [
-          '**/*'
         ]
       }
     ]
