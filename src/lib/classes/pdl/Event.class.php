@@ -563,6 +563,8 @@ class Event {
     } else {
       $list = array();
       if (isset($this->products[$type])) {
+
+
         $list = self::getSortedMostPreferredFirst(
             self::getWithoutDeleted(self::getWithoutSuperseded(
                 $this->products[$type])));
@@ -613,13 +615,15 @@ class Event {
     if (!$includeSuperseded) {
       $products = self::getWithoutSuperseded($products);
     }
-    if (!$includeDeleted) {
+    if (!$includeDeleted && !$includeSuperseded) {
       $products = self::getWithoutDeleted($products);
     }
+
+    // add non-superseded to array first
+    $withoutSuperseded = self::getWithoutSuperseded($products);
     // sort by weight
-    $products = self::getSortedMostPreferredFirst($products);
-    // add to array
-    foreach ($products as $summary) {
+    $withoutSuperseded = self::getSortedMostPreferredFirst($withoutSuperseded);
+    foreach ($withoutSuperseded as $summary) {
       $array = $summary->toArray();
       if ($storage !== null) {
         // load product contents
@@ -631,6 +635,30 @@ class Event {
       }
       $r['products'][$summary->getId()->getType()][] = $array;
     }
+
+    // output superseded at end of arrays
+    if (count($withoutSuperseded) < count($products)) {
+      // remove already output products from array
+      $superseded = array_udiff($products, $withoutSuperseded,
+          function ($a, $b) {
+            return $a->getIndexId() - $b->getIndexId();
+          });
+      // sort remaining in preferred order
+      $superseded = self::getSortedMostPreferredFirst($superseded);
+      foreach ($superseded as $summary) {
+        $array = $summary->toArray();
+        if ($storage !== null) {
+          // load product contents
+          $product = $storage->getProduct($summary->getId());
+          if ($product !== null) {
+            $productArray = $product->toArray();
+            $array['contents'] = $productArray['contents'];
+          }
+        }
+        $r['products'][$summary->getId()->getType()][] = $array;
+      }
+    }
+
     // sort product types alphabetically
     ksort($r['products']);
     // return array representation

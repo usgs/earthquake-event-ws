@@ -137,7 +137,9 @@ class GeoJSONFeed extends AbstractFeed {
         'cdi' => safefloatval($event['maxcdi']),
         'mmi' => safefloatval($event['maxmmi']),
         'alert' => $event['alertlevel'],
-        'status' => $event['review_status'],
+        'status' => ($event['eventStatus'] === 'DELETE' ?
+            'deleted' :
+            $event['review_status']),
         'tsunami' => intval($event['tsunami']),
         'sig' => safeintval($event['significance']),
         'net' => $event['eventSource'],

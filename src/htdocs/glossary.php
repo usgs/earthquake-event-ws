@@ -405,8 +405,9 @@ if (!isset($TEMPLATE)) {
           <dt>Data Type</dt><dd class="datatype">String</dd>
           <dt>Typical Values</dt>
           <dd>
-            &ldquo;AUTOMATIC&rdquo;, &ldquo;PUBLISHED&rdquo;,
-            &ldquo;REVIEWED&rdquo;
+            &ldquo;automatic&rdquo;,
+            &ldquo;reviewed&rdquo;,
+            &ldquo;deleted&rdquo;
           </dd>
           <dt>Description</dt>
           <dd>Indicates whether the event has been reviewed by a human.</dd>
