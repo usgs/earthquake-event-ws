@@ -102,6 +102,7 @@ class FDSNIndex {
           'e.longitude as preferredLongitude',
           'e.magnitude as preferredMagnitude',
           'e.depth as preferredDepth',
+          'e.status as eventStatus',
           'es.event_type',
           'es.lastModified as eventUpdateTime',
           'es.maxmmi',
