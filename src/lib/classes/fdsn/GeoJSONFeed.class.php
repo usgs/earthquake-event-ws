@@ -153,8 +153,7 @@ class GeoJSONFeed extends AbstractFeed {
         'gap' => safefloatval($event['azimuthal_gap']),
         'magType' => $event['magnitude_type'],
         'type' => $type,
-        'title' => $this->getEventTitle($event),
-        'status' => $event['eventStatus']
+        'title' => $this->getEventTitle($event)
       ),
       'geometry' => array(
         'type' => 'Point',
