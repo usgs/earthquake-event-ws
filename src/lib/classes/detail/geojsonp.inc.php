@@ -38,7 +38,9 @@ $array = array(
     'cdi' => safefloatval($summary->properties['maxcdi']),
     'mmi' => safefloatval($summary->properties['maxmmi']),
     'alert' => $summary->properties['alertlevel'],
-    'status' => $summary->properties['review_status'],
+    'status' => ($event->isDeleted() ?
+        'deleted' :
+        $summary->properties['review_status']),
     'tsunami' => intval($summary->getTsunami()),
     'sig' => safeintval($summary->getSignificance()),
     'net' => $summary->getSource(),

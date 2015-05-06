@@ -137,7 +137,9 @@ class GeoJSONFeed extends AbstractFeed {
         'cdi' => safefloatval($event['maxcdi']),
         'mmi' => safefloatval($event['maxmmi']),
         'alert' => $event['alertlevel'],
-        'status' => $event['review_status'],
+        'status' => ($event['eventStatus'] === 'DELETE' ?
+            'deleted' :
+            $event['review_status']),
         'tsunami' => intval($event['tsunami']),
         'sig' => safeintval($event['significance']),
         'net' => $event['eventSource'],
@@ -151,7 +153,8 @@ class GeoJSONFeed extends AbstractFeed {
         'gap' => safefloatval($event['azimuthal_gap']),
         'magType' => $event['magnitude_type'],
         'type' => $type,
-        'title' => $this->getEventTitle($event)
+        'title' => $this->getEventTitle($event),
+        'status' => $event['eventStatus']
       ),
       'geometry' => array(
         'type' => 'Point',
