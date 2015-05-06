@@ -46,7 +46,8 @@ var KNOWN_CONTRIBUTORS = {
   'uu': 'UU - University of Utah',
   'uw': 'UW - University of Washington',
   'atlas': 'ShakeMap Atlas',
-  'official': 'Official'
+  'official': 'Official',
+  'isp': 'USGS Induced Seismicity Project',
 };
 var KNOWN_EVENT_TYPES = {
   // Earthquake event types
