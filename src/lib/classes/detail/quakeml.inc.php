@@ -13,6 +13,58 @@ if( $event == null ) {
 }
 
 
+try {
+  /* global $query, $event */
+
+  $products = $event->products;
+  $origins = isset($products['origin']) ? $products['origin'] : array();
+  $origins = Event::getSortedMostPreferredFirst(Event::getWithoutSuperseded($origins));
+  $phases = isset($products['phase-data']) ? $products['phase-data'] : array();
+  $phases = Event::getSortedMostPreferredFirst(Event::getWithoutSuperseded($phases));
+
+  // find corresponding phase-data/origin product
+  $eventid = $query->eventid;
+  $summary = null;
+  // check phase-data
+  foreach ($phases as $phase) {
+    if ($phase->getEventId() === $eventid) {
+      $summary = $phase;
+      break;
+    }
+  }
+  if ($summary === null) {
+    // no matching phase-data, check origins
+    foreach ($origins as $origin) {
+      if ($origin->getEventId() === $eventid) {
+        $summary = $origin;
+        break;
+      }
+    }
+  }
+  if ($summary === null) {
+    // no phase-data/origin, use preferred phase-data/origin
+    if (count($phases) > 0) {
+      $summary = $phases[0];
+    } else if (count($origins) > 0) {
+      $summary = $origins[0];
+    }
+  }
+
+  if ($summary !== null) {
+    global $storage;
+    // load product contents
+    $product = $storage->getProduct($summary->getId());
+    $quakeml = $product->getContents()['quakeml.xml']->getContent();
+
+    header('Content-type: application/xml');
+    echo $quakeml;
+    exit();
+  }
+} catch (Exception $e) {
+   // fall through to old style quakeml below
+}
+
+
 if (!function_exists("quakeml_element")) {
 
   function quakeml_element($elementName, $propertyName, $properties) {

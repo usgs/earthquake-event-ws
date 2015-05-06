@@ -66,8 +66,7 @@ class FDSNEventWebService {
   public function query() {
     $query = $this->parseQuery();
 
-    if ($query->eventid === null || $query->format === 'quakeml' ||
-          $query->format === 'xml' || $query->format === 'csv') {
+    if ($query->eventid === null || $query->format === 'csv') {
       $this->handleSummaryQuery($query);
     } else {
       $this->handleDetailQuery($query);
@@ -141,7 +140,7 @@ class FDSNEventWebService {
     $event = $index->getEventFromEventId($query->eventid, $resultType);
 
     if ($event === null) {
-      if ($query->format === 'quakeml') {
+      if ($query->format === 'quakeml' || $query->format === 'xml') {
         $this->error($query->nodata, self::$statusMessage[$query->nodata],
             true);
       } else {
@@ -150,8 +149,9 @@ class FDSNEventWebService {
       }
     }
 
-    if ($event->isDeleted() && !$query->includedeleted &&
-        !$query->includesuperseded) {
+    if ($event->isDeleted() &&
+        !$query->includedeleted && !$query->includesuperseded &&
+        !($query->format === 'quakeml' || $query->format === 'xml')) {
       $this->error(self::CONFLICT, $this->CONFLICT_DETAILS, true);
     }
 
@@ -176,6 +176,8 @@ class FDSNEventWebService {
     if ($format == 'geojson' && $query->callback !== null) {
       $format = 'geojsonp';
       $callback = $query->callback;
+    } else if ($format === 'xml') {
+      $format = 'quakeml';
     }
 
     // output detail format
