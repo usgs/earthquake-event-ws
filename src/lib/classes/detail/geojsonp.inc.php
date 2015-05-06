@@ -18,6 +18,7 @@ $event_array = $event->toArray($storage);
 $query = new ProductIndexQuery();
 $query->setEventSource($event->getSource());
 $query->setEventSourceCode($event->getSourceCode());
+$query->setShowDeletedEvent(true);
 $summaries = $index->getEventSummaries($query);
 $summary = null;
 if (isset($summaries[$event->getIndexId()])) {
