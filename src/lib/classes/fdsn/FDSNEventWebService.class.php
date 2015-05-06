@@ -80,7 +80,7 @@ class FDSNEventWebService {
     if ($count === 0) {
 
       // Verify this is not just a query for purely deleted events
-      if (!$query->includedeleted) {
+      if (!$query->includedeleted && !$query->includesuperseded) {
         $query->includedeleted = true;
 
         if ($this->index->getEventCount($query) !== 0) {
@@ -151,7 +151,8 @@ class FDSNEventWebService {
       }
     }
 
-    if ($event->isDeleted() && !$query->includedeleted) {
+    if ($event->isDeleted() && !$query->includedeleted &&
+        !$query->includesuperseded) {
       $this->error(self::CONFLICT, $this->CONFLICT_DETAILS, true);
     }
 

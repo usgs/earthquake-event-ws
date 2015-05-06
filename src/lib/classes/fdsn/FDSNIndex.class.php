@@ -290,7 +290,8 @@ class FDSNIndex {
     $magnitudeColumn = 'e.magnitude';
     $updatedColumn = 'es.lastModified';
 
-    if ($query->eventid === null || !$query->includedeleted) {
+    if ($query->eventid === null ||
+        (!$query->includedeleted && !$query->includesuperseded)) {
       // hide deleted events
       $where[] = "upper(e.status) <> 'DELETE'";
       $where[] = "upper(ps.status) <> 'DELETE'";
@@ -570,7 +571,9 @@ class FDSNIndex {
             ' AND updateTime>contributed.updateTime' .
             ')';
         // and not deleted
-        $where[] = "upper(contributed.status) <> 'DELETE'";
+        if (!$query->includedeleted && !$query->includesuperseded) {
+          $where[] = "upper(contributed.status) <> 'DELETE'";
+        }
 
         if ($query->producttype !== null) {
           $where[] = 'contributed.type=?';
