@@ -128,14 +128,13 @@ class FDSNEventWebService {
     global $APP_DIR;
     global $index;
 
-    // current versions, not deleted
-    $resultType = ProductIndexQuery::RESULT_TYPE_CURRENT;
+    // current versions, including deleted products
+    // need deleted products, so we can tell whether event deleted
+    // they are filtered out of results later.
+    $resultType = ProductIndexQuery::RESULT_TYPE_CURRENT_WITH_DELETE;
     if ($query->includesuperseded) {
       // all products
       $resultType = ProductIndexQuery::RESULT_TYPE_ALL;
-    } else if ($query->includedeleted) {
-      // current versions, including deleted products
-      $resultType = ProductIndexQuery::RESULT_TYPE_CURRENT_WITH_DELETE;
     }
 
     // use ProductIndex for detail
