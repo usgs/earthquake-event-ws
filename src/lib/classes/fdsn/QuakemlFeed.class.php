@@ -112,7 +112,9 @@ class QuakemlFeed extends AbstractFeed {
 
     // event type
     $type = $event['event_type'];
-    if ($type === null || $type === '') {
+    if ($event['eventStatus'] === 'DELETE') {
+      $type = 'not existing';
+    } else if ($type === null || $type === '') {
       $type = 'earthquake';
     } else {
       // remove underscores
