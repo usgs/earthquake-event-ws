@@ -2,7 +2,7 @@
 
 
 header('Content-type: text/javascript');
-if($event == null ) {
+if ($event == null) {
   header('HTTP/1.0 404 Not Found');
   print 'eqfeed_callback({"message": "Event not found."})';
   return;
@@ -11,7 +11,8 @@ if($event == null ) {
 global $storage;
 
 
-$event_array = $event->toArray($storage);
+$event_array = $event->toArray($storage, $query->includedeleted,
+    $query->includesuperseded);
 
 // add event summary for region, and other summarized properties
 // this is hacky and slow, but effective

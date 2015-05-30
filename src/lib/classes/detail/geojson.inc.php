@@ -2,7 +2,7 @@
 
 
 header('Content-type: application/json');
-if( $event == null ) {
+if ($event == null) {
   header('HTTP/1.0 404 Not Found');
   print '{"message": "Event not found."}';
   return;
