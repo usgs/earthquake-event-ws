@@ -16,11 +16,11 @@ $AGES = array(
 
 // name => size in magnitude
 $SIZES = array(
-  'all' => -1,
+  'all' => null,
   '1.0' => 1,
   '2.5' => 2.5,
   '4.5' => 4.5,
-  'significant' => -1
+  'significant' => null
 );
 
 $FORMATS = array('geojson', 'geojsonp', 'atom', 'kml', 'csv', 'quakeml',
