@@ -122,7 +122,6 @@ var FDSNModelValidator = function (options) {
       _this,
 
       _getErrorFields,
-      _getErrors,
       _initialize,
       _onModelChange;
 
@@ -137,12 +136,11 @@ var FDSNModelValidator = function (options) {
   };
 
   /**
-   * @return {Object}
-   *      An object hash of {fieldName: errorMessage} for current errors on
-   *      _this._model.
+   * Event handler when _this._model changes. Auto-validates the model new model
+   *
    */
-  _getErrors = function () {
-    return _errors;
+  _onModelChange = function () {
+    _errors = _validate(_model.getNonEmpty());
   };
 
   /**
@@ -162,6 +160,15 @@ var FDSNModelValidator = function (options) {
   };
 
   /**
+   * @return {Object}
+   *      An object hash of {fieldName: errorMessage} for current errors on
+   *      _this._model.
+   */
+  _this.getErrors = function () {
+    return _errors;
+  };
+
+  /**
    * @return {Boolean}
    *      True if the combination of field values in _this._model currently
    *      valid, false otherwise.
@@ -175,14 +182,6 @@ var FDSNModelValidator = function (options) {
     }
 
     return true;
-  };
-
-  /**
-   * Event handler when _this._model changes. Auto-validates the model new model
-   *
-   */
-  _onModelChange = function () {
-    _errors = _validate(_model.getNonEmpty());
   };
 
   _initialize();
