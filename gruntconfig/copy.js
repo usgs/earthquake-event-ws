@@ -15,6 +15,7 @@ var copy = {
       }
     ]
   },
+
   build: {
     options: {
       mode: true
@@ -66,6 +67,7 @@ var copy = {
       }
     ]
   },
+
   dist: {
     options: {
       mode: true
@@ -83,5 +85,6 @@ var copy = {
     ]
   }
 };
+
 
 module.exports = copy;

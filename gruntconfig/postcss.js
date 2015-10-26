@@ -1,16 +1,15 @@
 'use strict';
 
-
 var autoprefixer = require('autoprefixer'),
     cssnano = require('cssnano'),
     precss = require('precss'),
     postcssImport = require('postcss-import');
-    
+
 var config = require('./config');
 
 
 var postcss = {
-  build: {
+  dev: {
     options: {
       map: true,
       processors: [
@@ -20,11 +19,13 @@ var postcss = {
             'node_modules/hazdev-location-view/src',
             'node_modules/hazdev-template/src/htdocs', // earthquake variables
             'node_modules/hazdev-webutils/src'
-        ]
-      }),
-      precss(),
-      autoprefixer({'browsers': 'last 2 versions'}), // vendor prefix as needed
+          ]
+        }),
+        precss(),
+        autoprefixer({'browsers': 'last 2 versions'}), // vendor prefix as needed
+      ]
     },
+    expand: true,
     cwd: config.src + '/htdocs',
     src: '*.scss',
     dest: config.build + '/' + config.src + '/htdocs',

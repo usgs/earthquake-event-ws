@@ -94,6 +94,7 @@ var mountPHP = function (dir, options) {
 var iniConfig = require('ini').parse(require('fs')
         .readFileSync('./src/conf/config.ini', 'utf-8'));
 
+
 var connect = {
   options: {
     hostname: '*'
@@ -127,6 +128,7 @@ var connect = {
       }
     }
   },
+
   test: {
     options: {
       base: [
@@ -146,6 +148,7 @@ var connect = {
       }
     }
   },
+
   dist: {
     options: {
       base: [
@@ -172,5 +175,6 @@ var connect = {
     }
   }
 };
+
 
 module.exports = connect;

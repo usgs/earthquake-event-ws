@@ -2,6 +2,7 @@
 
 var config = require('./config');
 
+
 var htmlmin = {
   dist: {
     options: {
@@ -15,5 +16,6 @@ var htmlmin = {
     }]
   }
 };
+
 
 module.exports = htmlmin;

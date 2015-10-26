@@ -14,6 +14,7 @@ var EXPORTS = [
   './' + config.src + '/htdocs/js/fdsn/UrlManager.js:fdsn/UrlManager'
 ];
 
+
 var browserify = {
   options: {
     browserifyOptions: {
@@ -28,6 +29,7 @@ var browserify = {
       ]
     }
   },
+
   bundle: {
     src: [],
     dest: config.build + '/' + config.test + '/earthquake-event-ws.js',
@@ -35,10 +37,12 @@ var browserify = {
       alias: EXPORTS
     }
   },
+
   build: {
     src: config.src + '/htdocs/js/search.js',
     dest: config.build + '/' + config.src + '/htdocs/js/search.js'
   },
+
   test: {
     src: config.test + '/test.js',
     dest: config.build + '/' + config.test + '/test.js',
@@ -47,5 +51,6 @@ var browserify = {
     }
   }
 };
+
 
 module.exports = browserify;

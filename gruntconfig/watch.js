@@ -28,7 +28,11 @@ var watch = {
     files: [
       config.test + '/**/*.js'
     ],
-    tasks: ['jshint:tests', 'browserify:test', 'copy:test']
+    tasks: [
+      'jshint:tests',
+      'browserify:test',
+      'copy:test'
+    ]
   },
   test_html: {
     files: [
