@@ -99,24 +99,26 @@ var connect = {
   options: {
     hostname: '*'
   },
+
   proxies: [
     {
       context: '/theme/',
       host: 'localhost',
-      port: 8003,
+      port: config.templatePort,
       rewrite: {
         '^/theme': ''
       }
     }
   ],
+
   build: {
     options: {
       base: [
         config.build + '/' + config.src + '/htdocs'
       ],
       livereload: config.liveReloadPort,
-      open: 'http://localhost:8000' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
-      port: 8000,
+      open: 'http://localhost:' + config.buildPort + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
+      port: config.buildPort,
       middleware: function (connect, options, middlewares) {
         middlewares.unshift(
           corsMiddleware,
@@ -136,8 +138,8 @@ var connect = {
         config.build + '/' + config.src + '/htdocs',
         'node_modules'
       ],
-      open: 'http://localhost:8001/test.html',
-      port: 8001,
+      open: 'http://localhost:' + config.testPort + '/test.html',
+      port: config.testPort,
       middleware: function (connect, options, middlewares) {
         middlewares.unshift(
           corsMiddleware,
@@ -155,8 +157,8 @@ var connect = {
         config.dist + '/htdocs'
       ],
       keepalive: true,
-      open: 'http://localhost:8002' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
-      port: 8002,
+      open: 'http://localhost:' + config.distPort + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION + '/',
+      port: config.distPort,
       middleware: function (connect, options, middlewares) {
         middlewares.unshift(
           corsMiddleware,
@@ -168,10 +170,11 @@ var connect = {
       }
     }
   },
+
   template: {
     options: {
       base: ['node_modules/hazdev-template/dist/htdocs'],
-      port: 8003
+      port: config.templatePort
     }
   }
 };

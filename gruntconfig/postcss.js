@@ -9,7 +9,7 @@ var config = require('./config');
 
 
 var postcss = {
-  dev: {
+  build: {
     options: {
       map: true,
       processors: [

@@ -18,12 +18,14 @@ var watch = {
       'mocha_phantomjs'
     ]
   },
+
   scss: {
     files: [
       config.src + '/htdocs/css/**/*.scss'
     ],
     tasks: ['postcss:build']
   },
+
   test_js: {
     files: [
       config.test + '/**/*.js'
@@ -34,12 +36,14 @@ var watch = {
       'copy:test'
     ]
   },
+
   test_html: {
     files: [
       config.test + '/*.html'
     ],
     tasks: ['copy:test']
   },
+
   resources: {
     files: [
       config.src + '/conf/**/*',
@@ -49,6 +53,7 @@ var watch = {
     ],
     tasks: ['copy:build']
   },
+
   livereload: {
     options: {
       livereload: config.liveReloadPort
@@ -57,6 +62,7 @@ var watch = {
       config.build + '/' + config.src + '/htdocs/**/*'
     ]
   },
+
   gruntfile: {
     files: [
       'Gruntfile.js',
