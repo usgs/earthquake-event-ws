@@ -27,7 +27,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'jshint',
-    'concurrent:build' // browserify:build, compass:build, copy:build
+    'concurrent:build' // browserify:build, postcss:build, copy:build
   ]);
 
   grunt.registerTask('dist', [

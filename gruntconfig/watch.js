@@ -2,6 +2,7 @@
 
 var config = require('./config');
 
+
 var watch = {
   scripts: {
     files: [
@@ -13,7 +14,7 @@ var watch = {
     files: [
       config.src + '/htdocs/css/**/*.scss'
     ],
-    tasks: ['compass:build']
+    tasks: ['postcss:build']
   },
   test_js: {
     files: [
@@ -52,5 +53,6 @@ var watch = {
     tasks: ['jshint:gruntfile']
   }
 };
+
 
 module.exports = watch;
