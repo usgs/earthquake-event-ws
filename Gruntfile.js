@@ -32,7 +32,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('dist', [
     'build',
-    'concurrent:dist', // htmlmin:dist, copy:dist, uglify, cssmin:dist
+    'concurrent:dist', // htmlmin:dist, copy:dist, uglify, postcss:dist
     'connect:template',
     'configureProxies:dist',
     'connect:dist'

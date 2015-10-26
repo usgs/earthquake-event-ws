@@ -11,7 +11,7 @@ var concurrent = {
     'htmlmin:dist',
     'uglify',
     'copy:dist',
-    'cssmin:dist'
+    'postcss:dist'
   ],
 
   test: [
