@@ -13,7 +13,9 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('test', [
-    'concurrent:test', // browserify:test, copy:test
+    'browserify:test',
+    'browserify:bundle',
+    'copy:test',
     'connect:test',
     'mocha_phantomjs'
   ]);
@@ -27,12 +29,17 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'jshint',
-    'concurrent:build' // browserify:build, postcss:build, copy:build
+    'browserify:build',
+    'postcss:build',
+    'copy:build'
   ]);
 
   grunt.registerTask('dist', [
     'build',
-    'concurrent:dist', // htmlmin:dist, copy:dist, uglify, postcss:dist
+    'htmlmin:dist',
+    'uglify',
+    'copy:dist',
+    'postcss:dist',
     'connect:template',
     'configureProxies:dist',
     'connect:dist'

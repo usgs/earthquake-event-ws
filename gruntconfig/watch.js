@@ -8,7 +8,15 @@ var watch = {
     files: [
       config.src + '/htdocs/js/**/*.js'
     ],
-    tasks: ['jshint:scripts', 'browserify:build', 'browserify:bundle', 'concurrent:test', 'mocha_phantomjs']
+    tasks: [
+      'jshint:scripts',
+      'browserify:build',
+      'browserify:bundle',
+      'browserify:test',
+      'browserify:bundle',
+      'copy:test',
+      'mocha_phantomjs'
+    ]
   },
   scss: {
     files: [
