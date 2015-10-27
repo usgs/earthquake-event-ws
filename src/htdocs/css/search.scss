@@ -1,15 +1,14 @@
-@import 'site/earthquake/_variables';
-@import 'layout';   /* NESW layout styles for inputs */
-@import 'n-up';   /* .two-up and .three-up styles */
+@import '_layout.scss';   /* NESW layout styles for inputs */
+@import '_n-up.scss';   /* .two-up and .three-up styles */
 
-@import 'ManagedModelView';   /* geographic region summary/clear styles  */
-@import 'ToggleSection';   /* toggle-able sections styles */
-@import 'mvc/ModalView';
-@import 'locationview/RegionView';
-@import 'locationview/RectangleControl';
-@import 'locationview/RectangleCoordinateView';
-@import 'locationview/RectangleOverlayView';
-@import 'locationview/LeafletControls';
+@import 'ManagedModelView.scss';   /* geographic region summary/clear styles  */
+@import 'ToggleSection.scss';   /* toggle-able sections styles */
+@import 'mvc/ModalView.scss';
+@import 'locationview/RegionView.scss';
+@import 'locationview/RectangleControl.scss';
+@import 'locationview/RectangleCoordinateView.scss';
+@import 'locationview/RectangleOverlayView.scss';
+@import 'locationview/LeafletControls.scss';
 
 /* style form elements */
 label {
