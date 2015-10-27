@@ -27,7 +27,7 @@ var postcss = {
     },
     expand: true,
     cwd: config.src + '/htdocs',
-    src: '*.scss',
+    src: '**/*.scss',
     dest: config.build + '/' + config.src + '/htdocs',
     ext: '.css',
     extDot: 'last'
@@ -41,7 +41,7 @@ var postcss = {
     },
     expand: true,
     cwd: config.build + '/' + config.src + '/htdocs',
-    src: '*.css',
+    src: '**/*.css',
     dest: config.dist + '/htdocs'
   }
 };
