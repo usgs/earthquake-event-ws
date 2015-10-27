@@ -15,7 +15,7 @@
 .region-square-details > .region-square-details-south {
   clear:left;
   margin:0 auto;
-  overflow: hidden; // reset block formatting context
+  overflow: hidden; /* reset block formatting context */
 }
 .region-square-details-north > input,
 .region-square-details-south > input,
