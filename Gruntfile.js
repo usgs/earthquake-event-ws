@@ -35,14 +35,14 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('dist', [
+    'clean:dist',
     'build',
-    'htmlmin:dist',
-    'uglify',
     'copy:dist',
     'postcss:dist',
+    'uglify',
     'connect:template',
     'configureProxies:dist',
-    'connect:dist'
+    'connect:dist:keepalive'
   ]);
 
   grunt.registerTask('default', [
