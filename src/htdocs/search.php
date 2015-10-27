@@ -42,18 +42,18 @@ if (!isset($TEMPLATE)) {
   </ul>
 </header>
 
+<h2 role="heading" id="search-basic">Basic Options</h2>
 <section class="search-basic row" aria-labelledby="search-basic">
-  <h2 role="heading" id="search-basic">Basic Options</h2>
   <?php include_once 'inc/search-basic.inc.php' ?>
 </section>
 
+<h2 role="heading" id="search-advanced">Advanced Options</h2>
 <section class="search-advanced row" aria-labelledby="search-advanced">
-  <h2 role="heading" id="search-advanced">Advanced Options</h2>
   <?php include_once 'inc/search-advanced.inc.html' ?>
 </section>
 
+<h2 role="heading" id="search-output">Output Options</h2>
 <section class="search-output row" aria-labelledby="search-output">
-  <h2 role="heading" id="search-output">Output Options</h2>
   <?php
     /* Note this include is PHP because it needs $MAX_SEARCH info */
     include_once 'inc/search-output.inc.php'
