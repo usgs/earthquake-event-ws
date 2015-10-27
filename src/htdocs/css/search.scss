@@ -31,9 +31,9 @@ h2[role="heading"] {
 /* style header and footer sections */
 .header,
 .footer {
-  margin:1em 0 0;
-  background-color:#EEE;
-  padding:16px;
+  background-color: #EEE;
+  margin: 1em 0 0;
+  padding: 16px;
 }
 
 
@@ -45,15 +45,14 @@ button.draw {
 
 /* help text styles */
 form .help {
+  color: #777;
+  font-size: 13px;
   margin: 0.5em 0 0;
-  color:#777;
-  font-size:.8em;
-  font-size:13px;
 }
 
 /* Hide output specfic options */
 .hidden {
-  display:none;
+  display: none;
 }
 
 /* Indent sub-list for event type */
@@ -65,7 +64,7 @@ form .help {
 
 /* style radio and checkbox lists */
 .label-checkbox {
-  line-height:2;
+  line-height: 2;
 }
 
 .no-style {
@@ -86,29 +85,16 @@ ul.output-geojson-list {
   margin-top: 1em;
 }
 
-/* region control dialog footer */
-.modal-dialog > .modal-footer {
-  line-height: 40px;
-  padding: 0.5em 1em;
-  background: #fff;
-  height: inherit;
-
-  button {
-    vertical-align:middle;
-  }
-}
-
-
 /* Output styles */
 .output-descriptor {
-  display:block;
-  color:#666;
-  font-size:.9em;
+  display: block;
+  color: #666;
+  font-size: .9em;
 }
 
 p.error {
-  color:#C10C0C;
-  font-weight:bold;
+  color: #C10C0C;
+  font-weight: bold;
 }
 
 .label-checkbox {
@@ -126,6 +112,6 @@ p.error {
 @media screen and (min-width: $breakpoint-stacking) {
 
   .label-checkbox {
-    line-height:1.5;
+    line-height: 1.5;
   }
 }
