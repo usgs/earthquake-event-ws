@@ -91,10 +91,10 @@ var SelectField = function (options) {
 
     return [
       _startWrapper,
+      '<input type="', _type, '" name="', _id, '" id="',
+          _this._getFieldId((valueStr === '') ? textStr : valueStr),
+          '" value="', valueStr, '"', ((checked)?' checked':''),'/>',
       '<label class="label-checkbox">',
-        '<input type="', _type, '" name="', _id, '" id="',
-            _this._getFieldId((valueStr === '') ? textStr : valueStr),
-            '" value="', valueStr, '"', ((checked)?' checked':''),'/>',
         textStr,
       '</label>',
       _endWrapper

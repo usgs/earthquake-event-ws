@@ -4,30 +4,30 @@
   <ul class="no-style format-list">
     <!-- Note: Map/List requires JS -->
     <li>
+      <input id="output-format-csv" type="radio" name="format"
+          value="csv" checked/>
       <label for="output-format-csv" class="label-checkbox">
-        <input id="output-format-csv" type="radio" name="format"
-            value="csv" checked/>
         CSV
       </label>
     </li>
     <li>
+      <input id="output-format-kml" type="radio" name="format"
+          value="kml"/>
       <label for="output-format-kml" class="label-checkbox">
-        <input id="output-format-kml" type="radio" name="format"
-            value="kml"/>
         KML
       </label>
     </li>
     <li>
+      <input id="output-format-quakeml" type="radio" name="format"
+          value="quakeml"/>
       <label for="output-format-quakeml" class="label-checkbox">
-        <input id="output-format-quakeml" type="radio" name="format"
-            value="quakeml"/>
         QuakeML
       </label>
     </li>
     <li>
+      <input id="output-format-geojson" type="radio" name="format"
+          value="geojson"/>
       <label for="output-format-geojson" class="label-checkbox">
-        <input id="output-format-geojson" type="radio" name="format"
-            value="geojson"/>
         GeoJSON
       </label>
     </li>
@@ -39,16 +39,16 @@
 
   <ul class="no-style output-quakeml-list">
     <li>
+      <input id="includeallorigins" type="checkbox" value="true"
+          name="includeallorigins"/>
       <label for="includeallorigins" class="label-checkbox">
-        <input id="includeallorigins" type="checkbox" value="true"
-            name="includeallorigins"/>
         Include all origins
       </label>
     </li>
     <li>
+      <input id="includeallmagnitudes" type="checkbox" value="true"
+          name="includeallmagnitudes"/>
       <label for="includeallmagnitudes" class="label-checkbox">
-        <input id="includeallmagnitudes" type="checkbox" value="true"
-            name="includeallmagnitudes"/>
         Include all magnitudes
       </label>
     </li>
@@ -70,23 +70,23 @@
 
   <ul class="no-style output-kml-list">
     <li>
+      <input id="kmlcolorby-age" type="radio" name="kmlcolorby"
+          value="age" checked/>
       <label for="kmlcolorby-age" class="label-checkbox">
-        <input id="kmlcolorby-age" type="radio" name="kmlcolorby"
-            value="age" checked/>
         Color by age
       </label>
     </li>
     <li>
-      <label for="kmlcolorby-depth" class="label-checkbox">
       <input id="kmlcolorby-depth" type="radio" name="kmlcolorby"
           value="depth"/>
+      <label for="kmlcolorby-depth" class="label-checkbox">
         Color by depth
       </label>
     </li>
     <li>
+      <input id="kmlanimated" type="checkbox" value="true"
+          name="kmlanimated"/>
       <label for="kmlanimated" class="label-checkbox">
-        <input id="kmlanimated" type="checkbox" value="true"
-            name="kmlanimated"/>
         Animated
       </label>
     </li>
@@ -103,9 +103,9 @@
       <input type="text" name="callback" id="callback"/>
     </li>
     <li>
+      <input id="jsonerror" type="checkbox" value="true"
+          name="jsonerror" />
       <label for="jsonerror" class="label-checkbox">
-        <input id="jsonerror" type="checkbox" value="true"
-            name="jsonerror" />
         Format errors as JSON(P)
       </label>
     </li>
@@ -117,30 +117,30 @@
   <h3 id="output-orderby" class="label">Order By</h3>
   <ul class="no-style orderby-list">
     <li>
+      <input id="orderby-time" type="radio" name="orderby"
+          value="time" aria-labelledby="output-orderby" checked/>
       <label for="orderby-time" class="label-checkbox">
-        <input id="orderby-time" type="radio" name="orderby"
-            value="time" aria-labelledby="output-orderby" checked/>
         Time - Newest First
       </label>
     </li>
     <li>
+      <input id="orderby-time-asc" type="radio" name="orderby"
+          value="time-asc" aria-labelledby="output-orderby"/>
       <label for="orderby-time-asc" class="label-checkbox">
-        <input id="orderby-time-asc" type="radio" name="orderby"
-            value="time-asc" aria-labelledby="output-orderby"/>
         Time - Oldest First
       </label>
     </li>
     <li>
+      <input id="orderby-magnitude" type="radio" name="orderby"
+          value="magnitude" aria-labelledby="output-orderby"/>
       <label for="orderby-magnitude" class="label-checkbox">
-        <input id="orderby-magnitude" type="radio" name="orderby"
-            value="magnitude" aria-labelledby="output-orderby"/>
         Magnitude - Largest First
       </label>
     </li>
     <li>
+      <input id="orderby-magnitude-asc" type="radio" name="orderby"
+          value="magnitude-asc" aria-labelledby="output-orderby"/>
       <label for="orderby-magnitude-asc" class="label-checkbox">
-        <input id="orderby-magnitude-asc" type="radio" name="orderby"
-            value="magnitude-asc" aria-labelledby="output-orderby"/>
         Magnitude - Smallest First
       </label>
     </li>

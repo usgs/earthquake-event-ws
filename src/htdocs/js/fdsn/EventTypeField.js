@@ -35,15 +35,15 @@ var EventTypeField = function (options) {
 
     _this.el.innerHTML = [
       '<li>',
+        '<input type="checkbox" class="eqeventtype-control"/>',
         '<label class="label-checkbox">',
-          '<input type="checkbox" class="eqeventtype-control"/>',
           'Earthquakes',
         '</label>',
         '<ul class="eqeventtype-list no-style"></ul>',
       '</li>',
       '<li>',
+        '<input type="checkbox" class="noneqeventtype-control"/>',
         '<label class="label-checkbox">',
-          '<input type="checkbox" class="noneqeventtype-control"/>',
           'Non-Earthquakes',
         '</label>',
         '<ul class="noneqeventtype-list no-style"></ul>',
