@@ -3,31 +3,31 @@
   margin-left: -16px;
 
   > li {
-    list-style:none;
-    display:block;
-    text-align:center;
-    width:50%;
+    display: block;
+    list-style: none;
     padding-left: 16px;
+    text-align: center;
+    width: 50%;
   }
 }
 
 .region-square-details > .region-square-details-north,
 .region-square-details > .region-square-details-south {
-  clear:left;
-  margin:0 auto;
+  clear: left;
+  margin: 0 auto;
   overflow: hidden; /* reset block formatting context */
 }
 .region-square-details-north > input,
 .region-square-details-south > input,
 .region-square-details-west > input,
 .region-square-details-east > input {
-  margin:0 auto;
+  margin: 0 auto;
 }
 .region-square-details-east {
-  margin:0;
-  float:right;
+  float: right;
+  margin: 0;
 }
 .region-square-details-west {
-  margin:0;
-  float:left;
+  float: left;
+  margin: 0;
 }
