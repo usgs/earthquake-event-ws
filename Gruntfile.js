@@ -39,6 +39,7 @@ module.exports = function (grunt) {
     'build',
     'copy:dist',
     'postcss:dist',
+    'htmlmin',
     'uglify',
     'connect:template',
     'configureProxies:dist',
