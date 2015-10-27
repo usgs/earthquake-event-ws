@@ -12,8 +12,8 @@
 
 /* style form elements */
 label {
-  font-size: .8125em;
   color: #777;
+  font-size: .8125em;
 }
 
 input[type="text"],
@@ -23,8 +23,8 @@ input[type="number"] {
 
 /* style headers for different sections of form */
 h2[role="heading"] {
-  margin-left:$horizontal-spacing;
   border-bottom: 1px solid #ddd;
+  margin-left: $spacing;
   padding: 0 0 0.5em;
 }
 
