@@ -100,17 +100,19 @@ var SelectField = function (options) {
       idValue = valueStr;
     }
 
+    idValue = idValue.replace(' ', '-');
+
     return [
       _startWrapper,
       '<input type="', _type, '" name="', _id, '" id="',
           _id,
           '-',
-          idValue.replace(' ', '_'),
+          idValue,
           '" value="', valueStr, '"', ((checked)?' checked':''),'/>',
       '<label class="label-checkbox" for="',
           _id,
           '-',
-          idValue.replace(' ', '_'),
+          idValue,
           '">',
         textStr,
       '</label>',
