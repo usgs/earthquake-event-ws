@@ -35,15 +35,17 @@ var EventTypeField = function (options) {
 
     _this.el.innerHTML = [
       '<li>',
-        '<input type="checkbox" class="eqeventtype-control"/>',
-        '<label class="label-checkbox">',
+        '<input type="checkbox" class="eqeventtype-control"',
+            'id="type-earthquake"/>',
+        '<label class="label-checkbox" for="type-earthquake">',
           'Earthquakes',
         '</label>',
         '<ul class="eqeventtype-list no-style"></ul>',
       '</li>',
       '<li>',
-        '<input type="checkbox" class="noneqeventtype-control"/>',
-        '<label class="label-checkbox">',
+        '<input type="checkbox" class="noneqeventtype-control"',
+            'id="type-non-earthquake"/>',
+        '<label class="label-checkbox" for="type-non-earthquake">',
           'Non-Earthquakes',
         '</label>',
         '<ul class="noneqeventtype-list no-style"></ul>',
@@ -60,7 +62,7 @@ var EventTypeField = function (options) {
   };
 
   _toggleAll = function () {
-    var inputs = this.parentElement.nextSibling.querySelectorAll('input'),
+    var inputs = this.nextSibling.nextSibling.querySelectorAll('input'),
         i = 0, len = inputs.length,
         checked = this.checked;
 
