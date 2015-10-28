@@ -22,8 +22,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('dev', [
     'build',
-    'connect:template',
     'configureProxies:build',
+    'connect:template',
     'connect:build'
   ]);
 
@@ -41,8 +41,8 @@ module.exports = function (grunt) {
     'postcss:dist',
     'htmlmin',
     'uglify',
-    'connect:template',
     'configureProxies:dist',
+    'connect:template',
     'connect:dist:keepalive'
   ]);
 
