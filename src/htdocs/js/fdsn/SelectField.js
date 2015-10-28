@@ -82,19 +82,36 @@ var SelectField = function (options) {
   };
 
   _this._createField = function (name, value, checked) {
-    var valueStr = null,
-        textStr = null;
+    var idValue,
+        textStr,
+        valueStr;
+
+    idValue = null;
+    textStr = null;
+    valueStr = null;
 
     valueStr = _formatValue(
         (typeof value !== 'undefined') ? value : name);
     textStr = _formatDisplay(name);
 
+    if (_this._getFieldId(valueStr) === '') {
+      idValue = textStr;
+    } else {
+      idValue = valueStr;
+    }
+
     return [
       _startWrapper,
       '<input type="', _type, '" name="', _id, '" id="',
-          _this._getFieldId((valueStr === '') ? textStr : valueStr),
+          _id,
+          '-',
+          idValue.replace(' ', '_'),
           '" value="', valueStr, '"', ((checked)?' checked':''),'/>',
-      '<label class="label-checkbox">',
+      '<label class="label-checkbox" for="',
+          _id,
+          '-',
+          idValue.replace(' ', '_'),
+          '">',
         textStr,
       '</label>',
       _endWrapper
