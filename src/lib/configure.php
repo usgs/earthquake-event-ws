@@ -30,6 +30,11 @@
      */
     function configure ($option, $default = '', $comment='', $file = false,
         $secure=false, $unknown=false) {
+      global $NO_PROMPT;
+
+      if ($NO_PROMPT) {
+        return $default;
+      }
 
       if ($unknown) {
         // Warn user about an unknown configuration option being used.
@@ -123,7 +128,13 @@
   $configure_action = '3';
 
   // Check if previous configuration file exists
-  if (file_exists($CONFIG_FILE)) { $configure_action = '0'; }
+  if (file_exists($CONFIG_FILE)) {
+    if ($NO_PROMPT) {
+      $configure_action = 1;
+    } else {
+      $configure_action = '0';
+    }
+  }
 
   while (!($configure_action=='1'||$configure_action=='2'||$configure_action == '3')) {
     // File exists. Does user want to just go with previous configuration?

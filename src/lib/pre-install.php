@@ -1,12 +1,26 @@
 <?php
 
-// Load the configuration. This will put a $CONFIG array in scope that will
+date_default_timezone_set('UTC');
+
+$OLD_PWD = $_SERVER['PWD'];
+chdir(dirname($argv[0]));
+
+if ($argv[0] === './pre-install.php' || $_SERVER['PWD'] !== $OLD_PWD) {
+  $LIB_DIR = $_SERVER['PWD'];
+} else {
+  $LIB_DIR = getcwd();
+}
+
+if (count($argv) > 1 && $argv[1] === '--non-interactive') {
+  $NO_PROMPT = true;
+} else {
+  $NO_PROMPT = false;
+}
+
 // have all the configured values available to this script.
+// Load the configuration. This will put a $CONFIG array in scope that will
 include_once 'configure.php';
 
-// work in lib directory
-chdir(dirname($argv[0]));
-$LIB_DIR = $_SERVER['PWD'];
 // path specific to this feed app version
 $APP_DIR = dirname($LIB_DIR);
 $HTDOCS_DIR = $APP_DIR . DIRECTORY_SEPARATOR . 'htdocs';
