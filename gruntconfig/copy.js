@@ -62,7 +62,7 @@ var copy = {
         cwd: 'node_modules/hazdev-location-view/src/locationview',
         dest: config.build + '/' + config.src + '/htdocs/css',
         src: [
-          'images/region-controls.png'
+          'images/region-control-icons.png'
         ],
       }
     ]
