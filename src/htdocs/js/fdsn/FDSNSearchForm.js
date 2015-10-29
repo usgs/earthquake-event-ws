@@ -718,9 +718,9 @@ var FDSNSearchForm = function (options) {
 
     /* jshint -W015 */
     map.innerHTML = [
+      '<input id="output-format-maplist" type="radio" name="format" ',
+          'value="maplist" checked/> ',
       '<label for="output-format-maplist" class="label-checkbox">',
-        '<input id="output-format-maplist" type="radio" name="format" ',
-            'value="maplist" checked/> ',
         'Map &amp; List',
       '</label>'
     ].join('');
