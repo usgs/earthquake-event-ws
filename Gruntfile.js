@@ -12,44 +12,54 @@ module.exports = function (grunt) {
     grunt.config(['jshint', 'scripts'], filepath);
   });
 
-  grunt.registerTask('test', [
-    'browserify:test',
-    'browserify:bundle',
-    'copy:test',
-    'connect:test',
-    'mocha_phantomjs'
-  ]);
-
-  grunt.registerTask('dev', [
-    'build',
-    'configureProxies:build',
-    'connect:template',
-    'connect:build'
-  ]);
-
-  grunt.registerTask('build', [
+  grunt.registerTask('builddev', [
     'jshint',
     'browserify:build',
     'postcss:build',
     'copy:build'
   ]);
 
-  grunt.registerTask('dist', [
+  grunt.registerTask('builddist', [
     'clean:dist',
-    'build',
     'copy:dist',
     'postcss:dist',
     'htmlmin',
-    'uglify',
+    'uglify'
+  ]);
+
+  grunt.registerTask('buildtest', [
+    'browserify:test',
+    'browserify:bundle',
+    'copy:test'
+  ]);
+
+  grunt.registerTask('default', [
+    'dev',
+    'test',
+    'watch'
+  ]);
+
+  grunt.registerTask('dev', [
+    'builddev',
+
+    'configureProxies:build',
+    'connect:template',
+    'connect:build'
+  ]);
+
+  grunt.registerTask('dist', [
+    'builddev',
+    'builddist',
+
     'configureProxies:dist',
     'connect:template',
     'connect:dist:keepalive'
   ]);
 
-  grunt.registerTask('default', [
-    'clean',
-    'dev',
-    'test',
-    'watch'
+  grunt.registerTask('test', [
+    'buildtest',
+
+    'connect:test',
+    'mocha_phantomjs'
   ]);
 };
