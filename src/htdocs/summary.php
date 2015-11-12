@@ -79,7 +79,7 @@ try {
 
 // age
   $age = $params[1];
-  if (!isset($AGES[$age])) {
+  if (!array_key_exists($age, $AGES)) {
     throw new Exception("Unknown age");
   }
   // starttime is milliseconds
@@ -88,14 +88,15 @@ try {
 
 // size
   $size = $params[0];
-  if (!isset($SIZES[$size])) {
+  if (!array_key_exists($size, $SIZES)) {
     throw new Exception("Unknown size");
   }
-  // size is either significance or magnitude
+  $query->minmagnitude = $SIZES[$size];
+
+
+// significance
   if ($size === 'significant') {
     $query->minsig = 600;
-  } else {
-    $query->minmagnitude = $SIZES[$size];
   }
 
 
