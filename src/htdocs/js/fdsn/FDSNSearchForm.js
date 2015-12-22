@@ -123,7 +123,6 @@ var FDSNSearchForm = function (options) {
         }
       }
       errorMarkup.push('</ul></li>');
-
     }
 
     return [
@@ -421,7 +420,6 @@ var FDSNSearchForm = function (options) {
         input = null, i = 0, numInputs = inputs.length,
         onModelChange = null, onViewChange = null;
 
-
     onModelChange = function (newValue) {
       var values = (newValue || '').split(','), // TODO :: Handle commas in values
           numValues = values.length,
@@ -441,7 +439,6 @@ var FDSNSearchForm = function (options) {
           /* jshint eqeqeq: true */
         }
       }
-
     };
 
     onViewChange = function () {
@@ -464,7 +461,6 @@ var FDSNSearchForm = function (options) {
             values[valueName].push(input.value);
           }
         }
-
       }
 
       for (key in values) {
@@ -493,7 +489,6 @@ var FDSNSearchForm = function (options) {
   };
 
   _fetchFieldData = function () {
-
     Xhr.ajax({
       url: _fieldDataUrl,
       success: function (data) {
@@ -549,13 +544,18 @@ var FDSNSearchForm = function (options) {
   };
 
   _enhanceField = function (fields, name, format, classes) {
-    var textInput = _el.querySelector('#' + name),
-        parentNode = textInput.parentNode,
-        list = parentNode.appendChild(document.createElement('ul')),
+    var element,
+        i,
         inputModel,
-        element,
+        len,
+        list,
+        parentNode,
         selectField,
-        i, len;
+        textInput;
+
+    textInput = _el.querySelector('#' + name);
+    parentNode = textInput.parentNode;
+    list = parentNode.appendChild(document.createElement('ul'));
 
     inputModel  = (_model.get(name) || '').split(',');
     classes = classes || [];
@@ -570,10 +570,10 @@ var FDSNSearchForm = function (options) {
 
     selectField = SelectField({
       el: list,
-      id: name,
       fields: fields,
-      type: 'radio',
-      formatDisplay: format
+      formatDisplay: format,
+      id: name,
+      type: 'radio'
     });
 
     len = inputModel.length;
@@ -587,13 +587,17 @@ var FDSNSearchForm = function (options) {
   };
 
   _enhanceEventType = function (fields) {
-    var textInput = _el.querySelector('#eventtype'),
-        parentNode = textInput.parentNode,
-        list = parentNode.appendChild(document.createElement('ul')),
-        inputModel,
-        element,
+    var element,
         eventType,
-        i, len;
+        inputModel,
+        len,
+        list,
+        parentNode,
+        textInput;
+
+    textInput = _el.querySelector('#eventtype');
+    parentNode = textInput.parentNode;
+    list = parentNode.appendChild(document.createElement('ul'));
 
     inputModel = (_model.get('eventtype') || '').split(',');
     list.classList.add('eventtype-list');
@@ -603,14 +607,14 @@ var FDSNSearchForm = function (options) {
 
     eventType = EventTypeField({
       el: list,
-      id: 'eventtype',
       fields: fields,
-      type: 'checkbox',
-      formatDisplay: _formatter.formatEventType
+      formatDisplay: _formatter.formatEventType,
+      id: 'eventtype',
+      type: 'checkbox'
     });
 
     len = inputModel.length;
-    for (i = 0; i < len; i++) {
+    for (var i = 0; i < len; i++) {
       element = _el.querySelector('#' +
           eventType._getFieldId(inputModel[i]));
       if (element !== null) {
@@ -620,19 +624,25 @@ var FDSNSearchForm = function (options) {
   };
 
   _enableRegionControl = function () {
-    var drawRectangleButton = _el.querySelector('.draw'),
-        maxLatitude = document.querySelector('#maxlatitude'),
-        minLatitude = document.querySelector('#minlatitude'),
-        maxLongitude = document.querySelector('#maxlongitude'),
-        minLongitude = document.querySelector('#minlongitude'),
+    var drawRectangleButton,
+        maxLatitude,
+        maxLongitude,
+        minLatitude,
+        minLongitude,
+
         _onRegionCallback;
 
+    drawRectangleButton = _el.querySelector('.draw');
+    maxLatitude = document.querySelector('#maxlatitude');
+    minLatitude = document.querySelector('#minlatitude');
+    maxLongitude = document.querySelector('#maxlongitude');
+    minLongitude = document.querySelector('#minlongitude');
+
     _regionControl = ManagedModelView({
-      clearedText: 'Currently searching entire world',
-      filledText: 'Currently searching custom region',
       controlText: 'Clear Region',
+      clearedText: 'Currently searching entire world',
       el: _el.querySelector('.region-description'),
-      model: _model,
+      filledText: 'Currently searching custom region',
       fields: {
         'maxlatitude': '',
         'minlatitude': '',
@@ -642,15 +652,21 @@ var FDSNSearchForm = function (options) {
         'longitude': '',
         'minradiuskm': '',
         'maxradiuskm': ''
-      }
+      },
+      model: _model
     });
 
     // set form values on callback from regionview
     _onRegionCallback = function (region) {
-      var maxlat = region.get('north'),
-          minlat = region.get('south'),
-          maxlng = region.get('east'),
-          minlng = region.get('west');
+      var maxlat,
+          maxlng,
+          minlat,
+          minlng;
+
+      maxlat = region.get('north');
+      minlat = region.get('south');
+      maxlng = region.get('east');
+      minlng = region.get('west');
 
       if ((maxlat || maxlat === 0.0) && !isNaN(maxlat)) {
         maxlat = parseFloat(maxlat.toFixed(3));
@@ -667,19 +683,21 @@ var FDSNSearchForm = function (options) {
 
       _model.set({
         maxlatitude: maxlat,
-        minlatitude: minlat,
         maxlongitude: maxlng,
+        minlatitude: minlat,
         minlongitude: minlng
       });
     };
 
     // Add rectangle controls for drawing on map
     drawRectangleButton.addEventListener('click', function () {
-      var region = null,
+      var region,
           north,
           south,
           east,
           west;
+
+      region = null;
 
       north = (maxLatitude.value === '') ? null : parseFloat(maxLatitude.value);
       south = (minLatitude.value === '') ? null : parseFloat(minLatitude.value);
@@ -688,9 +706,9 @@ var FDSNSearchForm = function (options) {
 
       if (north !== null || south !== null || east !== null || west !== null) {
         region = {
+          east:  east,
           north: north,
           south: south,
-          east:  east,
           west:  west
         };
       }
@@ -698,23 +716,34 @@ var FDSNSearchForm = function (options) {
       RegionView({
         onRegionCallback: _onRegionCallback
       }).show({
-        region: region,
-        enableRectangleControl: true
+        enableRectangleControl: true,
+        region: region
       });
     });
   };
 
   _enableOutputDetailsToggle = function () {
-    var list = _el.querySelector('.format-list'),
-        map = document.createElement('li'),
-        csv = _el.querySelector('#output-format-csv'),
-        kml = _el.querySelector('#output-format-kml'),
-        quakeml = _el.querySelector('#output-format-quakeml'),
-        geojson = _el.querySelector('#output-format-geojson'),
-        kmlD = _el.querySelector('#output-format-kml-details'),
-        quakemlD = _el.querySelector('#output-format-quakeml-details'),
-        geojsonD = _el.querySelector('#output-format-geojson-details'),
-        handler = null;
+    var csv,
+        geojson,
+        geojsonD,
+        handler,
+        kml,
+        kmlD,
+        quakeml,
+        quakemlD,
+        list,
+        map;
+
+    list = _el.querySelector('.format-list');
+    map = document.createElement('li');
+    csv = _el.querySelector('#output-format-csv');
+    kml = _el.querySelector('#output-format-kml');
+    quakeml = _el.querySelector('#output-format-quakeml');
+    geojson = _el.querySelector('#output-format-geojson');
+    kmlD = _el.querySelector('#output-format-kml-details');
+    quakemlD = _el.querySelector('#output-format-quakeml-details');
+    geojsonD = _el.querySelector('#output-format-geojson-details');
+    handler = null;
 
     /* jshint -W015 */
     map.innerHTML = [
@@ -726,7 +755,6 @@ var FDSNSearchForm = function (options) {
     ].join('');
     /* jshint +W015 */
     list.insertBefore(map, list.firstChild);
-
 
     handler = function () {
       if (kml.checked) {
@@ -762,7 +790,6 @@ var FDSNSearchForm = function (options) {
   // --------------------------------------------------
 
   _onSubmit = function () {
-
     if (_validator.isValid()) {
       window.location = _serializeFormToUrl();
     } else {
@@ -812,13 +839,16 @@ var FDSNSearchForm = function (options) {
   };
 
   _onModelChange = function () {
-    var fields = _el.querySelectorAll('.error'),
-        searchError = _el.querySelector('.search-error'),
-        i = 0,
-        len = fields.length;
+    var fields,
+        len,
+        searchError;
+
+    fields = _el.querySelectorAll('.error');
+    searchError = _el.querySelector('.search-error');
+    len = fields.length;
 
     // Clear any previously marked error fields
-    for (; i < len; i++) {
+    for (var i = 0; i < len; i++) {
       fields.item(i).classList.remove('error');
     }
 
@@ -832,16 +862,20 @@ var FDSNSearchForm = function (options) {
   };
 
   _onModelFormatChange = function () {
-    var format = _model.get('format'),
-        fmtMap = null,
-        text = null;
+    var fmtMap,
+        format,
+        text;
+
+    format = _model.get('format');
+    fmtMap = null;
+    text = null;
 
     fmtMap = {
-        maplist: 'Map &amp; List',
         csv: 'CSV',
+        geojson: 'GeoJSON',
         kml: 'KML',
-        quakeml: 'QuakeML',
-        geojson: 'GeoJSON'
+        maplist: 'Map &amp; List',
+        quakeml: 'QuakeML'
       };
 
     text = (fmtMap.hasOwnProperty(format)) ? fmtMap[format] : format;
