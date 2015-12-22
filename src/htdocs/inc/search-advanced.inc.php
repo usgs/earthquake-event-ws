@@ -10,7 +10,7 @@
   $endtime = date('Y-m-d H:i:s', $endtime - 1);
 ?>
 
-<div class="one-of-two column">
+<div class="one-of-one column">
   <section aria-labelledby="datetime">
     <h3 id="datetime" class="label">Date &amp; Time</h3>
     <ul class="vertical no-style">
@@ -73,7 +73,7 @@
   </section>
 </div>
 
-<div class="one-of-two column">
+<div class="one-of-one column">
   <section aria-labelledby="region">
     <h3 id="region" class="label">Geographic Region</h3>
     <div class="region-description"></div>

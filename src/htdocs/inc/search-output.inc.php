@@ -1,4 +1,4 @@
-<section class="one-of-two column" aria-labelledby="output-format">
+<section class="one-of-one column" aria-labelledby="output-format">
   <h3 id="output-format" class="label">Format</h3>
 
   <ul class="no-style format-list">
@@ -113,7 +113,7 @@
   </div>
 </section>
 
-<section class="one-of-two column" aria-labelledby="output-orderby">
+<section class="one-of-one column" aria-labelledby="output-orderby">
   <h3 id="output-orderby" class="label">Order By</h3>
   <ul class="no-style orderby-list">
     <li>
