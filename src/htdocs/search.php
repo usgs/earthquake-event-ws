@@ -49,7 +49,7 @@ if (!isset($TEMPLATE)) {
 <div class="toggle toggle-visible">
   <h2 class="label toggle-control" role="heading" id="search-advanced">Advanced Options</h2>
   <section class="search-advanced row" aria-labelledby="search-advanced">
-    <?php include_once 'inc/search-advanced.inc.html' ?>
+    <?php include_once 'inc/search-advanced.inc.php' ?>
   </section>
 
   <h2 role="heading" id="search-output">Output Options</h2>
