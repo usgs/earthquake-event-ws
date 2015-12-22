@@ -42,28 +42,28 @@ if (!isset($TEMPLATE)) {
   </ul>
 </header>
 
-<h2 role="heading" id="search-basic">Basic Options</h2>
 <section class="search-basic row" aria-labelledby="search-basic">
   <?php include_once 'inc/search-basic.inc.php' ?>
 </section>
 
-<h2 role="heading" id="search-advanced">Advanced Options</h2>
-<section class="search-advanced row" aria-labelledby="search-advanced">
-  <?php include_once 'inc/search-advanced.inc.html' ?>
-</section>
+<div class="toggle toggle-visible">
+  <h2 class="label toggle-control" role="heading" id="search-advanced">Advanced Options</h2>
+  <section class="search-advanced row" aria-labelledby="search-advanced">
+    <?php include_once 'inc/search-advanced.inc.php' ?>
+  </section>
 
-<h2 role="heading" id="search-output">Output Options</h2>
-<section class="search-output row" aria-labelledby="search-output">
-  <?php
-    /* Note this include is PHP because it needs $MAX_SEARCH info */
-    include_once 'inc/search-output.inc.php'
-  ?>
-</section>
-
-<footer class="footer" aria-label="Search form footer">
-  <button type="submit" id="fdsn-submit">Search</button>
-  <span class="output-descriptor"></span>
-  <div class="search-error"></div>
-</footer>
+  <h2 role="heading" id="search-output">Output Options</h2>
+  <section class="search-output row" aria-labelledby="search-output">
+    <?php
+      /* Note this include is PHP because it needs $MAX_SEARCH info */
+      include_once 'inc/search-output.inc.php'
+    ?>
+  </section>
+  <footer class="footer" aria-label="Search form footer">
+    <button type="submit" id="fdsn-submit">Search</button>
+    <span class="output-descriptor"></span>
+    <div class="search-error"></div>
+  </footer>
+</div>
 
 </form>
