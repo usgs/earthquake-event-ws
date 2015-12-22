@@ -59,12 +59,11 @@ if (!isset($TEMPLATE)) {
       include_once 'inc/search-output.inc.php'
     ?>
   </section>
+  <footer class="footer" aria-label="Search form footer">
+    <button type="submit" id="fdsn-submit">Search</button>
+    <span class="output-descriptor"></span>
+    <div class="search-error"></div>
+  </footer>
 </div>
-
-<footer class="footer" aria-label="Search form footer">
-  <button type="submit" id="fdsn-submit">Search</button>
-  <span class="output-descriptor"></span>
-  <div class="search-error"></div>
-</footer>
 
 </form>
