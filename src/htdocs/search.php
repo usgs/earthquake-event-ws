@@ -42,7 +42,6 @@ if (!isset($TEMPLATE)) {
   </ul>
 </header>
 
-<h2 role="heading" id="search-basic">Basic Options</h2>
 <section class="search-basic row" aria-labelledby="search-basic">
   <?php include_once 'inc/search-basic.inc.php' ?>
 </section>
