@@ -260,8 +260,12 @@ var FDSNSearchForm = function (options) {
     _bindInput('starttime');
     _bindInput('endtime');
 
+    _bindRadio('basictime');
+
     _bindInput('minmagnitude');
     _bindInput('maxmagnitude');
+
+    _bindRadio('basicmagnitude');
 
     _bindInput('maxlatitude');
     _bindInput('minlongitude');
@@ -270,7 +274,6 @@ var FDSNSearchForm = function (options) {
 
     _bindInput('latitude');
     _bindInput('longitude');
-    _bindInput('minradiuskm');
     _bindInput('maxradiuskm');
 
 
@@ -322,11 +325,17 @@ var FDSNSearchForm = function (options) {
       // If parsing a hash, that contains an existing search
       // want to clear default values (if not specified)
       if (parsedUrl !== null) {
+        if (!parsedUrl.hasOwnProperty('basictime')) {
+          parsedUrl.basictime = '';
+        }
         if (!parsedUrl.hasOwnProperty('starttime')) {
           parsedUrl.starttime = '';
         }
         if (!parsedUrl.hasOwnProperty('endtime')) {
           parsedUrl.endtime = '';
+        }
+        if (!parsedUrl.hasOwnProperty('basicmagnitude')) {
+          parsedUrl.basicmagnitude = '';
         }
         if (!parsedUrl.hasOwnProperty('minmagnitude')) {
           parsedUrl.minmagnitude = '';
@@ -640,7 +649,6 @@ var FDSNSearchForm = function (options) {
         'minlongitude': '',
         'latitude': '',
         'longitude': '',
-        'minradiuskm': '',
         'maxradiuskm': ''
       }
     });
