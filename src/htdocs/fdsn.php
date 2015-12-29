@@ -495,36 +495,6 @@ if (!isset($TEMPLATE)) {
           </small>
         </td>
       </tr>
-      <tr id="minradius">
-        <td><code>minradius</code></td>
-        <td>Decimal <span class="range">[0, 180] degrees</span></td>
-        <td>0</td>
-        <td>
-          Limit to events further than the specified minimum number of degrees
-          from the geographic point defined by the latitude and longitude
-          parameters.
-
-          <small>
-            NOTE: This option is mutually exclusive with <a href="#minradiuskm">
-            minradiuskm</a> and specifying both will result in an error.
-          </small>
-        </td>
-      </tr>
-      <tr id="minradiuskm">
-        <td><code>minradiuskm</code></td>
-        <td>Decimal <span class="range">[0, 20001.6] km</span></td>
-        <td>0</td>
-        <td>
-          Limit to events further than the specified minimum number of
-          kilometers from the geographic point defined by the latitude and
-          longitude parameters.
-
-          <small>
-            NOTE: This option is mutually exclusive with <a href="#minradius">minradius
-            </a> and specifying both will result in an error.
-          </small>
-        </td>
-      </tr>
     </tbody>
   </table>
 </div>
