@@ -9,7 +9,6 @@ var FIELD_LABELS = {
   maxlongitude: 'Rectangle Longitude',
   minlongitude: 'Rectangle Longitude',
 
-  minradiuskm: 'Circle',
   maxradiuskm: 'Circle',
 
   mindepth: 'Depth',
@@ -86,7 +85,6 @@ var _validate = function (params) {
   // -- Check for field combination completeness (as appropriate) -- //
   if (params.hasOwnProperty('latitude') ||
       params.hasOwnProperty('longitude') ||
-      params.hasOwnProperty('minradiuskm') ||
       params.hasOwnProperty('maxradiuskm')) {
 
     // Trying to do a circle search. Make sure minimum set of fields are set.
