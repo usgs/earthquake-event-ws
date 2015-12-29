@@ -12,6 +12,7 @@ class FDSNQuery {
   // time
   public $starttime = null;     // millisecond epoch time
   public $endtime = null;       // millisecond epoch time
+  public $basictime = null;     // millisecond epoch time or string ''
   public $updatedafter = null;  // millisecond epoch time
 
   // rectangle
@@ -25,12 +26,12 @@ class FDSNQuery {
   public $longitude = null;   // degrees [-180,180]
   public $minradius = 0;      // degrees [0,180]
   public $maxradius = null;   // degrees [0,180]
-  public $minradiuskm = null; // kilometers [0, 20001.6]
   public $maxradiuskm = null; // kilometers [0, 20001.6]
 
   // other
   public $mindepth = null;   // kilometers [-100,1000]
   public $maxdepth = null;   // kilometers [-100,1000]
+  public $basicmagnitude = null;
   public $minmagnitude = null;
   public $maxmagnitude = null;
   public $magnitudetype = null;
@@ -104,4 +105,3 @@ class FDSNQuery {
   public $resultCount = null;
 
 }
-
