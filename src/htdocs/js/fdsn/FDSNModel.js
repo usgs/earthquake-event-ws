@@ -11,7 +11,6 @@ var NUMERIC_TYPES = {
 
   latitude: true,
   longitude: true,
-  minradiuskm: true,
   maxradiuskm: true,
 
   minmagnitude: true,
@@ -41,6 +40,7 @@ var NUMERIC_TYPES = {
 var DEFAULT_DATA = {
   starttime: '',
   enddtime: '',
+  basictime: null,
 
   maxlatitude: null,
   minlatitude: null,
@@ -49,9 +49,9 @@ var DEFAULT_DATA = {
 
   latitude: null,
   longitude: null,
-  minradiuskm: null,
   maxradiuskm: null,
 
+  basicmagnitude: null,
   minmagnitude: '',
   maxmagnitdue: null,
 
@@ -149,13 +149,30 @@ var FDSNModel = function (data) {
   _this.set = function (params, options) {
     var key = null;
 
-    // Format date/time stamps (if possible)
-    if (params.hasOwnProperty('starttime') && params.starttime !== '') {
-      params.starttime = _formatDateTime(params.starttime);
+    // Checks for basic time 7 Days, 24 hours, or Custom time.
+    if (params.hasOwnProperty('basictime') && params.basictime !== '') {
+      params.starttime = _formatDateTime(params.basictime);
+    } else {
+      // Format date/time stamps (if possible)
+      if (params.hasOwnProperty('starttime') && params.starttime !== '') {
+        params.starttime = _formatDateTime(params.starttime);
+      }
     }
     if (params.hasOwnProperty('endtime') && params.endtime !== '') {
       params.endtime = _formatDateTime(params.endtime);
     }
+
+    if (params.hasOwnProperty('basicmagnitude') && params.basictime !== '') {
+      if (params.basicmagnitude === 'greaterfour') {
+        params.minmagnitude = '4';
+        params.maxmagnitude = '';
+      }
+      if (params.basicmagnitude === 'lessfour') {
+        params.minmagnitude = '';
+        params.maxmagnitude = '4';
+      }
+    }
+
 
     // Convert numeric types to numbers (for comparison later)
     for (key in params) {
