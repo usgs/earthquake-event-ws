@@ -18,15 +18,21 @@ if (!isset($TEMPLATE)) {
       <li><a href="#cdi">cdi</a></li>
       <li><a href="#code">code</a></li>
       <li><a href="#depth">depth</a></li>
+      <li><a href="#depthError">depthError</a></li>
       <li><a href="#detail">detail</a></li>
       <li><a href="#dmin">dmin</a></li>
       <li><a href="#felt">felt</a></li>
       <li><a href="#gap">gap</a></li>
+      <li><a href="#horizontalError">horizontalError</a></li>
       <li><a href="#id">id</a></li>
       <li><a href="#ids">ids</a></li>
       <li><a href="#latitude">latitude</a></li>
+      <li><a href="#locationSource">locationSource</a></li>
       <li><a href="#longitude">longitude</a></li>
       <li><a href="#mag">mag</a></li>
+      <li><a href="#magError">magError</a></li>
+      <li><a href="#magNst">magNst</a></li>
+      <li><a href="#magSource">magSource</a></li>
       <li><a href="#magType">magType</a></li>
       <li><a href="#mmi">mmi</a></li>
       <li><a href="#net">net</a></li>
@@ -135,6 +141,16 @@ if (!isset($TEMPLATE)) {
         </dl>
       </dd>
 
+      <dt id="depthError">depthError</dt>
+      <dd>
+        <dl>
+          <dt>Data Type</dt><dd class="datatype">Decimal</dd>
+          <dt>Typical Values</dt><dd>[0, 100]</dd>
+          <dt>Description</dt>
+          <dd>Uncertainty of reported depth of the event in kilometers.</dd>
+        </dl>
+      </dd>
+
       <dt id="detail">detail</dt>
       <dd>
         <dl>
@@ -194,6 +210,16 @@ if (!isset($TEMPLATE)) {
         </dl>
       </dd>
 
+      <dt id="horizontalError">horizontalError</dt>
+      <dd>
+        <dl>
+          <dt>Data Type</dt><dd class="datatype">Decimal</dd>
+          <dt>Typical Values</dt><dd>[0, 100]</dd>
+          <dt>Description</dt>
+          <dd>Uncertainty of reported location of the event in kilometers.</dd>
+        </dl>
+      </dd>
+
       <dt id="id">id</dt>
       <dd>
         <dl>
@@ -241,6 +267,21 @@ if (!isset($TEMPLATE)) {
         </dl>
       </dd>
 
+      <dt id="locationSource">locationSource</dt>
+      <dd>
+        <dl>
+          <dt>Data Type</dt><dd class="datatype">String</dd>
+          <dt>Typical Values</dt><dd>
+            ak, at, ci, hv, ld, mb, nc, nm, nn, pr, pt, se, us, uu, uw
+          </dd>
+          <dt>Description</dt>
+          <dd>
+            The network that originally authored the reported location of this
+            event.
+          </dd>
+        </dl>
+      </dd>
+
       <dt id="longitude">longitude</dt>
       <dd>
         <dl>
@@ -263,6 +304,43 @@ if (!isset($TEMPLATE)) {
             The magnitude for the event. <a
             href="http://earthquake.usgs.gov/learn/glossary/?term=magnitude"
             >Learn more about magnitudes</a>.
+          </dd>
+        </dl>
+      </dd>
+
+      <dt id="magError">magError</dt>
+      <dd>
+        <dl>
+          <dt>Data Type</dt><dd class="datatype">Decimal</dd>
+          <dt>Typical Values</dt><dd>[0, 100]</dd>
+          <dt>Description</dt>
+          <dd>Uncertainty of reported magnitude of the event.</dd>
+        </dl>
+      </dd>
+
+      <dt id="magNst">magNst</dt>
+      <dd>
+        <dl>
+          <dt>Data Type</dt><dd class="datatype">Integer</dd>
+          <dt>Description</dt>
+          <dd>
+            The total number of seismic stations used to calculate
+            the magnitude for this earthquake.
+          </dd>
+        </dl>
+      </dd>
+
+      <dt id="magSource">magSource</dt>
+      <dd>
+        <dl>
+          <dt>Data Type</dt><dd class="datatype">String</dd>
+          <dt>Typical Values</dt><dd>
+            ak, at, ci, hv, ld, mb, nc, nm, nn, pr, pt, se, us, uu, uw
+          </dd>
+          <dt>Description</dt>
+          <dd>
+            Network that originally authored the reported magnitude for this
+            event.
           </dd>
         </dl>
       </dd>
@@ -330,7 +408,7 @@ if (!isset($TEMPLATE)) {
           <dt>Data Type</dt><dd class="datatype">Integer</dd>
           <dt>Description</dt>
           <dd>
-            The total number of Number of seismic stations which reported
+            The total number of seismic stations which reported
             P- and S-arrival times for this earthquake.
           </dd>
         </dl>

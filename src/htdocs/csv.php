@@ -38,15 +38,23 @@ if (!isset($TEMPLATE)) {
       <li><a href="glossary.php#time">time</a></li>
       <li><a href="glossary.php#latitude">latitude</a></li>
       <li><a href="glossary.php#longitude">longitude</a></li>
+      <li><a href="glossary.php#horizontalError">horizontalError</a></li>
       <li><a href="glossary.php#depth">depth</a></li>
+      <li><a href="glossary.php#depthError">depthError</a></li>
       <li><a href="glossary.php#mag">mag</a></li>
       <li><a href="glossary.php#magType">magType</a></li>
+      <li><a href="glossary.php#magError">magError</a></li>
+      <li><a href="glossary.php#magNst">magNst</a></li>
       <li><a href="glossary.php#nst">nst</a></li>
       <li><a href="glossary.php#gap">gap</a></li>
       <li><a href="glossary.php#dmin">dmin</a></li>
       <li><a href="glossary.php#rms">rms</a></li>
+      <li><a href="glossary.php#type">type</a></li>
+      <li><a href="glossary.php#status">status</a></li>
       <li><a href="glossary.php#net">net</a></li>
       <li><a href="glossary.php#id">id</a></li>
+      <li><a href="glossary.php#locationSource">locationSource</a></li>
+      <li><a href="glossary.php#magSource">magSource</a></li>
       <li><a href="glossary.php#updated">updated</a></li>
       <li><a href="glossary.php#place">place</a></li>
     </ul>
