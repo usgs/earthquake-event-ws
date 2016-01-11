@@ -48,9 +48,11 @@ class AtomFeed extends AbstractFeed {
         '<category label="Age" term="' . $this->getEventAge($event) . '"/>' .
         '<category label="Magnitude" term="Magnitude ' .
             ($event['eventMagnitude'] == '' ?
-                '?' 
+                '?'
               : intval($event['eventMagnitude'])) .
           '"/>' .
+        '<category label="Contributor" term="' . $event['source'] . '"/>' .
+        '<category label="Author" term="' . $event['eventSource'] . '"/>' .
       '</entry>' . "\n";
   }
 
@@ -58,7 +60,7 @@ class AtomFeed extends AbstractFeed {
     return '</feed>';
   }
 
-  /** 
+  /**
    * This requires CAP alerts to be sent through PDL using the type "cap". This
    * can be changed.
    */
