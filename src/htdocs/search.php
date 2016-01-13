@@ -39,6 +39,9 @@ if (!isset($TEMPLATE)) {
             About the ANSS Comprehensive Catalog and Important Caveats
         </a>
       </li>
+      <li>
+        <a href="/earthquakes/eqinthenews/">Significant Earthquakes Archive</a>
+      </li>
     </ul>
   </header>
 
