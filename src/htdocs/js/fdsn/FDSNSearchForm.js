@@ -7,7 +7,10 @@ var FDSNModel = require('fdsn/FDSNModel'),
     SelectField = require('fdsn/SelectField'),
     EventTypeField = require('fdsn/EventTypeField'),
     UrlBuilderFormatter = require('fdsn/UrlBuilderFormatter'),
+    MagnitudeView = require('fdsn/MagnitudeView'),
     ManagedModelView = require('fdsn/ManagedModelView'),
+    DateTimeView = require('fdsn/DateTimeView'),
+    LocationView = require('fdsn/LocationView'),
     ToggleSection = require('fdsn/ToggleSection'),
     UrlManager = require('fdsn/UrlManager'),
     Util = require('util/Util'),
@@ -27,6 +30,9 @@ var FDSNSearchForm = function (options) {
       _fdsnPath,
       _fieldDataUrl,
       _formatter,
+      _magnitudeView,
+      _dateTimeView,
+      _locationView,
       _model,
       _regionControl,
       _this,
@@ -82,6 +88,20 @@ var FDSNSearchForm = function (options) {
       _fdsnPath = '/fdsnws/event/1';
     }
 
+    _dateTimeView = DateTimeView({
+      el: _el.querySelector('.date-time-view'),
+      model: _model
+    });
+
+    _locationView = LocationView({
+      el: _el.querySelector('.location-view'),
+      model: _model
+    });
+
+    _magnitudeView = MagnitudeView({
+      el: _el.querySelector('.magnitude-view'),
+      model: _model
+    });
     // Formatting field display text (catalogs, contributors, etc...)
     _formatter = UrlBuilderFormatter();
 
