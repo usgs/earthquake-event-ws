@@ -408,8 +408,8 @@ if (!isset($TEMPLATE)) {
           <dt>Data Type</dt><dd class="datatype">Integer</dd>
           <dt>Description</dt>
           <dd>
-            The total number of seismic stations which reported
-            P- and S-arrival times for this earthquake.
+            The total number of seismic stations used to determine earthquake
+            location.
           </dd>
         </dl>
       </dd>
