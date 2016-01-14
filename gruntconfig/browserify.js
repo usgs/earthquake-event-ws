@@ -7,7 +7,7 @@ var EXPORTS = [
   './' + config.src + '/htdocs/js/fdsn/FDSNModel.js:fdsn/FDSNModel',
   './' + config.src + '/htdocs/js/fdsn/FDSNModelValidator.js:fdsn/FDSNModelValidator',
   './' + config.src + '/htdocs/js/fdsn/FDSNSearchForm.js:fdsn/FDSNSearchForm',
-  './' + config.src + '/htdocs/js/fdsn/ManagedModelView.js:fdsn/ManagedModelView',
+  './' + config.src + '/htdocs/js/fdsn/LocationView.js:fdsn/LocationView',
   './' + config.src + '/htdocs/js/fdsn/SelectField.js:fdsn/SelectField',
   './' + config.src + '/htdocs/js/fdsn/ToggleSection.js:fdsn/ToggleSection',
   './' + config.src + '/htdocs/js/fdsn/UrlBuilderFormatter.js:fdsn/UrlBuilderFormatter',
