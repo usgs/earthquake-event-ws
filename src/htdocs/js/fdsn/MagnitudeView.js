@@ -17,8 +17,7 @@ var MagnitudeView = function (options) {
       _onCustomClick,
       _onFourFiveClick,
       _onMagChange,
-      _onTwoFiveClick,
-      _toggleInputField;
+      _onTwoFiveClick;
 
   _this = View(options);
 
@@ -81,13 +80,11 @@ var MagnitudeView = function (options) {
   };
 
   _onCustomClick = function () {
-    _toggleInputField(true);
     _minmag.focus();
     _minmag.select();
   };
 
   _onFourFiveClick = function () {
-    _toggleInputField(false);
     _this.model.set({
       minmagnitude: 4.5,
       maxmagnitude: null
@@ -95,7 +92,6 @@ var MagnitudeView = function (options) {
   };
 
   _onTwoFiveClick = function() {
-    _toggleInputField(false);
     _this.model.set({
       minmagnitude: 2.5,
       maxmagnitude: null
@@ -103,20 +99,11 @@ var MagnitudeView = function (options) {
   };
 
   _onMagChange = function () {
+    
     _this.model.set({
       minmagnitude: parseFloat(_minmag.value),
       maxmagnitude: parseFloat(_maxmag.value)
     });
-  };
-
-  _toggleInputField = function (enabled) {
-    if (enabled) {
-      _maxmag.removeAttribute('disabled');
-      _minmag.removeAttribute('disabled');
-    } else {
-      _maxmag.setAttribute('disabled', true);
-      _minmag.setAttribute('disabled', true);
-    }
   };
 
   _this.render = function () {
@@ -152,7 +139,6 @@ var MagnitudeView = function (options) {
     _fourfivemag = null;
     _custommag = null;
 
-    _toggleInputField = null;
     _onTwoFiveClick = null;
     _onMagChange = null;
     _onFourFiveClick = null;
