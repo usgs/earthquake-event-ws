@@ -2,10 +2,10 @@
   <div class="one-of-two column">
     <section aria-labelledby="region">
       <h3 id="region" class="label">Geographic Region</h3>
-      <div class="fieldset" role="group" aria-labelledby="region-rectangle">
+      <!-- <div class="fieldset" role="group" aria-labelledby="region-rectangle">
         <h4 id="region-rectangle" class="label">Rectangle</h4>
         <button type="button" class="draw orange">Draw Rectangle on Map</button>
-      </div>
+      </div> -->
 
       <div class="fieldset" role="group" aria-labelledby="region-rectangle">
         <p class="help">
@@ -19,7 +19,7 @@
             North
           </label>
           <input type="number" step="any" name="maxlatitude" id="maxlatitude"
-              min="-90.0" max="90" disabled="false"
+              min="-90.0" max="90"
               aria-labelledby="region region-rectangle rectangle-maxlatitude"/>
         </li>
         <li class="region-square-details-west">
@@ -27,7 +27,7 @@
             West
           </label>
           <input type="number" step="any" name="minlongitude" id="minlongitude"
-              min="-360" max="360" disabled="false"
+              min="-360" max="360"
               aria-labelledby="region region-rectangle rectangle-minlongitude"/>
         </li>
         <li class="region-square-details-east">
@@ -35,13 +35,13 @@
             East
           </label>
           <input type="number" step="any" name="maxlongitude" id="maxlongitude"
-              min="-360" max="360" disabled="false"
+              min="-360" max="360"
               aria-labelledby="region region-rectangle rectangle-maxlongitude"/>
         </li>
         <li class="region-square-details-south" id="rectangle-minlatitude">
           <label for="minlatitude" class="label">South</label>
           <input type="number" step="any" name="minlatitude" id="minlatitude"
-              min="-90" max="90" disabled="false"
+              min="-90" max="90"
               aria-labelledby="region region-rectangle rectangle-maxlatitude"/>
         </li>
         </ul>
@@ -123,7 +123,7 @@
             Center Latitude
           </label>
           <input type="number" step="any" name="latitude" id="latitude"
-              min="-90" max="90" disabled="false"
+              min="-90" max="90"
               aria-labelledby="region region-circle circle-latitude"/>
         </li>
         <li>
@@ -131,7 +131,7 @@
             Center Longitude
           </label>
           <input type="number" step="any" name="longitude" id="longitude"
-              min="-180" max="180" disabled="false"
+              min="-180" max="180"
               aria-labelledby="region region-circle circle-longitude"/>
         </li>
         <li>
@@ -139,7 +139,7 @@
             <abbr title="Maximum">Outer</abbr> Radius (km)
           </label>
           <input type="number" step="any" name="maxradiuskm" id="maxradiuskm"
-              min="0" max="20001.6" disabled="false"
+              min="0" max="20001.6"
               aria-labelledby="region region-circle circle-maxradiuskm"/>
         </li>
       </ul>
