@@ -9,7 +9,7 @@ var EXPORTS = [
   './' + config.src + '/htdocs/js/fdsn/FDSNModelValidator.js:fdsn/FDSNModelValidator',
   './' + config.src + '/htdocs/js/fdsn/FDSNSearchForm.js:fdsn/FDSNSearchForm',
   './' + config.src + '/htdocs/js/fdsn/LocationView.js:fdsn/LocationView',
-  './' + cpmfog.src + '/htdocs/js/fdsn/MagnitudeView.js:fdsn/MagnitudeView',
+  './' + config.src + '/htdocs/js/fdsn/MagnitudeView.js:fdsn/MagnitudeView',
   './' + config.src + '/htdocs/js/fdsn/SelectField.js:fdsn/SelectField',
   './' + config.src + '/htdocs/js/fdsn/ToggleSection.js:fdsn/ToggleSection',
   './' + config.src + '/htdocs/js/fdsn/UrlBuilderFormatter.js:fdsn/UrlBuilderFormatter',
