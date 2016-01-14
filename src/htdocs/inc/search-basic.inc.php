@@ -8,7 +8,7 @@
           Minimum
         </label>
         <input type="number" step="any" name="minmagnitude" id="minmagnitude"
-            min="-1" max="10" step="0.1" value="2.5" disabled="false"
+            min="-1" max="10" step="0.1" value="2.5"
             aria-labelledby="magnitude magnitude-minmagnitude"/>
       </li>
       <li>
@@ -16,7 +16,7 @@
           Maximum
         </label>
         <input type="number" step="any" name="maxmagnitude" id="maxmagnitude"
-            min="-1" max="10" step="0.1" value="" disabled="false"
+            min="-1" max="10" step="0.1" value=""
             aria-labelledby="magnitude magnitude-maxmagnitude"/>
       </li>
     </ul>
@@ -34,8 +34,6 @@
         </label>
         <input type="text" name="starttime" id="starttime"
             placeholder="yyyy-mm-dd hh:mm:ss"
-
-            disabled="false"
             aria-labelledby="datetime datetime-starttime"/>
       </li>
       <li>
@@ -44,8 +42,6 @@
         </label>
         <input type="text" name="endtime" id="endtime"
             placeholder="yyyy-mm-dd hh:mm:ss"
-
-            disabled="false"
             aria-labelledby="datetime datetime-endtime"/>
       </li>
     </ul>
@@ -57,5 +53,9 @@
     <h3 id="region" class="label">Geographic Region</h3>
     <ul class="no-style basiclocation-list"></ul>
     <div class="region-description"></div>
+    <div class="fieldset" role="group" aria-labelledby="region-rectangle">
+      <!-- <h4 id="region-rectangle" class="label">Rectangle</h4> -->
+      <button type="button" class="draw orange">Draw Rectangle on Map</button>
+    </div>
   </section>
 </div>
