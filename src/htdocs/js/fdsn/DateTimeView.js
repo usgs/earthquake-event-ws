@@ -21,8 +21,7 @@ var DateTimeView = function (options) {
       _onCustomClick,
       _onPastSevenDaysClick,
       _onPastThirtyDaysClick,
-      _onTimeChange,
-      _toggleInputField;
+      _onTimeChange;
 
   _this = View(options);
 
@@ -89,13 +88,11 @@ var DateTimeView = function (options) {
   };
 
   _onCustomClick = function () {
-    _toggleInputField(true);
     _starttime.focus();
     _starttime.select();
   };
 
   _onPastSevenDaysClick = function () {
-    _toggleInputField(false);
     _this.model.set({
       starttime: FDSNFormatter.formatDateTime(_weekAgo),
       endtime: FDSNFormatter.formatDateTime(_now)
@@ -103,7 +100,6 @@ var DateTimeView = function (options) {
   };
 
   _onPastThirtyDaysClick = function () {
-    _toggleInputField(false);
     _this.model.set({
       starttime: FDSNFormatter.formatDateTime(_monthAgo),
       endtime: FDSNFormatter.formatDateTime(_now)
@@ -111,20 +107,11 @@ var DateTimeView = function (options) {
   };
 
   _onTimeChange = function () {
+    _customTime.checked = true;
     _this.model.set({
       starttime: FDSNFormatter.formatDateTime(_starttime.value),
       endtime: FDSNFormatter.formatDateTime(_endtime.value)
     });
-  };
-
-  _toggleInputField = function (enabled) {
-    if (enabled) {
-      _starttime.removeAttribute('disabled');
-      _endtime.removeAttribute('disabled');
-    } else {
-      _starttime.setAttribute('disabled', true);
-      _endtime.setAttribute('disabled', true);
-    }
   };
 
   _this.render = function () {
@@ -168,7 +155,6 @@ var DateTimeView = function (options) {
     _onPastSevenDaysClick = null;
     _onPastThirtyDaysClick = null;
     _onTimeChange = null;
-    _toggleInputField = null;
 
     _initialize = null;
     _this = null;
