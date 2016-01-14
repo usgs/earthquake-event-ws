@@ -24,8 +24,8 @@ var LocationView = function (options) {
       _onLocationUsClick,
       _onLocationWorldClick,
       _onLocationChange,
-      _showRegionView,
-      _toggleInputField;
+      _showInfoText,
+      _showRegionView;
 
   _this = View(options);
 
@@ -73,6 +73,9 @@ var LocationView = function (options) {
         '<label for="basiclocation-custom" class="label-checkbox">',
           'Custom',
         '</label>',
+      '</li>',
+      '<li class="search-text">',
+        'Currently searching entire world',
       '</li>'
     ].join('');
 
@@ -80,7 +83,6 @@ var LocationView = function (options) {
     _locationUS = listWrapper.querySelector('#basiclocation-us');
     _locationCustom = listWrapper.querySelector('#basiclocation-custom');
 
-    //rectangle input fields
     _north = document.querySelector('#maxlatitude');
     _west = document.querySelector('#minlongitude');
     _east = document.querySelector('#maxlongitude');
@@ -103,7 +105,6 @@ var LocationView = function (options) {
   };
 
   _onLocationWorldClick = function () {
-    _toggleInputField(false);
     _this.model.set({
       maxlatitude: null,
       minlatitude: null,
@@ -113,23 +114,28 @@ var LocationView = function (options) {
       longitude: null,
       maxradiuskm: null
     });
+    _showInfoText('Currently searching entire world');
   };
 
   _onLocationUsClick = function () {
-    _toggleInputField(false);
     _this.model.set({
       maxlatitude: 50,
       minlatitude: 24.6,
       maxlongitude: -65,
       minlongitude: -125
     });
+    _showInfoText('Currently searching United States');
   };
 
   _onLocationCustomClick = function () {
-    _toggleInputField(true);
     _north.focus();
     _north.select();
     _showRegionView();
+    _showInfoText('Custom Search');
+  };
+
+  _showInfoText = function (text) {
+    document.querySelector('.search-text').innerHTML = [text].join('');
   };
 
   _showRegionView = function () {
@@ -168,6 +174,7 @@ var LocationView = function (options) {
   };
 
   _onLocationChange = function () {
+    _locationCustom.checked = true;
     _this.model.set({
       maxlatitude: _north.value,
       minlatitude: _south.value,
@@ -177,26 +184,6 @@ var LocationView = function (options) {
       longitude: _circleCenterLongitude.value,
       maxradiuskm: _circleOuterRadius.value
     });
-  };
-
-  _toggleInputField = function (enabled) {
-    if (enabled) {
-      _north.removeAttribute('disabled');
-      _west.removeAttribute('disabled');
-      _east.removeAttribute('disabled');
-      _south.removeAttribute('disabled');
-      _circleCenterLatitude.removeAttribute('disabled');
-      _circleCenterLongitude.removeAttribute('disabled');
-      _circleOuterRadius.removeAttribute('disabled');
-    } else {
-      _north.setAttribute('disabled', true);
-      _west.setAttribute('disabled', true);
-      _east.setAttribute('disabled', true);
-      _south.setAttribute('disabled', true);
-      _circleCenterLatitude.setAttribute('disabled', true);
-      _circleCenterLongitude.setAttribute('disabled', true);
-      _circleOuterRadius.setAttribute('disabled', true);
-    }
   };
 
   _this.render = function () {
@@ -260,38 +247,38 @@ var LocationView = function (options) {
   };
 
   _this.destroy = Util.compose(function () {
-      _locationWorld.removeEventListener('click', _onLocationWorldClick);
-      _locationUS.removeEventListener('click', _onLocationUsClick);
-      _locationCustom.removeEventListener('click', _onLocationCustomClick);
-      _north.removeEventListener('change', _onLocationChange);
-      _west.removeEventListener('change', _onLocationChange);
-      _east.removeEventListener('change', _onLocationChange);
-      _south.removeEventListener('change', _onLocationChange);
-      _circleCenterLatitude.removeEventListener('change', _onLocationChange);
-      _circleCenterLongitude.removeEventListener('change', _onLocationChange);
-      _circleOuterRadius.removeEventListener('change', _onLocationChange);
+    _locationWorld.removeEventListener('click', _onLocationWorldClick);
+    _locationUS.removeEventListener('click', _onLocationUsClick);
+    _locationCustom.removeEventListener('click', _onLocationCustomClick);
+    _north.removeEventListener('change', _onLocationChange);
+    _west.removeEventListener('change', _onLocationChange);
+    _east.removeEventListener('change', _onLocationChange);
+    _south.removeEventListener('change', _onLocationChange);
+    _circleCenterLatitude.removeEventListener('change', _onLocationChange);
+    _circleCenterLongitude.removeEventListener('change', _onLocationChange);
+    _circleOuterRadius.removeEventListener('change', _onLocationChange);
 
-      _circleCenterLatitude = null;
-      _circleCenterLongitude = null;
-      _circleOuterRadius = null;
-      _east = null;
-      _locationCustom = null;
-      _locationUS = null;
-      _locationWorld = null;
-      _north = null;
-      _south = null;
-      _west = null;
+    _circleCenterLatitude = null;
+    _circleCenterLongitude = null;
+    _circleOuterRadius = null;
+    _east = null;
+    _locationCustom = null;
+    _locationUS = null;
+    _locationWorld = null;
+    _north = null;
+    _south = null;
+    _west = null;
 
-      _createLocationContent = null;
-      _onLocationCustomClick = null;
-      _onLocationUsClick = null;
-      _onLocationWorldClick = null;
-      _onLocationChange = null;
-      _showRegionView = null;
-      _toggleInputField = null;
+    _createLocationContent = null;
+    _onLocationCustomClick = null;
+    _onLocationUsClick = null;
+    _onLocationWorldClick = null;
+    _onLocationChange = null;
+    _showInfoText = null;
+    _showRegionView = null;
 
-      _initialize = null;
-      _this = null;
+    _initialize = null;
+    _this = null;
   }, _this.destroy);
 
   _initialize(options);
