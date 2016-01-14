@@ -54,7 +54,6 @@
     <ul class="no-style basiclocation-list"></ul>
     <div class="region-description"></div>
     <div class="fieldset" role="group" aria-labelledby="region-rectangle">
-      <!-- <h4 id="region-rectangle" class="label">Rectangle</h4> -->
       <button type="button" class="draw orange">Draw Rectangle on Map</button>
     </div>
   </section>
