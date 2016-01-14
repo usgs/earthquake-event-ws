@@ -67,7 +67,7 @@ class FDSNEventWebService {
     $query = $this->parseQuery();
 
     if ($query->eventid === null || $query->format === 'quakeml' ||
-          $query->format === 'xml') {
+          $query->format === 'xml' || $query->format === 'csv') {
       $this->handleSummaryQuery($query);
     } else {
       $this->handleDetailQuery($query);
