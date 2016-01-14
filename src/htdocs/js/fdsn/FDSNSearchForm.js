@@ -8,7 +8,6 @@ var FDSNModel = require('fdsn/FDSNModel'),
     EventTypeField = require('fdsn/EventTypeField'),
     UrlBuilderFormatter = require('fdsn/UrlBuilderFormatter'),
     MagnitudeView = require('fdsn/MagnitudeView'),
-    ManagedModelView = require('fdsn/ManagedModelView'),
     DateTimeView = require('fdsn/DateTimeView'),
     LocationView = require('fdsn/LocationView'),
     ToggleSection = require('fdsn/ToggleSection'),
@@ -34,7 +33,6 @@ var FDSNSearchForm = function (options) {
       _dateTimeView,
       _locationView,
       _model,
-      _regionControl,
       _this,
       _validator,
 
@@ -655,23 +653,6 @@ var FDSNSearchForm = function (options) {
         maxLongitude = document.querySelector('#maxlongitude'),
         minLongitude = document.querySelector('#minlongitude'),
         _onRegionCallback;
-
-    _regionControl = ManagedModelView({
-      clearedText: 'Currently searching entire world',
-      filledText: 'Currently searching custom region',
-      controlText: 'Clear Region',
-      el: _el.querySelector('.region-description'),
-      model: _model,
-      fields: {
-        'maxlatitude': '',
-        'minlatitude': '',
-        'maxlongitude': '',
-        'minlongitude': '',
-        'latitude': '',
-        'longitude': '',
-        'maxradiuskm': ''
-      }
-    });
 
     // set form values on callback from regionview
     _onRegionCallback = function (region) {
