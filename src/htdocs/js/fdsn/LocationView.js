@@ -182,13 +182,13 @@ var LocationView = function (options) {
         maxradiuskm = '&ndash;';
       }
 
-      text = '<ul>Circle Search</ul>' +
+      text = '<h3>Circle Search</h3>' +
           '<li> [ ' + latitude + ' ] Latitude</li>' +
           '<li> [ ' + longitude + ' ] Longitude</li>' +
           '<li> [ ' + maxradiuskm + ' ] Radius (km)</li>';
     }
 
-    document.querySelector('.search-text').innerHTML = [text].join('');
+    document.querySelector('.search-text').innerHTML = text;
   };
 
   _showRegionView = function () {
