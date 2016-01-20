@@ -1,7 +1,7 @@
 {
   "name": "earthquake-event-ws",
-  "version": "1.1.1",
-  "description": "We service for querying ComCat.",
+  "version": "1.2.0",
+  "description": "Web service for querying ComCat.",
   "repository": {
     "type": "git",
     "url": "https://github.com/usgs/earthquake-event-ws.git"
