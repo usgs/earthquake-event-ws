@@ -278,12 +278,8 @@ var FDSNSearchForm = function (options) {
     _bindInput('starttime');
     _bindInput('endtime');
 
-    _bindRadio('basictime');
-
     _bindInput('minmagnitude');
     _bindInput('maxmagnitude');
-
-    _bindRadio('basicmagnitude');
 
     _bindInput('maxlatitude');
     _bindInput('minlongitude');
