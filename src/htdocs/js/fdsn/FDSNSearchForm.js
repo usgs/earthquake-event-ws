@@ -7,7 +7,9 @@ var FDSNModel = require('fdsn/FDSNModel'),
     SelectField = require('fdsn/SelectField'),
     EventTypeField = require('fdsn/EventTypeField'),
     UrlBuilderFormatter = require('fdsn/UrlBuilderFormatter'),
-    ManagedModelView = require('fdsn/ManagedModelView'),
+    MagnitudeView = require('fdsn/MagnitudeView'),
+    DateTimeView = require('fdsn/DateTimeView'),
+    LocationView = require('fdsn/LocationView'),
     ToggleSection = require('fdsn/ToggleSection'),
     UrlManager = require('fdsn/UrlManager'),
     Util = require('util/Util'),
@@ -27,8 +29,10 @@ var FDSNSearchForm = function (options) {
       _fdsnPath,
       _fieldDataUrl,
       _formatter,
+      _magnitudeView,
+      _dateTimeView,
+      _locationView,
       _model,
-      _regionControl,
       _this,
       _validator,
 
@@ -82,6 +86,20 @@ var FDSNSearchForm = function (options) {
       _fdsnPath = '/fdsnws/event/1';
     }
 
+    _dateTimeView = DateTimeView({
+      el: _el.querySelector('.date-time-view'),
+      model: _model
+    });
+
+    _locationView = LocationView({
+      el: _el.querySelector('.location-view'),
+      model: _model
+    });
+
+    _magnitudeView = MagnitudeView({
+      el: _el.querySelector('.magnitude-view'),
+      model: _model
+    });
     // Formatting field display text (catalogs, contributors, etc...)
     _formatter = UrlBuilderFormatter();
 
@@ -260,8 +278,12 @@ var FDSNSearchForm = function (options) {
     _bindInput('starttime');
     _bindInput('endtime');
 
+    _bindRadio('basictime');
+
     _bindInput('minmagnitude');
     _bindInput('maxmagnitude');
+
+    _bindRadio('basicmagnitude');
 
     _bindInput('maxlatitude');
     _bindInput('minlongitude');
@@ -270,7 +292,6 @@ var FDSNSearchForm = function (options) {
 
     _bindInput('latitude');
     _bindInput('longitude');
-    _bindInput('minradiuskm');
     _bindInput('maxradiuskm');
 
 
@@ -322,11 +343,17 @@ var FDSNSearchForm = function (options) {
       // If parsing a hash, that contains an existing search
       // want to clear default values (if not specified)
       if (parsedUrl !== null) {
+        if (!parsedUrl.hasOwnProperty('basictime')) {
+          parsedUrl.basictime = '';
+        }
         if (!parsedUrl.hasOwnProperty('starttime')) {
           parsedUrl.starttime = '';
         }
         if (!parsedUrl.hasOwnProperty('endtime')) {
           parsedUrl.endtime = '';
+        }
+        if (!parsedUrl.hasOwnProperty('basicmagnitude')) {
+          parsedUrl.basicmagnitude = '';
         }
         if (!parsedUrl.hasOwnProperty('minmagnitude')) {
           parsedUrl.minmagnitude = '';
@@ -626,24 +653,6 @@ var FDSNSearchForm = function (options) {
         maxLongitude = document.querySelector('#maxlongitude'),
         minLongitude = document.querySelector('#minlongitude'),
         _onRegionCallback;
-
-    _regionControl = ManagedModelView({
-      clearedText: 'Currently searching entire world',
-      filledText: 'Currently searching custom region',
-      controlText: 'Clear Region',
-      el: _el.querySelector('.region-description'),
-      model: _model,
-      fields: {
-        'maxlatitude': '',
-        'minlatitude': '',
-        'maxlongitude': '',
-        'minlongitude': '',
-        'latitude': '',
-        'longitude': '',
-        'minradiuskm': '',
-        'maxradiuskm': ''
-      }
-    });
 
     // set form values on callback from regionview
     _onRegionCallback = function (region) {
