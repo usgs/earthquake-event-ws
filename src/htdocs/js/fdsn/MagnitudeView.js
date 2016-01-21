@@ -101,8 +101,8 @@ var MagnitudeView = function (options) {
   _onMagChange = function () {
     _custommag.checked = true;
     _this.model.set({
-      minmagnitude: parseFloat(_minmag.value),
-      maxmagnitude: parseFloat(_maxmag.value)
+      minmagnitude: _minmag.value,
+      maxmagnitude: _maxmag.value
     });
   };
 
