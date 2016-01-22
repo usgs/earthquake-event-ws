@@ -8,16 +8,9 @@ var LocationView = function (options) {
   var _this,
       _initialize,
 
-      _circleCenterLatitude,
-      _circleCenterLongitude,
-      _circleOuterRadius,
-      _east,
       _locationCustom,
       _locationUS,
       _locationWorld,
-      _north,
-      _south,
-      _west,
 
       _createLocationContent,
       _isSet,
@@ -82,25 +75,18 @@ var LocationView = function (options) {
     _locationUS = listWrapper.querySelector('#basiclocation-us');
     _locationCustom = listWrapper.querySelector('#basiclocation-custom');
 
-    _north = document.querySelector('#maxlatitude');
-    _west = document.querySelector('#minlongitude');
-    _east = document.querySelector('#maxlongitude');
-    _south = document.querySelector('#minlatitude');
-    _circleCenterLatitude = document.querySelector('#latitude');
-    _circleCenterLongitude = document.querySelector('#longitude');
-    _circleOuterRadius = document.querySelector('#maxradiuskm');
-
     _locationWorld.addEventListener('click', _onLocationWorldClick);
     _locationUS.addEventListener('click', _onLocationUsClick);
     _locationCustom.addEventListener('click', _onLocationCustomClick);
 
-    _north.addEventListener('change', _onLocationChange);
-    _west.addEventListener('change', _onLocationChange);
-    _east.addEventListener('change', _onLocationChange);
-    _south.addEventListener('change', _onLocationChange);
-    _circleCenterLatitude.addEventListener('change', _onLocationChange);
-    _circleCenterLongitude.addEventListener('change', _onLocationChange);
-    _circleOuterRadius.addEventListener('change', _onLocationChange);
+    _this.model.on('change:minlatitude', _onLocationChange);
+    _this.model.on('change:maxlatitude', _onLocationChange);
+    _this.model.on('change:minlongitude', _onLocationChange);
+    _this.model.on('change:maxlongitude', _onLocationChange);
+
+    _this.model.on('change:latitude', _onLocationChange);
+    _this.model.on('change:longitude', _onLocationChange);
+    _this.model.on('change:maxradiuskm', _onLocationChange);
   };
 
   _isSet = function (value) {
@@ -124,13 +110,14 @@ var LocationView = function (options) {
       maxlatitude: 50,
       minlatitude: 24.6,
       maxlongitude: -65,
-      minlongitude: -125
+      minlongitude: -125,
+      latitude: null,
+      longitude: null,
+      maxradiuskm: null
     });
   };
 
   _onLocationCustomClick = function () {
-    _north.focus();
-    _north.select();
     _showRegionView();
   };
 
@@ -171,15 +158,6 @@ var LocationView = function (options) {
 
   _onLocationChange = function () {
     _locationCustom.checked = true;
-    _this.model.set({
-      maxlatitude: _north.value,
-      minlatitude: _south.value,
-      maxlongitude: _east.value,
-      minlongitude: _west.value,
-      latitude: _circleCenterLatitude.value,
-      longitude: _circleCenterLongitude.value,
-      maxradiuskm: _circleOuterRadius.value
-    });
   };
 
   _this.render = function () {
@@ -239,6 +217,10 @@ var LocationView = function (options) {
             ']</li>',
           '</ul>'
         );
+
+        if (north === 50.0 && south === 24.6 && east === -65.0 && west === -125.0) {
+          _locationUS.checked = true;
+        }
       }
 
       if (hasCircle) {
@@ -259,24 +241,20 @@ var LocationView = function (options) {
     _locationWorld.removeEventListener('click', _onLocationWorldClick);
     _locationUS.removeEventListener('click', _onLocationUsClick);
     _locationCustom.removeEventListener('click', _onLocationCustomClick);
-    _north.removeEventListener('change', _onLocationChange);
-    _west.removeEventListener('change', _onLocationChange);
-    _east.removeEventListener('change', _onLocationChange);
-    _south.removeEventListener('change', _onLocationChange);
-    _circleCenterLatitude.removeEventListener('change', _onLocationChange);
-    _circleCenterLongitude.removeEventListener('change', _onLocationChange);
-    _circleOuterRadius.removeEventListener('change', _onLocationChange);
 
-    _circleCenterLatitude = null;
-    _circleCenterLongitude = null;
-    _circleOuterRadius = null;
-    _east = null;
+    _this.model.off('change:minlatitude', _onLocationChange);
+    _this.model.off('change:maxlatitude', _onLocationChange);
+    _this.model.off('change:minlongitude', _onLocationChange);
+    _this.model.off('change:maxlongitude', _onLocationChange);
+
+    _this.model.off('change:latitude', _onLocationChange);
+    _this.model.off('change:longitude', _onLocationChange);
+    _this.model.off('change:maxradiuskm', _onLocationChange);
+
+
     _locationCustom = null;
     _locationUS = null;
     _locationWorld = null;
-    _north = null;
-    _south = null;
-    _west = null;
 
     _createLocationContent = null;
     _isSet = null;
