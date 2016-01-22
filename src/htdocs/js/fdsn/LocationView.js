@@ -20,11 +20,11 @@ var LocationView = function (options) {
       _west,
 
       _createLocationContent,
+      _isSet,
       _onLocationCustomClick,
       _onLocationUsClick,
       _onLocationWorldClick,
       _onLocationChange,
-      _showInfoText,
       _showRegionView;
 
   _this = View(options);
@@ -103,6 +103,10 @@ var LocationView = function (options) {
     _circleOuterRadius.addEventListener('change', _onLocationChange);
   };
 
+  _isSet = function (value) {
+    return (typeof value !== 'undefined' && value !== '' && value !== null);
+  };
+
   _onLocationWorldClick = function () {
     _this.model.set({
       maxlatitude: null,
@@ -128,67 +132,6 @@ var LocationView = function (options) {
     _north.focus();
     _north.select();
     _showRegionView();
-  };
-
-  _showInfoText = function () {
-    var east,
-        latitude,
-        longitude,
-        maxradiuskm,
-        north,
-        south,
-        text,
-        west;
-
-    north = _this.model.get('maxlatitude');
-    south = _this.model.get('minlatitude');
-    east = _this.model.get('maxlongitude');
-    west = _this.model.get('minlongitude');
-    latitude = _this.model.get('latitude');
-    longitude = _this.model.get('longitude');
-    maxradiuskm = _this.model.get('maxradiuskm');
-
-    if ((latitude === null && longitude === null && maxradiuskm === null) ||
-        (latitude === '' && longitude === '' && maxradiuskm === '')) {
-      if ((north === null && south === null && east === null && west === null) ||
-          (north === '' && south === '' && east === '' && west === '')) {
-        text = '<li> World Search </li>';
-        _locationWorld.checked = true;
-      } else {
-        if (north === null || north === '') {
-          north = '&ndash;';
-        }
-        if (south === null || south === '') {
-          south = '&ndash;';
-        }
-        if (east === null || east === '') {
-          east = '&ndash;';
-        }
-        if (west === null || west === '') {
-          west = '&ndash;';
-        }
-
-        text = '<li> [ ' + south + ', ' + north + ' ] Latitude </li>' +
-            '<li> [ ' + east + ', ' + west + ' ] Longitude </li>';
-      }
-    } else {
-      if (latitude === null || latitude === '') {
-        latitude = '&ndash;';
-      }
-      if (longitude === null || longitude === '') {
-        longitude = '&ndash;';
-      }
-      if (maxradiuskm === null || maxradiuskm === '') {
-        maxradiuskm = '&ndash;';
-      }
-
-      text = '<h3>Circle Search</h3>' +
-          '<li> [ ' + latitude + ' ] Latitude</li>' +
-          '<li> [ ' + longitude + ' ] Longitude</li>' +
-          '<li> [ ' + maxradiuskm + ' ] Radius (km)</li>';
-    }
-
-    document.querySelector('.search-text').innerHTML = text;
   };
 
   _showRegionView = function () {
@@ -241,14 +184,24 @@ var LocationView = function (options) {
 
   _this.render = function () {
     var east,
+        hasCircle,
+        hasEast,
+        hasLat,
+        hasLng,
+        hasNorth,
+        hasRadius,
+        hasRect,
+        hasSouth,
+        hasWest,
         latitude,
         longitude,
+        markup,
         maxradiuskm,
         north,
         south,
         west;
 
-    _showInfoText();
+    markup = [];
 
     north = _this.model.get('maxlatitude');
     south = _this.model.get('minlatitude');
@@ -258,47 +211,48 @@ var LocationView = function (options) {
     longitude = _this.model.get('longitude');
     maxradiuskm = _this.model.get('maxradiuskm');
 
-    if (north !== null) {
-      _north.value = north;
+    hasNorth = _isSet(north);
+    hasSouth = _isSet(south);
+    hasEast = _isSet(east);
+    hasWest = _isSet(west);
+    hasLat = _isSet(latitude);
+    hasLng = _isSet(longitude);
+    hasRadius = _isSet(maxradiuskm);
+
+    hasRect = hasNorth || hasSouth || hasEast || hasWest;
+    hasCircle = hasLat && hasLng && hasRadius;
+
+    if (!hasRect && !hasCircle) {
+      markup.push('<h3>Worldwide</h3>');
+      _locationWorld.checked = true;
     } else {
-      _north.value = '';
+      if (hasRect) {
+        markup.push('<h3>Custom Rectangle</h3>',
+          '<ul class="search-text help">',
+            '<li>[',
+              hasSouth ? south : '&ndash;', ', ',
+              hasNorth ? north : '&ndash;',
+            ']</li>',
+            '<li>[',
+              hasWest ? west : '&ndash;', ', ',
+              hasEast ? east : '&ndash;',
+            ']</li>',
+          '</ul>'
+        );
+      }
+
+      if (hasCircle) {
+        markup.push('<h3>Custom Circle</h3>',
+          '<ul class="search-text help">',
+            '<li>', latitude, ' Latitude</li>',
+            '<li>', longitude, ' Longitude</li>',
+            '<li>', maxradiuskm, ' Radius (km)</li>',
+          '</ul>'
+        );
+      }
     }
 
-    if (south !== null) {
-      _south.value = south;
-    } else {
-      _south.value = '';
-    }
-
-    if (east !== null) {
-      _east.value = east;
-    } else {
-      _east.value = '';
-    }
-
-    if (west !== null) {
-      _west.value = west;
-    } else {
-      _west.value = '';
-    }
-
-    if (latitude !== null) {
-      _circleCenterLatitude.value = latitude;
-    } else {
-      _circleCenterLatitude.value = '';
-    }
-
-    if (longitude !== null) {
-      _circleCenterLongitude.value = longitude;
-    } else {
-      _circleCenterLongitude.value = '';
-    }
-
-    if (maxradiuskm !== null) {
-      _circleOuterRadius.value = maxradiuskm;
-    } else {
-      _circleOuterRadius.value = '';
-    }
+    document.querySelector('.region-description').innerHTML = markup.join('');
   };
 
   _this.destroy = Util.compose(function () {
@@ -325,11 +279,11 @@ var LocationView = function (options) {
     _west = null;
 
     _createLocationContent = null;
+    _isSet = null;
     _onLocationCustomClick = null;
     _onLocationUsClick = null;
     _onLocationWorldClick = null;
     _onLocationChange = null;
-    _showInfoText = null;
     _showRegionView = null;
 
     _initialize = null;
