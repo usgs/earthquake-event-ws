@@ -11,6 +11,7 @@ var LocationView = function (options) {
       _locationCustom,
       _locationUS,
       _locationWorld,
+      _regionDescription,
 
       _createLocationContent,
       _isSet,
@@ -74,19 +75,11 @@ var LocationView = function (options) {
     _locationWorld = listWrapper.querySelector('#basiclocation-world');
     _locationUS = listWrapper.querySelector('#basiclocation-us');
     _locationCustom = listWrapper.querySelector('#basiclocation-custom');
+    _regionDescription = _this.el.querySelector('.region-description');
 
     _locationWorld.addEventListener('click', _onLocationWorldClick);
     _locationUS.addEventListener('click', _onLocationUsClick);
     _locationCustom.addEventListener('click', _onLocationCustomClick);
-
-    _this.model.on('change:minlatitude', _onLocationChange);
-    _this.model.on('change:maxlatitude', _onLocationChange);
-    _this.model.on('change:minlongitude', _onLocationChange);
-    _this.model.on('change:maxlongitude', _onLocationChange);
-
-    _this.model.on('change:latitude', _onLocationChange);
-    _this.model.on('change:longitude', _onLocationChange);
-    _this.model.on('change:maxradiuskm', _onLocationChange);
   };
 
   _isSet = function (value) {
@@ -156,10 +149,6 @@ var LocationView = function (options) {
     });
   };
 
-  _onLocationChange = function () {
-    _locationCustom.checked = true;
-  };
-
   _this.render = function () {
     var east,
         hasCircle,
@@ -218,8 +207,11 @@ var LocationView = function (options) {
           '</ul>'
         );
 
-        if (north === 50.0 && south === 24.6 && east === -65.0 && west === -125.0) {
+        if (north === 50.0 && south === 24.6 && east === -65.0 &&
+            west === -125.0) {
           _locationUS.checked = true;
+        } else {
+          _locationCustom.checked = true;
         }
       }
 
@@ -231,10 +223,11 @@ var LocationView = function (options) {
             '<li>', maxradiuskm, ' Radius (km)</li>',
           '</ul>'
         );
+        _locationCustom.checked = true;
       }
     }
 
-    document.querySelector('.region-description').innerHTML = markup.join('');
+    _regionDescription.innerHTML = markup.join('');
   };
 
   _this.destroy = Util.compose(function () {
@@ -242,19 +235,11 @@ var LocationView = function (options) {
     _locationUS.removeEventListener('click', _onLocationUsClick);
     _locationCustom.removeEventListener('click', _onLocationCustomClick);
 
-    _this.model.off('change:minlatitude', _onLocationChange);
-    _this.model.off('change:maxlatitude', _onLocationChange);
-    _this.model.off('change:minlongitude', _onLocationChange);
-    _this.model.off('change:maxlongitude', _onLocationChange);
-
-    _this.model.off('change:latitude', _onLocationChange);
-    _this.model.off('change:longitude', _onLocationChange);
-    _this.model.off('change:maxradiuskm', _onLocationChange);
-
 
     _locationCustom = null;
     _locationUS = null;
     _locationWorld = null;
+    _regionDescription = null;
 
     _createLocationContent = null;
     _isSet = null;
