@@ -8,6 +8,19 @@ var rewriteModule = require('http-rewrite-middleware');
 var iniConfig = require('ini').parse(require('fs')
     .readFileSync('./src/conf/config.ini', 'utf-8'));
 
+
+var proxies = [
+  {
+    context: '/theme/',
+    host: 'localhost',
+    port: config.templatePort,
+    rewrite: {
+      '^/theme': ''
+    }
+  }
+];
+
+
 var rewrites = [
 
   // Search pages
@@ -59,11 +72,13 @@ if (!iniConfig.hasOwnProperty('OFFSITE_HOST') ||
     redirect: 'permanent'
   });
 
-  // Redirect for event content
-  rewrites.push({
-    from: '^' + iniConfig.storage_url + '(.*)$',
-    to: iniConfig.OFFSITE_HOST + iniConfig.storage_url + '$1',
-    redirect: 'permanent'
+  proxies.push({
+    context: iniConfig.storage_url,
+    headers: {
+      'host': iniConfig.OFFSITE_HOST
+    },
+    host: iniConfig.OFFSITE_HOST,
+    port: 80
   });
 }
 
@@ -100,16 +115,7 @@ var connect = {
     hostname: '*'
   },
 
-  proxies: [
-    {
-      context: '/theme/',
-      host: 'localhost',
-      port: config.templatePort,
-      rewrite: {
-        '^/theme': ''
-      }
-    }
-  ],
+  proxies: proxies,
 
   build: {
     options: {
