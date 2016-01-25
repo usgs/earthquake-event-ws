@@ -120,7 +120,6 @@ var FDSNModelValidator = function (options) {
       _this,
 
       _getErrorFields,
-      _getErrors,
       _initialize,
       _onModelChange;
 
@@ -132,15 +131,6 @@ var FDSNModelValidator = function (options) {
     _model = options.model || FDSNModel();
     _errors = _validate(_model.getNonEmpty(), {});
     _model.on('change', _onModelChange);
-  };
-
-  /**
-   * @return {Object}
-   *      An object hash of {fieldName: errorMessage} for current errors on
-   *      _this._model.
-   */
-  _getErrors = function () {
-    return _errors;
   };
 
   /**
@@ -157,6 +147,15 @@ var FDSNModelValidator = function (options) {
     }
 
     return fields;
+  };
+
+  /**
+   * @return {Object}
+   *      An object hash of {fieldName: errorMessage} for current errors on
+   *      _this._model.
+   */
+  _this.getErrors = function () {
+    return _errors;
   };
 
   /**
