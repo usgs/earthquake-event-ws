@@ -54,11 +54,15 @@ try {
     global $storage;
     // load product contents
     $product = $storage->getProduct($summary->getId());
-    $quakeml = $product->getContents()['quakeml.xml']->getContent();
-
-    header('Content-type: application/xml');
-    echo $quakeml;
-    exit();
+    if ($product !== null) {
+      $contents = $product->getContents();
+      if ($contents !== null && isset($contents['quakeml.xml'])) {
+        $quakeml = $contents['quakeml.xml']->getContent();
+        header('Content-type: application/xml');
+        echo $quakeml;
+        exit();
+      }
+    }
   }
 } catch (Exception $e) {
    // fall through to old style quakeml below
@@ -118,7 +122,6 @@ if (!function_exists("quakeml_element")) {
 
 header('Content-type: application/xml');
 
-
 $source = $event->getSource();
 $sourceCode = $event->getSourceCode();
 $fullid = $source . $sourceCode;
@@ -142,8 +145,8 @@ echo '<eventParameters publicID="quakeml:earthquake.usgs.gov/eventParameters/' .
 echo '<event catalog:datasource="anss" catalog:eventsource="' . $source . '" catalog:eventid="' . $sourceCode . '" publicID="quakeml:earthquake.usgs.gov/event/' . $fullid . '">';
 
   // event type
-  $type = $event['event_type'];
-  if ($event['eventStatus'] === 'DELETE') {
+  $type = $event->getType();
+  if ($event->isDeleted()) {
     $type = 'not existing';
   } else if ($type === null || $type === '') {
     $type = 'earthquake';
