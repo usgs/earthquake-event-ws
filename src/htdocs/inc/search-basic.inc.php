@@ -49,12 +49,5 @@
 </div>
 
 <div class="one-of-three column">
-  <section class="location-view">
-    <h3 id="region" class="label">Geographic Region</h3>
-    <ul class="no-style basiclocation-list"></ul>
-    <div class="region-description"></div>
-    <div class="fieldset" role="group" aria-labelledby="region-rectangle">
-      <button type="button" class="draw orange">Draw Rectangle on Map</button>
-    </div>
-  </section>
+  <section class="location-view"></section>
 </div>

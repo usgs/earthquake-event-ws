@@ -14,8 +14,7 @@ var FDSNModel = require('fdsn/FDSNModel'),
     UrlManager = require('fdsn/UrlManager'),
     Util = require('util/Util'),
     Xhr = require('util/Xhr'),
-    ModalView = require('mvc/ModalView'),
-    RegionView = require('locationview/RegionView');
+    ModalView = require('mvc/ModalView');
 
 // Static counter to increment each time a JSONP callback is created. This
 // allows unique callback to be generated and executed in global scope
@@ -42,7 +41,6 @@ var FDSNSearchForm = function (options) {
       _bindModelUpdate,
       _bindRadio,
       _enableOutputDetailsToggle,
-      _enableRegionControl,
       _enableToggleFields,
       _enhanceEventType,
       _enhanceField,
@@ -109,7 +107,6 @@ var FDSNSearchForm = function (options) {
     // Create the form
     _enableToggleFields();
 
-    _enableRegionControl();
     _enableOutputDetailsToggle();
 
     _bindModel();
@@ -640,73 +637,6 @@ var FDSNSearchForm = function (options) {
         element.checked = true;
       }
     }
-  };
-
-  _enableRegionControl = function () {
-    var drawRectangleButton = _el.querySelector('.draw'),
-        maxLatitude = document.querySelector('#maxlatitude'),
-        minLatitude = document.querySelector('#minlatitude'),
-        maxLongitude = document.querySelector('#maxlongitude'),
-        minLongitude = document.querySelector('#minlongitude'),
-        _onRegionCallback;
-
-    // set form values on callback from regionview
-    _onRegionCallback = function (region) {
-      var maxlat = region.get('north'),
-          minlat = region.get('south'),
-          maxlng = region.get('east'),
-          minlng = region.get('west');
-
-      if ((maxlat || maxlat === 0.0) && !isNaN(maxlat)) {
-        maxlat = parseFloat(maxlat.toFixed(3));
-      }
-      if ((minlat || minlat === 0.0) && !isNaN(minlat)) {
-        minlat = parseFloat(minlat.toFixed(3));
-      }
-      if ((maxlng || maxlng === 0.0) && !isNaN(maxlng)) {
-        maxlng = parseFloat(maxlng.toFixed(3));
-      }
-      if ((minlng || minlng === 0.0) && !isNaN(minlng)) {
-        minlng = parseFloat(minlng.toFixed(3));
-      }
-
-      _model.set({
-        maxlatitude: maxlat,
-        minlatitude: minlat,
-        maxlongitude: maxlng,
-        minlongitude: minlng
-      });
-    };
-
-    // Add rectangle controls for drawing on map
-    drawRectangleButton.addEventListener('click', function () {
-      var region = null,
-          north,
-          south,
-          east,
-          west;
-
-      north = (maxLatitude.value === '') ? null : parseFloat(maxLatitude.value);
-      south = (minLatitude.value === '') ? null : parseFloat(minLatitude.value);
-      east = (maxLongitude.value === '') ? null : parseFloat(maxLongitude.value);
-      west = (minLongitude.value === '') ? null : parseFloat(minLongitude.value);
-
-      if (north !== null || south !== null || east !== null || west !== null) {
-        region = {
-          north: north,
-          south: south,
-          east:  east,
-          west:  west
-        };
-      }
-
-      RegionView({
-        onRegionCallback: _onRegionCallback
-      }).show({
-        region: region,
-        enableRectangleControl: true
-      });
-    });
   };
 
   _enableOutputDetailsToggle = function () {

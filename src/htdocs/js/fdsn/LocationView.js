@@ -11,6 +11,7 @@ var LocationView = function (options) {
       _locationCustom,
       _locationUS,
       _locationWorld,
+      _regionButton,
       _regionDescription,
 
       _createLocationContent,
@@ -19,6 +20,7 @@ var LocationView = function (options) {
       _onLocationUsClick,
       _onLocationWorldClick,
       _onLocationChange,
+      _onRegionButtonClick,
       _onRegionCallback,
       _showRegionView;
 
@@ -38,49 +40,53 @@ var LocationView = function (options) {
         minlongitude: null
       });
     }
+
+    _this.render();
   };
 
   _createLocationContent = function () {
-    var listWrapper;
+    var el;
 
-    listWrapper = _this.el.querySelector ('.basiclocation-list') ||
-        document.createElement('ul');
+    el = _this.el;
 
-    listWrapper.innerHTML = [
-      '<li>',
-        '<input id="basiclocation-world" type="radio" name="basiclocation"',
-            'value="basiclocationworld" checked="checked"',
-            'aria-labelledby="basiclocationworld"/>',
-        '<label for="basiclocation-world" class="label-checkbox">',
-          'World',
-        '</label>',
-      '</li>',
-      '<li>',
-        '<input id="basiclocation-us" type="radio" name="basiclocation"',
-            'value="basiclocationus" aria-labelledby="basiclocationus"/>',
-        '<label for="basiclocation-us" class="label-checkbox">',
-          'Conterminous US',
-        '</label>',
-      '</li>',
-      '<li>',
-        '<input id="basiclocation-custom" type="radio" name="basiclocation"',
-            'value="basiclocationcustom" aria-labelledby="basiclocationcustom"/>',
-        '<label for="basiclocation-custom" class="label-checkbox">',
-          'Custom',
-        '</label>',
-      '</li>',
-      '<ul class="search-text help">',
-      '</ul>'
+    el.innerHTML = [
+      '<h3 class="label">Geographic Region</h3>',
+      '<ul class="no-style basiclocation-list">',
+        '<li>',
+          '<input type="radio" name="basic-location" ',
+              'id="basic-location-world" value="basic-location-world"/>',
+          '<label for="basic-location-world" class="label-checkbox">',
+              'World</label>',
+        '</li>',
+        '<li>',
+          '<input type="radio" name="basic-location" ',
+              'id="basic-location-us" value="basic-location-us"/>',
+          '<label for="basic-location-us" class="label-checkbox">',
+              'Conterminous U.S.</label>',
+        '</li>',
+        '<li>',
+          '<input type="radio" name="basic-location" ',
+              'id="basic-location-custom" value="basic-location-custom"/>',
+          '<label for="basic-location-custom" class="label-checkbox">',
+              'Custom</label>',
+        '</li>',
+      '</ul>',
+      '<div class="region-description"></div>',
+      '<button type="button" class="draw orange">',
+        'Draw Rectangle on Map',
+      '</button>'
     ].join('');
 
-    _locationWorld = listWrapper.querySelector('#basiclocation-world');
-    _locationUS = listWrapper.querySelector('#basiclocation-us');
-    _locationCustom = listWrapper.querySelector('#basiclocation-custom');
-    _regionDescription = _this.el.querySelector('.region-description');
+    _locationWorld = el.querySelector('#basic-location-world');
+    _locationUS = el.querySelector('#basic-location-us');
+    _locationCustom = el.querySelector('#basic-location-custom');
+    _regionDescription = el.querySelector('.region-description');
+    _regionButton = el.querySelector('button');
 
     _locationWorld.addEventListener('click', _onLocationWorldClick);
     _locationUS.addEventListener('click', _onLocationUsClick);
     _locationCustom.addEventListener('click', _onLocationCustomClick);
+    _regionButton.addEventListener('click', _onRegionButtonClick);
   };
 
   _isSet = function (value) {
@@ -112,6 +118,10 @@ var LocationView = function (options) {
   };
 
   _onLocationCustomClick = function () {
+    _showRegionView();
+  };
+
+  _onRegionButtonClick = function () {
     _showRegionView();
   };
 
@@ -229,25 +239,26 @@ var LocationView = function (options) {
       _locationWorld.checked = true;
     } else {
       if (hasRect) {
-        markup.push('<h3>Custom Rectangle</h3>',
-          '<ul class="search-text help">',
+        if (north === 50.0 && south === 24.6 && east === -65.0 &&
+            west === -125.0) {
+          markup.push('<h3>Conterminous U.S.</h3>');
+          _locationUS.checked = true;
+        } else {
+          markup.push('<h3>Custom Rectangle</h3>');
+          _locationCustom.checked = true;
+        }
+
+        markup.push('<ul class="search-text help">',
             '<li>[',
               hasSouth ? south : '&ndash;', ', ',
               hasNorth ? north : '&ndash;',
-            ']</li>',
+            '] Latitude</li>',
             '<li>[',
               hasWest ? west : '&ndash;', ', ',
               hasEast ? east : '&ndash;',
-            ']</li>',
+            '] Longitude</li>',
           '</ul>'
         );
-
-        if (north === 50.0 && south === 24.6 && east === -65.0 &&
-            west === -125.0) {
-          _locationUS.checked = true;
-        } else {
-          _locationCustom.checked = true;
-        }
       }
 
       if (hasCircle) {
@@ -269,11 +280,13 @@ var LocationView = function (options) {
     _locationWorld.removeEventListener('click', _onLocationWorldClick);
     _locationUS.removeEventListener('click', _onLocationUsClick);
     _locationCustom.removeEventListener('click', _onLocationCustomClick);
+    _regionButton.removeEventListener('click', _onRegionButtonClick);
 
 
     _locationCustom = null;
     _locationUS = null;
     _locationWorld = null;
+    _regionButton = null;
     _regionDescription = null;
 
     _createLocationContent = null;
@@ -282,6 +295,7 @@ var LocationView = function (options) {
     _onLocationUsClick = null;
     _onLocationWorldClick = null;
     _onLocationChange = null;
+    _onRegionButtonClick = null;
     _onRegionCallback = null;
     _showRegionView = null;
 
