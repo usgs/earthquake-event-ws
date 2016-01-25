@@ -21,7 +21,7 @@ class TextFeed extends AbstractFeed {
 
     return implode('|', array(
       $event['eventSource'] . $event['eventSourceCode'],
-      $this->formatter->formatDateIso($event['eventTime'], null, '', ' '),
+      $this->formatter->formatDateIso($event['eventTime'], null, ''),
       $event['eventLatitude'],
       $event['eventLongitude'],
       $event['eventDepth'],
