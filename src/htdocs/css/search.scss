@@ -40,6 +40,7 @@ button.draw {
 }
 
 /* help text styles */
+.region-description,
 form .help {
   color: #777;
   font-size: 13px;
@@ -77,7 +78,10 @@ ul.format-list,
 ul.orderby-list,
 ul.output-kml-list,
 ul.output-quakeml-list,
-ul.output-geojson-list {
+ul.output-geojson-list,
+ul.basictime-list,
+ul.basicmagnitude-list,
+ul.basiclocation-list {
   margin-top: 1em;
 }
 

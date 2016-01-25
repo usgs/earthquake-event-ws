@@ -449,6 +449,8 @@ class FDSNEventWebService {
         $query->starttime = $this->validateTime($name, $value);
       } else if ($name ==='endtime' || $name ==='end') {
         $query->endtime = $this->validateTime($name, $value);
+      } else if ($name === 'basictime') {
+        $query->basictime = $this->validateTime($name, $value);
       } else if ($name ==='minlatitude' || $name ==='minlat') {
         $query->minlatitude = $this->validateFloat($name, $value, -90, 90);
       } else if ($name ==='maxlatitude' || $name ==='maxlat') {
@@ -461,18 +463,16 @@ class FDSNEventWebService {
         $query->latitude = $this->validateFloat($name, $value, -90, 90);
       } else if ($name ==='longitude' || $name ==='lon') {
         $query->longitude = $this->validateFloat($name, $value, -180, 180);
-      } else if ($name ==='minradius') {
-        $query->minradius = $this->validateFloat($name, $value, 0, 180);
       } else if ($name ==='maxradius') {
         $query->maxradius = $this->validateFloat($name, $value, 0, 180);
-      } else if ($name==='minradiuskm') {
-        $query->minradiuskm = $this->validateFloat($name, $value, 0, 20001.6);
       } else if ($name==='maxradiuskm') {
         $query->maxradiuskm = $this->validateFloat($name, $value, 0, 20001.6);
       } else if ($name ==='mindepth') {
         $query->mindepth = $this->validateFloat($name, $value, null, null);
       } else if ($name ==='maxdepth') {
         $query->maxdepth = $this->validateFloat($name, $value, null, null);
+      } else if ($name === 'basicmagnitude') {
+        $query->basicmagnitude/*= $this->validateFloat($name, $value, null, null)*/;
       } else if ($name ==='minmagnitude' || $name ==='minmag') {
         $query->minmagnitude = $this->validateFloat($name, $value, null, null);
       } else if ($name ==='maxmagnitude' || $name ==='maxmag') {
@@ -551,25 +551,6 @@ class FDSNEventWebService {
       } else {
         $this->error(self::BAD_REQUEST,
             'Unknown parameter "' . $name . '".');
-      }
-    }
-
-
-    // validate parameter combinations
-
-    // map {min,max}radiuskm --> {min,max}radius respectively, but only if
-    // their counterpart is not explicitely set. Do this _BEFORE_ validating
-    // general radial search parameters.
-
-    if ($query->minradiuskm !== null) {
-      if ($query->minradius !== null && $query->minradius !== 0) {
-        // can't specify both flavors of minradius
-        $this->error(self::BAD_REQUEST, 'Invalid area-circle parameter ' .
-            "combination.\nminradius and minradiuskm can not both be " .
-            'specified.');
-      } else {
-        // map minradiuskm --> minradius
-        $query->minradius = $this->kmToDeg($query->minradiuskm);
       }
     }
 
@@ -677,7 +658,7 @@ class FDSNEventWebService {
     }
 
     // set default starttime when not specified
-    if ($query->starttime === null) {
+    if ($query->starttime === null && $query->starttime !== "" && $query->basictime === null && $query->basictime !== "") {
       global $DEFAULT_MAXEVENTAGE;
       if ($DEFAULT_MAXEVENTAGE !== null) {
         $query->starttime = (time() - $DEFAULT_MAXEVENTAGE) . '000';
