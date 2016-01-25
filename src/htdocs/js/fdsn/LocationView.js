@@ -19,6 +19,7 @@ var LocationView = function (options) {
       _onLocationUsClick,
       _onLocationWorldClick,
       _onLocationChange,
+      _onRegionCallback,
       _showRegionView;
 
   _this = View(options);
@@ -114,6 +115,38 @@ var LocationView = function (options) {
     _showRegionView();
   };
 
+  _onRegionCallback = function (region) {
+    var maxlat,
+        maxlng,
+        minlat,
+        minlng;
+
+    maxlat = region.get('north');
+    minlat = region.get('south');
+    maxlng = region.get('east');
+    minlng = region.get('west');
+
+    if ((maxlat || maxlat === 0.0) && !isNaN(maxlat)) {
+      maxlat = parseFloat(maxlat.toFixed(3));
+    }
+    if ((minlat || minlat === 0.0) && !isNaN(minlat)) {
+      minlat = parseFloat(minlat.toFixed(3));
+    }
+    if ((maxlng || maxlng === 0.0) && !isNaN(maxlng)) {
+      maxlng = parseFloat(maxlng.toFixed(3));
+    }
+    if ((minlng || minlng === 0.0) && !isNaN(minlng)) {
+      minlng = parseFloat(minlng.toFixed(3));
+    }
+
+    _this.model.set({
+      maxlatitude: maxlat,
+      minlatitude: minlat,
+      maxlongitude: maxlng,
+      minlongitude: minlng
+    });
+  };
+
   _showRegionView = function () {
     var north,
         south,
@@ -138,7 +171,9 @@ var LocationView = function (options) {
       west = null;
     }
 
-    RegionView().show({
+    RegionView({
+      onRegionCallback: _onRegionCallback
+    }).show({
       region:{
         north: north,
         south: south,
@@ -247,6 +282,7 @@ var LocationView = function (options) {
     _onLocationUsClick = null;
     _onLocationWorldClick = null;
     _onLocationChange = null;
+    _onRegionCallback = null;
     _showRegionView = null;
 
     _initialize = null;
