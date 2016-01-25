@@ -46,6 +46,38 @@
         </li>
         </ul>
       </div>
+
+      <div class="fieldset" role="group" aria-labelledby="region-circle">
+      <h4 id="region-circle" class="label">
+        Circle
+      </h4>
+      <ul class="vertical no-style two-up">
+        <li>
+          <label for="latitude" class="label" id="circle-latitude">
+            Center Latitude
+          </label>
+          <input type="number" step="any" name="latitude" id="latitude"
+              min="-90" max="90"
+              aria-labelledby="region region-circle circle-latitude"/>
+        </li>
+        <li>
+          <label for="longitude" class="label" id="circle-longitude">
+            Center Longitude
+          </label>
+          <input type="number" step="any" name="longitude" id="longitude"
+              min="-180" max="180"
+              aria-labelledby="region region-circle circle-longitude"/>
+        </li>
+        <li>
+          <label for="maxradiuskm" class="label" id="circle-maxradiuskm">
+            <abbr title="Maximum">Outer</abbr> Radius (km)
+          </label>
+          <input type="number" step="any" name="maxradiuskm" id="maxradiuskm"
+              min="0" max="20001.6"
+              aria-labelledby="region region-circle circle-maxradiuskm"/>
+        </li>
+      </ul>
+    </div>
     </section>
   </div>
 
@@ -110,40 +142,6 @@
         </li>
       </ul>
     </section>
-  </div>
-
-  <div class="two-of-two column">
-    <div class="fieldset" role="group" aria-labelledby="region-circle">
-      <h4 id="region-circle" class="label">
-        Circle
-      </h4>
-      <ul class="vertical no-style two-up">
-        <li>
-          <label for="latitude" class="label" id="circle-latitude">
-            Center Latitude
-          </label>
-          <input type="number" step="any" name="latitude" id="latitude"
-              min="-90" max="90"
-              aria-labelledby="region region-circle circle-latitude"/>
-        </li>
-        <li>
-          <label for="longitude" class="label" id="circle-longitude">
-            Center Longitude
-          </label>
-          <input type="number" step="any" name="longitude" id="longitude"
-              min="-180" max="180"
-              aria-labelledby="region region-circle circle-longitude"/>
-        </li>
-        <li>
-          <label for="maxradiuskm" class="label" id="circle-maxradiuskm">
-            <abbr title="Maximum">Outer</abbr> Radius (km)
-          </label>
-          <input type="number" step="any" name="maxradiuskm" id="maxradiuskm"
-              min="0" max="20001.6"
-              aria-labelledby="region region-circle circle-maxradiuskm"/>
-        </li>
-      </ul>
-    </div>
   </div>
 
   <!-- TODO :: Conform magnitude type to FDSN spec
