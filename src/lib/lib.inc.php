@@ -73,8 +73,7 @@
         case JSON_ERROR_NONE:
           return $encoded;
         case JSON_ERROR_UTF8:
-          $clean = utf8ize($value);
-          return safe_json_encode($clean);
+          return safe_json_encode(utf8_encode_array($value));
         default:
           throw new Exception('json_encode error (' . $lastError . ')');
       }
@@ -90,7 +89,7 @@
      * @return {Mixed}
      *         utf8 encoded value.
      */
-    function utf8ize($mixed) {
+    function utf8_encode_array($mixed) {
       if (is_array($mixed)) {
           foreach ($mixed as $key => $value) {
               $mixed[$key] = utf8ize($value);
