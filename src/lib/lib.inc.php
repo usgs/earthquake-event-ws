@@ -54,28 +54,42 @@
   }
 
   if (!function_exists("safe_json_encode")) {
-    // from http://stackoverflow.com/questions/10199017/how-to-solve-json-error-utf8-error-in-php-json-decode
+    /**
+     * Safely json_encode values.
+     *
+     * Handles malformed UTF8 characters better than normal json_encode.
+     * from http://stackoverflow.com/questions/10199017/how-to-solve-json-error-utf8-error-in-php-json-decode
+     *
+     * @param $value {Mixed}
+     *        value to encode as json.
+     * @return {String}
+     *         json encoded value.
+     * @throws Exception when unable to json encode.
+     */
     function safe_json_encode($value){
       $encoded = json_encode($value);
-      switch (json_last_error()) {
+      $lastError = json_last_error();
+      switch ($lastError) {
         case JSON_ERROR_NONE:
           return $encoded;
-        case JSON_ERROR_DEPTH:
-          return 'Maximum stack depth exceeded'; // or trigger_error() or throw new Exception()
-        case JSON_ERROR_STATE_MISMATCH:
-          return 'Underflow or the modes mismatch'; // or trigger_error() or throw new Exception()
-        case JSON_ERROR_CTRL_CHAR:
-          return 'Unexpected control character found';
-        case JSON_ERROR_SYNTAX:
-          return 'Syntax error, malformed JSON'; // or trigger_error() or throw new Exception()
         case JSON_ERROR_UTF8:
           $clean = utf8ize($value);
           return safe_json_encode($clean);
         default:
-          return 'Unknown error'; // or trigger_error() or throw new Exception()
+          throw new Exception('json_encode error (' . $lastError . ')');
       }
     }
 
+    /**
+     * UTF8 encode a data structure.
+     *
+     * from http://stackoverflow.com/questions/10199017/how-to-solve-json-error-utf8-error-in-php-json-decode
+     *
+     * @param $mixed {Mixed}
+     *        value to utf8 encode.
+     * @return {Mixed}
+     *         utf8 encoded value.
+     */
     function utf8ize($mixed) {
       if (is_array($mixed)) {
           foreach ($mixed as $key => $value) {
