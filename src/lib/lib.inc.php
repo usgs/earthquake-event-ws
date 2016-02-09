@@ -53,7 +53,30 @@
     }
   }
 
-  if (!function_exists("safe_json_encode")) {
+  if (!function_exists('utf8_encode_array')) {
+    /**
+     * UTF8 encode a data structure.
+     *
+     * from http://stackoverflow.com/questions/10199017/how-to-solve-json-error-utf8-error-in-php-json-decode
+     *
+     * @param $mixed {Mixed}
+     *        value to utf8 encode.
+     * @return {Mixed}
+     *         utf8 encoded value.
+     */
+    function utf8_encode_array($mixed) {
+      if (is_array($mixed)) {
+          foreach ($mixed as $key => $value) {
+              $mixed[$key] = utf8ize($value);
+          }
+      } else if (is_string ($mixed)) {
+          return utf8_encode($mixed);
+      }
+      return $mixed;
+    }
+  }
+
+  if (!function_exists('safe_json_encode')) {
     /**
      * Safely json_encode values.
      *
@@ -77,26 +100,5 @@
         default:
           throw new Exception('json_encode error (' . $lastError . ')');
       }
-    }
-
-    /**
-     * UTF8 encode a data structure.
-     *
-     * from http://stackoverflow.com/questions/10199017/how-to-solve-json-error-utf8-error-in-php-json-decode
-     *
-     * @param $mixed {Mixed}
-     *        value to utf8 encode.
-     * @return {Mixed}
-     *         utf8 encoded value.
-     */
-    function utf8_encode_array($mixed) {
-      if (is_array($mixed)) {
-          foreach ($mixed as $key => $value) {
-              $mixed[$key] = utf8ize($value);
-          }
-      } else if (is_string ($mixed)) {
-          return utf8_encode($mixed);
-      }
-      return $mixed;
     }
   }
