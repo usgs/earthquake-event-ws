@@ -67,7 +67,7 @@
     function utf8_encode_array($mixed) {
       if (is_array($mixed)) {
           foreach ($mixed as $key => $value) {
-              $mixed[$key] = utf8ize($value);
+              $mixed[$key] = utf8_encode_array($value);
           }
       } else if (is_string ($mixed)) {
           return utf8_encode($mixed);
