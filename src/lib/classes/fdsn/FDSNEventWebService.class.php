@@ -227,7 +227,7 @@ class FDSNEventWebService {
       header('Content-type: application/json');
     }
 
-    echo str_replace('\/', '/', json_encode($information));
+    echo str_replace('\/', '/', safe_json_encode($information));
 
     if (isset($_GET['callback'])) {
       echo ');';
@@ -263,7 +263,7 @@ class FDSNEventWebService {
         $array = array_merge($array, array('error' => $error));
       }
 
-      $json = json_encode($array);
+      $json = safe_json_encode($array);
 
       if ($query->callback) {
         header('Content-type: text/javascript');
@@ -373,7 +373,7 @@ class FDSNEventWebService {
       echo $callback . '(';
     }
     echo preg_replace('/"(generated)":"([\d]+)"/', '"$1":$2',
-        str_replace('\/', '/', json_encode($response)));
+        str_replace('\/', '/', safe_json_encode($response)));
 
     if ($callback) {
       echo ');';

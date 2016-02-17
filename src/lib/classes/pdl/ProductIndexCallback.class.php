@@ -31,7 +31,7 @@ class JSONProductIndexCallback extends ProductIndexCallback {
       $this->first = false;
     }
 
-    $json = json_encode($summary->toArray());
+    $json = safe_json_encode($summary->toArray());
     $json = str_replace('\\/', '/', $json);
     print $json;
   }
@@ -62,5 +62,3 @@ class FeedCallback extends ProductIndexCallback {
     echo $this->feed->getFooter();
   }
 }
-
-

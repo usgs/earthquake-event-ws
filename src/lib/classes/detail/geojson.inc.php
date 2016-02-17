@@ -70,5 +70,5 @@ $array = array(
 
 $array['properties']['products'] = $event_array['products'];
 
-$json = str_replace('\/', '/', json_encode($array));
+$json = str_replace('\/', '/', safe_json_encode($array));
 echo preg_replace('/"(time|indexTime|updated|updateTime|lastModified)":"(-?[\d]+)"/', '"$1":$2', $json);
