@@ -31,6 +31,7 @@ var FDSNSearchForm = function (options) {
       _magnitudeView,
       _dateTimeView,
       _locationView,
+      _maplistPath,
       _model,
       _this,
       _validator,
@@ -82,6 +83,12 @@ var FDSNSearchForm = function (options) {
       _fdsnPath = options.fdsnPath;
     } else {
       _fdsnPath = '/fdsnws/event/1';
+    }
+
+    if (options.hasOwnProperty('maplistPath')) {
+      _maplistPath = options.maplistPath;
+    } else {
+      _maplistPath = '/earthquakes/map';
     }
 
     _dateTimeView = DateTimeView({
@@ -239,8 +246,7 @@ var FDSNSearchForm = function (options) {
       }
 
 
-      url = window.location.protocol + '//' + window.location.host +
-          '/earthquakes/map/#' + window.escape(UrlManager.parseSettings({
+      url = _maplistPath + '#' + window.escape(UrlManager.parseSettings({
             viewModes: {help: false, list: true, map: true, settings: false},
             sort: maplistsort,
             mapposition: mapposition
