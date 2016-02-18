@@ -34,7 +34,6 @@
       <request>
         <param name="starttime" style="query" type="xs:dateTime"/>
         <param name="endtime" style="query" type="xs:dateTime"/>
-        <param name="basictime" style="query" type="xs:dateTime"/>
         <param name="updatedafter" style="query" type="xs:dateTime"/>
         <param name="minlatitude" style="query" type="xs:double" default="-90"/>
         <param name="maxlatitude" style="query" type="xs:double" default="90"/>
