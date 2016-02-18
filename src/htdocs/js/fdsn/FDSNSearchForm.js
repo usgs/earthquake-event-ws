@@ -342,9 +342,6 @@ var FDSNSearchForm = function (options) {
         if (!parsedUrl.hasOwnProperty('endtime')) {
           parsedUrl.endtime = '';
         }
-        if (!parsedUrl.hasOwnProperty('basicmagnitude')) {
-          parsedUrl.basicmagnitude = '';
-        }
         if (!parsedUrl.hasOwnProperty('minmagnitude')) {
           parsedUrl.minmagnitude = '';
         }
