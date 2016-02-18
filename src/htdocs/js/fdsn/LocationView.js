@@ -91,7 +91,7 @@ var LocationView = function (options) {
 
     regionDisclaimer = document.createElement('small');
 
-    regionDisclaimer.innerHTML = ['<sup>1</sup></a> Conterminous U.S. refers ',
+    regionDisclaimer.innerHTML = ['<sup>1</sup>Conterminous U.S. refers ',
       'to a rectangular region including the lower 48 states and surrounding ',
       'areas which are outside the Conterminous U.S.'].join('');
 
