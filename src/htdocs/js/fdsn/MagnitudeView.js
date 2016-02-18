@@ -114,8 +114,17 @@ var MagnitudeView = function (options) {
     min = _this.model.get('minmagnitude');
 
     // update number inputs
-    _maxmag.value = max;
-    _minmag.value = min;
+    if (max !== null) {
+      _maxmag.value = max;
+     } else {
+      _maxmag.value = '';
+    }
+
+    if (min !== null) {
+      _minmag.value = min;
+    } else {
+      _minmag.value = '';
+    }
 
     // update radio button selection
     if (min === 2.5 && (max === null || max === '')) {

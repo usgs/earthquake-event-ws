@@ -139,9 +139,20 @@ var DateTimeView = function (options) {
     end = _this.model.get('endtime');
     start = _this.model.get('starttime');
 
-    _endtime.value = end;
-    _starttime.value = start;
+    // update time inputs
+    if (end !== null) {
+      _endtime.value = end;
+    } else {
+      _endtime.value = '';
+    }
 
+    if (start !== null) {
+      _starttime.value = start;
+     } else {
+      _starttime.value = '';
+    }
+
+    // update radio button selection
     if (start === _weekAgo && end === _now) {
       _pastSevenDays.checked = true;
     } else if (start === _monthAgo && end === _now) {
