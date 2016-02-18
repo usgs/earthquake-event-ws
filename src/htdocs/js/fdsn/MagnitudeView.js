@@ -113,16 +113,17 @@ var MagnitudeView = function (options) {
     max = _this.model.get('maxmagnitude');
     min = _this.model.get('minmagnitude');
 
-    if (max !== null) {
-      _maxmag.value = max;
-    } else {
-      _maxmag.value = '';
-    }
+    // update number inputs
+    _maxmag.value = max;
+    _minmag.value = min;
 
-    if (min !== null) {
-      _minmag.value = min;
+    // update radio button selection
+    if (min === 2.5 && max === null) {
+      _twofivemag.checked = true;
+    } else if (min === 4.5 && max === null) {
+      _fourfivemag.checked = true;
     } else {
-      _minmag.value = '';
+      _custommag.checked = true;
     }
   };
 
