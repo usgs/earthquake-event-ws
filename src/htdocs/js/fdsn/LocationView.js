@@ -62,7 +62,7 @@ var LocationView = function (options) {
           '<input type="radio" name="basic-location" ',
               'id="basic-location-us" value="basic-location-us"/>',
           '<label for="basic-location-us" class="label-checkbox">',
-              'Conterminous U.S.</label>',
+              'Conterminous U.S.<a href="#geographic-disclaimer"><sup>1</sup></a></label>',
         '</li>',
         '<li>',
           '<input type="radio" name="basic-location" ',
