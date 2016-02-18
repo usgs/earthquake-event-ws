@@ -120,6 +120,7 @@
     'API_VERSION' => 'v1.0',
     'FDSN_VERSION' => '1.0.6',
     'DEFAULT_MAXEVENTAGE' => '2592000',
+    'SCENARIO_MODE' => 'FALSE',
 
     'OFFSITE_HOST' => ''
   );
