@@ -30,7 +30,6 @@ class FDSNQuery {
   // other
   public $mindepth = null;   // kilometers [-100,1000]
   public $maxdepth = null;   // kilometers [-100,1000]
-  public $basicmagnitude = null;
   public $minmagnitude = null;
   public $maxmagnitude = null;
   public $magnitudetype = null;
