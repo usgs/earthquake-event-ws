@@ -476,14 +476,6 @@ class FDSNIndex {
         $where[] = $depthColumn . ' <= ?';
         $params[] = $query->maxdepth;
       }
-
-
-      if ($query->basicmagnitude) {
-        $where[] = $magnitudeColumn . ' >= ?';
-        $params[] = $query->basicmagnitude;
-      }
-
-
       if ($query->minmagnitude !== null) {
         $where[] = $magnitudeColumn . ' >= ?';
         $params[] = $query->minmagnitude;
