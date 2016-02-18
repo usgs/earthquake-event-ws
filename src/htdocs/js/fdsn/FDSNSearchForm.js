@@ -336,9 +336,6 @@ var FDSNSearchForm = function (options) {
       // If parsing a hash, that contains an existing search
       // want to clear default values (if not specified)
       if (parsedUrl !== null) {
-        if (!parsedUrl.hasOwnProperty('basictime')) {
-          parsedUrl.basictime = '';
-        }
         if (!parsedUrl.hasOwnProperty('starttime')) {
           parsedUrl.starttime = '';
         }
