@@ -12,7 +12,6 @@ class FDSNQuery {
   // time
   public $starttime = null;     // millisecond epoch time
   public $endtime = null;       // millisecond epoch time
-  public $basictime = null;     // millisecond epoch time or string ''
   public $updatedafter = null;  // millisecond epoch time
 
   // rectangle
