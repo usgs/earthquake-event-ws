@@ -33,7 +33,6 @@ class FDSNIndex {
     $rs = $this->pdo->query(
         'select distinct source ' .
         'from productSummary ' .
-        "where type='origin' " .
         'order by source');
     $contributors = array();
     while ($row = $rs->fetch()) {
