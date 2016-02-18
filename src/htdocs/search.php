@@ -76,4 +76,12 @@ if (!isset($TEMPLATE)) {
     <span class="output-descriptor"></span>
     <div class="search-error"></div>
   </footer>
+
+  <div>
+    <small>
+      <a name="geographic-disclaimer"><sup>1</sup></a>
+      Conterminous U.S. refers to a rectangular region including the lower 48
+      states and surrounding areas which are outside the Conterminous U.S.
+    </small>
+  </div>
 </form>
