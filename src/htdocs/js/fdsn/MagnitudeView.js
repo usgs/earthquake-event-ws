@@ -118,9 +118,9 @@ var MagnitudeView = function (options) {
     _minmag.value = min;
 
     // update radio button selection
-    if (min === 2.5 && max === null) {
+    if (min === 2.5 && (max === null || max === '')) {
       _twofivemag.checked = true;
-    } else if (min === 4.5 && max === null) {
+    } else if (min === 4.5 && (max === null || max === '')) {
       _fourfivemag.checked = true;
     } else {
       _custommag.checked = true;
