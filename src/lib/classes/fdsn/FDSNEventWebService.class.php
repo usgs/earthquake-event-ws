@@ -473,8 +473,6 @@ class FDSNEventWebService {
         $query->mindepth = $this->validateFloat($name, $value, null, null);
       } else if ($name ==='maxdepth') {
         $query->maxdepth = $this->validateFloat($name, $value, null, null);
-      } else if ($name === 'basicmagnitude') {
-        $query->basicmagnitude/*= $this->validateFloat($name, $value, null, null)*/;
       } else if ($name ==='minmagnitude' || $name ==='minmag') {
         $query->minmagnitude = $this->validateFloat($name, $value, null, null);
       } else if ($name ==='maxmagnitude' || $name ==='maxmag') {
