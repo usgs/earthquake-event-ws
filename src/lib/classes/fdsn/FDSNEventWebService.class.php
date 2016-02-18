@@ -449,8 +449,6 @@ class FDSNEventWebService {
         $query->starttime = $this->validateTime($name, $value);
       } else if ($name ==='endtime' || $name ==='end') {
         $query->endtime = $this->validateTime($name, $value);
-      } else if ($name === 'basictime') {
-        $query->basictime = $this->validateTime($name, $value);
       } else if ($name ==='minlatitude' || $name ==='minlat') {
         $query->minlatitude = $this->validateFloat($name, $value, -90, 90);
       } else if ($name ==='maxlatitude' || $name ==='maxlat') {
@@ -680,7 +678,7 @@ class FDSNEventWebService {
     }
 
     // set default starttime when not specified
-    if ($query->starttime === null && $query->starttime !== "" && $query->basictime === null && $query->basictime !== "") {
+    if ($query->starttime === null && $query->starttime !== "") {
       global $DEFAULT_MAXEVENTAGE;
       if ($DEFAULT_MAXEVENTAGE !== null) {
         $query->starttime = (time() - $DEFAULT_MAXEVENTAGE) . '000';
