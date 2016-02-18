@@ -421,10 +421,6 @@ class FDSNIndex {
         $where[] = $timeColumn . ' <= ?';
         $params[] = $query->endtime;
       }
-      if ($query->basictime !== null) {
-        $where[] = $timeColumn . ' >= ?';
-        $params[] = $query->basictime;
-      }
       if ($query->minlatitude !== null) {
         $where[] = $latitudeColumn . ' >= ?';
         $params[] = $query->minlatitude;
