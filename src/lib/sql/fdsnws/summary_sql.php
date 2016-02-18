@@ -3,7 +3,7 @@
 $productsToSummarize = array(
 
   'focalMechanism' => array(
-    'types' => array('focal-mechanism'),
+    'types' => array('focal-mechanism', 'focal-mechanism-scenario'),
     'properties' => array(
       // similar to fm
       'review-status' => 'VARCHAR(255)',
@@ -19,7 +19,7 @@ $productsToSummarize = array(
   ),
 
   "momentTensor" => array(
-    'types' => array( 'moment-tensor'),
+    'types' => array( 'moment-tensor', 'moment-tensor-scenario'),
     'properties' => array(
       // similar to fm
       'review-status' => 'VARCHAR(255)',
@@ -51,7 +51,7 @@ $productsToSummarize = array(
   ),
 
   'origin' => array(
-    'types' => array('origin'),
+    'types' => array('origin', 'origin-scenario'),
     'properties' => array(
       'event-type' => 'VARCHAR(255)',
       'azimuthal-gap' => 'DOUBLE',
