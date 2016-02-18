@@ -24,6 +24,7 @@ class FDSNQuery {
   public $latitude = null;    // degrees [-90,90]
   public $longitude = null;   // degrees [-180,180]
   public $minradius = 0;      // degrees [0,180]
+  public $minradiuskm = null; // kilometers [0, 20001.6]
   public $maxradius = null;   // degrees [0,180]
   public $maxradiuskm = null; // kilometers [0, 20001.6]
 
