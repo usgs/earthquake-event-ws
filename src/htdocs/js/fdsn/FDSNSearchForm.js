@@ -246,7 +246,7 @@ var FDSNSearchForm = function (options) {
       }
 
 
-      url = _maplistPath + '#' + window.escape(UrlManager.parseSettings({
+      url = _maplistPath + '/#' + window.escape(UrlManager.parseSettings({
             viewModes: {help: false, list: true, map: true, settings: false},
             sort: maplistsort,
             mapposition: mapposition
