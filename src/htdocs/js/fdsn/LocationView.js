@@ -45,7 +45,8 @@ var LocationView = function (options) {
   };
 
   _createLocationContent = function () {
-    var el;
+    var el,
+        regionDisclaimer;
 
     el = _this.el;
 
@@ -62,7 +63,7 @@ var LocationView = function (options) {
           '<input type="radio" name="basic-location" ',
               'id="basic-location-us" value="basic-location-us"/>',
           '<label for="basic-location-us" class="label-checkbox">',
-              'Conterminous U.S.<a href="#geographic-disclaimer"><sup>1</sup></a></label>',
+              'Conterminous U.S.<sup>1</sup></label>',
         '</li>',
         '<li>',
           '<input type="radio" name="basic-location" ',
@@ -87,6 +88,14 @@ var LocationView = function (options) {
     _locationUS.addEventListener('click', _onLocationUsClick);
     _locationCustom.addEventListener('click', _onLocationCustomClick);
     _regionButton.addEventListener('click', _onRegionButtonClick);
+
+    regionDisclaimer = document.createElement('small');
+
+    regionDisclaimer.innerHTML = ['<sup>1</sup></a> Conterminous U.S. refers ',
+      'to a rectangular region including the lower 48 states and surrounding ',
+      'areas which are outside the Conterminous U.S.'].join('');
+
+    document.querySelector('.page-content').appendChild(regionDisclaimer);
   };
 
   _isSet = function (value) {
