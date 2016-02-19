@@ -18,6 +18,7 @@ var DateTimeView = function (options) {
       _weekAgo,
 
       _createDateTimeContent,
+      _getTimes,
       _onCustomClick,
       _onPastSevenDaysClick,
       _onPastThirtyDaysClick,
@@ -26,10 +27,7 @@ var DateTimeView = function (options) {
   _this = View(options);
 
   _initialize = function (/*options*/) {
-    _now = new Date().getTime();
-    _weekAgo = FDSNFormatter.formatDateTime(_now - (7 * 86400000));
-    _monthAgo = _now - (30 * 86400000);
-
+    _getTimes();
     _createDateTimeContent(options);
 
     if (_this.model.get('starttime') === null &&
@@ -39,6 +37,26 @@ var DateTimeView = function (options) {
         endtime: FDSNFormatter.formatDateTime(_now)
       });
         }
+  };
+
+  _getTimes = function () {
+    var now,
+        offset,
+        thirtyDays,
+        today,
+        sevenDays;
+
+    now = new Date();
+    offset = now.getTimezoneOffset() * 60000;
+    today = new Date(now.getFullYear() + '-' + (now.getMonth() + 1) +
+        '-' + now.getDate()).getTime() - offset;
+    sevenDays = today - (7 * 86400000);
+    thirtyDays = today - (30 * 86400000);
+    today = today + 86399999;
+
+    _now = FDSNFormatter.formatDateTime(today);
+    _weekAgo = FDSNFormatter.formatDateTime(sevenDays);
+    _monthAgo = FDSNFormatter.formatDateTime(thirtyDays);
   };
 
   _createDateTimeContent = function () {
@@ -121,6 +139,7 @@ var DateTimeView = function (options) {
     end = _this.model.get('endtime');
     start = _this.model.get('starttime');
 
+    // update time inputs
     if (end !== null) {
       _endtime.value = end;
     } else {
@@ -129,8 +148,17 @@ var DateTimeView = function (options) {
 
     if (start !== null) {
       _starttime.value = start;
-    } else {
+     } else {
       _starttime.value = '';
+    }
+
+    // update radio button selection
+    if (start === _weekAgo && end === _now) {
+      _pastSevenDays.checked = true;
+    } else if (start === _monthAgo && end === _now) {
+      _pastThirtyDays.checked = true;
+    } else {
+      _customTime.checked = true;
     }
   };
 
@@ -151,6 +179,7 @@ var DateTimeView = function (options) {
     _weekAgo = null;
 
     _createDateTimeContent = null;
+    _getTimes = null;
     _onCustomClick = null;
     _onPastSevenDaysClick = null;
     _onPastThirtyDaysClick = null;
