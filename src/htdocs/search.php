@@ -12,6 +12,7 @@ if (!isset($TEMPLATE)) {
     <script>/*<![CDATA[*/
       var FDSN_HOST = \'' . $FDSN_HOST . '\';
       var FDSN_PATH = \'' . $FDSN_PATH . '\';
+      var MAPLIST_PATH = \'' . $MAPLIST_PATH . '\';
     /*]]>*/</script>
     <script src="js/search.js"></script>
   ';

@@ -76,6 +76,7 @@
     'EVENT_PATH' => 'Absolute URL root path for event content',
     'FEED_PATH' => 'Absolute URL root path for feed content',
     'FDSN_PATH' => 'Absolute URL root path for fdsn event webservice',
+    'MAPLIST_PATH' => 'Absolute URL for map/list search results',
 
     // Indexer storage
     'storage_directory' => 'Product content storage directory',
@@ -103,6 +104,7 @@
     'EVENT_PATH' => '/earthquakes/eventpage',
     'FEED_PATH' => '/earthquakes/feed',
     'FDSN_PATH' => '/fdsnws/event/1',
+    'MAPLIST_PATH' => '/earthquakes/map',
 
     // Indexer storage
     'storage_directory' => '',
