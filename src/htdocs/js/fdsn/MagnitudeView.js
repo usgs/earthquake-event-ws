@@ -116,7 +116,7 @@ var MagnitudeView = function (options) {
     // update number inputs
     if (max !== null) {
       _maxmag.value = max;
-     } else {
+    } else {
       _maxmag.value = '';
     }
 
