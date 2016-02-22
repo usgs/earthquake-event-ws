@@ -52,6 +52,7 @@ var FDSNSearchForm = function (options) {
       _onModelFormatChange,
       _onSubmit,
       _serializeFormToUrl,
+      _toggleAdvancedOptions,
       _trimSearch;
 
     _this = {};
@@ -405,6 +406,56 @@ var FDSNSearchForm = function (options) {
     if (nonEmptyParams.hasOwnProperty('producttype')) {
       _el.querySelector('#prodtype').parentNode.classList.add(
           'toggle-visible');
+    }
+
+    // Expands advanced options sections if any advanced options were previously
+    // selected.
+    _toggleAdvancedOptions();
+  };
+
+  _toggleAdvancedOptions = function () {
+    var AdvancedOptions,
+        i;
+
+    AdvancedOptions = [
+      'alertlevel',
+      'callback',
+      'catalog',
+      'contributor',
+      'eventtype',
+      'includeallmagnitudes',
+      'includeallorigins',
+      'kmlanimated',
+      'latitude',
+      'limit',
+      'longitude',
+      'maxcdi',
+      'maxdepth',
+      'maxgap',
+      'maxlatitude',
+      'maxlongitude',
+      'maxmagnitude',
+      'maxmmi',
+      'maxradiuskm',
+      'maxsig',
+      'mincdi',
+      'mindepth',
+      'minfelt',
+      'mingap',
+      'minlatitude',
+      'minlongitude',
+      'minmmi',
+      'minsig',
+      'offset',
+      'producttype',
+      'reviewstatus'
+    ];
+
+    for (i = 0; i < AdvancedOptions.length; i++) {
+      if (_model.get(AdvancedOptions[i]) !== '' ) {
+        _el.querySelector('#search-advanced').parentNode.classList.add(
+            'toggle-visible');
+      }
     }
   };
 
