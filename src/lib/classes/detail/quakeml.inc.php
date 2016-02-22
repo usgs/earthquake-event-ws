@@ -36,15 +36,6 @@ if ($summary === null) {
     }
   }
 }
-if ($summary === null) {
-  // no phase-data/origin, use preferred phase-data/origin
-  if (count($phases) > 0) {
-    $summary = $phases[0];
-  } else if (count($origins) > 0) {
-    $summary = $origins[0];
-  }
-}
-
 if ($summary !== null) {
   global $storage;
   // load product contents
@@ -61,8 +52,8 @@ if ($summary !== null) {
 }
 
 
-// if we got here, unable to serve quakeml detail from phase-data/origin product
-// use summary formatter
+// if we got here, unable to serve quakeml detail for requested eventid from
+// phase-data/origin product, fall back to summary formatter
 global $fdsnIndex;
 global $service;
 if (!isset($service)) {
