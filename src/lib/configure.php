@@ -94,7 +94,7 @@
     'API_VERSION' => 'Feed API version',
     'FDSN_VERSION' => 'FDSN API version',
     'DEFAULT_MAXEVENTAGE' => 'Default maxEventAge parameter (seconds)',
-    'INSTALLATION_TYPE' => 'Actual or scenario events.',
+    'INSTALLATION_TYPE' => '"actual" or "scenario" events.',
 
     'OFFSITE_HOST' => 'HTTP host for remote product index location'
   );
