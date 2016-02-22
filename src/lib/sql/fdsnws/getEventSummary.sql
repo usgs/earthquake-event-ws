@@ -47,8 +47,14 @@ BEGIN
     SELECT ps.id, ps.type
     FROM preferredProduct ps
     WHERE ps.eventId=in_eventid
-      AND ps.type IN ('losspager', 'origin', 'shakemap', 'dyfi', 'geoserve',
-    'significance');
+    AND ps.type IN (
+      'losspager', 'losspager-scenario',
+      'origin', 'origin-scenario',
+      'shakemap', 'shakemap-scenario',
+      'dyfi', 'dyfi-scenario',
+      'geoserve', 'geoserve-scenario',
+      'significance', 'significance-scenario'
+    );
 
   -- used to look up event location for region name
   DECLARE cur_location CURSOR FOR
@@ -68,11 +74,17 @@ BEGIN
 
     -- save relevant product ids for fetching properties
     IF summary_type = 'losspager' THEN SET pager_id = summary_id;
+    ELSEIF summary_type = 'losspager-scenario' THEN SET pager_id = summary_id;
     ELSEIF summary_type = 'origin' THEN SET origin_id = summary_id;
+    ELSEIF summary_type = 'origin-scenario' THEN SET origin_id = summary_id;
     ELSEIF summary_type = 'shakemap' THEN SET shakemap_id = summary_id;
+    ELSEIF summary_type = 'shakemap-scenario' THEN SET shakemap_id = summary_id;
     ELSEIF summary_type = 'dyfi' THEN SET dyfi_id = summary_id;
+    ELSEIF summary_type = 'dyfi-scenario' THEN SET dyfi_id = summary_id;
     ELSEIF summary_type = 'geoserve' THEN SET geoserve_id = summary_id;
+    ELSEIF summary_type = 'geoserve-scenario' THEN SET geoserve_id = summary_id;
     ELSEIF summary_type = 'significance' THEN SET significance_id = summary_id;
+    ELSEIF summary_type = 'significance-scenario' THEN SET significance_id = summary_id;
     END IF;
   END LOOP cur_summary_products_loop;
 
