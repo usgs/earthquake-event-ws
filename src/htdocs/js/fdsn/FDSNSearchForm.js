@@ -408,11 +408,12 @@ var FDSNSearchForm = function (options) {
           'toggle-visible');
     }
 
-    // Expands advanced options sections if any advanced options were previously
-    // selected.
     _toggleAdvancedOptions();
   };
-
+  /*
+   * Expands advanced options sections if any advanced options were previously
+   * selected.
+   */
   _toggleAdvancedOptions = function () {
     var AdvancedOptions,
         i;
