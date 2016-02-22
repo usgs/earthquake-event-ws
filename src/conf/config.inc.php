@@ -43,6 +43,14 @@ $DEFAULT_MAXEVENTAGE = isset($CONFIG['DEFAULT_MAXEVENTAGE']) ?
 
 $SCENARIO_MODE = isset($CONFIG['SCENARIO_MODE']) ?
     $CONFIG['$SCENARIO_MODE'] : false;
+if ( isset($CONFIG['SCENARIO_MODE'])) {
+  if (strcasecmp($CONFIG['SCENARIO_MODE'], 'TRUE') ||
+      strcasecmp($CONFIG['SCENARIO_MODE'], 'YES')) {
+    $SCENARIO_MODE = true;
+  } else {
+    $SCENARIO_MODE = false;
+  }
+}
 
 $storage_directory = $CONFIG['storage_directory'];
 $storage_url = $CONFIG['storage_url'];
