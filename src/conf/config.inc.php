@@ -42,7 +42,8 @@ $DEFAULT_MAXEVENTAGE = isset($CONFIG['DEFAULT_MAXEVENTAGE']) ?
     $CONFIG['DEFAULT_MAXEVENTAGE'] : null;
 
 $SCENARIO_MODE = false;
-if ( isset($CONFIG['SCENARIO_MODE']) && $CONFIG['SCENARIO_MODE'] == true) {
+if (isset($CONFIG['INSTALLATION_TYPE']) &&
+    strcasecmp($CONFIG['INSTALLATION_TYPE'], 'scenario') == 0) {
     $SCENARIO_MODE = true;
 }
 
