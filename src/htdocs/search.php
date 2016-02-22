@@ -1,10 +1,5 @@
 <?php
 if (!isset($TEMPLATE)) {
-  if ($SCENARIO_MODE) {
-    $TITLE = 'Search Scenario Archives';
-  } else {
-    $TITLE = 'Search Earthquake Archives';
-  }
   $NAVIGATION = true;
   $HEAD = '
     <link rel="stylesheet" href="css/leaflet.css"/>
@@ -12,6 +7,13 @@ if (!isset($TEMPLATE)) {
   ';
 
   include '../conf/config.inc.php';
+
+  if ($SCENARIO_MODE) {
+    $TITLE = 'Search Scenario Archives';
+  } else {
+    $TITLE = 'Search Earthquake Archives';
+  }
+
   $FOOT = '
     <script>/*<![CDATA[*/
       var FDSN_HOST = \'' . $FDSN_HOST . '\';
