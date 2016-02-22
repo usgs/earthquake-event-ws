@@ -51,7 +51,7 @@ var DEFAULT_DATA = {
   maxradiuskm: null,
 
   minmagnitude: null,
-  maxmagnitdue: null,
+  maxmagnitude: null,
 
   mindepth: null,
   maxdepth: null,
