@@ -1,6 +1,10 @@
 <?php
 if (!isset($TEMPLATE)) {
-  $TITLE = 'Search Earthquake Archives';
+  if ($SCENARIO_MODE) {
+    $TITLE = 'Search Scenario Archives';
+  } else {
+    $TITLE = 'Search Earthquake Archives';
+  }
   $NAVIGATION = true;
   $HEAD = '
     <link rel="stylesheet" href="css/leaflet.css"/>
@@ -46,6 +50,12 @@ if (!isset($TEMPLATE)) {
     </ul>
   </header>
 
+  <?php
+    if ($SCENARIO_MODE) {
+      echo '<p class="alert warning">You are currently searching the scenario catalog</p>';
+    }
+  ?>
+
   <h2 role="heading" id="search-basic">Basic Options</h2>
   <section class="search-basic row" aria-labelledby="search-basic">
     <?php include_once 'inc/search-basic.inc.php' ?>
@@ -71,6 +81,12 @@ if (!isset($TEMPLATE)) {
       ?>
     </section>
   </div>
+
+  <?php
+    if ($SCENARIO_MODE) {
+      echo '<p class="alert warning">You are currently searching the scenario catalog</p>';
+    }
+  ?>
 
   <footer class="footer" aria-label="Search form footer">
     <button type="submit" id="fdsn-submit">Search</button>
