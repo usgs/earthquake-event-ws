@@ -43,6 +43,12 @@ $MAPLIST_PATH = $CONFIG['MAPLIST_PATH'];
 $DEFAULT_MAXEVENTAGE = isset($CONFIG['DEFAULT_MAXEVENTAGE']) ?
     $CONFIG['DEFAULT_MAXEVENTAGE'] : null;
 
+$SCENARIO_MODE = false;
+if (isset($CONFIG['INSTALLATION_TYPE']) &&
+    strcasecmp($CONFIG['INSTALLATION_TYPE'], 'scenario') == 0) {
+    $SCENARIO_MODE = true;
+}
+
 $storage_directory = $CONFIG['storage_directory'];
 $storage_url = $CONFIG['storage_url'];
 
