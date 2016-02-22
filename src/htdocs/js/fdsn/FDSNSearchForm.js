@@ -415,10 +415,10 @@ var FDSNSearchForm = function (options) {
    * selected.
    */
   _toggleAdvancedOptions = function () {
-    var AdvancedOptions,
+    var advancedOptions,
         i;
 
-    AdvancedOptions = [
+    advancedOptions = [
       'alertlevel',
       'callback',
       'catalog',
@@ -452,10 +452,11 @@ var FDSNSearchForm = function (options) {
       'reviewstatus'
     ];
 
-    for (i = 0; i < AdvancedOptions.length; i++) {
-      if (_model.get(AdvancedOptions[i]) !== '' ) {
+    for (i = 0; i < advancedOptions.length; i++) {
+      if (_model.get(advancedOptions[i]) !== '' ) {
         _el.querySelector('#search-advanced').parentNode.classList.add(
             'toggle-visible');
+        break;
       }
     }
   };
