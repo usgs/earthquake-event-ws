@@ -39,7 +39,7 @@ var NUMERIC_TYPES = {
 // Enumeration of all FDSN fields
 var DEFAULT_DATA = {
   starttime: null,
-  enddtime: null,
+  endtime: null,
 
   maxlatitude: null,
   minlatitude: null,
