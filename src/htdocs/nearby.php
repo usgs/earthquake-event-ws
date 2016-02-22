@@ -1,7 +1,7 @@
 <?php
 
   // read configuration
-  include_once '../conf/feed.inc.php';
+  include_once '../conf/feeds.inc.php';
 
 
 
@@ -79,7 +79,13 @@
     }
 
 
-    $query->resultTitle = 'USGS Earthquakes near ' . 
+    if ($SCENARIO_MODE) {
+      $title = 'Scenarios';
+    } else {
+      $title = 'Earthquakes';
+    }
+
+    $query->resultTitle = 'USGS ' . $title . ' near ' .
       abs($latitude) . '&deg;' . ($latitude > 0 ? "N" : "S") . ' ' .
       abs($longitude) . '&deg;' . ($longitude > 0 ? "E" : "W") . ' ' .
       'at ' . gmdate('Y-m-d\TH:i:s\Z', $eventtime);
@@ -140,7 +146,7 @@
 
 
 <style>
-  dt, code { 
+  dt, code {
     font-family: monospace;
   }
   dd {
@@ -148,8 +154,17 @@
   }
 </style>
 
+<?php
 
-<h1>Search For Earthquakes near a Location and Time.</h1>
+if ($SCENARIO_MODE) {
+  $title = 'Scenarios';
+} else {
+  $title = 'Earthquakes';
+}
+
+print '<h1>Search For ' . $title . ' near a Location and Time.</h1>';
+
+?>
 
 <h2>Parameters</h2>
 
