@@ -278,7 +278,6 @@ var FDSNSearchForm = function (options) {
         nonEmptyParams,
         parsedUrl;
 
-    expandAdvanced = false;
     advancedOptions = [
       'latitude',
       'longitude',
@@ -289,6 +288,7 @@ var FDSNSearchForm = function (options) {
       'mingap',
       'reviewstatus'
     ];
+    expandAdvanced = false;
 
     _model.on('change', _onModelChange);
     _model.on('change:format', _onModelFormatChange);
@@ -308,7 +308,6 @@ var FDSNSearchForm = function (options) {
     _bindInput('latitude');
     _bindInput('longitude');
     _bindInput('maxradiuskm');
-
 
     _bindInput('mindepth');
     _bindInput('maxdepth');
@@ -336,7 +335,6 @@ var FDSNSearchForm = function (options) {
     _bindInput('catalog');
     _bindInput('contributor');
     _bindInput('producttype');
-
 
     _bindRadio('format');
     _bindRadio('output-quakeml');
@@ -367,7 +365,6 @@ var FDSNSearchForm = function (options) {
         if (!parsedUrl.hasOwnProperty('minmagnitude')) {
           parsedUrl.minmagnitude = '';
         }
-
         _model.setAll(parsedUrl);
       }
     }
@@ -392,9 +389,6 @@ var FDSNSearchForm = function (options) {
           'toggle-visible');
       expandAdvanced = true;
     }
-
-    // Expand collapsed sections if any of their parameters are set
-    nonEmptyParams = _model.getNonEmpty();
 
     if (nonEmptyParams.hasOwnProperty('eventtype')) {
       _el.querySelector('#evttype').parentNode.classList.add(
@@ -425,7 +419,6 @@ var FDSNSearchForm = function (options) {
         break;
       }
     }
-
     if (expandAdvanced === true) {
       _el.querySelector('#search-advanced').parentNode.classList.add(
           'toggle-visible');
