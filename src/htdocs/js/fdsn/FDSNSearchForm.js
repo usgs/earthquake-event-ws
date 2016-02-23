@@ -272,7 +272,23 @@ var FDSNSearchForm = function (options) {
   };
 
   _bindModel = function () {
-    var nonEmptyParams = null, parsedUrl = null;
+    var advancedOptions,
+        expandAdvanced,
+        i,
+        nonEmptyParams,
+        parsedUrl;
+
+    expandAdvanced = false;
+    advancedOptions = [
+      'latitude',
+      'longitude',
+      'maxdepth',
+      'maxgap',
+      'maxradiuskm',
+      'mindepth',
+      'mingap',
+      'reviewstatus'
+    ];
 
     _model.on('change', _onModelChange);
     _model.on('change:format', _onModelFormatChange);
@@ -374,84 +390,57 @@ var FDSNSearchForm = function (options) {
         nonEmptyParams.hasOwnProperty('minfelt')) {
       _el.querySelector('#impact').parentNode.classList.add(
           'toggle-visible');
+      expandAdvanced = true;
     }
 
-  };
-
-  _bindModelUpdate = function () {
-    var advancedOptions,
-        i,
-        nonEmptyParams;
-
-    advancedOptions = [
-      'alertlevel',
-      'callback',
-      'catalog',
-      'contributor',
-      'eventtype',
-      'includeallmagnitudes',
-      'includeallorigins',
-      'kmlanimated',
-      'latitude',
-      'limit',
-      'longitude',
-      'maxcdi',
-      'maxdepth',
-      'maxgap',
-      'maxlatitude',
-      'maxlongitude',
-      'maxmagnitude',
-      'maxmmi',
-      'maxradiuskm',
-      'maxsig',
-      'mincdi',
-      'mindepth',
-      'minfelt',
-      'mingap',
-      'minlatitude',
-      'minlongitude',
-      'minmmi',
-      'minsig',
-      'offset',
-      'producttype',
-      'reviewstatus'
-    ];
-    nonEmptyParams = null;
-
-    _bindRadio('eventtype');
-    _bindRadio('catalog');
-    _bindRadio('contributor');
-    _bindRadio('producttype');
-
-    // Expands advanced options sections if any advanced options were
-    // previously selected.
-    for (i = 0; i < advancedOptions.length; i++) {
-      if (_model.get(advancedOptions[i]) !== '' ) {
-        _el.querySelector('#search-advanced').parentNode.classList.add(
-            'toggle-visible');
-        break;
-      }
-    }
-    
     // Expand collapsed sections if any of their parameters are set
     nonEmptyParams = _model.getNonEmpty();
 
     if (nonEmptyParams.hasOwnProperty('eventtype')) {
       _el.querySelector('#evttype').parentNode.classList.add(
           'toggle-visible');
+      expandAdvanced = true;
     }
     if (nonEmptyParams.hasOwnProperty('catalog')) {
       _el.querySelector('#cat').parentNode.classList.add(
           'toggle-visible');
+      expandAdvanced = true;
     }
     if (nonEmptyParams.hasOwnProperty('contributor')) {
       _el.querySelector('#contrib').parentNode.classList.add(
           'toggle-visible');
+      expandAdvanced = true;
     }
     if (nonEmptyParams.hasOwnProperty('producttype')) {
       _el.querySelector('#prodtype').parentNode.classList.add(
           'toggle-visible');
+      expandAdvanced = true;
     }
+
+    // Expands advanced options section if any advanced options were
+    // previously selected. Does not check options that were checked above.
+    for (i = 0; !expandAdvanced && i < advancedOptions.length; i++) {
+      if (_model.get(advancedOptions[i]) !== '') {
+        expandAdvanced = true;
+        break;
+      }
+    }
+
+    if (expandAdvanced === true) {
+      _el.querySelector('#search-advanced').parentNode.classList.add(
+          'toggle-visible');
+    }
+  };
+
+  /**
+   * This method binds radios to the model for options that are fetch from
+   * the FDSN web service via AJAX.
+   */
+  _bindModelUpdate = function () {
+    _bindRadio('eventtype');
+    _bindRadio('catalog');
+    _bindRadio('contributor');
+    _bindRadio('producttype');
   };
 
   _bindInput = function (inputId) {
