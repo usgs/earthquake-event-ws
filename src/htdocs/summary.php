@@ -125,7 +125,12 @@ try {
   } else {
     $title .= ' Magnitude ' . $size . '+';
   }
-  $title .= ' Earthquakes, Past ' . ucfirst($age);
+  if ($SCENARIO_MODE) {
+    $title .= ' Scenarios';
+  } else {
+    $title .= ' Earthquakes';
+  }
+  $title .= ', Past ' . ucfirst($age);
   $query->resultTitle = $title;
 
 

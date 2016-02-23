@@ -56,8 +56,12 @@ abstract class AbstractFeed {
   public function getEventTitle($event) {
     $eventtype = $this->formatter->formatEventType($event['event_type']);
 
+    if ($event['type'] === 'origin-scenario') {
+      $eventtype = 'Scenario ' . $eventtype;
+    }
+
     return
-        $this->formatter->formatMagnitude($event['eventMagnitude']) . 
+        $this->formatter->formatMagnitude($event['eventMagnitude']) .
         ($eventtype !== 'Earthquake' ? ' ' . $eventtype : '') .
         ' - ' . $event['region'];
   }

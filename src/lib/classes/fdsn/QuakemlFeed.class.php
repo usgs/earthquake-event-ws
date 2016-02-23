@@ -25,6 +25,7 @@ class QuakemlFeed extends AbstractFeed {
     $header = '<?xml version="1.0"?>' . "\n";
     $header .= '<q:quakeml' .
         ' xmlns="http://quakeml.org/xmlns/bed/1.2"' .
+        ' xmlns:anss="http://anss.org/xmlns/event/0.1"' .
         ' xmlns:catalog="http://anss.org/xmlns/catalog/0.1"' .
         ' xmlns:q="http://quakeml.org/xmlns/quakeml/1.2"' .
         '>';
@@ -52,7 +53,13 @@ class QuakemlFeed extends AbstractFeed {
     $publicID = str_replace('http://', '', $publicID);
     $publicID = str_replace(':', '', $publicID);
 
-    $entry .= '<event' .
+    if ($event['type'] === 'origin-scenario') {
+      $eventElement = 'anss:scenarioEvent';
+    } else {
+      $eventElement = 'event';
+    }
+
+    $entry .= '<' . $eventElement .
         ' catalog:datasource="' . $event['source'] . '"' .
         ' catalog:eventsource="' . $event['eventSource'] . '"' .
         ' catalog:eventid="' . $event['eventSourceCode'] . '"' .
@@ -138,7 +145,7 @@ class QuakemlFeed extends AbstractFeed {
 
     $entry .= $this->getCreationInfo($event['source'],
         $event['eventUpdateTime'], $event['version']);
-    $entry .= '</event>';
+    $entry .= '</' . $eventElement . '>';
 
 
     return $entry;

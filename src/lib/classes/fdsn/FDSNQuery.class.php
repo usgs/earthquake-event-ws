@@ -5,8 +5,6 @@
  * A Query object for an FDSNIndex.
  */
 class FDSNQuery {
-
-
 // fdsn api parameters
 
   // time
@@ -98,9 +96,19 @@ class FDSNQuery {
 // non-query parameters
 
   // used by summary feeds to determine feed "title"
-  public $resultTitle = 'USGS Earthquakes';
+  public $resultTitle;
 
   // number of matching events, populated by service
   public $resultCount = null;
+
+
+  public function __construct () {
+    global $SCENARIO_MODE;
+    if ($SCENARIO_MODE) {
+      $this->resultTitle = 'USGS Scenarios';
+    } else {
+      $this->resultTitle = 'USGS Earthquakes';
+    }
+  }
 
 }
