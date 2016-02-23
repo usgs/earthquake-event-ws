@@ -52,7 +52,6 @@ var FDSNSearchForm = function (options) {
       _onModelFormatChange,
       _onSubmit,
       _serializeFormToUrl,
-      _toggleAdvancedOptions,
       _trimSearch;
 
     _this = {};
@@ -380,43 +379,9 @@ var FDSNSearchForm = function (options) {
   };
 
   _bindModelUpdate = function () {
-    var nonEmptyParams = null;
-
-    _bindRadio('eventtype');
-
-    _bindRadio('catalog');
-    _bindRadio('contributor');
-    _bindRadio('producttype');
-
-    // Expand collapsed sections if any of their parameters are set
-    nonEmptyParams = _model.getNonEmpty();
-
-    if (nonEmptyParams.hasOwnProperty('eventtype')) {
-      _el.querySelector('#evttype').parentNode.classList.add(
-          'toggle-visible');
-    }
-    if (nonEmptyParams.hasOwnProperty('catalog')) {
-      _el.querySelector('#cat').parentNode.classList.add(
-          'toggle-visible');
-    }
-    if (nonEmptyParams.hasOwnProperty('contributor')) {
-      _el.querySelector('#contrib').parentNode.classList.add(
-          'toggle-visible');
-    }
-    if (nonEmptyParams.hasOwnProperty('producttype')) {
-      _el.querySelector('#prodtype').parentNode.classList.add(
-          'toggle-visible');
-    }
-
-    _toggleAdvancedOptions();
-  };
-  /*
-   * Expands advanced options sections if any advanced options were previously
-   * selected.
-   */
-  _toggleAdvancedOptions = function () {
     var advancedOptions,
-        i;
+        i,
+        nonEmptyParams;
 
     advancedOptions = [
       'alertlevel',
@@ -451,13 +416,41 @@ var FDSNSearchForm = function (options) {
       'producttype',
       'reviewstatus'
     ];
+    nonEmptyParams = null;
 
+    _bindRadio('eventtype');
+    _bindRadio('catalog');
+    _bindRadio('contributor');
+    _bindRadio('producttype');
+
+    // Expands advanced options sections if any advanced options were
+    // previously selected.
     for (i = 0; i < advancedOptions.length; i++) {
       if (_model.get(advancedOptions[i]) !== '' ) {
         _el.querySelector('#search-advanced').parentNode.classList.add(
             'toggle-visible');
         break;
       }
+    }
+    
+    // Expand collapsed sections if any of their parameters are set
+    nonEmptyParams = _model.getNonEmpty();
+
+    if (nonEmptyParams.hasOwnProperty('eventtype')) {
+      _el.querySelector('#evttype').parentNode.classList.add(
+          'toggle-visible');
+    }
+    if (nonEmptyParams.hasOwnProperty('catalog')) {
+      _el.querySelector('#cat').parentNode.classList.add(
+          'toggle-visible');
+    }
+    if (nonEmptyParams.hasOwnProperty('contributor')) {
+      _el.querySelector('#contrib').parentNode.classList.add(
+          'toggle-visible');
+    }
+    if (nonEmptyParams.hasOwnProperty('producttype')) {
+      _el.querySelector('#prodtype').parentNode.classList.add(
+          'toggle-visible');
     }
   };
 
