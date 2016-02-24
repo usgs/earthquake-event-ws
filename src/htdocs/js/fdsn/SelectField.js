@@ -123,7 +123,7 @@ var SelectField = function (options) {
   _this._getFieldId = function (value) {
     //replace spaces with double underscore in case one value uses underscore
     //and another uses a space, that are otherwise the same
-    return _id + '-' + value.replace(/ /g, '__');
+    return _id + '-' + value.replace('/ /g', '__');
   };
 
   _initialize();
