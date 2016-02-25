@@ -94,19 +94,15 @@ var SelectField = function (options) {
         (typeof value !== 'undefined') ? value : name);
     textStr = _formatDisplay(name);
 
-    if (_this._getFieldId(valueStr) === '') {
-      idValue = textStr;
-    } else {
-      idValue = valueStr;
+    idValue = _this._getFieldId(valueStr);
+    if (idValue === '') {
+      idValue = _id + '-' + textStr;
+      idValue = idValue.replace(' ', '-');
     }
-
-    idValue = idValue.replace(' ', '-');
 
     return [
       _startWrapper,
       '<input type="', _type, '" name="', _id, '" id="',
-          _id,
-          '-',
           idValue,
           '" value="', valueStr, '"', ((checked)?' checked':''),'/>',
       '<label class="label-checkbox" for="',
@@ -123,7 +119,7 @@ var SelectField = function (options) {
   _this._getFieldId = function (value) {
     //replace spaces with double underscore in case one value uses underscore
     //and another uses a space, that are otherwise the same
-    return _id + '-' + value.replace('/ /g', '__');
+    return _id + '-' + value.replace(/ /g, '__');
   };
 
   _initialize();
