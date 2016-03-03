@@ -41,19 +41,28 @@ var DateTimeView = function (options) {
 
   _getTimes = function () {
     var now,
+        year,
+        month,
+        day,
         offset,
         thirtyDays,
         today,
         sevenDays;
 
+    // Break down current date into year, month, day
     now = new Date();
+    year = now.getFullYear();
+    month = ('0' + (now.getMonth() + 1)).slice(-2);
+    day = ('0' + now.getDate()).slice(-2);
     offset = now.getTimezoneOffset() * 60000;
-    today = new Date(now.getFullYear() + '-' + (now.getMonth() + 1) +
-        '-' + now.getDate()).getTime() - offset;
+
+    // calculate time ranges in epoch milliseconds
+    today = new Date(year + '-' + month + '-' + day).getTime() - offset;
     sevenDays = today - (7 * 86400000);
     thirtyDays = today - (30 * 86400000);
     today = today + 86399999;
 
+    // set time variables for current, 7 past days, and 30 past days
     _now = FDSNFormatter.formatDateTime(today);
     _weekAgo = FDSNFormatter.formatDateTime(sevenDays);
     _monthAgo = FDSNFormatter.formatDateTime(thirtyDays);
