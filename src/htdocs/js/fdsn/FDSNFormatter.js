@@ -47,6 +47,10 @@ var formatDateTimeFromString = function (stamp) {
       parts,
       ymd;
 
+  if (stamp === '') {
+    return null;
+  }
+
   parts = stamp.split(/( |T)/);
   ymd = parts[0] || '';
   hms = parts[1] || '';
