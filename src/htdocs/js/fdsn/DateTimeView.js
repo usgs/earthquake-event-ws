@@ -44,7 +44,6 @@ var DateTimeView = function (options) {
         year,
         month,
         day,
-        offset,
         thirtyDays,
         today,
         sevenDays;
@@ -52,12 +51,11 @@ var DateTimeView = function (options) {
     // Break down current date into year, month, day
     now = new Date();
     year = now.getFullYear();
-    month = ('0' + (now.getMonth() + 1)).slice(-2);
-    day = ('0' + now.getDate()).slice(-2);
-    offset = now.getTimezoneOffset() * 60000;
+    month = now.getMonth() + 1;
+    day = now.getDate();
 
     // calculate time ranges in epoch milliseconds
-    today = new Date(year + '-' + month + '-' + day).getTime() - offset;
+    today = Date.UTC(year, month, day);
     sevenDays = today - (7 * 86400000);
     thirtyDays = today - (30 * 86400000);
     today = today + 86399999;
