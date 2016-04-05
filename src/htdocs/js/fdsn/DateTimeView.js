@@ -47,7 +47,7 @@ var DateTimeView = function (options) {
 
     // calculate time ranges in epoch milliseconds
     now = new Date();
-    today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+    today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
     sevenDays = today - (7 * 86400000);
     thirtyDays = today - (30 * 86400000);
     today = today + 86399999;
