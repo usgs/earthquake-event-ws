@@ -41,21 +41,13 @@ var DateTimeView = function (options) {
 
   _getTimes = function () {
     var now,
-        year,
-        month,
-        day,
         thirtyDays,
         today,
         sevenDays;
 
-    // Break down current date into year, month, day
-    now = new Date();
-    year = now.getFullYear();
-    month = now.getMonth() + 1;
-    day = now.getDate();
-
     // calculate time ranges in epoch milliseconds
-    today = Date.UTC(year, month, day);
+    now = new Date();
+    today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
     sevenDays = today - (7 * 86400000);
     thirtyDays = today - (30 * 86400000);
     today = today + 86399999;
