@@ -106,8 +106,6 @@ var SelectField = function (options) {
           idValue,
           '" value="', valueStr, '"', ((checked)?' checked':''),'/>',
       '<label class="label-checkbox" for="',
-          _id,
-          '-',
           idValue,
           '">',
         textStr,
