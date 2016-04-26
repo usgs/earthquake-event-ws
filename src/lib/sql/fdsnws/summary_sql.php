@@ -121,7 +121,7 @@ foreach ($productsToSummarize as $summaryName => $info) {
   echo 'CREATE TABLE ' . $tableName . ' (' .
     implode(',', $tableColumns) . ',' .
     implode(',', $tableIndexes) .
-  ');' . "\n";
+  ') ENGINE=INNODB;' . "\n";
 
   echo '-- procedure' . "\n";
   echo 'delimiter //' . "\n";
