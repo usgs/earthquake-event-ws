@@ -42,7 +42,7 @@ if (!isset($TEMPLATE)) {
           target="_blank">Help</a>
       </li>
       <li>
-        <a href="/data/comcat/index.php">
+        <a href="/data/comcat/">
             ANSS Comprehensive Earthquake Catalog (ComCat) Documentation
         </a>
       </li>
