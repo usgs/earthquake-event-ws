@@ -19,6 +19,10 @@
 
   );
   print navGroup('For Developers',
+    navItem($FDSN_URL . '/', 'API Documentation - EQ Catalog') .
+    navItem($FEED_URL . '/geojson.php', 'GeoJSON Summary') .
+    navItem($FEED_URL . '/geojson_detail.php', 'GeoJSON Detail') .
+    navItem('https://github.com/usgs/devcorner', 'Developers Corner') .
     navItem($FEED_URL . '/changelog.php', 'Change Log') .
     navItem('/earthquakes/feed/policy.php', 'Feed Lifecycle Policy') .
     navItem('https://github.com/usgs/devcorner', 'Developers Corner') .
