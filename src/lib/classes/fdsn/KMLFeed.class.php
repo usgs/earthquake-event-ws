@@ -259,12 +259,13 @@ class KMLFeed extends AbstractFeed {
       $etime = substr($e['eventTime'], 0, -3);
       $age = $now - $etime;
       if ($age <= 3600) {
-        return "dd0000fc"; //"red";
+        return "dd0000fc"; // "red";
       } else if ($age <= 86400) {
-        return "dd009dfe"; //"orange";
+        return "dd009dfe"; // "orange";
+      } else if ($age <= 604800) {
+        return "dd03fffb"; // "yellow";
       } else {
-        // TODO: add white after one week
-        return "dd03fffb"; //"yellow";
+        return "ddffffff"; // "white";
       }
     } else {
       $depth = $e['eventDepth'];
