@@ -47,7 +47,9 @@ if (!isset($TEMPLATE)) {
         </a>
       </li>
       <li>
-        <a href="/earthquakes/eqinthenews/">Significant Earthquakes Archive</a>
+        <a href="/earthquakes/browse/significant.php">
+          Significant Earthquakes Archive
+        </a>
       </li>
     </ul>
   </header>
