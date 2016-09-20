@@ -141,8 +141,8 @@ if (!isset($TEMPLATE)) {
         <a href="https://github.com/usgs/devcorner">Developers Corner</a>
       </li>
       <li>
-        <a href="<?php print $FEED_URL;?>/glossary.php">
-            Glossary - Earthquake Catalog Data Terms</a>
+        <a href="http://earthquake.usgs.gov/data/comcat/">
+            ANSS Comprehensive Earthquake Catalog (ComCat) Documentation</a>
       </li>
       <li>
         <a href="https://geohazards.usgs.gov/mailman/listinfo/realtime-feeds">
