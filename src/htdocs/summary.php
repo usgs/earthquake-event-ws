@@ -17,9 +17,9 @@ $AGES = array(
 // name => size in magnitude
 $SIZES = array(
   'all' => null,
-  '1.0' => 1,
-  '2.5' => 2.5,
-  '4.5' => 4.5,
+  '1.0' => 0.95,
+  '2.5' => 2.45,
+  '4.5' => 4.45,
   'significant' => null
 );
 
