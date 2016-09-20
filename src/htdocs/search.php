@@ -42,8 +42,8 @@ if (!isset($TEMPLATE)) {
           target="_blank">Help</a>
       </li>
       <li>
-        <a href="/earthquakes/map/doc_aboutdata.php">
-            About the ANSS Comprehensive Catalog and Important Caveats
+        <a href="/data/comcat/index.php">
+            ANSS Comprehensive Earthquake Catalog (ComCat) Documentation
         </a>
       </li>
       <li>
