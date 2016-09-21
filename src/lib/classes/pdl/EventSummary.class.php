@@ -54,7 +54,7 @@ class EventSummary {
 
   public function getMagnitude() { return $this->magnitude; }
   public function setMagnitude($magnitude) { $this->magnitude = $magnitude; }
-  
+
   public function getMagnitudeType() { return $this->magnitudeType; }
   public function setMagnitudeType($magnitudeType) { $this->magnitudeType = $magnitudeType; }
 
@@ -66,9 +66,9 @@ class EventSummary {
 
   public function getEventType() { return $this->eventType; }
   public function setEventType($type) { $this->eventType = $type; }
-  
+
   public function getAzimuthalGap() { return $this->azimuthalGap; }
-  public function setAzimuthalGap($azimuthalGap) { $this->azimuthalGap = $azimuthalGap; }  
+  public function setAzimuthalGap($azimuthalGap) { $this->azimuthalGap = $azimuthalGap; }
 
   public function getTsunami() { return $this->tsunami; }
   public function setTsunami($tsunami) { $this->tsunami = $tsunami; }
@@ -84,14 +84,14 @@ class EventSummary {
 
   public function getMinimumDistance () { return $this->minimumDistance; }
   public function setMinimumDistance ($minimumDistance) { $this->minimumDistance = $minimumDistance; }
-  
+
   public function getStandardError () { return $this->standardError; }
   public function setStandardError ($standardError) { $this->standardError = $standardError; }
 
   public function getProperties() { return $this->properties; }
   public function setProperties($props) { $this->properties = $props; }
 
-  public function setProperty($name, $value) { 
+  public function setProperty($name, $value) {
     $this->properties[$name] = $value;
   }
 
@@ -111,7 +111,7 @@ class EventSummary {
       'longitude' => $this->getLongitude(),
       'depth' => $this->getDepth(),
       'magnitude' => $this->getMagnitude(),
-      'magnitudeType' => $this->getMagnitudeType(),      
+      'magnitudeType' => $this->getMagnitudeType(),
       'url' => $this->getDetailLink(),
       'status' => $this->getStatus(),
       'type' => $this->getEventType(),
@@ -182,9 +182,10 @@ class EventSummary {
   }
 
   public function getTitle() {
+    global $SCENARIO_MODE;
     $eventtype = $this->getHumanEventType();
 
-    if ($eventtype === 'origin-scenario') {
+    if ($SCENARIO_MODE) {
       $eventtype = 'Scenario ' . $eventtype;
     }
 
