@@ -54,9 +54,10 @@ abstract class AbstractFeed {
   }
 
   public function getEventTitle($event) {
+    global $SCENARIO_MODE;
     $eventtype = $this->formatter->formatEventType($event['event_type']);
 
-    if ($event['type'] === 'origin-scenario') {
+    if ($SCENARIO_MODE) {
       $eventtype = 'Scenario ' . $eventtype;
     }
 
