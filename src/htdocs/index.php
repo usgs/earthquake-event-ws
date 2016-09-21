@@ -141,7 +141,7 @@ if (!isset($TEMPLATE)) {
         <a href="https://github.com/usgs/devcorner">Developers Corner</a>
       </li>
       <li>
-        <a href="http://earthquake.usgs.gov/data/comcat/">
+        <a href="/data/comcat/">
             ANSS Comprehensive Earthquake Catalog (ComCat) Documentation</a>
       </li>
       <li>
