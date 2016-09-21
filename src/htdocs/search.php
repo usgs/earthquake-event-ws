@@ -29,33 +29,46 @@ if (!isset($TEMPLATE)) {
 
 <form method="get" action="<?php print $FDSN_HOST . $FDSN_PATH; ?>/query"
     id="fdsn-search-form" role="search">
-
-
-    <header class="header" aria-label="Search form header">
-      <small>
-        Search results are limited to
-        <?php echo number_format($MAX_SEARCH); ?> events. To get URL for a search,
-          click the search button, then copy the URL from the browser address bar.
-      </small>
-      <?php if (!$SCENARIO_MODE) : ?>
-        <ul>
-          <li>
-            <a href="<?php echo $FDSN_HOST . $FDSN_PATH; ?>"
-              target="_blank">Help</a>
-          </li>
-          <li>
-            <a href="/data/comcat/">
-                ANSS Comprehensive Earthquake Catalog (ComCat) Documentation
-            </a>
-          </li>
-          <li>
-            <a href="/earthquakes/browse/significant.php">
+  <header class="header" aria-label="Search form header">
+    <small>
+      Search results are limited to
+      <?php echo number_format($MAX_SEARCH); ?> events. To get URL for a search,
+        click the search button, then copy the URL from the browser address bar.
+    </small>
+    <ul>
+      <li>
+        <a href="<?php echo $FDSN_HOST . $FDSN_PATH; ?>"
+          target="_blank">Help</a>
+      </li>
+      <li>
+        <?php
+          if ($SCENARIO_MODE) {
+            echo '<a href="/data/comcat/">
+                ANSS Comprehensive Scenario Earthquake Catalog (ComCat)
+                Documentation
+            </a>';
+          } else {
+            echo '<a href="/data/comcat/">
+              ANSS Comprehensive Earthquake Catalog (ComCat) Documentation
+            </a>';
+          }
+        ?>
+      </li>
+      <li>
+        <?php
+          if ($SCENARIO_MODE) {
+            echo '<a href="/earthquakes/browse/significant.php">
+              Significant Scenario Earthquakes Archive
+            </a>';
+          } else {
+            echo '<a href="/earthquakes/browse/significant.php">
               Significant Earthquakes Archive
-            </a>
-          </li>
-        </ul>
-      <?php endif; ?>
-    </header>
+            </a>';
+          }
+        ?>
+      </li>
+    </ul>
+  </header>
 
     <?php if ($SCENARIO_MODE) : ?>
       <p class="alert warning">
