@@ -9,7 +9,7 @@ if (!isset($TEMPLATE)) {
   include '../conf/config.inc.php';
 
   if ($SCENARIO_MODE) {
-    $TITLE = 'Search Scenario Catalog';
+    $TITLE = 'Search Scenario Earthquake Catalog';
   } else {
     $TITLE = 'Search Earthquake Catalog';
   }
