@@ -27,7 +27,9 @@ class EventSummary {
   public $lastModified = null;
 
 
-  public function __construct() {}
+  public function __construct() {
+    $this->formatter = new Formatter();
+  }
 
   public function getEventIndexId() { return $this->eventIndexId; }
   public function setEventIndexId($indexId) { $this->eventIndexId = $indexId; }
@@ -157,7 +159,7 @@ class EventSummary {
     $type = $this->getEventType();
     if($type == null || strtolower($type) == 'earthquake') {
       // assume earthquake
-      $type = '';
+      $type = 'Earthquake';
     } else {
       $temp = strtolower($type);
       if     ($temp == "quarry")    $type = "Quarry Blast";
@@ -180,7 +182,15 @@ class EventSummary {
   }
 
   public function getTitle() {
-    return 'M' . $this->getHumanMagnitude() . ' ' . $this->getHumanEventType() . ' - ' . $this->getRegion();
-  }
+    $eventtype = $this->getHumanEventType();
 
+    if ($eventtype === 'origin-scenario') {
+      $eventtype = 'Scenario ' . $eventtype;
+    }
+
+    return
+        $this->formatter->formatMagnitude($this->getMagnitude()) .
+        ($eventtype !== 'Earthquake' ? ' ' . $eventtype : '') .
+        ' - ' . $this->getRegion();
+  }
 }
