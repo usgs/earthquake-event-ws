@@ -129,7 +129,7 @@ if (!isset($TEMPLATE)) {
         <a href="<?php print $FEED_URL;?>/changelog.php">Change Log</a>
       </li>
       <li>
-        <a href="<?php print $FEED_URL;?>/../policy.php">
+        <a href="/earthquakes/feed/policy.php">
             Feed Lifecycle Policy</a>
       </li>
     </ul>
