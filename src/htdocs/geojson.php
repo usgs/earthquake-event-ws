@@ -37,60 +37,60 @@ if (!isset($TEMPLATE)) {
     <pre><code class="geojson">{
   type: "FeatureCollection",
   metadata: {
-    <a href="glossary.php#metadata_generated">generated</a>: Long Integer,
-    <a href="glossary.php#metadata_url">url</a>: String,
-    <a href="glossary.php#metadata_title">title</a>: String,
-    <a href="glossary.php#metadata_api">api</a>: String,
-    <a href="glossary.php#metadata_count">count</a>: Integer,
-    <a href="glossary.php#metadata_status">status</a>: Integer
+    <a href="/data/comcat/data-eventterms.php#metadata_generated">generated</a>: Long Integer,
+    <a href="/data/comcat/data-eventterms.php#metadata_url">url</a>: String,
+    <a href="/data/comcat/data-eventterms.php#metadata_title">title</a>: String,
+    <a href="/data/comcat/data-eventterms.php#metadata_api">api</a>: String,
+    <a href="/data/comcat/data-eventterms.php#metadata_count">count</a>: Integer,
+    <a href="/data/comcat/data-eventterms.php#metadata_status">status</a>: Integer
   },
   bbox: [
-    <a href="glossary.php#longitude">minimum longitude</a>,
-    <a href="glossary.php#latitude">minimum latitude</a>,
-    <a href="glossary.php#depth">minimum depth</a>,
-    <a href="glossary.php#longitude">maximum longitude</a>,
-    <a href="glossary.php#latitude">maximum latitude</a>,
-    <a href="glossary.php#depth">maximum depth</a>
+    <a href="/data/comcat/data-eventterms.php#longitude">minimum longitude</a>,
+    <a href="/data/comcat/data-eventterms.php#latitude">minimum latitude</a>,
+    <a href="/data/comcat/data-eventterms.php#depth">minimum depth</a>,
+    <a href="/data/comcat/data-eventterms.php#longitude">maximum longitude</a>,
+    <a href="/data/comcat/data-eventterms.php#latitude">maximum latitude</a>,
+    <a href="/data/comcat/data-eventterms.php#depth">maximum depth</a>
   ],
   features: [
     {
       type: "Feature",
       properties: {
-        <a href="glossary.php#mag">mag</a>: Decimal,
-        <a href="glossary.php#place">place</a>: String,
-        <a href="glossary.php#time">time</a>: Long Integer,
-        <a href="glossary.php#updated">updated</a>: Long Integer,
-        <a href="glossary.php#tz">tz</a>: Integer,
-        <a href="glossary.php#url">url</a>: String,
-        <a href="glossary.php#detail">detail</a>: String,
-        <a href="glossary.php#felt">felt</a>:Integer,
-        <a href="glossary.php#cdi">cdi</a>: Decimal,
-        <a href="glossary.php#mmi">mmi</a>: Decimal,
-        <a href="glossary.php#alert">alert</a>: String,
-        <a href="glossary.php#status">status</a>: String,
-        <a href="glossary.php#tsunami">tsunami</a>: Integer,
-        <a href="glossary.php#sig">sig</a>:Integer,
-        <a href="glossary.php#net">net</a>: String,
-        <a href="glossary.php#code">code</a>: String,
-        <a href="glossary.php#ids">ids</a>: String,
-        <a href="glossary.php#sources">sources</a>: String,
-        <a href="glossary.php#types">types</a>: String,
-        <a href="glossary.php#nst">nst</a>: Integer,
-        <a href="glossary.php#dmin">dmin</a>: Decimal,
-        <a href="glossary.php#rms">rms</a>: Decimal,
-        <a href="glossary.php#gap">gap</a>: Decimal,
-        <a href="glossary.php#magType">magType</a>: String,
-        <a href="glossary.php#type">type</a>: String
+        <a href="/data/comcat/data-eventterms.php#mag">mag</a>: Decimal,
+        <a href="/data/comcat/data-eventterms.php#place">place</a>: String,
+        <a href="/data/comcat/data-eventterms.php#time">time</a>: Long Integer,
+        <a href="/data/comcat/data-eventterms.php#updated">updated</a>: Long Integer,
+        <a href="/data/comcat/data-eventterms.php#tz">tz</a>: Integer,
+        <a href="/data/comcat/data-eventterms.php#url">url</a>: String,
+        <a href="/data/comcat/data-eventterms.php#detail">detail</a>: String,
+        <a href="/data/comcat/data-eventterms.php#felt">felt</a>:Integer,
+        <a href="/data/comcat/data-eventterms.php#cdi">cdi</a>: Decimal,
+        <a href="/data/comcat/data-eventterms.php#mmi">mmi</a>: Decimal,
+        <a href="/data/comcat/data-eventterms.php#alert">alert</a>: String,
+        <a href="/data/comcat/data-eventterms.php#status">status</a>: String,
+        <a href="/data/comcat/data-eventterms.php#tsunami">tsunami</a>: Integer,
+        <a href="/data/comcat/data-eventterms.php#sig">sig</a>:Integer,
+        <a href="/data/comcat/data-eventterms.php#net">net</a>: String,
+        <a href="/data/comcat/data-eventterms.php#code">code</a>: String,
+        <a href="/data/comcat/data-eventterms.php#ids">ids</a>: String,
+        <a href="/data/comcat/data-eventterms.php#sources">sources</a>: String,
+        <a href="/data/comcat/data-eventterms.php#types">types</a>: String,
+        <a href="/data/comcat/data-eventterms.php#nst">nst</a>: Integer,
+        <a href="/data/comcat/data-eventterms.php#dmin">dmin</a>: Decimal,
+        <a href="/data/comcat/data-eventterms.php#rms">rms</a>: Decimal,
+        <a href="/data/comcat/data-eventterms.php#gap">gap</a>: Decimal,
+        <a href="/data/comcat/data-eventterms.php#magType">magType</a>: String,
+        <a href="/data/comcat/data-eventterms.php#type">type</a>: String
       },
       geometry: {
         type: "Point",
         coordinates: [
-          <a href="glossary.php#longitude">longitude</a>,
-          <a href="glossary.php#latitude">latitude</a>,
-          <a href="glossary.php#depth">depth</a>
+          <a href="/data/comcat/data-eventterms.php#longitude">longitude</a>,
+          <a href="/data/comcat/data-eventterms.php#latitude">latitude</a>,
+          <a href="/data/comcat/data-eventterms.php#depth">depth</a>
         ]
       },
-      <a href="glossary.php#id">id</a>: String
+      <a href="/data/comcat/data-eventterms.php#id">id</a>: String
     },
     &hellip;
   ]

@@ -35,28 +35,28 @@ if (!isset($TEMPLATE)) {
       Below are the fields included in the spreadsheet output:
     </p>
     <ul>
-      <li><a href="glossary.php#time">time</a></li>
-      <li><a href="glossary.php#latitude">latitude</a></li>
-      <li><a href="glossary.php#longitude">longitude</a></li>
-      <li><a href="glossary.php#depth">depth</a></li>
-      <li><a href="glossary.php#mag">mag</a></li>
-      <li><a href="glossary.php#magType">magType</a></li>
-      <li><a href="glossary.php#nst">nst</a></li>
-      <li><a href="glossary.php#gap">gap</a></li>
-      <li><a href="glossary.php#dmin">dmin</a></li>
-      <li><a href="glossary.php#rms">rms</a></li>
-      <li><a href="glossary.php#net">net</a></li>
-      <li><a href="glossary.php#id">id</a></li>
-      <li><a href="glossary.php#updated">updated</a></li>
-      <li><a href="glossary.php#place">place</a></li>
-      <li><a href="glossary.php#type">type</a></li>
-      <li><a href="glossary.php#locationSource">locationSource</a></li>
-      <li><a href="glossary.php#magSource">magSource</a></li>
-      <li><a href="glossary.php#horizontalError">horizontalError</a></li>
-      <li><a href="glossary.php#depthError">depthError</a></li>
-      <li><a href="glossary.php#magError">magError</a></li>
-      <li><a href="glossary.php#magNst">magNst</a></li>
-      <li><a href="glossary.php#status">status</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#time">time</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#latitude">latitude</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#longitude">longitude</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#depth">depth</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#mag">mag</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#magType">magType</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#nst">nst</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#gap">gap</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#dmin">dmin</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#rms">rms</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#net">net</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#id">id</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#updated">updated</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#place">place</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#type">type</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#locationSource">locationSource</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#magSource">magSource</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#horizontalError">horizontalError</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#depthError">depthError</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#magError">magError</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#magNst">magNst</a></li>
+      <li><a href="/data/comcat/data-eventterms.php#status">status</a></li>
     </ul>
 
     <p>
