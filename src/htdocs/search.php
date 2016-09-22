@@ -23,6 +23,12 @@ if (!isset($TEMPLATE)) {
     <script src="js/search.js"></script>
   ';
 
+  // Use Earthquake level nav file
+  include_once 'functions.inc.php';
+  ob_start();
+  include '_eq_navigation.inc.php';
+  $NAVIGATION = ob_get_clean();
+
   include 'template.inc.php';
 }
 ?>
