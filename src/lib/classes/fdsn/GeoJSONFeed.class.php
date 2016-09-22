@@ -108,7 +108,7 @@ class GeoJSONFeed extends AbstractFeed {
     $depth = safefloatval($event['eventDepth']);
     $type = $event['event_type'];
 
-    if ($type === null) {
+    if ($type === null || $type === '') {
       $type = 'earthquake';
     }
 
