@@ -1,5 +1,4 @@
 <?php
-
   $dateRanges = array(
     "hour" => array (
       "name" => "Past Hour",
@@ -49,29 +48,35 @@
     )
   );
 
+  if ($SCENARIO_MODE) {
+    $scenarioCheck = 'Scenario Earthquakes';
+  } else {
+    $scenarioCheck = 'Earthquakes';
+  }
+
   $magRanges = array(
     "significant" => array (
-      "name" => "Significant Earthquakes",
+      "name" => "Significant " . $scenarioCheck,
       "url" => "significant"
     ),
 
     "4.5" => array(
-      "name" => "M4.5+ Earthquakes",
+      "name" => "M4.5+ " . $scenarioCheck,
       "url" => "4.5"
     ),
 
     "2.5" => array(
-      "name" => "M2.5+ Earthquakes",
+      "name" => "M2.5+ " . $scenarioCheck,
       "url" => "2.5"
     ),
 
     "1" => array(
-      "name" => "M1.0+ Earthquakes",
+      "name" => "M1.0+ " . $scenarioCheck,
       "url" => "1.0"
     ),
 
     "all" => array(
-      "name" => "All Earthquakes",
+      "name" => "All " . $scenarioCheck,
       "url" => "all"
     )
   );

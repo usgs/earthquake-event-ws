@@ -35,23 +35,22 @@ if (!isset($TEMPLATE)) {
 
 <form method="get" action="<?php print $FDSN_HOST . $FDSN_PATH; ?>/query"
     id="fdsn-search-form" role="search">
-
-
-    <header class="header" aria-label="Search form header">
-      <small>
-        Search results are limited to
-        <?php echo number_format($MAX_SEARCH); ?> events. To get URL for a search,
-          click the search button, then copy the URL from the browser address bar.
-      </small>
-      <?php if (!$SCENARIO_MODE) : ?>
-        <ul>
+  <header class="header" aria-label="Search form header">
+    <small>
+      Search results are limited to
+      <?php echo number_format($MAX_SEARCH); ?> events. To get URL for a search,
+        click the search button, then copy the URL from the browser address bar.
+    </small>
+    <?php
+      if (!$SCENARIO_MODE) {
+        echo '<ul>
           <li>
-            <a href="<?php echo $FDSN_HOST . $FDSN_PATH; ?>"
+            <a href="' . $FDSN_HOST . $FDSN_PATH . '"
               target="_blank">Help</a>
           </li>
           <li>
             <a href="/data/comcat/">
-                ANSS Comprehensive Earthquake Catalog (ComCat) Documentation
+              ANSS Comprehensive Earthquake Catalog (ComCat) Documentation
             </a>
           </li>
           <li>
@@ -59,9 +58,10 @@ if (!isset($TEMPLATE)) {
               Significant Earthquakes Archive
             </a>
           </li>
-        </ul>
-      <?php endif; ?>
-    </header>
+        </ul>';
+      }
+    ?>
+  </header>
 
     <?php if ($SCENARIO_MODE) : ?>
       <p class="alert warning">
