@@ -4,7 +4,7 @@ include_once '../conf/feeds.inc.php';
 
 // requested url
 $URL = $HOST_URL_PREFIX . $_SERVER['REQUEST_URI'];
-$PLATES = $HOST_URL_PREFIX . $FEED_PATH . '/plates.kmz';
+$PLATES = 'https://earthquake.usgs.gov/learn/plate-boundaries.kmz';
 
 // name => age in seconds
 $AGES = array(
