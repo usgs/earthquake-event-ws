@@ -168,7 +168,7 @@ BEGIN
   ELSE
     -- calculate significance
     IF out_magnitude IS NOT NULL THEN
-      SET mag_sig = out_magnitude * 100 * (out_magnitude / 6.5);
+      SET mag_sig = out_magnitude * 100 * (ABS(out_magnitude) / 6.5);
     ELSE
       SET mag_sig = 0;
     END IF;
