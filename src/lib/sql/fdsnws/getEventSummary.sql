@@ -168,6 +168,8 @@ BEGIN
   ELSE
     -- calculate significance
     IF out_magnitude IS NOT NULL THEN
+      -- Use ABS when scaling magnitude to prevent negative magnitudes from
+      -- resulting in a positive significance contribution from magnitude
       SET mag_sig = out_magnitude * 100 * (ABS(out_magnitude) / 6.5);
     ELSE
       SET mag_sig = 0;
