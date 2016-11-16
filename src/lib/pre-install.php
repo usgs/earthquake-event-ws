@@ -103,8 +103,8 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
     php_flag engine off
   </IfModule>
 
-  # only allow GET access
-  <LimitExcept GET>
+  # only allow GET access (and OPTIONS for CORS)
+  <LimitExcept GET OPTIONS>
     Order allow,deny
     Deny from all
   </LimitExcept>
@@ -120,16 +120,16 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
   ExpiresActive on
   ExpiresDefault "access plus 1 days"
 
-  # only allow GET access
-  <LimitExcept GET>
+  # only allow GET access (and OPTIONS for CORS)
+  <LimitExcept GET OPTIONS>
     Order allow,deny
     Deny from all
   </LimitExcept>
 </Location>
 
 <Location ' . $FDSN_PATH . '/>
-  # only allow GET access
-  <LimitExcept GET>
+  # only allow GET access (and OPTIONS for CORS)
+  <LimitExcept GET OPTIONS>
     Order allow,deny
     Deny from all
   </LimitExcept>
