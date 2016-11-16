@@ -1,4 +1,11 @@
 <?php
+
+if (isset($_SERVER['REQUEST_METHOD']) &&
+    $_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+  // short-circuit OPTIONS method requests, which are CORS related
+  exit();
+}
+
 // use UTC timezone for date parsing/formatting
 date_default_timezone_set("UTC");
 
