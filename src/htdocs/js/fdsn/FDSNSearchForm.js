@@ -1,4 +1,4 @@
-/* global window, document */
+/* global window, document, SCENARIO_MODE */
 
 'use strict';
 
@@ -276,7 +276,9 @@ var FDSNSearchForm = function (options) {
         expandAdvanced,
         i,
         nonEmptyParams,
-        parsedUrl;
+        params,
+        parsedUrl,
+        search;
 
     advancedOptions = [
       'latitude',
@@ -350,22 +352,30 @@ var FDSNSearchForm = function (options) {
     if (window.location.hash !== '') {
       // Update the model with information from the hash
       parsedUrl = UrlManager.parseUrl();
-      parsedUrl = parsedUrl.search || {};
-      parsedUrl = parsedUrl.params || null;
+      search = parsedUrl.search || {};
+      params = search.params || {};
 
       // If parsing a hash, that contains an existing search
       // want to clear default values (if not specified)
-      if (parsedUrl !== null) {
-        if (!parsedUrl.hasOwnProperty('starttime')) {
-          parsedUrl.starttime = '';
+      if (search.isSearch) {
+        if (!params.hasOwnProperty('starttime')) {
+          params.starttime = '';
         }
-        if (!parsedUrl.hasOwnProperty('endtime')) {
-          parsedUrl.endtime = '';
+        if (!params.hasOwnProperty('endtime')) {
+          params.endtime = '';
         }
-        if (!parsedUrl.hasOwnProperty('minmagnitude')) {
-          parsedUrl.minmagnitude = '';
+        if (!params.hasOwnProperty('minmagnitude')) {
+          params.minmagnitude = '';
         }
-        _model.setAll(parsedUrl);
+      }
+
+      // set catalog in scenario mode, unless "feed" is a search timestamp
+      if (SCENARIO_MODE && isNaN(parsedUrl.feed)) {
+        params.catalog = parsedUrl.feed;
+      }
+
+      if (params !== {}) {
+        _model.setAll(params);
       }
     }
 
