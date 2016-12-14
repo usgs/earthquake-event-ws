@@ -19,6 +19,7 @@ if (!isset($TEMPLATE)) {
       var FDSN_HOST = \'' . $FDSN_HOST . '\';
       var FDSN_PATH = \'' . $FDSN_PATH . '\';
       var MAPLIST_PATH = \'' . $MAPLIST_PATH . '\';
+      var SCENARIO_MODE = \'' . $SCENARIO_MODE . '\';
     /*]]>*/</script>
     <script src="js/search.js"></script>
   ';
