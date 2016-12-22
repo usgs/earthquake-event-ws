@@ -116,27 +116,41 @@
 <section class="one-of-two column" aria-labelledby="output-orderby">
   <h3 id="output-orderby" class="label">Order By</h3>
   <ul class="no-style orderby-list">
-    <li>
-      <input id="orderby-time" type="radio" name="orderby"
-          value="time" aria-labelledby="output-orderby" checked/>
-      <label for="orderby-time" class="label-checkbox">
-        Time - Newest First
-      </label>
-    </li>
-    <li>
-      <input id="orderby-time-asc" type="radio" name="orderby"
-          value="time-asc" aria-labelledby="output-orderby"/>
-      <label for="orderby-time-asc" class="label-checkbox">
-        Time - Oldest First
-      </label>
-    </li>
-    <li>
-      <input id="orderby-magnitude" type="radio" name="orderby"
-          value="magnitude" aria-labelledby="output-orderby"/>
-      <label for="orderby-magnitude" class="label-checkbox">
-        Magnitude - Largest First
-      </label>
-    </li>
+  <?php
+    if (!$SCENARIO_MODE) {
+      echo '
+        <li>
+          <input id="orderby-time" type="radio" name="orderby"
+              value="time" aria-labelledby="output-orderby" checked/>
+          <label for="orderby-time" class="label-checkbox">
+            Time - Newest First
+          </label>
+        </li>
+        <li>
+          <input id="orderby-time-asc" type="radio" name="orderby"
+              value="time-asc" aria-labelledby="output-orderby"/>
+          <label for="orderby-time-asc" class="label-checkbox">
+            Time - Oldest First
+          </label>
+        </li>
+        <li>
+          <input id="orderby-magnitude" type="radio" name="orderby"
+              value="magnitude" aria-labelledby="output-orderby"/>
+          <label for="orderby-magnitude" class="label-checkbox">
+            Magnitude - Largest First
+          </label>
+        </li>';
+    } else {
+      echo '
+        <li>
+          <input id="orderby-magnitude" type="radio" name="orderby"
+              value="magnitude" aria-labelledby="output-orderby" checked/>
+          <label for="orderby-magnitude" class="label-checkbox">
+            Magnitude - Largest First
+          </label>
+        </li>';
+    }
+  ?>
     <li>
       <input id="orderby-magnitude-asc" type="radio" name="orderby"
           value="magnitude-asc" aria-labelledby="output-orderby"/>

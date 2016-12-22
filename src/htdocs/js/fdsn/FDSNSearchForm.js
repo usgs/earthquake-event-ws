@@ -202,7 +202,8 @@ var FDSNSearchForm = function (options) {
   _serializeFormToUrl = function () {
     var url = _fdsnHost + _fdsnPath + '/query',
         search = _trimSearch(_model.getNonEmpty()),
-        maplistsort = 'newest', searchsort = _model.get('orderby'),
+        maplistsort,
+        searchsort = _model.get('orderby'),
         mapposition = [[], []],
         searchString = [], key = null,
         format = search.format;
@@ -210,8 +211,9 @@ var FDSNSearchForm = function (options) {
     delete search.format;
 
     if (format === 'maplist') {
-      // TODO :: Streamline this mapping
-      if (searchsort === 'time-asc') {
+      if (searchsort === 'time') {
+        maplistsort = 'newest';
+      } else if (searchsort === 'time-asc') {
         maplistsort = 'oldest';
       } else if (searchsort === 'magnitude') {
         maplistsort = 'largest';
