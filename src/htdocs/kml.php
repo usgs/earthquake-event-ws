@@ -30,7 +30,7 @@ $format = 'kml';
 
     <h2>Usage</h2>
     <p>
-      You will need to download and install <a href="http://earth.google.com/"
+      You will need to download and install <a href="https://earth.google.com/"
       target="_blank">Google Earth</a> to view KML files.
     </p>
 
@@ -58,7 +58,7 @@ $format = 'kml';
       <li>Open the KML using Google Earth.</li>
       <li>Select the earthquake feed, in the left navigation.</li>
       <li>
-        <a href="http://support.google.com/earth/bin/answer.py?hl=en&amp;answer=183758"
+        <a href="https://support.google.com/earth/bin/answer.py?hl=en&amp;answer=183758"
             target="_blank">Use the time slider</a>, in the upper left hand
         corner of the map, to animate the series of earthquakes. You may also
         click through the animation one frame at a time.
@@ -66,7 +66,7 @@ $format = 'kml';
             alt="screenshot of google earth time slider"/>
         <p>
           For more information on how to use the time slider,
-          <a href="http://support.google.com/earth/bin/answer.py?hl=en&amp;answer=183758"
+          <a href="https://support.google.com/earth/bin/answer.py?hl=en&amp;answer=183758"
               target="_blank">click here</a>.
         </p>
       </li>
