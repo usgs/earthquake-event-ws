@@ -20,11 +20,11 @@ class AtomFeed extends AbstractFeed {
         '<updated>' . date('Y-m-d\TH:i:s\Z', time()) . '</updated>' .
         '<author>' .
           '<name>U.S. Geological Survey</name>' .
-          '<uri>http://earthquake.usgs.gov/</uri>' .
+          '<uri>https://earthquake.usgs.gov/</uri>' .
         '</author>' .
         '<id>' . $self . '</id>' .
         '<link rel="self" href="' . htmlentities($self) . '"/>' .
-        '<icon>http://earthquake.usgs.gov/favicon.ico</icon>' . "\n";
+        '<icon>https://earthquake.usgs.gov/favicon.ico</icon>' . "\n";
   }
 
   public function getEntry ($event = null) {
