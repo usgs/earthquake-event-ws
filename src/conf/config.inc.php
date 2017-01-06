@@ -60,14 +60,24 @@ $storage_directory = $CONFIG['storage_directory'];
 $storage_url = $CONFIG['storage_url'];
 
 // build absolute Event Page URL string
-$server_protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'Off') ?
-    'https://' : 'http://';
+$server_protocol =
+    (
+      (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'Off')
+      || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+          $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+    ) ? 'https://' : 'http://';
 $server_host = isset($_SERVER['HTTP_HOST']) ?
     $_SERVER['HTTP_HOST'] : "earthquake.usgs.gov";
 $server_port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
 $server_uri = $_SERVER['REQUEST_URI'];
 
-$HOST_URL_PREFIX = $server_protocol . $server_host;
+// use offsite host when available (development environment)
+if ($CONFIG['OFFSITE_HOST'] !== '') {
+  $HOST_URL_PREFIX = $server_protocol . $CONFIG['OFFSITE_HOST'];
+} else {
+  $HOST_URL_PREFIX = $server_protocol . $server_host;
+}
+
 if ( ($server_port == 80 && $server_protocol == 'http://') || ($server_port == 443 && $server_protocol == 'https://') ) {
   // don't need port
 } else {
