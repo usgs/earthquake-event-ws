@@ -71,7 +71,13 @@ $server_host = isset($_SERVER['HTTP_HOST']) ?
 $server_port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
 $server_uri = $_SERVER['REQUEST_URI'];
 
-$HOST_URL_PREFIX = $server_protocol . $server_host;
+// use offsite host when available (development environment)
+if ($CONFIG['OFFSITE_HOST'] !== '') {
+  $HOST_URL_PREFIX = $CONFIG['OFFSITE_HOST'];
+} else {
+  $HOST_URL_PREFIX = $server_protocol . $server_host;
+}
+
 if ( ($server_port == 80 && $server_protocol == 'http://') || ($server_port == 443 && $server_protocol == 'https://') ) {
   // don't need port
 } else {
