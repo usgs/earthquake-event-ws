@@ -73,7 +73,7 @@ $server_uri = $_SERVER['REQUEST_URI'];
 
 // use offsite host when available (development environment)
 if ($CONFIG['OFFSITE_HOST'] !== '') {
-  $HOST_URL_PREFIX = $CONFIG['OFFSITE_HOST'];
+  $HOST_URL_PREFIX = $server_protocol . $CONFIG['OFFSITE_HOST'];
 } else {
   $HOST_URL_PREFIX = $server_protocol . $server_host;
 }
