@@ -62,7 +62,7 @@ var rewrites = [
   },
 ];
 
-if (!iniConfig.hasOwnProperty('OFFSITE_HOST') ||
+if (iniConfig.hasOwnProperty('OFFSITE_HOST') &&
     iniConfig.OFFSITE_HOST.trim() !== '') {
 
   // Redirect for event page
@@ -75,7 +75,8 @@ if (!iniConfig.hasOwnProperty('OFFSITE_HOST') ||
   proxies.push({
     context: iniConfig.storage_url,
     headers: {
-      'host': iniConfig.OFFSITE_HOST
+      'host': iniConfig.OFFSITE_HOST,
+      'accept-encoding': 'identity'
     },
     host: iniConfig.OFFSITE_HOST,
     port: 80
