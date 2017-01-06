@@ -75,7 +75,8 @@ if (iniConfig.hasOwnProperty('OFFSITE_HOST') &&
   proxies.push({
     context: iniConfig.storage_url,
     headers: {
-      'host': iniConfig.OFFSITE_HOST
+      'host': iniConfig.OFFSITE_HOST,
+      'accept-encoding': 'identity'
     },
     host: iniConfig.OFFSITE_HOST,
     port: 80
