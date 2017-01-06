@@ -62,7 +62,7 @@ var rewrites = [
   },
 ];
 
-if (!iniConfig.hasOwnProperty('OFFSITE_HOST') ||
+if (iniConfig.hasOwnProperty('OFFSITE_HOST') &&
     iniConfig.OFFSITE_HOST.trim() !== '') {
 
   // Redirect for event page
