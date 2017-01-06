@@ -16,11 +16,11 @@ if (!isset($TEMPLATE)) {
       This documentation goes over the details of the ATOM source response.
       Many browsers (or other feed readers) will render this format in a
       reader-specific manner. See the
-      <a target="_blank" href="http://www.w3.org/2005/Atom">
+      <a target="_blank" href="https://www.w3.org/2005/Atom">
         ATOM specification
       </a>
       or
-      <a target="_blank" href="http://www.atomenabled.org/developers/">
+      <a target="_blank" href="https://www.atomenabled.org/developers/">
         Atom Enabled
       </a>
       for general information.
