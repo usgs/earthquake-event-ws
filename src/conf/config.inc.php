@@ -60,8 +60,12 @@ $storage_directory = $CONFIG['storage_directory'];
 $storage_url = $CONFIG['storage_url'];
 
 // build absolute Event Page URL string
-$server_protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'Off') ?
-    'https://' : 'http://';
+$server_protocol =
+    (
+      (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'Off')
+      || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+          $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+    ) ? 'https://' : 'http://';
 $server_host = isset($_SERVER['HTTP_HOST']) ?
     $_SERVER['HTTP_HOST'] : "earthquake.usgs.gov";
 $server_port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
