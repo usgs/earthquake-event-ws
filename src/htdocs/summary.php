@@ -151,7 +151,7 @@ if ($networkLink) {
   // serve kml network link
   header('Content-type: application/vnd.google-earth.kml+xml');
   echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n" .
-    '<kml xmlns="https://earth.google.com/kml/2.2">' .
+    '<kml xmlns="http://earth.google.com/kml/2.2">' .
     '<Document>' .
       '<name>Earthquakes</name>' .
       '<visibility>1</visibility>' .
