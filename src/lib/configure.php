@@ -92,7 +92,6 @@
     'SEARCH_PATH' => 'URL path to search page.',
     'MAX_SEARCH' => 'Maximum search results allowed (default = 20,000)',
     'API_VERSION' => 'Feed API version',
-    'FDSN_VERSION' => 'FDSN API version',
     'DEFAULT_MAXEVENTAGE' => 'Default maxEventAge parameter (seconds)',
     'INSTALLATION_TYPE' => '"actual" or "scenario" events.',
 
@@ -121,7 +120,6 @@
     'SEARCH_PATH' => '/earthquakes/search',
     'MAX_SEARCH' => '20000',
     'API_VERSION' => 'v1.0',
-    'FDSN_VERSION' => '1.0.6',
     'DEFAULT_MAXEVENTAGE' => '2592000',
     'INSTALLATION_TYPE' => 'actual',
 

@@ -46,7 +46,8 @@ class FDSNEventWebService {
         '"includedeleted" option.';
 
     global $CONFIG;
-    $this->version = $CONFIG['FDSN_VERSION'];
+    global $FDSN_VERSION;
+    $this->version = $FDSN_VERSION;
     $this->serviceLimit = $CONFIG['MAX_SEARCH'];
 
     if ($redirect === true) {

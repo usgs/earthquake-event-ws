@@ -43,7 +43,8 @@ $FEED_PATH     = $CONFIG['FEED_PATH']    . '/' . $API_VERSION;
 $SEARCH_PATH = $CONFIG['SEARCH_PATH'];
 
 $FDSN_PATH = $CONFIG['FDSN_PATH'];
-$FDSN_VERSION = $CONFIG['FDSN_VERSION'];
+// version is replaced using package.json version by grunt copy task
+$FDSN_VERSION = '{{VERSION}}';
 
 $MAPLIST_PATH = $CONFIG['MAPLIST_PATH'];
 
