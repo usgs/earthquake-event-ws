@@ -33,6 +33,7 @@ class QuakemlFeed extends AbstractFeed {
     $request_url = $HOST_URL_PREFIX . $_SERVER['REQUEST_URI'];
 
     $request_url = str_replace('http://', '', $request_url);
+    $request_url = str_replace('https://', '', $request_url);
     // Quakeml publicID may not contain colons
     $request_url = str_replace(':', '', $request_url);
     // Strip milliseconds off time parameters to strtotime still parses
@@ -51,6 +52,7 @@ class QuakemlFeed extends AbstractFeed {
     $publicID = self::getEventDetailFeed(
         $event['eventSource'] . $event['eventSourceCode'], 'quakeml');
     $publicID = str_replace('http://', '', $publicID);
+    $publicID = str_replace('https://', '', $publicID);
     $publicID = str_replace(':', '', $publicID);
 
     if ($event['type'] === 'origin-scenario') {
@@ -468,6 +470,7 @@ class QuakemlFeed extends AbstractFeed {
     global $storage_url;
 
     $prefix = str_replace('http://', '', $HOST_URL_PREFIX);
+    $prefix = str_replace('https://', '', $HOST_URL_PREFIX);
     $prefix = str_replace(':', '', $prefix);
 
     return 'quakeml:' . $prefix . $storage_url . '/' . $type . '/' . $code .
