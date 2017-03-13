@@ -139,6 +139,7 @@ class FDSNIndex {
       if ($callback === null) {
         $events = $statement->fetchAll(PDO::FETCH_ASSOC);
         $statement->closeCursor();
+        $events = utf8_encode_array($events);
         return $events;
       }
 
