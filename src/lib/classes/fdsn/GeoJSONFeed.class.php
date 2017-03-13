@@ -42,9 +42,9 @@ class GeoJSONFeed extends AbstractFeed {
 
   public function getMimeType() {
     if ($this->jsonp) {
-      return 'text/javascript';
+      return 'text/javascript; charset=utf-8';
     } else {
-      return 'application/json';
+      return 'application/json; charset=utf-8';
     }
   }
 

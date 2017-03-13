@@ -16,7 +16,7 @@ class QuakemlFeed extends AbstractFeed {
   }
 
   public function getMimeType() {
-    return 'application/xml';
+    return 'application/xml; charset=utf-8';
   }
 
   public function getHeader ($query) {

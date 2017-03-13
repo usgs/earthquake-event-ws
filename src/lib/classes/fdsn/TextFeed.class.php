@@ -3,7 +3,7 @@
 class TextFeed extends AbstractFeed {
 
   public function getMimeType() {
-    return 'text/plain';
+    return 'text/plain; charset=utf-8';
   }
 
   public function getHeader ($query=null) {

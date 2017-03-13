@@ -3,7 +3,7 @@
 class CSVFeed extends AbstractFeed {
 
   public function getMimeType() {
-    return 'text/csv';
+    return 'text/csv; charset=utf-8';
   }
 
   public function getHeader ($query=null) {
