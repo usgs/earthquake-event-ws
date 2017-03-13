@@ -16,13 +16,13 @@ class QuakemlFeed extends AbstractFeed {
   }
 
   public function getMimeType() {
-    return 'application/xml';
+    return 'application/xml; charset=utf-8';
   }
 
   public function getHeader ($query) {
     global $HOST_URL_PREFIX;
 
-    $header = '<?xml version="1.0"?>' . "\n";
+    $header = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     $header .= '<q:quakeml' .
         ' xmlns="http://quakeml.org/xmlns/bed/1.2"' .
         ' xmlns:anss="http://anss.org/xmlns/event/0.1"' .

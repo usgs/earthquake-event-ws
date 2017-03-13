@@ -15,7 +15,7 @@ class KMLFeed extends AbstractFeed {
   public $useFolders = true;
 
   public function getMimeType() {
-    return 'application/vnd.google-earth.kml+xml';
+    return 'application/vnd.google-earth.kml+xml; charset=utf-8';
   }
 
   public function getHeader ($query) {
