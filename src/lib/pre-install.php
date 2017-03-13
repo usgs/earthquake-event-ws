@@ -70,7 +70,7 @@ RewriteCond %{QUERY_STRING} ^.+
 RewriteRule ^' . $FEED_PATH . '/(summary|detail)/.* - [F,L]
 
 # detail is EVENTID.FORMAT
-RewriteRule ^' . $FEED_PATH . '/detail/([^\./]+)\.([^/\.]+)$ ' . $FEED_PATH .
+RewriteRule ^' . $FEED_PATH . '/detail/([^/]+)\.([^/\.]+)$ ' . $FEED_PATH .
     '/detail.php?eventid=$1&format=$2 [L,PT]
 # summary is PARAMS.FORMAT
 RewriteRule ^' . $FEED_PATH . '/summary/([^/]+)\.([^/\.]+)$ ' . $FEED_PATH .
