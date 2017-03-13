@@ -267,8 +267,8 @@ if (!isset($TEMPLATE)) {
 
 <h4 id="format-text">format=text</h4>
 <p>
-  This format is only available for the <code>count</code> and
-  <code>version</code> methods.
+  This format is only available for the <code>count</code>,
+  <code>query</code>, and <code>version</code> methods.
 </p>
 
 
