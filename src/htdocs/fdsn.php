@@ -217,7 +217,7 @@ if (!isset($TEMPLATE)) {
             <dt><code><a href="#format-kml">format=kml</a></code></dt>
             <dd>
               Response format is
-              <a href="<?php echo $FEED_PATH . $FEED_PATH; ?>/kml.php">KML</a>.
+              <a href="<?php echo $FEED_HOST . $FEED_PATH; ?>/kml.php">KML</a>.
               Mime-type is &ldquo;vnd.google-earth.kml+xml&rdquo;.
             </dd>
             <dt><code><a href="#format-xml">format=quakeml</a></code></dt>
