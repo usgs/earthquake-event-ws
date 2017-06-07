@@ -54,6 +54,12 @@ if (!isset($TEMPLATE)) {
             </a>
           </li>
           <li>
+            <a href="https://github.com/usgs/devcorner">
+              Developers Corner - bulk access to catalog, tools for obtaining
+              specific products
+            </a>
+          </li>
+          <li>
             <a href="/earthquakes/browse/significant.php">
               Significant Earthquakes Archive
             </a>
