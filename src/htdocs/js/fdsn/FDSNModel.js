@@ -87,9 +87,11 @@ var DEFAULT_DATA = {
   jsonerror: null,
 
   includeallorigins: null,
-  includeallmagnitudes: null
+  includeallmagnitudes: null,
   // TODO :: Implement includearrivals
   //includearrivals: null
+
+  orderby: null
 };
 
 var FDSNModel = function (data) {

@@ -6,6 +6,7 @@ var UrlManager = {
 
   // strip URL hash from URL
   getHash: function(url){
+    var hash;
 
     if (typeof url === 'undefined' || url === null){
       url = window.location.hash;
@@ -15,7 +16,7 @@ var UrlManager = {
       return null;
     }
 
-    var hash = url.substr(url.indexOf('#') + 1, url.length - url.indexOf('#'));
+    hash = url.substr(url.indexOf('#') + 1, url.length - url.indexOf('#'));
 
     // Fix URL encoding of settings hash
     hash = unescape(hash);
@@ -31,8 +32,9 @@ var UrlManager = {
 
   // set hash using anonymous settings object
   setHash: function(settings) {
+    var hash;
 
-    var hash = UrlManager.getSettingsHash(settings);
+    hash = UrlManager.getSettingsHash(settings);
 
     if (hash === null){
       return null;
@@ -44,24 +46,25 @@ var UrlManager = {
 
   // parse hash into anonymous object
   parseUrl: function(url){
+    var hash;
 
-    var hash = UrlManager.getHash(url);
+    hash = UrlManager.getHash(url);
 
     return JSON.parse(hash);
   },
 
   parseSettings: function(settings, search){
-
     // todo for loop
     var obj = {
         'feed':              settings.feed,
         'sort':              settings.sort,
         'basemap':           settings.basemap,
         'restrictListToMap': settings.restrictListToMap,
-        'timeZone':          settings.timeZone,
+        'timezone':          settings.timezone,
         'mapposition':       settings.mapposition,
         'overlays':          settings.overlays,
-        'viewModes':         settings.viewModes
+        'viewModes':         settings.viewModes,
+        'listFormat':        settings.listFormat
     };
 
 

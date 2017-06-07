@@ -47,12 +47,14 @@ var FDSNSearchForm = function (options) {
       _enhanceField,
       _fetchFieldData,
       _formatSearchErrors,
+      _getSettingsFromUrl,
       _initialize,
       _onModelChange,
       _onModelFormatChange,
       _onSubmit,
       _serializeFormToUrl,
-      _trimSearch;
+      _trimSearch,
+      _updateOrderbyWithSortOrderFromMapSettings;
 
     _this = {};
 
@@ -120,6 +122,8 @@ var FDSNSearchForm = function (options) {
     _addSubmitHandler();
 
     _fetchFieldData();
+
+    _updateOrderbyWithSortOrderFromMapSettings();
   };
 
   _formatSearchErrors = function (errors) {
@@ -199,58 +203,83 @@ var FDSNSearchForm = function (options) {
     return params;
   };
 
+  _getSettingsFromUrl = function () {
+    var settings;
+
+    settings = UrlManager.parseUrl();
+
+    if (!settings) {
+      return {};
+    }
+
+    return {
+      basemap: settings.basemap,
+      listFormat: settings.listFormat,
+      mapposition: settings.mapposition,
+      overlays: settings.overlays,
+      restrictListToMap: settings.restrictListToMap,
+      sort: settings.sort,
+      timezone: settings.timezone,
+      viewModes: settings.viewModes
+    };
+  };
+
   _serializeFormToUrl = function () {
     var url = _fdsnHost + _fdsnPath + '/query',
         search = _trimSearch(_model.getNonEmpty()),
-        maplistsort = 'newest', searchsort = _model.get('orderby'),
-        mapposition = [[], []],
+        settings,
+        searchsort = _model.get('orderby'),
+        //mapposition = [[], []],
         searchString = [], key = null,
         format = search.format;
 
     delete search.format;
 
+    settings = _getSettingsFromUrl();
+
     if (format === 'maplist') {
+
       // TODO :: Streamline this mapping
-      if (searchsort === 'time-asc') {
-        maplistsort = 'oldest';
+      if (searchsort === 'time') {
+        settings.sort = 'newest';
+      } else if (searchsort === 'time-asc') {
+        settings.sort = 'oldest';
       } else if (searchsort === 'magnitude') {
-        maplistsort = 'largest';
+        settings.sort = 'largest';
       } else if (searchsort === 'magnitude-asc') {
-        maplistsort = 'smallest';
+        settings.sort = 'smallest';
       }
 
-      // Set map position based on search extent, or use full world
+      // Set map position based on search extent, current map position, or
+      // use full world
+      if (!settings.mapposition) {
+        settings.mapposition = [[-85.0, 0.0], [85.0, 360.0]];
+      }
+
       // TODO :: Parse cirle extent as well
       if (search.hasOwnProperty('minlatitude')) {
-        mapposition[0].push(parseFloat(search.minlatitude));
-      } else {
-        mapposition[0].push(-85.0);
+        settings.mapposition[0][0] = parseFloat(search.minlatitude);
       }
 
       if (search.hasOwnProperty('minlongitude')) {
-        mapposition[0].push(parseFloat(search.minlongitude));
-      } else {
-        mapposition[0].push(0.0);
+        settings.mapposition[0][1] = parseFloat(search.minlongitude);
       }
 
       if (search.hasOwnProperty('maxlatitude')) {
-        mapposition[1].push(parseFloat(search.maxlatitude));
-      } else {
-        mapposition[1].push(85.0);
+       settings.mapposition[1][0] = parseFloat(search.maxlatitude);
       }
 
       if (search.hasOwnProperty('maxlongitude')) {
-        mapposition[1].push(parseFloat(search.maxlongitude));
-      } else {
-        mapposition[1].push(360.0);
+        settings.mapposition[1][1] = parseFloat(search.maxlongitude);
       }
 
+      // set viewModes base on current view modes or use defaults
+      if (!settings.viewModes) {
+        settings.viewModes = {help: false, list: true, map: true, settings: false};
+      }
 
-      url = _maplistPath + '/#' + window.escape(UrlManager.parseSettings({
-            viewModes: {help: false, list: true, map: true, settings: false},
-            sort: maplistsort,
-            mapposition: mapposition
-          }, {
+      url = _maplistPath + '/#' + window.escape(UrlManager.parseSettings(
+            settings, {
             id: '' + (new Date()).getTime(),
             name: 'Search Results',
             isSearch: true,
@@ -812,6 +841,34 @@ var FDSNSearchForm = function (options) {
 
     _el.querySelector('.output-descriptor').innerHTML =
         'Output Format: ' + text;
+  };
+
+  _updateOrderbyWithSortOrderFromMapSettings = function () {
+    var orderby,
+        settings,
+        sort;
+
+    settings = UrlManager.parseUrl();
+    if (!settings) {
+      return;
+    }
+
+    // get sort order from map/list
+    sort = settings.sort;
+
+    if (sort === 'newest') {
+      orderby = 'time';
+    } else if (sort === 'oldest') {
+      orderby = 'time-asc';
+    } else if (sort === 'largest') {
+      orderby = 'magnitude';
+    } else if (sort === 'smallest') {
+      orderby = 'magnitude-asc';
+    }
+
+    _model.set({
+      'orderby': orderby
+    });
   };
 
 
