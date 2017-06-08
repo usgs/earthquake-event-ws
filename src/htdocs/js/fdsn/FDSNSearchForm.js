@@ -225,20 +225,25 @@ var FDSNSearchForm = function (options) {
   };
 
   _serializeFormToUrl = function () {
-    var url = _fdsnHost + _fdsnPath + '/query',
-        search = _trimSearch(_model.getNonEmpty()),
+    var format,
+        key,
+        search,
+        searchsort,
+        searchString,
         settings,
-        searchsort = _model.get('orderby'),
-        //mapposition = [[], []],
-        searchString = [], key = null,
-        format = search.format;
+        url;
 
+    format = search.format;
     delete search.format;
 
+    key = null;
+    search = _trimSearch(_model.getNonEmpty());
+    searchsort = _model.get('orderby');
+    searchString = [];
     settings = _getSettingsFromUrl();
+    url = _fdsnHost + _fdsnPath + '/query';
 
     if (format === 'maplist') {
-
       // TODO :: Streamline this mapping
       if (searchsort === 'time') {
         settings.sort = 'newest';
@@ -275,7 +280,12 @@ var FDSNSearchForm = function (options) {
 
       // set viewModes base on current view modes or use defaults
       if (!settings.viewModes) {
-        settings.viewModes = {help: false, list: true, map: true, settings: false};
+        settings.viewModes = {
+          help: false,
+          list: true,
+          map: true,
+          settings: false
+        };
       }
 
       url = _maplistPath + '/#' + window.escape(UrlManager.parseSettings(
