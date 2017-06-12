@@ -561,7 +561,7 @@ if (!isset($TEMPLATE)) {
           center dependent but is suggested to be the preferred magnitude only.
           <small>
             NOTE: because magnitudes and origins are strongly associated, this
-            parameter is interchangable with includeallmagnitudes
+            parameter is interchangeable with includeallmagnitudes
           </small>
         </td>
       </tr>
