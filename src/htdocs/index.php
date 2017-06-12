@@ -80,7 +80,7 @@ if (!isset($TEMPLATE)) {
 
     <ul class="no-style linklist">
       <li>
-        <a href="https://sslearthquake.usgs.gov/ens/">
+        <a href="/ens/">
           <h3>Earthquake Notification Service</h3>
           <img src="images/ens-x2.png" class='feeds-list-image'
               alt="Earthquake Notification Service icon" />

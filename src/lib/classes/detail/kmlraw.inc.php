@@ -145,6 +145,7 @@
 
 
   header('Content-Type: ' . $kmlfeed->getMimeType());
+  header('Content-Disposition: attachment; filename="' . $eventid . '.kml"');
 
 
   echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
@@ -381,7 +382,7 @@
       if ($smover || $smcont || ($smo && isset($smp['maximum-latitude']))) {
         echo '<ScreenOverlay>' .
             '<name>ShakeMap Intensity Legend</name>' .
-            '<visibility>0</visibility>' .
+            '<visibility>1</visibility>' .
             '<Icon><href>' .
               $HOST_URL_PREFIX . $FEED_PATH . '/images/kml_shakemap_legend.png' .
             '</href></Icon>' .
