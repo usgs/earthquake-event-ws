@@ -233,11 +233,10 @@ var FDSNSearchForm = function (options) {
         settings,
         url;
 
+    search = _trimSearch(_model.getNonEmpty());
     format = search.format;
     delete search.format;
-
     key = null;
-    search = _trimSearch(_model.getNonEmpty());
     searchsort = _model.get('orderby');
     searchString = [];
     settings = _getSettingsFromUrl();
