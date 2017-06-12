@@ -145,6 +145,7 @@
 
 
   header('Content-Type: ' . $kmlfeed->getMimeType());
+  header('Content-Disposition: attachment; filename="' . $eventid . '.kml"');
 
 
   echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
