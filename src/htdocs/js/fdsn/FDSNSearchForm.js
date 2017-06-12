@@ -414,7 +414,8 @@ var FDSNSearchForm = function (options) {
     // Expands advanced options section if any advanced options were
     // previously selected. Does not check options that were checked above.
     for (i = 0; !expandAdvanced && i < advancedOptions.length; i++) {
-      if (_model.get(advancedOptions[i]) !== '') {
+      if (_model.get(advancedOptions[i]) !== null &&
+          _model.get(advancedOptions[i]) !== '') {
         expandAdvanced = true;
         break;
       }
