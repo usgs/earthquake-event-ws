@@ -24,7 +24,7 @@
     navItem($FDSN_URL . '/', 'API Documentation - EQ Catalog') .
     navItem($FEED_URL . '/changelog.php', 'Change Log') .
     navItem('/earthquakes/feed/policy.php', 'Feed Lifecycle Policy') .
-    navItem('https://github.com/usgs/devcorner', 'Developers Corner') .
+    navItem('https://github.com/usgs/devcorner', 'Developer\'s Corner') .
     navItem('/ws/', 'Web Services') .
     navItem('https://geohazards.usgs.gov/mailman/listinfo/realtime-feeds',
         'Mailing List-Announcements') .
