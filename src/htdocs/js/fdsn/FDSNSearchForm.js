@@ -277,6 +277,12 @@ var FDSNSearchForm = function (options) {
         settings.mapposition[1][1] = parseFloat(search.maxlongitude);
       }
 
+      if (search.producttype === 'dyfi' ||
+          search.producttype === 'shakemap' ||
+          search.producttype === 'losspager') {
+        settings.listFormat = search.producttype;
+      }
+
       // set viewModes base on current view modes or use defaults
       if (!settings.viewModes) {
         settings.viewModes = {
