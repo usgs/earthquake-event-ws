@@ -218,8 +218,7 @@ var FDSNSearchForm = function (options) {
       overlays: settings.overlays,
       restrictListToMap: settings.restrictListToMap,
       sort: settings.sort,
-      timezone: settings.timezone,
-      viewModes: settings.viewModes
+      timezone: settings.timezone
     };
   };
 
@@ -281,12 +280,10 @@ var FDSNSearchForm = function (options) {
 
       // set viewModes base on current view modes or use defaults
       if (!settings.viewModes) {
-        settings.viewModes = {
-          help: false,
-          list: true,
-          map: true,
-          settings: false
-        };
+        settings.viewModes = [
+          'list',
+          'map'
+        ];
       }
 
       url = _maplistPath + '/#' + window.escape(UrlManager.parseSettings(
