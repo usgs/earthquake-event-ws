@@ -215,7 +215,6 @@ var FDSNSearchForm = function (options) {
     return {
       basemap: settings.basemap,
       listFormat: settings.listFormat,
-      mapposition: settings.mapposition,
       overlays: settings.overlays,
       restrictListToMap: settings.restrictListToMap,
       sort: settings.sort,
@@ -254,11 +253,8 @@ var FDSNSearchForm = function (options) {
         settings.sort = 'smallest';
       }
 
-      // Set map position based on search extent, current map position, or
-      // use full world
-      if (!settings.mapposition) {
-        settings.mapposition = [[-85.0, 0.0], [85.0, 360.0]];
-      }
+      // default to world extents
+      settings.mapposition = [[-85.0, 0.0], [85.0, 360.0]];
 
       // TODO :: Parse cirle extent as well
       if (search.hasOwnProperty('minlatitude')) {
