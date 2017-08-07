@@ -1,0 +1,31 @@
+{
+  "name": "earthquake-event-ws",
+  "organization": "U.S. Geological Survey",
+  "description": "Web service for querying ComCat.",
+
+  "openSourceProject": 1,
+  "license": "https://github.com/usgs/earthquake-event-ws/blob/master/LICENSE.md",
+  "vcs": "git",
+  "repository": "https://github.com/usgs/earthquake-event-ws.git",
+
+  "tags": [
+    "earthquake",
+    "webservice",
+    "usgs"
+  ],
+  "languages": [
+    "css",
+    "html",
+    "javascript",
+    "php",
+    "sql"
+  ],
+
+  "contact": {
+    "name": "Jeremy Fee",
+    "email": "jmfee@usgs.gov"
+  },
+  "updated": {
+    "metadataLastUpdated": "2017-08-07"
+  }
+}
