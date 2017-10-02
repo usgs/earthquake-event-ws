@@ -86,7 +86,12 @@ class ProductStorage {
     $contents = array();
     $foundURLContent = false;
     foreach ($parsed->content as $content) {
-      $c = new Content(strval($content['type']), strtotime(strval($content['modified'])) . "000", strval($content['length']));
+      // convert to milliseconds
+      $content_time = strtotime(strval($content['modified']));
+      if ($content_time !== 0) {
+        $content_time .= '000';
+      }
+      $c = new Content(strval($content['type']), $content_time, strval($content['length']));
 
       // all contents (except inline) have href which is a file: url
       if (isset($content['href'])) {
@@ -115,7 +120,12 @@ class ProductStorage {
 
       //add any inline content
       foreach ($parsed->content as $content) {
-        $c = new Content(strval($content['type']), strtotime(strval($content['modified'])) . "000", strval($content['length']));
+        // convert to milliseconds
+        $content_time = strtotime(strval($content['modified']));
+        if ($content_time !== 0) {
+          $content_time .= '000';
+        }
+        $c = new Content(strval($content['type']), $content_time, strval($content['length']));
 
         if ($content['encoded']) {
           $c->setBytes(base64_decode(strval($content)));
