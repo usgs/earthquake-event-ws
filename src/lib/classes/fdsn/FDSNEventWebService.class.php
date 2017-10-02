@@ -31,6 +31,9 @@ class FDSNEventWebService {
   );
 
 
+  // default to 30 days (2592000 = 30 * 24 * 60 * 60)
+  const DEFAULT_REDIRECT_MAX_EVENT_AGE = 2592000;
+
   /**
    * @param $index {Index}
    *      The index used to search for events.
@@ -41,7 +44,8 @@ class FDSNEventWebService {
    *.     Max age of event in seconds, before automatically redirecting;
    *.     Only used when $redirect is true.
    */
-  public function __construct($index, $redirect=false, $redirectMaxEventAge=(30*24*60*60)) {
+  public function __construct($index, $redirect=false,
+      $redirectMaxEventAge=self::DEFAULT_REDIRECT_MAX_EVENT_AGE) {
     $this->index = $index;
 
     $this->CONFLICT_DETAILS = 'The requested event has been deleted. To ' .
