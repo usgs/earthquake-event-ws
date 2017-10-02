@@ -37,8 +37,11 @@ class FDSNEventWebService {
    * @param $redirect {Boolean} Optional. Default false.
    *      True if NO_DATA and NOT_FOUND errors should be redirected to a
    *      different service rather than returning the response code.
+   * @param $redirectMaxEventAge {Number} Optional. Default 30 days.
+   *.     Max age of event in seconds, before automatically redirecting;
+   *.     Only used when $redirect is true.
    */
-  public function __construct($index, $redirect=false) {
+  public function __construct($index, $redirect=false, $redirectMaxEventAge=(30*24*60*60)) {
     $this->index = $index;
 
     $this->CONFLICT_DETAILS = 'The requested event has been deleted. To ' .
@@ -56,6 +59,8 @@ class FDSNEventWebService {
     } else {
       $this->redirect = false;
     }
+
+    $this->redirectMaxEventAge = $redirectMaxEventAge;
   }
 
 
@@ -172,6 +177,12 @@ class FDSNEventWebService {
       $CACHE_MAXAGE = 86400;
     }
     include $APP_DIR . '/lib/cache.inc.php';
+
+    // redirect old events before they are archived
+    if ($this->redirect && $this->redirectMaxEventAge > 0 &&
+        $eventAge >= $this->redirectMaxEventAge) {
+      $this->doRedirect();
+    }
 
     $format = $query->format;
     if ($format == 'geojson' && $query->callback !== null) {
@@ -325,12 +336,7 @@ class FDSNEventWebService {
 
     if ($this->redirect !== false && $isDetail &&
         ($code === self::NO_DATA || $code === self::NOT_FOUND)) {
-
-      $redirect = $this->redirect . '/query?' . $_SERVER['QUERY_STRING'];
-
-      header('HTTP/1.0 302 Found');
-      header('Location: ' . $redirect);
-      exit();
+      $this->doRedirect();
     }
 
     if (isset($_GET['jsonerror']) && $_GET['jsonerror'] == 'true' &&
@@ -340,6 +346,14 @@ class FDSNEventWebService {
     } else {
       $this->httpError($code, $message);
     }
+  }
+
+  public function doRedirect () {
+    $redirect = $this->redirect . '/query?' . $_SERVER['QUERY_STRING'];
+
+    header('HTTP/1.0 302 Found');
+    header('Location: ' . $redirect);
+    exit();
   }
 
   public function jsonError ($code, $message, $isDetail = false) {
