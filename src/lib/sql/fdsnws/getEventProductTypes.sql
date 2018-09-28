@@ -11,9 +11,10 @@ BEGIN
 
   DECLARE done INT DEFAULT 0;
   DECLARE cur_products CURSOR FOR
-    SELECT type
-    FROM preferredProduct
-    WHERE eventid = in_eventid;
+    SELECT DISTINCT type
+    FROM currentProducts
+    WHERE eventid = in_eventid
+    AND status <> 'DELETE';
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 
   SET out_producttypes = NULL;
