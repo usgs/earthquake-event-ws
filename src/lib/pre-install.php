@@ -76,6 +76,10 @@ RewriteRule ^' . $FEED_PATH . '/detail/([^/]+)\.([^/\.]+)$ ' . $FEED_PATH .
 RewriteRule ^' . $FEED_PATH . '/summary/([^/]+)\.([^/\.]+)$ ' . $FEED_PATH .
     '/summary.php?params=$1&format=$2 [L,PT]
 
+# shakealert
+RewriteCond %{QUERY_STRING} !^.+
+RewriteRule ^' . $FEED_PATH . '/shakealert.geojson ' .
+    $FEED_PATH . '/shakealert.php [L,PT]
 
 # fdsn event webservice
 RewriteRule ^' . $FDSN_PATH . '$ ' . $FDSN_PATH . '/ [R=301,L]
