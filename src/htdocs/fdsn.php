@@ -592,10 +592,11 @@ if (!isset($TEMPLATE)) {
         <td>Boolean</td>
         <td>false</td>
         <td>
-          Specify if deleted products should be incuded.
+          Specify if deleted products and events should be included.
           <small>
-            NOTE: Only works when specifying <a href="#eventid">eventid</a>
-            parameter.
+            NOTE: When specifying <a href="#eventid">eventid</a>
+            parameter, deleted events otherwise return the HTTP status
+            <code>409 Conflict</code>.
           </small>
         </td>
       </tr>
