@@ -4,7 +4,7 @@ include_once '../conf/feeds.inc.php';
 
 
 // 604800 = 1 week
-$AGE_SECONDS = 604800 * 1000;
+$AGE_SECONDS = 604800;
 $TITLE = 'USGS ShakeAlert Events, Past Week';
 
 
