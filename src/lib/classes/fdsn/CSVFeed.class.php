@@ -56,7 +56,9 @@ class CSVFeed extends AbstractFeed {
       $event['vertical_error'],
       $event['magnitude_error'],
       $event['magnitude_num_stations_used'],
-      strtolower($event['review_status']),
+      strtolower(($event['eventStatus'] === 'DELETE'
+          ? 'deleted'
+          : $event['review_status'])),
       $event['origin_source']
           ? strtolower($event['origin_source'])
           : $event['eventSource'],

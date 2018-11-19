@@ -593,11 +593,20 @@ if (!isset($TEMPLATE)) {
         <td>false</td>
         <td>
           Specify if deleted products and events should be included.
+
+          <p>
           <small>
-            NOTE: When specifying <a href="#eventid">eventid</a>
-            parameter, deleted events otherwise return the HTTP status
+            Deleted events otherwise return the HTTP status
             <code>409 Conflict</code>.
           </small>
+          </p>
+
+          <p>
+          <small>
+            NOTE: Only supported by the <code>csv</code> and <code>geojson</code> formats,
+            which include <code>status</code>.
+          </small>
+          </p>
         </td>
       </tr>
       <tr id="includesuperseded">

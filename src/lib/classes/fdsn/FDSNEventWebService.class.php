@@ -670,8 +670,8 @@ class FDSNEventWebService {
       if ($query->callback !== null) {
         $this->error(self::BAD_REQUEST, 'Cannot use callback parameter unless format is geojson.');
       }
-      if ($query->includedeleted) {
-        $this->error(self::BAD_REQUEST, 'Cannot use includedeleted parameter unless format is geojson.');
+      if ($query->includedeleted && $query->format !== 'csv') {
+        $this->error(self::BAD_REQUEST, 'Cannot use includedeleted parameter unless format is geojson or csv.');
       }
       if ($query->includesuperseded) {
         $this->error(self::BAD_REQUEST, 'Cannot use includesuperseded parameter unless format is geojson.');
