@@ -683,13 +683,8 @@ class FDSNEventWebService {
     }
 
     // validate detail specific parameters
-    if ($query->eventid === null) {
-      if ($query->includedeleted) {
-        $this->error(self::BAD_REQUEST, 'Cannot use includedeleted parameter without eventid parameter.');
-      }
-      if ($query->includesuperseded) {
-        $this->error(self::BAD_REQUEST, 'Cannot use includesuperseded parameter without eventid parameter.');
-      }
+    if ($query->eventid === null && $query->includesuperseded) {
+      $this->error(self::BAD_REQUEST, 'Cannot use includesuperseded parameter without eventid parameter.');
     }
 
     if ($query->includedeleted && $query->includesuperseded) {
