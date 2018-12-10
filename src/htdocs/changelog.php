@@ -11,6 +11,14 @@ if (!isset($TEMPLATE)) {
 }
 ?>
 
+<p class="alert info">
+  Newer release information is available on the
+  <a href="https://github.com/usgs/earthquake-event-ws/releases">
+    earthquake-event-ws Github Releases Page
+  </a>.
+</p>
+
+
 <h2>v1.0.18 <small>2015-01-20</small></h2>
 <ul>
   <li>Change default expires for static resources to 1 day.</li>

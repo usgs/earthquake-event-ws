@@ -44,6 +44,11 @@ var rewrites = [
         '/summary/([^/]+)\\.([^\\./]+)$',
     to: '/summary.php?params=$1&format=$2'
   },
+  {
+    from: '^' + iniConfig.FEED_PATH + '/' + iniConfig.API_VERSION +
+        '/shakealert.geojson',
+    to: '/shakealert.php'
+  },
   // Archive searches (with QSA essentially)
   {
     from: '^' + iniConfig.FDSN_PATH + '/query\\.([^/?]*)\\??(.*)$',

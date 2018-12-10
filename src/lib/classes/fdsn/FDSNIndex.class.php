@@ -291,8 +291,7 @@ class FDSNIndex {
     $magnitudeColumn = 'e.magnitude';
     $updatedColumn = 'es.lastModified';
 
-    if ($query->eventid === null ||
-        (!$query->includedeleted && !$query->includesuperseded)) {
+    if (!$query->includedeleted && !$query->includesuperseded) {
       // hide deleted events
       $where[] = "upper(e.status) <> 'DELETE'";
       $where[] = "upper(ps.status) <> 'DELETE'";
