@@ -13,7 +13,7 @@ BEGIN
   DECLARE done INT DEFAULT 0;
   DECLARE cur_ids CURSOR FOR
     SELECT DISTINCT eventSource, eventSourceCode
-    FROM productSummary
+    FROM currentProducts
     WHERE eventid = in_eventid
       AND eventSource IS NOT NULL
       AND eventSourceCode IS NOT NULL;
