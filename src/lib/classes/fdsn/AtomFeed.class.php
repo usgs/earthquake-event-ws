@@ -3,7 +3,7 @@
 class AtomFeed extends AbstractFeed {
 
   public function getMimeType() {
-    return 'application/xml; charset=utf-8';
+    return 'application/atom+xml; charset=utf-8';
   }
 
   public function getFeedUrl() {
