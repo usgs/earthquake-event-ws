@@ -166,6 +166,9 @@ class FDSNEventWebService {
     }
 
     $eventid = $query->eventid;
+    // used by redirect check below
+    $eventSeconds = intval($event->getTime() / 1000);
+    $eventAge = time() - $eventSeconds;
 
     // send caching headers
     // per llastowka: cache for 60 seconds regardless of age
