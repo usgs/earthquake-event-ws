@@ -749,6 +749,11 @@ if (!isset($TEMPLATE)) {
           Convert GeoJSON output to a JSONP response using this callback.
           Mime-type is &ldquo;text/javascript&rdquo;.
 
+          <p>
+            Callback values are restricted to the characters
+            <code>[A-Za-z0-9\._]+</code>
+          </p>
+
           <small>
             NOTE: Must be used with format=geojson
           </small>
