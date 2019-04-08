@@ -2,28 +2,28 @@
   $dateRanges = array(
     "hour" => array (
       "name" => "Past Hour",
-      "help" => "Updated every 5 minutes.",
+      "help" => "Updated every minute.",
       "url" => "hour",
       'mags' => array('significant', '2.5', '1', 'all')
     ),
 
     "day" => array (
       "name" => "Past Day",
-      "help" => "Updated every 5 minutes.",
+      "help" => "Updated every minute.",
       "url" => "day",
       'mags' => array('significant', '2.5', '1', 'all') // Hmm?
     ),
 
     "week" => array (
       "name" => "Past 7 Days",
-      "help" => "Updated every 5 minutes.",
+      "help" => "Updated every minute.",
       "url" => "week",
       'mags' => array('significant', '4.5', '2.5', 'all') // Hmm?
     ),
 
     "month" => array (
       "name" => "Past 30 Days",
-      "help" => "Updated every 15 minutes.",
+      "help" => "Updated every minute.",
       "url" => "month",
       'mags' => array('significant', '4.5', '2.5', 'all') // Hmm?
     )
@@ -44,7 +44,7 @@
     ),
 
     "month" => array (
-      "help" => "Updated every 15 minutes."
+      "help" => "Updated every minute."
     )
   );
 

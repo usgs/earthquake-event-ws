@@ -101,18 +101,8 @@ try {
 
 
 // caching headers
-  // default to 5 minutes
-  $CACHE_MAXAGE = 300;
-  if ($size === 'significant') {
-    // all significant feeds are 1 minute
-    $CACHE_MAXAGE = 60;
-  } else if ($age === 'month') {
-    // all other one month feeds are 15 minutes
-    $CACHE_MAXAGE = 900;
-  } else if ($query->format === 'geojson') {
-    // geojson offers lower default expiration
-    $CACHE_MAXAGE = 60;
-  }
+  // per llastowka: cache for 60 seconds regardless of age
+  $CACHE_MAXAGE = 60;
   include $APP_DIR . '/lib/cache.inc.php';
 
 
