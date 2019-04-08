@@ -355,6 +355,12 @@ class FDSNEventWebService {
     $callback = false;
     if (isset($_GET['callback'])) {
       $callback = $_GET['callback'];
+      // restrict allowed callback names
+      if (!preg_match('/^[A-Za-z0-9\._]+$/', $callback)) {
+        header('HTTP/1.0 400 Bad Request');
+        echo 'Bad callback value, valid characters include [A-Za-z0-9\._]';
+        exit();
+      }
       header('Content-type: text/javascript');
     } else {
       header('Content-type: application/json');
@@ -516,6 +522,12 @@ class FDSNEventWebService {
       } else if ($name ==='format') {
         $query->format = $this->validateEnumerated($name, $value, array('quakeml','geojson','csv','kml', 'kmlraw', 'xml', 'text', 'cap'));
       } else if ($name ==='callback') {
+        // restrict allowed callback names
+        if (!preg_match('/^[A-Za-z0-9\._]+$/', $value)) {
+          header('HTTP/1.0 400 Bad Request');
+          echo 'Bad callback value, valid characters include [A-Za-z0-9\._]';
+          exit();
+        }
         $query->callback = $value;
       } else if ($name ==='eventtype') {
         $query->eventtype = explode(",", $value); // todo: enumerate
