@@ -10,8 +10,9 @@ if (!isset($TEMPLATE)) {
     include_once '../conf/feeds.inc.php';
 
     // caching headers
-    $CACHE_MAXAGE = 900;
-    include_once '../lib/cache.inc.php';
+    // per llastowka: cache for 60 seconds regardless of age
+    $CACHE_MAXAGE = 60;
+    include $APP_DIR . '/lib/cache.inc.php';
 
     $service = new FDSNEventWebService($fdsnIndex);
     $usage = false;
