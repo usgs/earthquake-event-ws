@@ -168,18 +168,8 @@ class FDSNEventWebService {
     $eventid = $query->eventid;
 
     // send caching headers
-    $eventSeconds = intval($event->getTime() / 1000);
-    $eventAge = time() - $eventSeconds;
-    if ($eventAge <= 604800) {
-      // past 7 days, cache for 1 minute
-      $CACHE_MAXAGE = 60;
-    } else if ($eventAge <= 2592000) {
-      // past 30 days, cache for 15 minutes
-      $CACHE_MAXAGE = 900;
-    } else {
-      // older, cache for 1 day
-      $CACHE_MAXAGE = 86400;
-    }
+    // per llastowka: cache for 60 seconds regardless of age
+    $CACHE_MAXAGE = 60;
     include $APP_DIR . '/lib/cache.inc.php';
 
     // redirect old events before they are archived
