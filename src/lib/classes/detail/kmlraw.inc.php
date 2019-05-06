@@ -397,6 +397,55 @@
     } // end ShakeMap
 
 
+    if ($smc && isset($smc['download/shakemap.kmz'])) {
+      // Shakemap v4
+      $bundle = $smc['download/shakemap.kmz'];
+
+      echo "\n" . '<Folder>' .
+          '<name>ShakeMap - ' .
+            $ROMANS[intval($summary['maxmmi'])] .
+          '</name>' .
+          '<Style><ListStyle>' .
+          '<listItemType>radioFolder</listItemType>' .
+          '</ListStyle></Style>';
+
+      // output overlay when it's present
+      if (isset($smc['download/intensity_overlay.png']) && isset($smp['maximum-latitude'])) {
+        $smo = $smc['download/intensity_overlay.png'];
+
+        // show overlay by default
+        echo $kmlfeed->getLookAt($latitude, $longitude, 500000) .
+          '<GroundOverlay>' .
+            '<name>Intensity Overlay</name>' .
+            '<color>FFFFFFFF</color>' .
+            '<visibility>1</visibility>' .
+            '<drawOrder>0</drawOrder>' .
+            '<Icon>' .
+              '<refreshMode>onChange</refreshMode>' .
+              '<href>' . $smo['url'] . '</href>' .
+            '</Icon>' .
+            '<LatLonBox>' .
+              '<north>' . $smp['maximum-latitude'] . '</north>' .
+              '<south>' . $smp['minimum-latitude'] . '</south>' .
+              '<east>' . $smp['maximum-longitude'] . '</east>' .
+              '<west>' . $smp['minimum-longitude'] . '</west>' .
+            '</LatLonBox>' .
+          '</GroundOverlay>';
+      }
+
+      // link to bundle
+      echo '<NetworkLink>' .
+          '<name>All ShakeMap Layers</name>' .
+          '<visibility>0</visibility>' .
+          '<Link>' .
+            '<href>' . $bundle['url'] . '</href>' .
+            '<viewRefreshMode>never</viewRefreshMode>' .
+          '</Link>' .
+        '</NetworkLink>';
+
+      echo '</Folder>';
+    }
+
     // PAGER
     if ($lpe) {
       echo "\n" . '<NetworkLink>' .
