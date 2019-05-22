@@ -156,6 +156,7 @@ var connect = {
         middlewares.unshift(
           corsMiddleware,
           rewriteMiddleware,
+          proxyMiddleware,
           mountPHP(options.base[0])
         );
         return middlewares;

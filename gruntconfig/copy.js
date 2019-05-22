@@ -17,7 +17,8 @@ var copy = {
         cwd: config.test,
         dest: config.build + '/' + config.test,
         src: [
-          '**/*.html'
+          '**/*.html',
+          '**/*.php'
         ]
       }
     ]
