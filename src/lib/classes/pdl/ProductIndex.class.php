@@ -93,6 +93,8 @@ class ProductIndex {
   const SUMMARY_LINK_ID = "productSummaryIndexId";
   const SUMMARY_LINK_RELATION = "relation";
   const SUMMARY_LINK_URL = "url";
+  const SUMMARY_CURRENT_TABLE = "currentProducts";
+
 
   /** Properties to store the query text for prepared queries */
   /** Since php doesn't allow constants (or static properties) to be the result of an expression,
@@ -1603,6 +1605,61 @@ class ProductIndex {
 
   public function getConnection() {
     return $this->connection;
+  }
+
+  //Searches for product based on source, type, and code
+  /**
+   * @param $query {ProductQuery}
+   *    Productquery storing supplied information
+   */
+  public function getProductByQuery($query){ 
+    global $storage;
+
+    $connection = $this->connection;
+
+    //Construct prepared WHERE statement from key query terms
+    $where = sprintf(
+      "%s=? AND %s=? AND %s=?",
+      self::SUMMARY_TYPE,
+      self::SUMMARY_SOURCE,
+      self::SUMMARY_CODE
+    );
+    //initializing prepared statement
+    $params = array($query->type,$query->source,$query->code);
+
+    //Include updateTime in WHERE clause if it is included
+    if (isset($query->updateTime)){
+      $where .= sprintf(
+        " AND %s=?",
+        self::SUMMARY_UPDATE_TIME
+      );
+      $params[] = $query->updateTime; //Update prepared statement
+    }
+
+    //Build SQL, changing table based on existence of updateTime
+    $sql = sprintf('
+      SELECT %s
+      FROM %s
+      WHERE %s',
+      self::SUMMARY_PRODUCT_ID,
+      isset($query->updateTime)?self::SUMMARY_TABLE:self::SUMMARY_CURRENT_TABLE, //Ternary operator to choose between tables
+      $where
+    );
+
+    //Request information from database using prepared statement
+    $sql = $connection->prepare($sql); 
+    $sql->execute($params); 
+
+    $productId = $sql->fetch()[self::SUMMARY_PRODUCT_ID];
+
+    //Get product from storage
+    $product;
+    if (isset($productId)){
+      $product = $storage->getProduct(ProductId::parse($productId));
+    }
+
+    return $product;
+    
   }
 
 }

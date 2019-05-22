@@ -2,6 +2,8 @@
 
 // pdl classes
 
+  include_once('classes/pdl/WebService.class.php');
+
   include_once('classes/pdl/Content.class.php');
   include_once('classes/pdl/ProductId.class.php');
   include_once('classes/pdl/Product.class.php');
@@ -13,6 +15,9 @@
   include_once('classes/pdl/ProductIndexCallback.class.php');
   include_once('classes/pdl/ProductIndexQuery.class.php');
   include_once('classes/pdl/ProductIndex.class.php');
+
+  include_once('classes/pdl/ProductWebService.class.php'); //Product WebService - here for the time being
+  include_once('classes/pdl/ProductQuery.class.php');
 
 
 // fdsn classes
