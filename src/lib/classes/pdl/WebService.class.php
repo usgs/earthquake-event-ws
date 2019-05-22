@@ -1,7 +1,7 @@
 <?php
 
 //Parent WebService class to ProductWebService and FDSNEventWebService
-class WebService{
+class WebService {
 
   // the FDSNProductIndex to use
   public $index;
@@ -33,7 +33,7 @@ class WebService{
    * @param $index {ProductIndex}
    *    ProductIndex used to query database, perform searches
    */
-  public function __construct($index){
+  public function __construct($index) {
     $this->index = $index;
 
     global $FDSN_VERSION;

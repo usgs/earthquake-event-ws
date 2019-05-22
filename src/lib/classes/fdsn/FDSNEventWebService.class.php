@@ -1,6 +1,6 @@
 <?php
 
-class FDSNEventWebService extends WebService{
+class FDSNEventWebService extends WebService {
 
   // maximum number of earthquakes
   public $serviceLimit;
