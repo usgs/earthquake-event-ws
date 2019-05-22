@@ -1607,14 +1607,14 @@ class ProductIndex {
     return $this->connection;
   }
 
-  //Searches for product based on source, type, and code
   /**
+   * Searches for product based on source, type, and code
+   * 
    * @param $query {ProductQuery}
    *    Productquery storing supplied information
    */
-  public function getProductByQuery($query){ 
-    global $storage;
-
+  public function getProductIdByQuery($query) { 
+    
     $connection = $this->connection;
 
     //Construct prepared WHERE statement from key query terms
@@ -1625,10 +1625,10 @@ class ProductIndex {
       self::SUMMARY_CODE
     );
     //initializing prepared statement
-    $params = array($query->type,$query->source,$query->code);
+    $params = array($query->type, $query->source, $query->code);
 
     //Include updateTime in WHERE clause if it is included
-    if (isset($query->updateTime)){
+    if (isset($query->updateTime)) {
       $where .= sprintf(
         " AND %s=?",
         self::SUMMARY_UPDATE_TIME
@@ -1637,12 +1637,13 @@ class ProductIndex {
     }
 
     //Build SQL, changing table based on existence of updateTime
+    //When updateTime is provided - we don't actually have to do a SQL query, just construct the ID. Revisit later, maybe
     $sql = sprintf('
       SELECT %s
       FROM %s
       WHERE %s',
       self::SUMMARY_PRODUCT_ID,
-      isset($query->updateTime)?self::SUMMARY_TABLE:self::SUMMARY_CURRENT_TABLE, //Ternary operator to choose between tables
+      isset($query->updateTime) ? self::SUMMARY_TABLE : self::SUMMARY_CURRENT_TABLE, //Ternary operator to choose between tables
       $where
     );
 
@@ -1652,13 +1653,7 @@ class ProductIndex {
 
     $productId = $sql->fetch()[self::SUMMARY_PRODUCT_ID];
 
-    //Get product from storage
-    $product;
-    if (isset($productId)){
-      $product = $storage->getProduct(ProductId::parse($productId));
-    }
-
-    return $product;
+    return $productId;
     
   }
 
