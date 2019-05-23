@@ -16,8 +16,9 @@ if (!isset($TEMPLATE)){
 
     //Create service and query
     $service = new ProductWebService($index);
-    $method = param('method');
-    if ($method == 'query') {
+
+    //Query service if paramaters are provided, else load page
+    if (ProductWebService::existRequiredParams()){
       $service->query();
     } else {
       $usingSite = true;
@@ -38,6 +39,8 @@ if (!isset($TEMPLATE)){
   $TITLE = "API Documentation - Product Catalog";
   $NAVIGATION = true;
 
+  $PRODUCT_URL = "/product.php";
+
   include "template.inc.php";
 
 }
@@ -48,7 +51,7 @@ if (!isset($TEMPLATE)){
 
 <h2 id="url">URL</h2>
 <p>
-  <?php echo $HOST_URL_PREFIX . "" //Placeholder for eventual Product URL?> 
+  <?php echo $HOST_URL_PREFIX . $PRODUCT_URL //Placeholder for eventual Product URL?> 
 </p>
 
 <h2 id="method">Methods</h2>
@@ -61,12 +64,12 @@ if (!isset($TEMPLATE)){
   <dd>
     <ul class = "examples">
       <li>
-        <a href="<?php echo $HOST_URL_PREFIX . ""; ?>/query?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updateTime=1557943644040">
-              <?php echo $HOST_URL_PREFIX . ""; ?>/query?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updateTime=1557943644040</a>
+        <a href="<?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updateTime=1557943644040">
+              <?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updateTime=1557943644040</a>
       </li>
       <li>
-        <a href="<?php echo $HOST_URL_PREFIX . ""; ?>/query?source=us&amp;type=geoserve&amp;code=us70003l6p">
-              <?php echo $HOST_URL_PREFIX . ""; ?>/query?source=us&amp;type=geoserve&amp;code=us70003l6p</a>
+        <a href="<?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>?source=us&amp;type=geoserve&amp;code=us70003l6p">
+              <?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>?source=us&amp;type=geoserve&amp;code=us70003l6p</a>
       </li>
     </ul>
   </dd>
