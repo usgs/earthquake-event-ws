@@ -107,6 +107,11 @@ class ProductWebService extends WebService {
     return $query;
   }
   
+  //Returns true if at least one of the necessary parameters are included (Used to enter webservice)
+  public static function existRequiredParams() {
+    return isset($_GET['source']) || isset($_GET['type']) || isset($_GET['code']);
+  }
+
 }
 
 ?>
