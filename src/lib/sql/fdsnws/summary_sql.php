@@ -68,6 +68,18 @@ $productsToSummarize = array(
       'magnitude-error' => 'DOUBLE',
       'magnitude-num-stations-used' => 'INT'
     )
+    ),
+
+  'extent' => array(
+    'types' => array('shakemap', 'event-sequence'),
+    'properties' => array(
+      'starttime' => 'BIGINT',
+      'endtime' => 'BIGINT',
+      'maximum-latitude' => 'DOUBLE',
+      'maximum-longitude' => 'DOUBLE',
+      'minimum-latitude' => 'DOUBLE',
+      'minimum-longitude' => 'DOUBLE'
+    )
   )
 
 );
