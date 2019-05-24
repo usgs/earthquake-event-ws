@@ -12,16 +12,12 @@ if (!isset($TEMPLATE)){
     $CACHE_MAXAGE=60;
     include $APP_DIR . "/lib/cache.inc.php";
 
-    $usingSite = false;
-
     //Create service and query
     $service = new ProductWebService($index);
 
     //Query service if paramaters are provided, else load page
-    if (ProductWebService::existRequiredParams()){
-      $service->query();
-    } else {
-      $usingSite = true;
+    if (!empty($_GET)){
+      $service->query($_GET);
     }
 
   } catch (Exception $e) { //Wrap up exceptions as HTTP errors
@@ -33,8 +29,6 @@ if (!isset($TEMPLATE)){
       print_r($e);
     }
   }
-
-  if (!$usingSite) return;
 
   $TITLE = "API Documentation - Product Catalog";
   $NAVIGATION = true;
@@ -55,7 +49,7 @@ if (!isset($TEMPLATE)){
 </p>
 
 <h2 id="method">Methods</h2>
-<dl class = "vertical">
+<dl class="vertical">
   <dt>query</dt>
   <dd>
     to submit a data request. See the <a href="#parameters">parameters</a>
@@ -79,7 +73,7 @@ if (!isset($TEMPLATE)){
 <p>
 These parameters should be submitted as key=value pairs using the HTTP GET method. Source, type, and code are required parameters - any others are optional to refine the search.
 </p>
-<dl class = "vertical">
+<dl class="vertical">
   <dt>source</dt>
   <dd>
     the organization that submitted the product.

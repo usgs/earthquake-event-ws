@@ -20,10 +20,26 @@ class ProductWebService extends WebService {
     }
   }
 
-  //Forward-facing query
-  public function query() {
-    $query = $this->parseQuery();
+  /**
+   * Forward-facing query
+   * 
+   * @param $params {Array}
+   *    Parameters passed through $_GET
+   *  
+   * */
+  public function query($params) {
+    $query = $this->parseQuery($params);
     $this->handleDetailQuery($query);
+  }
+
+  /**
+   * Gets all products satisfying query
+   * 
+   * @param $query {ProductQuery}
+   *    The ProductQuery storing necessary query information for table search
+   */
+  protected function handleSummaryQuery($query) {
+
   }
 
   /**
@@ -77,14 +93,20 @@ class ProductWebService extends WebService {
     
   }
 
-  //Constructs query object based on parameters in $_GET
-  protected function parseQuery() {
+  /**
+   * Constructs query object based on parameters in $_GET
+   * 
+   * @param $params {Array}
+   *    Paramaters passed through $_GET
+   * 
+   */
+  protected function parseQuery($params) {
     $query = new ProductQuery();
 
     //Parse fields
-    foreach ($_GET as $name=>$value) {
+    foreach ($params as $name=>$value) {
       if ($value === '') {
-        $this->error(self::BAD_REQUEST, self::$statusMessage[self::BAD_REQUEST]);
+        $this->error(self::BAD_REQUEST, $name . " must have a value provided");
       } elseif ($name == 'source') {
         $query->source = $value;
       } elseif ($name == 'type') {
@@ -94,22 +116,17 @@ class ProductWebService extends WebService {
       } elseif ($name == 'updatetime' || $name == 'updateTime') {
         $query->updateTime = $value;
       } else {
-        $this->error(self::BAD_REQUEST, self::$statusMessage[self::BAD_REQUEST]);
+        $this->error(self::BAD_REQUEST, $name . " is not a supported parameter");
       }
 
     }
 
     //Validate for required parameters
     if ($query->source == null || $query->type == null || $query->code == null) {
-      $this->error(self::BAD_REQUEST, self::$statusMessage[self::BAD_REQUEST]);
+      $this->error(self::BAD_REQUEST, "At least one required paramater (source, type, code) was undefined");
     }
 
     return $query;
-  }
-  
-  //Returns true if at least one of the necessary parameters are included (Used to enter webservice)
-  public static function existRequiredParams() {
-    return isset($_GET['source']) || isset($_GET['type']) || isset($_GET['code']);
   }
 
 }
