@@ -33,6 +33,7 @@ if (!isset($TEMPLATE)){
   $TITLE = "API Documentation - Product Catalog";
   $NAVIGATION = true;
 
+  //Placeholder for eventual Product URL
   $PRODUCT_URL = "/product.php";
 
   include "template.inc.php";
@@ -45,7 +46,7 @@ if (!isset($TEMPLATE)){
 
 <h2 id="url">URL</h2>
 <p>
-  <?php echo $HOST_URL_PREFIX . $PRODUCT_URL //Placeholder for eventual Product URL?> 
+  <?php echo $HOST_URL_PREFIX . $PRODUCT_URL;?> 
 </p>
 
 <h2 id="method">Methods</h2>
@@ -56,7 +57,7 @@ if (!isset($TEMPLATE)){
     section for supported url parameters.
   </dd>
   <dd>
-    <ul class = "examples">
+    <ul class="examples">
       <li>
         <a href="<?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updateTime=1557943644040">
               <?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updateTime=1557943644040</a>
@@ -75,22 +76,23 @@ These parameters should be submitted as key=value pairs using the HTTP GET metho
 </p>
 <dl class="vertical">
   <dt>source</dt>
-  <dd>
-    the organization that submitted the product.
-  </dd>
+  <dd>the organization that submitted the product.</dd>
+  <dd class="required">Required</dd>
+  <dd class="type">String, example: <code>us</code></dd>
+
 
   <dt>type</dt>
-  <dd>
-    the associated product type.
-  </dd>
+  <dd>the associated product type.</dd>
+  <dd class="required">Required</dd>
+  <dd class="type">String, example: <code>origin</code></dd>
 
   <dt>code</dt>
-  <dd>
-    the product code assigned by the source.
-  </dd>
+  <dd>the product code assigned by the source.</dd>
+  <dd class="required">Required</dd>
+  <dd class="type">String, example: <code>us70003l6p</code></dd>
   
   <dt>updatetime</dt>
-  <dd>
-    the updateTime for a desired product. If unspecified, the latest product is returned.
-  </dd>
+  <dd>the updateTime for a desired product. If unspecified, the latest product is returned.</dd>
+  <dd class="type">BigInt, example: <code>1557943644040</code></dd>
+
 </dl>
