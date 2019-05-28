@@ -97,8 +97,7 @@ class ProductWebService extends WebService {
    * Constructs query object based on parameters in $_GET
    * 
    * @param $params {Array}
-   *    Paramaters passed through $_GET
-   * 
+   *    Parameters passed through $_GET
    */
   protected function parseQuery($params) {
     $query = new ProductQuery();
@@ -106,7 +105,7 @@ class ProductWebService extends WebService {
     //Parse fields
     foreach ($params as $name=>$value) {
       if ($value === '') {
-        $this->error(self::BAD_REQUEST, $name . " must have a value provided");
+        continue;
       } elseif ($name == 'source') {
         $query->source = $value;
       } elseif ($name == 'type') {
