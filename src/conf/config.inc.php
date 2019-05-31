@@ -89,3 +89,6 @@ $FDSN_HOST = '';
 $FEED_HOST = '';
 $FEED_URL = $FEED_HOST . $FEED_PATH;
 $FDSN_URL = $FDSN_HOST . $FDSN_PATH;
+
+//Placeholder for eventual Product URL
+$PRODUCT_URL = "/product.php";

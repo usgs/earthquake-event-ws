@@ -2,6 +2,9 @@
 
 //Entry point into product webservice
 
+//Placeholder for eventual Product URL
+$PRODUCT_URL = "/product.php";
+
 if (!isset($TEMPLATE)){
   //Include config
 
@@ -32,9 +35,6 @@ if (!isset($TEMPLATE)){
 
   $TITLE = "API Documentation - Product Catalog";
   $NAVIGATION = true;
-
-  //Placeholder for eventual Product URL
-  $PRODUCT_URL = "/product.php";
 
   include "template.inc.php";
 

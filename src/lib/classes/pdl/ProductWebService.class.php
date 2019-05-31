@@ -29,7 +29,13 @@ class ProductWebService extends WebService {
    * */
   public function query($params) {
     $query = $this->parseQuery($params);
-    $this->handleDetailQuery($query);
+
+    if (isset($query->source) && isset($query->type) && isset($query->code)) {
+      $this->handleDetailQuery($query);
+    }
+    else {
+      $this->handleSummaryQuery($query);
+    }
   }
 
   /**
@@ -39,7 +45,46 @@ class ProductWebService extends WebService {
    *    The ProductQuery storing necessary query information for table search
    */
   protected function handleSummaryQuery($query) {
+    global $HOST_URL_PREFIX;
+    global $APP_DIR;
 
+    //Make sure count to be returned is not over the maximum
+    $count = $this->index->getProductCount($query);
+    if ($count > $this->serviceLimit){
+      //Toss error (robbed from FDSNEventWebService for consistency)
+      $this->error(self::BAD_REQUEST, $count . ' matching products exceeds ' .
+          'search limit of ' . $this->serviceLimit . '. Modify the search ' .
+          'to match fewer products.');
+    }
+    
+    //Query based on parameters
+    $summaryArr = $this->index->getProductSummaryArray($query);
+
+    //Output (In FDSNEventWebService, output is handled by query as well)
+    $medatata = array();
+    $metadata['generated'] = time() . "000";
+    $metadata['url'] = $HOST_URL_PREFIX . $_SERVER['REQUEST_URI'];
+    $metadata['status'] = 200;
+    $metadata['api'] = $this->version;
+    $metadata['count'] = $count;
+
+    //Cache for 60 seconds regardless of age
+    $CACHE_MAXAGE = 60;
+    include $APP_DIR . '/lib/cache.inc.php';
+
+    //Build array of summary information
+    $productArr = array();
+    foreach($summaryArr as $id=>$product) {
+      $productArr[] = $product->toArray();
+    }
+
+    //Output
+    header('Content-type: application/json');
+    $json = '{"metadata":' . safe_json_encode($metadata) . ',"products":' . safe_json_encode($productArr) . '}';
+    $json = str_replace('\/', '/', $json);
+    echo $json;
+
+    exit;
   }
 
   /**
@@ -113,16 +158,49 @@ class ProductWebService extends WebService {
       } elseif ($name == 'code') {
         $query->code = $value;
       } elseif ($name == 'updatetime' || $name == 'updateTime') {
-        $query->updateTime = $value;
+        $query->updateTime = $this->validateFloat($name,$value); //Not validated for time so you can easily use known updatetime
+      } elseif ($name == 'maxupdatetime' || $name == 'maxUpdateTime') {
+        $query->maxUpdateTime = $this->validateTime($name,$value);
+      } elseif ($name == 'minupdatetime' || $name == 'minUpdateTime') {
+        $query->minUpdateTime = $this->validateTime($name,$value);
+      } elseif ($name == 'time') {
+        $query->time = $this->validateTime($name,$value);
+      } elseif ($name == 'starttime' || $name == 'startTime') {
+        $query->startTime = $this->validateTime($name,$value);
+      } elseif ($name == 'endtime' || $name == 'endTime') {
+        $query->endTime = $this->validateTime($name,$value);
+      } elseif ($name == "latitude") {
+        $query->latitude = $this->validateFloat($name,$value,-90,90);
+      } elseif ($name == "longitude") {
+        $query->longitude = $this->validateFloat($name,$value,-180,180);
+      } elseif ($name == "maxlatitude" || $name == "maxLatitude") {
+        $query->maxLatitude = $this->validateFloat($name,$value,-90,90);
+      } elseif ($name == "minlatitude" || $name == "minLatitude") {
+        $query->minLatitude = $this->validateFloat($name,$value,-90,90);
+      } elseif ($name == "maxlongitude" || $name == "maxLongitude") {
+        $query->maxLongitude = $this->validateFloat($name,$value,-360,360);
+      } elseif ($name == "minlongitude" || $name == "minLongitude") {
+        $query->minLongitude = $this->validateFloat($name,$value,-360,360);
       } else {
         $this->error(self::BAD_REQUEST, $name . " is not a supported parameter");
       }
-
     }
 
-    //Validate for required parameters
-    if ($query->source == null || $query->type == null || $query->code == null) {
-      $this->error(self::BAD_REQUEST, "At least one required paramater (source, type, code) was undefined");
+    //Combination validation
+    if (isset($query->startTime) && isset($query->endTime) && $query->startTime > $query->endTime) {
+      $this->error(self::BAD_REQUEST, 'starttime must be less than endtime');
+    }
+    if (isset($query->minUpdateTime) && isset($query->maxUpdateTime) && $query->minUpdateTime > $query->maxUpdateTime) {
+      $this->error(self::BAD_REQUEST, 'minupdatetime must be less than maxupdatetime');
+    }
+    if (isset($query->minLatitude) && isset($query->maxLatitude) && $query->minLatitude > $query->maxLatitude) {
+      $this->error(self::BAD_REQUEST, 'minlatitude must be less than maxlatitude');
+    }
+    if (isset($query->minLongitude) && isset($query->maxLongitude) && $query->minLongitude > $query->maxLongitude) {
+      $this->error(self::BAD_REQUEST, 'minlongitude must be less than maxlongitude');
+    }
+    if (isset($query->minLongitude) && isset($query->maxLongitude) && ($query->maxLongitude - $query->minLongitude) > 360) {
+      $this->error(self::BAD_REQUEST, 'Searches cannot span more than 360 degrees of longitude.');
     }
 
     return $query;
