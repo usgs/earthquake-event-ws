@@ -3,32 +3,27 @@
 //Stores all the information that can be queried for a product
 class ProductQuery {
   
+  //Detail search parameters
   public $source;
   public $type;
   public $code;
-  public $updateTime;
 
+  //Summary search parameters (optional)
+  public $updateTime;
+  public $maxUpdateTime;
+  public $minUpdateTime;
+  public $time;
   public $startTime;
   public $endTime;
+  public $latitude;
+  public $longitude;
   public $maxLatitude;
   public $maxLongitude;
   public $minLatitude;
   public $minLongitude;
-  public $latitude;
-  public $longitude;
-  public $time;
 
   //path search term (to be implemented)
   //public $path = null; 
-
-  /*
-  public function __construct(){
-    $source = null;
-    $type = null;
-    $code = null;
-    $updateTime = null;
-  }
-  */
 
   //Depricated as of 281b
   public function toString() {

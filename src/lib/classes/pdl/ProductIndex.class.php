@@ -94,6 +94,14 @@ class ProductIndex {
   const SUMMARY_LINK_RELATION = "relation";
   const SUMMARY_LINK_URL = "url";
   const SUMMARY_CURRENT_TABLE = "currentProducts";
+  const SUMMARY_EXTENT_TABLE = "extentSummary";
+  const SUMMARY_EXTENT_INDEX_ID = "productid";
+  const SUMMARY_EXTENT_START_TIME = "starttime";
+  const SUMMARY_EXTENT_END_TIME = "endtime";
+  const SUMMARY_EXTENT_MAX_LATITUDE = "max_latitude";
+  const SUMMARY_EXTENT_MAX_LONGITUDE = "max_longitude";
+  const SUMMARY_EXTENT_MIN_LATITUDE = "min_latitude";
+  const SUMMARY_EXTENT_MIN_LONGITUDE = "min_longitude";
 
 
   /** Properties to store the query text for prepared queries */
@@ -1033,6 +1041,9 @@ class ProductIndex {
    * @return Map of property name to property value
    */
   public function getSummary( $summaryIndexId ) {
+    global $HOST_URL_PREFIX;
+    global $PRODUCT_URL;
+
     $summary = new ProductSummary();
     $summary->setIndexId($summaryIndexId);
 
@@ -1083,6 +1094,7 @@ class ProductIndex {
 
       // This will default to 0 if not set in index db
       $summary->setPreferredWeight($results[self::SUMMARY_PREFERRED]);
+      $summary->setUrl($HOST_URL_PREFIX . $PRODUCT_URL . '?' . self::SUMMARY_SOURCE . '=' . $results[self::SUMMARY_SOURCE] . '&' . self::SUMMARY_TYPE . '=' . $results[self::SUMMARY_TYPE] . '&' . self::SUMMARY_CODE . '=' . $results[self::SUMMARY_CODE] . '&' . self::SUMMARY_UPDATE_TIME . '=' . $results[self::SUMMARY_UPDATE_TIME]);
     }
 
     // must close result set to keep from blocking transaction
@@ -1607,8 +1619,9 @@ class ProductIndex {
     return $this->connection;
   }
 
+  //TODO: Update to use buildProductSql if applicable
   /**
-   * Searches for product based on source, type, and code
+   * Searches for product ID based on source, type, and code
    * 
    * @param $query {ProductQuery}
    *    Productquery storing supplied information
@@ -1655,6 +1668,326 @@ class ProductIndex {
 
     return $productId;
     
+  }
+
+  /**
+   * Builds SQL query for provided parameters
+   * 
+   * @param $query {ProductQuery}
+   *    ProductQuery storing provided parameters
+   * 
+   * @return array
+   *    Contains SQL string and parameters for prepared statement
+   */
+  private function buildProductSearchSql($query,$getProperties=false) {
+    //Selecting all productSummary properties
+    $sql = sprintf("
+      SELECT
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s, 
+        ps.%s
+      ",
+      self::SUMMARY_CREATED,
+      self::SUMMARY_PRODUCT_INDEX_ID,
+      self::SUMMARY_PRODUCT_ID,
+      self::SUMMARY_EVENT_ID,
+      self::SUMMARY_TYPE,
+      self::SUMMARY_SOURCE,
+      self::SUMMARY_CODE,
+      self::SUMMARY_UPDATE_TIME,
+      self::SUMMARY_EVENT_SOURCE,
+      self::SUMMARY_EVENT_SOURCE_CODE,
+      self::SUMMARY_EVENT_TIME,
+      self::SUMMARY_EVENT_LATITUDE,
+      self::SUMMARY_EVENT_LONGITUDE,
+      self::SUMMARY_EVENT_DEPTH,
+      self::SUMMARY_EVENT_MAGNITUDE,
+      self::SUMMARY_VERSION,
+      self::SUMMARY_STATUS,
+      self::SUMMARY_TRACKER_URL,
+      self::SUMMARY_PREFERRED
+    );
+
+    //Decide what tables to select from
+    $sql .= sprintf(" FROM %s ps ", self::SUMMARY_TABLE);
+
+    //Get property SQL if we also want those
+    $propertySql;
+    if ($getProperties) {
+      //Select vals
+      $propertySql = sprintf("
+        SELECT
+          ps.%s,
+          psp.%s,
+          psp.%s
+        ",
+        self::SUMMARY_PRODUCT_INDEX_ID,
+        self::SUMMARY_PROPERTY_NAME,
+        self::SUMMARY_PROPERTY_VALUE
+      );
+
+      //Do table joins
+      $propertySql .= sprintf("
+        FROM %s ps
+        LEFT JOIN %s psp
+          ON (psp.%s = ps.%s)
+        ",
+        self::SUMMARY_TABLE,
+        self::SUMMARY_PROPERTY_TABLE,
+        self::SUMMARY_PROPERTY_ID,
+        self::SUMMARY_PRODUCT_INDEX_ID
+      );
+    }
+
+    if (isset($query->time) || isset($query->latitude) || isset($query->longitude)) {
+      //Do inner join with extentSummary table
+      $extentJoin = sprintf("
+        FROM %s es
+        INNER JOIN %s ps
+        ON (es.%s = ps.%s)
+        ",
+        self::SUMMARY_EXTENT_TABLE,
+        self::SUMMARY_TABLE,
+        self::SUMMARY_EXTENT_INDEX_ID,
+        self::SUMMARY_PRODUCT_INDEX_ID
+      );
+      $sql .= $extentJoin;
+      if ($getProperties) $propertySql .= $extentJoin;
+    }
+
+    //Building WHERE clause
+    $where = array();
+    $params = array();
+
+    if (isset($query->source)) {
+      $where[] = 'ps.' . self::SUMMARY_SOURCE . '=?';
+      $params[] = $query->source;
+    }
+    if (isset($query->type)) {
+      $where[] = 'ps.' . self::SUMMARY_TYPE . '=?';
+      $params[] = $query->type;
+    }
+    if (isset($query->code)) {
+      $where[] = 'ps.' . self::SUMMARY_CODE . '=?';
+      $params[] = $query->code;
+    }
+    if (isset($query->updateTime)) {
+      $where[] = 'ps.' . self::SUMMARY_UPDATE_TIME . '=?';
+      $params[] = $query->updateTime;
+    }
+    if (isset($query->maxUpdateTime)) {
+      $where[] = 'ps.' . self::SUMMARY_UPDATE_TIME . '<=?';
+      $params[] = $query->maxUpdateTime;
+    }
+    if (isset($query->minUpdateTime)) {
+      $where[] = 'ps.' . self::SUMMARY_UPDATE_TIME . '>=?';
+      $params[] = $query->minUpdateTime;
+    }
+    if (isset($query->time)) {
+      $where[] = 'es.' . self::SUMMARY_EXTENT_START_TIME . '<=? AND es.' . self::SUMMARY_EXTENT_END_TIME . '>=?';
+      $params[] = $query->time;
+      $params[] = $query->time;
+    }
+    if (isset($query->startTime)) {
+      $where[] = 'ps.' . self::SUMMARY_EVENT_TIME . '>=?';
+      $params[] = $query->startTime;
+    }
+    if (isset($query->endTime)) {
+      $where[] = 'ps.' . self::SUMMARY_EVENT_TIME . '<=?';
+      $params[] = $query->endTime;
+    }
+    if (isset($query->latitude)) {
+      $where[] = 'es.' . self::SUMMARY_EXTENT_MIN_LATITUDE . '<=? AND es.' . self::SUMMARY_EXTENT_MAX_LATITUDE . '>=?';
+      $params[] = $query->latitude;
+      $params[] = $query->latitude;
+    }
+    if (isset($query->longitude)) {
+      $where[] = 'es.' . self::SUMMARY_EXTENT_MIN_LONGITUDE . '<=? AND es.' . self::SUMMARY_EXTENT_MAX_LONGITUDE . '>=?';
+      $params[] = $query->longitude;
+      $params[] = $query->longitude;
+    }
+    if (isset($query->maxLatitude)) {
+      $where[] = 'ps.' . self::SUMMARY_EVENT_LATITUDE . '<=?';
+      $params[] = $query->maxLatitude;
+    }
+    if (isset($query->minLatitude)) {
+      $where[] = 'ps.' . self::SUMMARY_EVENT_LATITUDE . '>=?';
+      $params[] = $query->minLatitude;
+    }
+
+    //Do max, min longitude logic 
+    if (isset($query->maxLongitude) && isset($query->minLongitude)) {
+      //Check if they are entirely outside [-180,180]; normalize if they are
+      if ($query->maxLongitude < -180 && $query->minLongitude < -180) {
+        $query->maxLongitude += 360;
+        $query->minLongitude += 360;
+      } elseif ($query->maxLongitude > 180 && $query->minLongitude > 180) {
+        $query->maxLongitude -= 360;
+        $query->minLongitude -= 360;
+      }
+
+      //Check if box spans dateline
+      if ($query->maxLongitude > 180 || $query->minLongitude < -180) {
+        //Construct two bounding boxes if it does
+        $rightMin = -180;
+        $leftMax = 180;
+        if ($query->maxLongitude > 180) {
+          $rightMax = $query->maxLongitude - 360;
+          $leftMin = $query->minLongitude;
+        } elseif ($query->minLongitude < -180) {
+          $rightMax = $query->maxLongitude;
+          $leftMin = $query->minLongitude + 360;
+        }
+        //Construct WHERE for two boxes
+        $where[] = '((ps.' . self::SUMMARY_EVENT_LONGITUDE . ' BETWEEN ? AND ?) OR (ps.' . self::SUMMARY_EVENT_LONGITUDE . ' BETWEEN ? AND ?))';
+        $params[] = $leftMin;
+        $params[] = $leftMax;
+        $params[] = $rightMin;
+        $params[] = $rightMax;
+      } else {
+        //Construct WHERE for simple box
+        $where[] = 'ps.' . self::SUMMARY_EVENT_LONGITUDE . ' BETWEEN ? AND ?';
+        $params[] = $query->minLongitude;
+        $params[] = $query->maxLongitude;
+      }
+    } elseif (isset($query->maxLongitude)) {
+      //If only set a max on longitude
+      if ($query->maxLongitude > 180) $query->maxLongitude -= 360;
+      $where[] = 'ps.' . self::SUMMARY_EVENT_LONGITUDE . '<=?';
+      $params[] = $query->maxLongitude;
+    } elseif (isset($query->minLongitude)) {
+      //If only set a min on longitude
+      if ($query->minLongitude < -180) $query->minLongitude += 360;
+      $where[] = 'ps.' . self::SUMMARY_EVENT_LONGITUDE . '>=?';
+      $params[] = $query->minLongitude;
+    }
+
+    $sql .= 'WHERE ' . implode(' AND ', $where);
+    if ($getProperties) $propertySql .= ' WHERE ' . implode(' AND ', $where);
+
+    if ($getProperties) return array($sql,$propertySql,$params);
+    return array($sql, $params);
+
+  }
+
+  /**
+   * Gets number of products returned by product query
+   * 
+   * @param $query {ProductQuery}
+   *    ProductQuery storing supplied information
+   * 
+   * @return {int}
+   *    Number of products returned by query
+   */
+  public function getProductCount($query) {
+    $search = $this->buildProductSearchSql($query);
+    
+    $sql = preg_replace("/SELECT(.*?)FROM/s", "SELECT COUNT(*) FROM", $search[0]); //Maybe update getCount... so i'm not copying code here
+    $statement = $this->connection->prepare($sql);
+    $statement->execute($search[1]);
+
+    $count = intval($statement->fetch()[0]);
+
+    return $count;
+  }
+
+  /**
+   * Gets products from query
+   * 
+   * @param $query {ProductQuery}
+   *    ProductQuery storing supplied information
+   */
+  public function getProductSummaryArray($query) {
+    global $HOST_URL_PREFIX;
+    global $PRODUCT_URL;
+    $search = $this->buildProductSearchSql($query, true);
+
+    //Execute product sql statement
+    $productStatement = $this->connection->prepare($search[0]);
+    if ($productStatement->execute($search[2]) == false) {
+      print_r($productStatement->errorInfo());
+      exit;
+    }
+    $productResults = $productStatement->fetchAll(PDO::FETCH_ASSOC);
+
+    //Execute properties sql statement
+    $propertyStatement = $this->connection->prepare($search[1]);
+    if ($propertyStatement->execute($search[2]) == false) {
+      print_r($propertyStatement->errorInfo());
+      exit;
+    }
+    $propertyResults = $propertyStatement->fetchAll(PDO::FETCH_ASSOC);
+    //print_r($propertyResults);
+
+    $summaryArray = array();
+
+    //print_r($propertyResults);
+    foreach ($propertyResults as $id=>$propertyArr) {
+      //Create productSummary indexed such that we can find it later
+      if (!isset($summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]])) $summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]] = new ProductSummary();
+      $properties = $summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]]->getProperties();
+      
+      $properties[$propertyArr['name']] = $propertyArr['value'];
+
+      $summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]]->setProperties($properties);
+    }
+
+    //Build Summary Array
+    foreach ($productResults as $id=>$product) {
+      $summary = new ProductSummary();
+      if (isset($summaryArray[$product[self::SUMMARY_PRODUCT_INDEX_ID]])) {
+        $summary = $summaryArray[$product[self::SUMMARY_PRODUCT_INDEX_ID]];
+      }
+
+      //Populate summary with results
+      //TODO: Do error catching
+      $summary->setIndexId($product[self::SUMMARY_PRODUCT_INDEX_ID]);
+      $summary->setId(ProductId::parse($product[self::SUMMARY_PRODUCT_ID]));
+      
+      $summary->setCreated($product[self::SUMMARY_CREATED]);
+      $summary->setEventSource($product[self::SUMMARY_EVENT_SOURCE]);
+      $summary->setEventSourceCode($product[self::SUMMARY_EVENT_SOURCE_CODE]);
+
+      $summary->setEventTime($product[self::SUMMARY_EVENT_TIME]);
+      $summary->setEventLatitude(safefloatval($product[self::SUMMARY_EVENT_LATITUDE]));
+      $summary->setEventLongitude(safefloatval($product[self::SUMMARY_EVENT_LONGITUDE]));
+      $summary->setEventDepth(safefloatval($product[self::SUMMARY_EVENT_DEPTH]));
+      $summary->setEventMagnitude(safefloatval($product[self::SUMMARY_EVENT_MAGNITUDE]));
+
+      $summary->setVersion( $product[self::SUMMARY_VERSION] );
+      $summary->setStatus( $product[self::SUMMARY_STATUS] );
+      $summary->setTrackerURL( $product[self::SUMMARY_TRACKER_URL] );
+
+      $summary->setPreferredWeight($product[self::SUMMARY_PREFERRED]);
+      $summary->setUrl($HOST_URL_PREFIX . $PRODUCT_URL . '?' . self::SUMMARY_SOURCE . '=' . $product[self::SUMMARY_SOURCE] . '&' . self::SUMMARY_TYPE . '=' . $product[self::SUMMARY_TYPE] . '&' . self::SUMMARY_CODE . '=' . $product[self::SUMMARY_CODE] . '&' . self::SUMMARY_UPDATE_TIME . '=' . $product[self::SUMMARY_UPDATE_TIME]);
+
+
+      if (!isset($summaryArray[$product[self::SUMMARY_PRODUCT_INDEX_ID]])) {
+        $summaryArray[] = $summary;
+      }
+
+      //print_r($summary->toArray());
+    }
+    //TODO: Populate links and properties in summaries
+
+    
+    return $summaryArray;
   }
 
 }
