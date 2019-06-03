@@ -1933,7 +1933,6 @@ class ProductIndex {
       exit;
     }
     $propertyResults = $propertyStatement->fetchAll(PDO::FETCH_ASSOC);
-    //print_r($propertyResults);
 
     $summaryArray = array();
 
@@ -1941,8 +1940,11 @@ class ProductIndex {
     foreach ($propertyResults as $id=>$propertyArr) {
       //Create productSummary indexed such that we can find it later
       if (!isset($summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]])) $summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]] = new ProductSummary();
+
+      //Grab current properties list
       $properties = $summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]]->getProperties();
       
+      //Add new properties
       $properties[$propertyArr['name']] = $propertyArr['value'];
 
       $summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]]->setProperties($properties);
@@ -1956,7 +1958,6 @@ class ProductIndex {
       }
 
       //Populate summary with results
-      //TODO: Do error catching
       $summary->setIndexId($product[self::SUMMARY_PRODUCT_INDEX_ID]);
       $summary->setId(ProductId::parse($product[self::SUMMARY_PRODUCT_ID]));
       
@@ -1981,11 +1982,7 @@ class ProductIndex {
       if (!isset($summaryArray[$product[self::SUMMARY_PRODUCT_INDEX_ID]])) {
         $summaryArray[] = $summary;
       }
-
-      //print_r($summary->toArray());
     }
-    //TODO: Populate links and properties in summaries
-
     
     return $summaryArray;
   }
