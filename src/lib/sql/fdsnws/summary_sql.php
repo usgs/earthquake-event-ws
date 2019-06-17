@@ -68,7 +68,7 @@ $productsToSummarize = array(
       'magnitude-error' => 'DOUBLE',
       'magnitude-num-stations-used' => 'INT'
     )
-    ),
+  ),
 
   'extent' => array(
     'types' => array('shakemap', 'event-sequence'),
