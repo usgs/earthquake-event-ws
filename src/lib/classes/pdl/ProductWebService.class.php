@@ -7,12 +7,17 @@ class ProductWebService extends WebService {
   //ProductIndex used to query ComCat database
   public $index;
 
+  private $url;
+  private $lastRequest;
+
   /**
    * @param $index {ProductIndex}
    *    The ProductIndex used to search for products and query the database
    */
-  public function __construct($index) {
+  public function __construct($index,$url) {
     parent::__construct($index);
+
+    $this->url = $url;
 
     if ($redirect) {
       //Do nothing for now, don't know where this service is pointing
@@ -29,6 +34,7 @@ class ProductWebService extends WebService {
    * */
   public function query($params) {
     $query = $this->parseQuery($params);
+    $this->lastRequest = $params;
 
     if (isset($query->source) && isset($query->type) && isset($query->code)) {
       $this->handleDetailQuery($query);
@@ -45,7 +51,6 @@ class ProductWebService extends WebService {
    *    The ProductQuery storing necessary query information for table search
    */
   protected function handleSummaryQuery($query) {
-    global $HOST_URL_PREFIX;
     global $APP_DIR;
 
     //Make sure count to be returned is not over the maximum
@@ -63,7 +68,7 @@ class ProductWebService extends WebService {
     //Output (In FDSNEventWebService, output is handled by query as well)
     $medatata = array();
     $metadata['generated'] = time() . "000";
-    $metadata['url'] = $HOST_URL_PREFIX . $_SERVER['REQUEST_URI'];
+    $metadata['url'] = $this->url . '?' . http_build_query($this->lastRequest);
     $metadata['status'] = 200;
     $metadata['api'] = $this->version;
     $metadata['count'] = $count;
@@ -75,6 +80,7 @@ class ProductWebService extends WebService {
     //Build array of summary information
     $productArr = array();
     foreach($summaryArr as $id=>$product) {
+      $product->setUrl($this->getDetailUrl($product));
       $productArr[] = $product->toArray();
     }
 
@@ -207,6 +213,10 @@ class ProductWebService extends WebService {
     }
 
     return $query;
+  }
+
+  protected function getDetailUrl($product) {
+    return $this->url . '?' . 'source=' . $product->getId()->getSource() . '&type=' . $product->getId()->getType() . '&code=' . $product->getId()->getCode() . '&updateTime=' . $product->getId()->getUpdateTime();
   }
 
 }

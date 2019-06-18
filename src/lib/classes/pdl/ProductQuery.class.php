@@ -23,13 +23,6 @@ class ProductQuery {
   public $minLongitude;
 
   //path search term (to be implemented)
-  //public $path = null; 
-
-  //Depricated as of 281b
-  public function toString() {
-    $ret = "Parameters: (" . $this->source . ", " . $this->type . ", " . $this->code . ", " . $this->updateTime . ")\n\r";
-    return $ret;
-  }
 
 }
 

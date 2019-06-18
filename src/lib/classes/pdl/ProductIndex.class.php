@@ -1041,8 +1041,6 @@ class ProductIndex {
    * @return Map of property name to property value
    */
   public function getSummary( $summaryIndexId ) {
-    global $HOST_URL_PREFIX;
-    global $PRODUCT_URL;
 
     $summary = new ProductSummary();
     $summary->setIndexId($summaryIndexId);
@@ -1094,7 +1092,6 @@ class ProductIndex {
 
       // This will default to 0 if not set in index db
       $summary->setPreferredWeight($results[self::SUMMARY_PREFERRED]);
-      $summary->setUrl($HOST_URL_PREFIX . $PRODUCT_URL . '?' . self::SUMMARY_SOURCE . '=' . $results[self::SUMMARY_SOURCE] . '&' . self::SUMMARY_TYPE . '=' . $results[self::SUMMARY_TYPE] . '&' . self::SUMMARY_CODE . '=' . $results[self::SUMMARY_CODE] . '&' . self::SUMMARY_UPDATE_TIME . '=' . $results[self::SUMMARY_UPDATE_TIME]);
     }
 
     // must close result set to keep from blocking transaction
@@ -1914,8 +1911,6 @@ class ProductIndex {
    *    ProductQuery storing supplied information
    */
   public function getProductSummaryArray($query) {
-    global $HOST_URL_PREFIX;
-    global $PRODUCT_URL;
     $search = $this->buildProductSearchSql($query, true);
 
     //Execute product sql statement
@@ -1976,8 +1971,6 @@ class ProductIndex {
       $summary->setTrackerURL( $product[self::SUMMARY_TRACKER_URL] );
 
       $summary->setPreferredWeight($product[self::SUMMARY_PREFERRED]);
-      $summary->setUrl($HOST_URL_PREFIX . $PRODUCT_URL . '?' . self::SUMMARY_SOURCE . '=' . $product[self::SUMMARY_SOURCE] . '&' . self::SUMMARY_TYPE . '=' . $product[self::SUMMARY_TYPE] . '&' . self::SUMMARY_CODE . '=' . $product[self::SUMMARY_CODE] . '&' . self::SUMMARY_UPDATE_TIME . '=' . $product[self::SUMMARY_UPDATE_TIME]);
-
 
       if (!isset($summaryArray[$product[self::SUMMARY_PRODUCT_INDEX_ID]])) {
         $summaryArray[] = $summary;

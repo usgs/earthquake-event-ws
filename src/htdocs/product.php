@@ -13,7 +13,7 @@ if (!isset($TEMPLATE)){
     include $APP_DIR . "/lib/cache.inc.php";
 
     //Create service and query
-    $service = new ProductWebService($index);
+    $service = new ProductWebService($index, $HOST_URL_PREFIX . $PRODUCT_URL);
 
     //Query service if paramaters are provided, else load page
     if (!empty($_GET)){

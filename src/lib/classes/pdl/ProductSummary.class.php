@@ -22,8 +22,6 @@ class ProductSummary {
   public $version = null;
   public $preferredWeight = null;
 
-  public $url = null;
-
   // reference to product from storage
   public $product = null;
 
@@ -99,9 +97,6 @@ class ProductSummary {
   public function getPreferredWeight() { return $this->preferredWeight; }
   public function setPreferredWeight($preferredWeight) { $this->preferredWeight = $preferredWeight; }
 
-  public function getUrl() { return $this->url; }
-  public function setUrl($url) { $this->url = $url; }
-
   public function getUpdateTime() { return $this->id->getUpdateTime(); }
   
   public function getEventType() { return $this->eventType; }
@@ -133,7 +128,6 @@ class ProductSummary {
       //'version' => $this->getVersion(),
 
       'preferredWeight' => safeintval($this->getPreferredWeight()),
-      'url' => $this->getUrl()
     );
 
     //remove null values
