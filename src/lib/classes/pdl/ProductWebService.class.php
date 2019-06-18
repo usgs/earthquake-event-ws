@@ -68,7 +68,7 @@ class ProductWebService extends WebService {
     //Output (In FDSNEventWebService, output is handled by query as well)
     $medatata = array();
     $metadata['generated'] = time() . "000";
-    $metadata['url'] = $this->url . '?' . http_build_query($this->lastRequest);
+    $metadata['url'] = $this->url . '?' . $_SERVER['QUERY_STRING'];
     $metadata['status'] = 200;
     $metadata['api'] = $this->version;
     $metadata['count'] = $count;
@@ -80,8 +80,9 @@ class ProductWebService extends WebService {
     //Build array of summary information
     $productArr = array();
     foreach($summaryArr as $id=>$product) {
-      $product->setUrl($this->getDetailUrl($product));
-      $productArr[] = $product->toArray();
+      $tmpArr = $product->toArray();
+      $tmpArr['url'] = $this->getDetailUrl($product);
+      $productArr[] = $tmpArr;
     }
 
     //Output
@@ -216,7 +217,12 @@ class ProductWebService extends WebService {
   }
 
   protected function getDetailUrl($product) {
-    return $this->url . '?' . 'source=' . $product->getId()->getSource() . '&type=' . $product->getId()->getType() . '&code=' . $product->getId()->getCode() . '&updateTime=' . $product->getId()->getUpdateTime();
+    $id = $product->getId();
+    return $this->url . '?' . 
+      'source=' . $id->getSource() . 
+      '&type=' . $id->getType() . 
+      '&code=' . $id->getCode() . 
+      '&updateTime=' . $id->getUpdateTime();
   }
 
 }
