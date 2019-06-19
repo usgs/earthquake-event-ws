@@ -52,6 +52,7 @@ class ProductWebService extends WebService {
    */
   protected function handleSummaryQuery($query) {
     global $APP_DIR;
+    global $HOST_URL_PREFIX;
 
     //Make sure count to be returned is not over the maximum
     $count = $this->index->getProductCount($query);
@@ -68,7 +69,7 @@ class ProductWebService extends WebService {
     //Output (In FDSNEventWebService, output is handled by query as well)
     $medatata = array();
     $metadata['generated'] = time() . "000";
-    $metadata['url'] = $this->url . '?' . $_SERVER['QUERY_STRING'];
+    $metadata['url'] = $HOST_URL_PREFIX . $_SERVER['REQUEST_URI'];
     $metadata['status'] = 200;
     $metadata['api'] = $this->version;
     $metadata['count'] = $count;
