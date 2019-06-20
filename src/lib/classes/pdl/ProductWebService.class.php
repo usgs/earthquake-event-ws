@@ -14,7 +14,7 @@ class ProductWebService extends WebService {
    * @param $index {ProductIndex}
    *    The ProductIndex used to search for products and query the database
    */
-  public function __construct($index,$url) {
+  public function __construct($index, $url) {
     parent::__construct($index);
 
     $this->url = $url;
@@ -88,7 +88,7 @@ class ProductWebService extends WebService {
 
     //Output
     header('Content-type: application/json');
-    $json = '{"metadata":' . safe_json_encode($metadata) . ',"products":' . safe_json_encode($productArr) . '}';
+    $json = safe_json_encode(array("metadata"=>$metadata, "products"=>$productArr));
     $json = str_replace('\/', '/', $json);
     echo $json;
 
