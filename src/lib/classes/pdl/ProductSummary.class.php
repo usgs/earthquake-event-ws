@@ -127,7 +127,7 @@ class ProductSummary {
       //'eventmagnitude' => $this->getEventMagnitude(),
       //'version' => $this->getVersion(),
 
-      'preferredWeight' => safeintval($this->getPreferredWeight()),
+      'preferredWeight' => safeintval($this->getPreferredWeight())
     );
 
     //remove null values

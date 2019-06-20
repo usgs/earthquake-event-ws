@@ -1879,7 +1879,7 @@ class ProductIndex {
     if ($getProperties) $propertySql .= ' WHERE ' . implode(' AND ', $where);
 
     if ($getProperties) return array($sql,$propertySql,$params);
-    return array($sql, $params);
+    return array($sql, null, $params);
 
   }
 
@@ -1897,7 +1897,7 @@ class ProductIndex {
     
     $sql = preg_replace("/SELECT(.*?)FROM/s", "SELECT COUNT(*) FROM", $search[0]); //Maybe update getCount... so i'm not copying code here
     $statement = $this->connection->prepare($sql);
-    $statement->execute($search[1]);
+    $statement->execute($search[2]);
 
     $count = intval($statement->fetch()[0]);
 
@@ -1916,8 +1916,7 @@ class ProductIndex {
     //Execute product sql statement
     $productStatement = $this->connection->prepare($search[0]);
     if ($productStatement->execute($search[2]) == false) {
-      print_r($productStatement->errorInfo());
-      exit;
+      throw new Exception($productStatement->errorInfo());
     }
     $productResults = $productStatement->fetchAll(PDO::FETCH_ASSOC);
 
@@ -1934,7 +1933,9 @@ class ProductIndex {
     //print_r($propertyResults);
     foreach ($propertyResults as $id=>$propertyArr) {
       //Create productSummary indexed such that we can find it later
-      if (!isset($summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]])) $summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]] = new ProductSummary();
+      if (!isset($summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]])) {
+        $summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]] = new ProductSummary();
+      }
 
       //Grab current properties list
       $properties = $summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]]->getProperties();
@@ -1972,9 +1973,7 @@ class ProductIndex {
 
       $summary->setPreferredWeight($product[self::SUMMARY_PREFERRED]);
 
-      if (!isset($summaryArray[$product[self::SUMMARY_PRODUCT_INDEX_ID]])) {
-        $summaryArray[] = $summary;
-      }
+      $summaryArray[$product[self::SUMMARY_PRODUCT_INDEX_ID]] = $summary;
     }
     
     return $summaryArray;

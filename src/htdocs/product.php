@@ -2,7 +2,7 @@
 
 //Entry point into product webservice
 
-if (!isset($TEMPLATE)){
+if (!isset($TEMPLATE)) {
   //Include config
 
   try {
@@ -45,29 +45,6 @@ if (!isset($TEMPLATE)){
 <p>
   <?php echo $HOST_URL_PREFIX . $PRODUCT_URL;?> 
 </p>
-
-<!--
-<h2 id="method">Methods</h2>
-<dl class="vertical">
-  <dt>query</dt>
-  <dd>
-    to submit a data request. See the <a href="#parameters">parameters</a>
-    section for supported url parameters.
-  </dd>
-  <dd>
-    <ul class="examples">
-      <li>
-        <a href="<?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updateTime=1557943644040">
-              <?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updateTime=1557943644040</a>
-      </li>
-      <li>
-        <a href="<?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>?minlongitude=-109&amp;maxlongitude=-102&amp;minlatitude=37&amp;maxlatitude=41">
-              <?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>?minlongitude=-109&amp;maxlongitude=-102&amp;minlatitude=37&amp;maxlatitude=41</a>
-      </li>
-    </ul>
-  </dd>
-</dl>
--->
 
 <h2 id="examples">Examples</h2>
 <ul>
