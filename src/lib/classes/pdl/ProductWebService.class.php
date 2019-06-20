@@ -18,11 +18,6 @@ class ProductWebService extends WebService {
     parent::__construct($index);
 
     $this->url = $url;
-
-    if ($redirect) {
-      //Do nothing for now, don't know where this service is pointing
-      $redirect = '';
-    }
   }
 
   /**
@@ -58,7 +53,7 @@ class ProductWebService extends WebService {
     $count = $this->index->getProductCount($query);
     if ($count > $this->serviceLimit){
       //Toss error (robbed from FDSNEventWebService for consistency)
-      $this->httpError(self::BAD_REQUEST, $count . ' matching products exceeds ' .
+      $this->error(self::BAD_REQUEST, $count . ' matching products exceeds ' .
           'search limit of ' . $this->serviceLimit . '. Modify the search ' .
           'to match fewer products.',true);
     }
@@ -116,7 +111,7 @@ class ProductWebService extends WebService {
 
     //Error if product not found
     if ($product == null) {
-      $this->httpError(self::NOT_FOUND,self::$statusMessage[self::NOT_FOUND],true);
+      $this->error(self::NOT_FOUND,self::$statusMessage[self::NOT_FOUND],true);
     }
 
     //Send caching headers
@@ -190,28 +185,28 @@ class ProductWebService extends WebService {
       } elseif ($name == "minlongitude" || $name == "minLongitude") {
         $query->minLongitude = $this->validateFloat($name,$value,-360,360);
       } else {
-        $this->httpError(self::BAD_REQUEST, $name . " is not a supported parameter",true);
+        $this->error(self::BAD_REQUEST, $name . " is not a supported parameter",true);
       }
     }
 
     //Combination validation
     if ((isset($query->latitude) && !isset($query->longitude)) || (isset($query->longitude) && !isset($query->latitude))) {
-      $this->httpError(self::BAD_REQUEST, 'must provide both latitude and longitude',true);
+      $this->error(self::BAD_REQUEST, 'must provide both latitude and longitude',true);
     }
     if (isset($query->startTime) && isset($query->endTime) && $query->startTime > $query->endTime) {
-      $this->httpError(self::BAD_REQUEST, 'starttime must be less than endtime',true);
+      $this->error(self::BAD_REQUEST, 'starttime must be less than endtime',true);
     }
     if (isset($query->minUpdateTime) && isset($query->maxUpdateTime) && $query->minUpdateTime > $query->maxUpdateTime) {
-      $this->httpError(self::BAD_REQUEST, 'minupdatetime must be less than maxupdatetime',true);
+      $this->error(self::BAD_REQUEST, 'minupdatetime must be less than maxupdatetime',true);
     }
     if (isset($query->minLatitude) && isset($query->maxLatitude) && $query->minLatitude > $query->maxLatitude) {
-      $this->httpError(self::BAD_REQUEST, 'minlatitude must be less than maxlatitude',true);
+      $this->error(self::BAD_REQUEST, 'minlatitude must be less than maxlatitude',true);
     }
     if (isset($query->minLongitude) && isset($query->maxLongitude) && $query->minLongitude > $query->maxLongitude) {
-      $this->httpError(self::BAD_REQUEST, 'minlongitude must be less than maxlongitude',true);
+      $this->error(self::BAD_REQUEST, 'minlongitude must be less than maxlongitude',true);
     }
     if (isset($query->minLongitude) && isset($query->maxLongitude) && ($query->maxLongitude - $query->minLongitude) > 360) {
-      $this->httpError(self::BAD_REQUEST, 'Searches cannot span more than 360 degrees of longitude.',true);
+      $this->error(self::BAD_REQUEST, 'Searches cannot span more than 360 degrees of longitude.',true);
     }
 
     return $query;
