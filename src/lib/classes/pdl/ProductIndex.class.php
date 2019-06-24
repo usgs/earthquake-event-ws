@@ -1916,14 +1916,14 @@ class ProductIndex {
     //Execute product sql statement
     $productStatement = $this->connection->prepare($search[0]);
     if ($productStatement->execute($search[2]) == false) {
-      throw new Exception($productStatement->errorInfo());
+      throw new Exception($productStatement->errorInfo()[2]);
     }
     $productResults = $productStatement->fetchAll(PDO::FETCH_ASSOC);
 
     //Execute properties sql statement
     $propertyStatement = $this->connection->prepare($search[1]);
     if ($propertyStatement->execute($search[2]) == false) {
-      print_r($propertyStatement->errorInfo());
+      throw new Exception($propertyStatement->errorInfo()[2]);
       exit;
     }
     $propertyResults = $propertyStatement->fetchAll(PDO::FETCH_ASSOC);
