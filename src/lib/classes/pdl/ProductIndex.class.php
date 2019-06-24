@@ -1929,8 +1929,7 @@ class ProductIndex {
     $propertyResults = $propertyStatement->fetchAll(PDO::FETCH_ASSOC);
 
     $summaryArray = array();
-
-    //print_r($propertyResults);
+    
     foreach ($propertyResults as $id=>$propertyArr) {
       //Create productSummary indexed such that we can find it later
       if (!isset($summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]])) {
