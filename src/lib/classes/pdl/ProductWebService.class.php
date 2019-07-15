@@ -184,6 +184,10 @@ class ProductWebService extends WebService {
         $query->maxLongitude = $this->validateFloat($name,$value,-360,360);
       } elseif ($name == "minlongitude" || $name == "minLongitude") {
         $query->minLongitude = $this->validateFloat($name,$value,-360,360);
+      } elseif ($name == "minmagnitude" || $name == "minMagnitude") {
+        $query->minMagnitude = $this->validateFloat($name,$value,0,10);
+      } elseif ($name == "maxmagnitude" || $name == "maxMagnitude") {
+        $query->maxMagnitude = $this->validateFloat($name,$value,0,10);
       } else {
         $this->error(self::BAD_REQUEST, $name . " is not a supported parameter",true);
       }

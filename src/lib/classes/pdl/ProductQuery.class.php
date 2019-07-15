@@ -22,7 +22,17 @@ class ProductQuery {
   public $minLatitude;
   public $minLongitude;
 
-  //path search term (to be implemented)
+  //property search parameters
+  public $minMagnitude;
+  public $maxMagnitude;
+
+
+  /**
+   * Informs whether query has properties to be searched
+   */
+  public function hasProperties() {
+    return isset($this->minMagnitude) || isset($this->maxMagnitude);
+  }
 
 }
 

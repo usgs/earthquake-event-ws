@@ -1722,7 +1722,21 @@ class ProductIndex {
     );
 
     //Decide what tables to select from
-    $sql .= sprintf(" FROM %s ps ", self::SUMMARY_TABLE);
+    if ($query->hasProperties()) {
+      //do right join
+      $sql .= sprintf(" 
+      FROM %s ps 
+      RIGHT JOIN %s psp 
+        ON (psp.%s = ps.%s)
+      ",
+      self::SUMMARY_TABLE,
+      self::SUMMARY_PROPERTY_TABLE,
+      self::SUMMARY_PROPERTY_ID,
+      self::SUMMARY_PRODUCT_INDEX_ID);
+    } else {
+      //do standard
+      $sql .= sprintf(" FROM %s ps ",self::SUMMARY_TABLE);
+    }
 
     //Get property SQL if we also want those
     $propertySql;
@@ -1824,6 +1838,23 @@ class ProductIndex {
     if (isset($query->minLatitude)) {
       $where[] = 'ps.' . self::SUMMARY_EVENT_LATITUDE . '>=?';
       $params[] = $query->minLatitude;
+    }
+
+    //Do magnitude stuff
+    $magSql = 'psp.' . self::SUMMARY_PROPERTY_NAME . '=?';
+    if (isset($query->minMagnitude) && isset($query->maxMagnitude)) {
+      $where[] = '(' . $magSql . ' AND psp.' . self::SUMMARY_PROPERTY_VALUE . ' BETWEEN ? AND ?)';
+      $params[] = self::EVENT_MAGNITUDE;
+      $params[] = $query->minMagnitude;
+      $params[] = $query->maxMagnitude;
+    } elseif (isset($query->minMagnitude)) {
+      $where[] = '(' . $magSql . ' AND psp.' . self::SUMMARY_PROPERTY_VALUE . '>=?)';
+      $params[] = self::EVENT_MAGNITUDE;
+      $params[] = $query->minMagnitude;
+    } elseif (isset($query->maxMagnitude)) {
+      $where[] = '(' . $magSql . ' AND psp.' . self::SUMMARY_PROPERTY_VALUE . '<=?)';
+      $params[] = self::EVENT_MAGNITUDE;
+      $params[] = $query->minMagnitude;
     }
 
     //Do max, min longitude logic 
