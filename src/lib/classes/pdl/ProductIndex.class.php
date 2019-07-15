@@ -1676,7 +1676,8 @@ class ProductIndex {
    * @return array
    *    Contains SQL string and parameters for prepared statement
    */
-  private function buildProductSearchSql($query,$getProperties=false) {
+  //TODO: Fix caller
+  private function buildProductSearchSql($query) {
     //Selecting all productSummary properties
     $sql = sprintf("
       SELECT
@@ -1738,34 +1739,6 @@ class ProductIndex {
       $sql .= sprintf(" FROM %s ps ",self::SUMMARY_TABLE);
     }
 
-    //Get property SQL if we also want those
-    $propertySql;
-    if ($getProperties) {
-      //Select vals
-      $propertySql = sprintf("
-        SELECT
-          ps.%s,
-          psp.%s,
-          psp.%s
-        ",
-        self::SUMMARY_PRODUCT_INDEX_ID,
-        self::SUMMARY_PROPERTY_NAME,
-        self::SUMMARY_PROPERTY_VALUE
-      );
-
-      //Do table joins
-      $propertySql .= sprintf("
-        FROM %s ps
-        LEFT JOIN %s psp
-          ON (psp.%s = ps.%s)
-        ",
-        self::SUMMARY_TABLE,
-        self::SUMMARY_PROPERTY_TABLE,
-        self::SUMMARY_PROPERTY_ID,
-        self::SUMMARY_PRODUCT_INDEX_ID
-      );
-    }
-
     if (isset($query->time) || isset($query->latitude) || isset($query->longitude)) {
       //Do inner join with extentSummary table
       $extentJoin = sprintf("
@@ -1777,7 +1750,6 @@ class ProductIndex {
         self::SUMMARY_PRODUCT_INDEX_ID
       );
       $sql .= $extentJoin;
-      if ($getProperties) $propertySql .= $extentJoin;
     }
 
     //Building WHERE clause
@@ -1905,11 +1877,7 @@ class ProductIndex {
     }
 
     $sql .= 'WHERE ' . implode(' AND ', $where);
-    if ($getProperties) $propertySql .= ' WHERE ' . implode(' AND ', $where);
-
-    if ($getProperties) return array($sql,$propertySql,$params);
-    return array($sql, null, $params);
-
+    return array($sql, $params);
   }
 
   /**
@@ -1926,11 +1894,35 @@ class ProductIndex {
     
     $sql = preg_replace("/SELECT(.*?)FROM/s", "SELECT COUNT(*) FROM", $search[0]); //Maybe update getCount... so i'm not copying code here
     $statement = $this->connection->prepare($sql);
-    $statement->execute($search[2]);
+    $statement->execute($search[1]);
 
     $count = intval($statement->fetch()[0]);
 
     return $count;
+  }
+  
+  private function buildProductPropertySql($productIdArray) {
+    $sql = sprintf("
+      SELECT ps.%s, psp.%s, psp.%s FROM %s ps LEFT JOIN %s psp ON (ps.%s=psp.%s) WHERE ps.%s IN (
+      ",
+      self::SUMMARY_PRODUCT_INDEX_ID,
+      self::SUMMARY_PROPERTY_NAME,
+      self::SUMMARY_PROPERTY_VALUE,
+      self::SUMMARY_TABLE,
+      self::SUMMARY_PROPERTY_TABLE,
+      self::SUMMARY_PRODUCT_INDEX_ID,
+      self::SUMMARY_PROPERTY_ID,
+      self::SUMMARY_PRODUCT_INDEX_ID
+    );
+    for ($index = 0; $index < sizeof($productIdArray); $index++) {
+      $sql .= "?, ";
+    }
+    $sql = substr($sql,0,-2);
+    $sql .= ")";
+
+    //echo $sql;
+
+    return array($sql,$productIdArray);
   }
 
   /**
@@ -1940,25 +1932,30 @@ class ProductIndex {
    *    ProductQuery storing supplied information
    */
   public function getProductSummaryArray($query) {
-    $search = $this->buildProductSearchSql($query, true);
 
     //Execute product sql statement
+    $search = $this->buildProductSearchSql($query, true);
     $productStatement = $this->connection->prepare($search[0]);
-    if ($productStatement->execute($search[2]) == false) {
+    if ($productStatement->execute($search[1]) == false) {
       throw new Exception($productStatement->errorInfo()[2]);
     }
     $productResults = $productStatement->fetchAll(PDO::FETCH_ASSOC);
 
     //Execute properties sql statement
-    $propertyStatement = $this->connection->prepare($search[1]);
-    if ($propertyStatement->execute($search[2]) == false) {
+    $productIndexIds = array();
+    foreach ($productResults as $product) {
+      $productIndexIds[] = $product[self::SUMMARY_PRODUCT_INDEX_ID];
+    }
+    $propertySearch = $this->buildProductPropertySql($productIndexIds);
+    $propertyStatement = $this->connection->prepare($propertySearch[0]);
+    if ($propertyStatement->execute($propertySearch[1]) == false) {
       throw new Exception($propertyStatement->errorInfo()[2]);
       exit;
     }
     $propertyResults = $propertyStatement->fetchAll(PDO::FETCH_ASSOC);
 
+    //Add properties to new summary array
     $summaryArray = array();
-    
     foreach ($propertyResults as $id=>$propertyArr) {
       //Create productSummary indexed such that we can find it later
       if (!isset($summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]])) {
