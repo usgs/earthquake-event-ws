@@ -98,10 +98,10 @@ class ProductIndex {
   const SUMMARY_EXTENT_INDEX_ID = "productid";
   const SUMMARY_EXTENT_START_TIME = "starttime";
   const SUMMARY_EXTENT_END_TIME = "endtime";
-  const SUMMARY_EXTENT_MAX_LATITUDE = "max_latitude";
-  const SUMMARY_EXTENT_MAX_LONGITUDE = "max_longitude";
-  const SUMMARY_EXTENT_MIN_LATITUDE = "min_latitude";
-  const SUMMARY_EXTENT_MIN_LONGITUDE = "min_longitude";
+  const SUMMARY_EXTENT_MAX_LATITUDE = "maximum_latitude";
+  const SUMMARY_EXTENT_MAX_LONGITUDE = "maximum_longitude";
+  const SUMMARY_EXTENT_MIN_LATITUDE = "minimum_latitude";
+  const SUMMARY_EXTENT_MIN_LONGITUDE = "minimum_longitude";
 
 
   /** Properties to store the query text for prepared queries */
@@ -1755,12 +1755,10 @@ class ProductIndex {
     if (isset($query->time) || isset($query->latitude) || isset($query->longitude)) {
       //Do inner join with extentSummary table
       $extentJoin = sprintf("
-        FROM %s es
-        INNER JOIN %s ps
+        RIGHT JOIN %s es
         ON (es.%s = ps.%s)
         ",
         self::SUMMARY_EXTENT_TABLE,
-        self::SUMMARY_TABLE,
         self::SUMMARY_EXTENT_INDEX_ID,
         self::SUMMARY_PRODUCT_INDEX_ID
       );
