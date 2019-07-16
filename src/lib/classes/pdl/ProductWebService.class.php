@@ -212,6 +212,9 @@ class ProductWebService extends WebService {
     if (isset($query->minLongitude) && isset($query->maxLongitude) && ($query->maxLongitude - $query->minLongitude) > 360) {
       $this->error(self::BAD_REQUEST, 'Searches cannot span more than 360 degrees of longitude.',true);
     }
+    if (isset($query->minMagnitude) && isset($query->maxMagnitude) && $query->minMagnitude > $query->maxMagnitude) {
+      $this->error(self::BAD_REQUEST, 'minmagnitude must be less than maxmagnitude');
+    }
 
     return $query;
   }
