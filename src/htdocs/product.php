@@ -202,3 +202,29 @@ These parameters should be submitted as key=value pairs using the HTTP GET metho
       </tr>
     </tbody>
   </table>
+
+  <h3>Other</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>includedeleted</code></td>
+        <td>Boolean</td>
+        <td>FALSE</td>
+        <td>Includes previously deleted products in the query.</td>
+      </tr>
+      <tr>
+        <td><code>includesuperseded</code></td>
+        <td>Boolean</td>
+        <td>FALSE</td>
+        <td>Includes previous versions of products in the query.</td>
+      </tr>
+    </tbody>
+  </table>
