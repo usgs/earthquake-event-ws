@@ -188,7 +188,11 @@ class ProductWebService extends WebService {
         $query->minMagnitude = $this->validateFloat($name,$value,0,10);
       } elseif ($name == "maxmagnitude" || $name == "maxMagnitude") {
         $query->maxMagnitude = $this->validateFloat($name,$value,0,10);
-      } else {
+      } elseif ($name == "includedeleted" || $name == "includeDeleted") {
+        $query->includeDeleted = $this->validateBoolean($name,$value);
+      } elseif ($name == "includesuperseded" || $name == "includeSuperseded") {
+        $query->includeSuperseded = $this->validateBoolean($name,$value);
+      }  else {
         $this->error(self::BAD_REQUEST, $name . " is not a supported parameter",true);
       }
     }

@@ -21,6 +21,8 @@ class ProductQuery {
   public $maxLongitude;
   public $minLatitude;
   public $minLongitude;
+  public $includeSuperseded = false;
+  public $includeDeleted = false;
 
   //property search parameters
   public $minMagnitude;

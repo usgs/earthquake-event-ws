@@ -1829,6 +1829,13 @@ class ProductIndex {
       $params[] = $query->minMagnitude;
     }
 
+    if (isset($query->includeDeleted)) {
+      if (!($query->includeDeleted)) {
+        $where[] = 'ps.' . self::SUMMARY_STATUS . '<>?';
+        $params[] = 'DELETE';
+      }
+    }
+
     //Do max, min longitude logic 
     if (isset($query->maxLongitude) && isset($query->minLongitude)) {
       //Check if they are entirely outside [-180,180]; normalize if they are
@@ -1877,6 +1884,27 @@ class ProductIndex {
     }
 
     $sql .= 'WHERE ' . implode(' AND ', $where);
+
+    //Do WHERE for superseded
+    if (!isset($query->includeSuperseded) || $query->includeSuperseded == false) {
+      $sql .= sprintf(" AND NOT EXISTS (
+        SELECT * FROM %s 
+        WHERE %s=ps.%s 
+        AND %s=ps.%s 
+        AND %s=ps.%s 
+        AND %s>ps.%s
+        )",
+        self::SUMMARY_TABLE,
+        self::SUMMARY_SOURCE,
+        self::SUMMARY_SOURCE,
+        self::SUMMARY_TYPE,
+        self::SUMMARY_TYPE,
+        self::SUMMARY_CODE,
+        self::SUMMARY_CODE,
+        self::SUMMARY_UPDATE_TIME,
+        self::SUMMARY_UPDATE_TIME);
+    }
+
     return array($sql, $params);
   }
 
@@ -1892,7 +1920,7 @@ class ProductIndex {
   public function getProductCount($query) {
     $search = $this->buildProductSearchSql($query);
     
-    $sql = preg_replace("/SELECT(.*?)FROM/s", "SELECT COUNT(*) FROM", $search[0]); //Maybe update getCount... so i'm not copying code here
+    $sql = preg_replace("/SELECT(.*?)FROM/s", "SELECT COUNT(*) FROM", $search[0],1); //Maybe update getCount... so i'm not copying code here
     $statement = $this->connection->prepare($sql);
     $statement->execute($search[1]);
 
