@@ -1899,6 +1899,8 @@ class ProductIndex {
         $sql .= "ps." . self::SUMMARY_EVENT_MAGNITUDE . " DESC";
       } elseif ($query->orderBy == "magnitude-asc") {
         $sql .= "ps." . self::SUMMARY_EVENT_MAGNITUDE . " ASC";
+      } elseif ($query->orderBy == "time") {
+        $sql .= "ps." . self::SUMMARY_UPDATE_TIME . "DESC";
       } elseif ($query->orderBy == "time-asc") {
         $sql .= "ps." . self::SUMMARY_UPDATE_TIME . " ASC";
       }
