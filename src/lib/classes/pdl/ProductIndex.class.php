@@ -1722,22 +1722,8 @@ class ProductIndex {
       self::SUMMARY_PREFERRED
     );
 
-    //Decide what tables to select from
-    if ($query->hasProperties()) {
-      //do right join
-      $sql .= sprintf(" 
-      FROM %s ps 
-      RIGHT JOIN %s psp 
-        ON (psp.%s = ps.%s)
-      ",
-      self::SUMMARY_TABLE,
-      self::SUMMARY_PROPERTY_TABLE,
-      self::SUMMARY_PROPERTY_ID,
-      self::SUMMARY_PRODUCT_INDEX_ID);
-    } else {
-      //do standard
-      $sql .= sprintf(" FROM %s ps ",self::SUMMARY_TABLE);
-    }
+    //get table
+    $sql .= sprintf(" FROM %s ps ",self::SUMMARY_TABLE);
 
     if (isset($query->time) || isset($query->latitude) || isset($query->longitude)) {
       //Do right join with extentSummary table
@@ -1813,27 +1799,16 @@ class ProductIndex {
     }
 
     //Do magnitude stuff
-    $magSql = 'psp.' . self::SUMMARY_PROPERTY_NAME . '=?';
     if (isset($query->minMagnitude) && isset($query->maxMagnitude)) {
-      $where[] = '(' . $magSql . ' AND psp.' . self::SUMMARY_PROPERTY_VALUE . ' BETWEEN ? AND ?)';
-      $params[] = self::EVENT_MAGNITUDE;
+      $where[] = 'ps.' . self::SUMMARY_EVENT_MAGNITUDE . ' BETWEEN ? AND ?';
       $params[] = $query->minMagnitude;
       $params[] = $query->maxMagnitude;
     } elseif (isset($query->minMagnitude)) {
-      $where[] = '(' . $magSql . ' AND psp.' . self::SUMMARY_PROPERTY_VALUE . '>=?)';
-      $params[] = self::EVENT_MAGNITUDE;
+      $where[] = 'ps.' . self::SUMMARY_EVENT_MAGNITUDE . '>=?';
       $params[] = $query->minMagnitude;
     } elseif (isset($query->maxMagnitude)) {
-      $where[] = '(' . $magSql . ' AND psp.' . self::SUMMARY_PROPERTY_VALUE . '<=?)';
-      $params[] = self::EVENT_MAGNITUDE;
-      $params[] = $query->minMagnitude;
-    }
-
-    if (isset($query->includeDeleted)) {
-      if (!($query->includeDeleted)) {
-        $where[] = 'ps.' . self::SUMMARY_STATUS . '<>?';
-        $params[] = 'DELETE';
-      }
+      $where[] = 'ps.' . self::SUMMARY_EVENT_MAGNITUDE . '<=?';
+      $params[] = $query->maxMagnitude;
     }
 
     //Do max, min longitude logic 
@@ -1881,6 +1856,14 @@ class ProductIndex {
       if ($query->minLongitude < -180) $query->minLongitude += 360;
       $where[] = 'ps.' . self::SUMMARY_EVENT_LONGITUDE . '>=?';
       $params[] = $query->minLongitude;
+    }
+
+    //deleted
+    if (isset($query->includeDeleted)) {
+      if (!($query->includeDeleted)) {
+        $where[] = 'ps.' . self::SUMMARY_STATUS . '<>?';
+        $params[] = 'DELETE';
+      }
     }
 
     $sql .= 'WHERE ' . implode(' AND ', $where);

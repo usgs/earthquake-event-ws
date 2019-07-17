@@ -26,18 +26,8 @@ class ProductQuery {
   public $orderBy;
   public $limit;
   public $offset;
-
-  //property search parameters
   public $minMagnitude;
   public $maxMagnitude;
-
-
-  /**
-   * Informs whether query has properties to be searched
-   */
-  public function hasProperties() {
-    return isset($this->minMagnitude) || isset($this->maxMagnitude);
-  }
 
 }
 
