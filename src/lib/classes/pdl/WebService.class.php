@@ -196,7 +196,7 @@ class WebService {
    * @param $max maximum valid value for parameter, or null if no maximum.
    * @return value as integer if valid (integer and in range), exit with error if invalid.
    */
-  protected function validateInteger($param, $value, $min, $max) {
+  protected function validateInteger($param, $value, $min=null, $max=null) {
     if (
         !ctype_digit($value)
         || ($min !== null && intval($value) < $min)

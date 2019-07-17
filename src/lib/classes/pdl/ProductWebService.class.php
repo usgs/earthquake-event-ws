@@ -192,7 +192,13 @@ class ProductWebService extends WebService {
         $query->includeDeleted = $this->validateBoolean($name,$value);
       } elseif ($name == "includesuperseded" || $name == "includeSuperseded") {
         $query->includeSuperseded = $this->validateBoolean($name,$value);
-      }  else {
+      } elseif ($name == "orderby" || $name=="orderBy") {
+        $query->orderBy = $value;
+      } elseif ($name == "limit") {
+        $query->limit = $this->validateInteger($name,$value,0);
+      } elseif ($name == "offset") {
+        $query->offset = $this->validateInteger($name,$value,0);
+      } else {
         $this->error(self::BAD_REQUEST, $name . " is not a supported parameter",true);
       }
     }

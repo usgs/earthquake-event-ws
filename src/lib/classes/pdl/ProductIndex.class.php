@@ -1740,7 +1740,7 @@ class ProductIndex {
     }
 
     if (isset($query->time) || isset($query->latitude) || isset($query->longitude)) {
-      //Do inner join with extentSummary table
+      //Do right join with extentSummary table
       $extentJoin = sprintf("
         RIGHT JOIN %s es
         ON (es.%s = ps.%s)
@@ -1905,6 +1905,32 @@ class ProductIndex {
         self::SUMMARY_UPDATE_TIME);
     }
 
+    //Do ordering
+    $sql .= " ORDER BY ";
+    if (isset($query->orderBy)) {
+      if ($query->orderBy == "id") {
+        $sql .= "ps." . self::SUMMARY_PRODUCT_INDEX_ID . " DESC";
+      } elseif ($query->orderBy == "id-asc") {
+        $sql .= "ps." . self::SUMMARY_PRODUCT_INDEX_ID . " ASC";
+      } elseif ($query->orderBy == "magnitude") {
+        $sql .= "ps." . self::SUMMARY_EVENT_MAGNITUDE . " DESC";
+      } elseif ($query->orderBy == "magnitude-asc") {
+        $sql .= "ps." . self::SUMMARY_EVENT_MAGNITUDE . " ASC";
+      } elseif ($query->orderBy == "time-asc") {
+        $sql .= "ps." . self::SUMMARY_UPDATE_TIME . " ASC";
+      }
+    } else {
+      $sql .= "ps." . self::SUMMARY_UPDATE_TIME . " DESC";
+    }
+
+    //add limit and offset if included
+    if (isset($query->limit)) {
+      $sql .= " LIMIT " . $query->limit;
+    }
+    if (isset($query->offset)) {
+      $sql .= " OFFSET " . $query->offset;
+    }
+
     return array($sql, $params);
   }
 
@@ -1925,6 +1951,10 @@ class ProductIndex {
     $statement->execute($search[1]);
 
     $count = intval($statement->fetch()[0]);
+
+    if (isset($query->limit) && $count > $query->limit) {
+      return $query->limit;
+    }
 
     return $count;
   }

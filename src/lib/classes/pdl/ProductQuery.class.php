@@ -23,6 +23,9 @@ class ProductQuery {
   public $minLongitude;
   public $includeSuperseded = false;
   public $includeDeleted = false;
+  public $orderBy;
+  public $limit;
+  public $offset;
 
   //property search parameters
   public $minMagnitude;
