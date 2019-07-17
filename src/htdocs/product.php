@@ -203,6 +203,33 @@ These parameters should be submitted as key=value pairs using the HTTP GET metho
     </tbody>
   </table>
 
+  <h3>Properties</h3>
+  <p>Some product properties are searchable.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>minmagnitude</code></td>
+        <td>Decimal, [0,10]</td>
+        <td>0</td>
+        <td>Lower bound on associated magnitude during search.</td>
+      </tr>
+      <tr>
+        <td><code>maxmagnitude</code></td>
+        <td>Decimal, [0,10]</td>
+        <td>10</td>
+        <td>Upper bound on associated magnitude during search.</td>
+      </tr>
+    </tbody>
+  </table>
+
   <h3>Other</h3>
   <table>
     <thead>
@@ -225,6 +252,26 @@ These parameters should be submitted as key=value pairs using the HTTP GET metho
         <td>Boolean</td>
         <td>FALSE</td>
         <td>Includes previous versions of products in the query.</td>
+      </tr>
+      <tr>
+        <td><code>orderby</code></td>
+        <td>String</td>
+        <td>time, descending</td>
+        <td>Changes the output order. Options are <code>time</code>,<code>time-asc</code>,<code>id</code>,<code>id-asc</code>,
+          <code>magnitude</code>,<code>magnitude-asc</code>. Each defaults to descending order, unless the <code>-asc</code> option is provided.
+        </td>
+      </tr>
+      <tr>
+        <td><code>limit</code></td>
+        <td>Integer</td>
+        <td>None</td>
+        <td>Limits the output to a fixed number of products.</td>
+      </tr>
+      <tr>
+        <td><code>offset</code></td>
+        <td>Integer</td>
+        <td>None</td>
+        <td>Offsets the returned results by a fixed number of products. Often used in conjunction with <code>limit</code>.</td>
       </tr>
     </tbody>
   </table>
