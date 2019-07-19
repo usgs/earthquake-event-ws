@@ -52,6 +52,9 @@ $HTTPD_CONF = '
 
 RewriteEngine on
 
+<IfModule !version_module>
+  LoadModule version_module modules/mod_version.so
+</IfModule>
 
 
 ## EQ Search URL Hijacking
@@ -97,8 +100,28 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
 </Directory>
 
 <Directory ' . $storage_directory . '>
-  Order allow,deny
-  Allow from all
+  #if running apache 2.2
+  <IfVersion < 2.4>
+    Order allow,deny
+    Allow from all
+
+    # only allow GET access (and OPTIONS for CORS)
+    <LimitExcept GET OPTIONS>
+      Order allow,deny
+      Deny from all
+    </LimitExcept>
+  </IfVersion>
+
+  #if running apache 2.4
+  <IfVersion >= 2.4>
+    Require all granted
+
+    # only allow GET access (and OPTIONS for CORS)
+    <LimitExcept GET OPTIONS>
+      Require all denied
+    </LimitExcept>
+  </IfVersion>
+
   ExpiresActive on
   ExpiresDefault "access plus 10 years"
 
@@ -106,12 +129,6 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
   <IfModule mod_php5.c>
     php_flag engine off
   </IfModule>
-
-  # only allow GET access (and OPTIONS for CORS)
-  <LimitExcept GET OPTIONS>
-    Order allow,deny
-    Deny from all
-  </LimitExcept>
 
   # block query strings
   RewriteCond %{QUERY_STRING} ^.+
@@ -124,19 +141,37 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
   ExpiresActive on
   ExpiresDefault "access plus 1 days"
 
-  # only allow GET access (and OPTIONS for CORS)
-  <LimitExcept GET OPTIONS>
-    Order allow,deny
-    Deny from all
-  </LimitExcept>
+  # only allow GET access (and OPTIONS for CORS) (apache 2.2)
+  <IfVersion < 2.4>
+    <LimitExcept GET OPTIONS>
+      Order allow,deny
+      Deny from all
+    </LimitExcept>
+  </IfVersion>
+
+  #apache 2.4
+  <IfVersion >= 2.4>
+    <LimitExcept GET OPTIONS>
+      Require all denied
+    </LimitExcept>
+  </IfVersion>
 </Location>
 
 <Location ' . $FDSN_PATH . '/>
-  # only allow GET access (and OPTIONS for CORS)
-  <LimitExcept GET OPTIONS>
-    Order allow,deny
-    Deny from all
-  </LimitExcept>
+  # only allow GET access (and OPTIONS for CORS) (apache 2.2)
+  <IfVersion < 2.4>
+    <LimitExcept GET OPTIONS>
+      Order allow,deny
+      Deny from all
+    </LimitExcept>
+  </IfVersion>
+
+  #apache 2.4
+  <IfVersion >= 2.4>
+    <LimitExcept GET OPTIONS>
+      Require all denied
+    </LimitExcept>
+  </IfVersion>
 </Location>
 ';
 
