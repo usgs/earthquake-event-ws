@@ -52,10 +52,6 @@ $HTTPD_CONF = '
 
 RewriteEngine on
 
-<IfModule !version_module>
-  LoadModule version_module modules/mod_version.so
-</IfModule>
-
 
 ## EQ Search URL Hijacking
 
@@ -101,7 +97,7 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
 
 <Directory ' . $storage_directory . '>
   #if running apache 2.2
-  <IfVersion < 2.4>
+  <IfModule !mod_authz_core.c>
     Order allow,deny
     Allow from all
 
@@ -110,17 +106,17 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
       Order allow,deny
       Deny from all
     </LimitExcept>
-  </IfVersion>
+  </IfModule>
 
   #if running apache 2.4
-  <IfVersion >= 2.4>
+  <IfModule mod_authz_core.c>
     Require all granted
 
     # only allow GET access (and OPTIONS for CORS)
     <LimitExcept GET OPTIONS>
       Require all denied
     </LimitExcept>
-  </IfVersion>
+  </IfModule>
 
   ExpiresActive on
   ExpiresDefault "access plus 10 years"
@@ -142,36 +138,36 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
   ExpiresDefault "access plus 1 days"
 
   # only allow GET access (and OPTIONS for CORS) (apache 2.2)
-  <IfVersion < 2.4>
+  <IfModule !mod_authz_core.c>
     <LimitExcept GET OPTIONS>
       Order allow,deny
       Deny from all
     </LimitExcept>
-  </IfVersion>
+  </IfModule>
 
   #apache 2.4
-  <IfVersion >= 2.4>
+  <IfModule mod_authz_core.c>
     <LimitExcept GET OPTIONS>
       Require all denied
     </LimitExcept>
-  </IfVersion>
+  </IfModule>
 </Location>
 
 <Location ' . $FDSN_PATH . '/>
   # only allow GET access (and OPTIONS for CORS) (apache 2.2)
-  <IfVersion < 2.4>
+  <IfModule !mod_authz_core.c>
     <LimitExcept GET OPTIONS>
       Order allow,deny
       Deny from all
     </LimitExcept>
-  </IfVersion>
+  </IfModule>
 
   #apache 2.4
-  <IfVersion >= 2.4>
+  <IfModule mod_authz_core.c>
     <LimitExcept GET OPTIONS>
       Require all denied
     </LimitExcept>
-  </IfVersion>
+  </IfModule>
 </Location>
 ';
 
