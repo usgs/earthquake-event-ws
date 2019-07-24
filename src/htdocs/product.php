@@ -6,7 +6,7 @@ if (!isset($TEMPLATE)) {
   //Include config
 
   try {
-    include $APP_DIR . "../conf/feeds.inc.php";
+    include_once "../conf/feeds.inc.php";
 
     //Cache headers
     $CACHE_MAXAGE=60;

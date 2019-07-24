@@ -92,15 +92,19 @@ RewriteRule ^' . $FDSN_PATH . '/([^/]*)$ ' . $FEED_PATH .
 
 # product webservice
 RewriteRule ^' . $PROD_PATH . '$ ' . $PROD_PATH . '/ [R=301,L]
-RewriteRule ^' . $PROD_PATH . '/query(.*)$ ' . $FEED_PATH .
-    '/product.php?$1 [L,QSA,PT]
+RewriteRule ^' . $PROD_PATH . '/query$ ' . $FEED_PATH .
+    '/product.php [L,QSA,PT]
 RewriteRule ^' . $PROD_PATH . '/$ ' . $FEED_PATH .
     '/product.php [L,PT]
 
 Alias ' . $FEED_PATH . ' ' . $HTDOCS_DIR . '
 
-# An offsite host is ' . (($OFFSITE_HOST == null) ? 'not ' : '') . 'configured. Temporarily hard coding localhost
-' . (($OFFSITE_HOST == null) ? 'Alias ' . $storage_url . ' ' . $storage_directory : 'Redirect localhost:9060' . $storage_url . '/(.*) http://' . $OFFSITE_HOST . $storage_url) . '/$1
+# An offsite host is ' . (($OFFSITE_HOST == null) ? 'not ' : '') . 'configured.
+' . (
+    ($OFFSITE_HOST == null)
+    ? 'Alias ' . $storage_url . ' ' . $storage_directory
+    : 'RewriteRule ^' . $storage_url . '(.*)$ https://' . $OFFSITE_HOST . $storage_url . '$1 [L,R=302]'
+) . '
 
 <Directory ' . $HTDOCS_DIR . '>
   <IfModule !mod_authz_core.c>
