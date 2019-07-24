@@ -55,7 +55,7 @@ class ProductWebService extends WebService {
       //Toss error (robbed from FDSNEventWebService for consistency)
       $this->error(self::BAD_REQUEST, $count . ' matching products exceeds ' .
           'search limit of ' . $this->serviceLimit . '. Modify the search ' .
-          'to match fewer products.',true);
+          'to match fewer products.',false,true);
     }
     
     //Query based on parameters
@@ -111,7 +111,7 @@ class ProductWebService extends WebService {
 
     //Error if product not found
     if ($product == null) {
-      $this->error(self::NOT_FOUND,self::$statusMessage[self::NOT_FOUND],true);
+      $this->error(self::NOT_FOUND,self::$statusMessage[self::NOT_FOUND],true,true);
     }
 
     //Send caching headers
@@ -199,31 +199,31 @@ class ProductWebService extends WebService {
       } elseif ($name == "offset") {
         $query->offset = $this->validateInteger($name,$value,0);
       } else {
-        $this->error(self::BAD_REQUEST, $name . " is not a supported parameter",true);
+        $this->error(self::BAD_REQUEST, $name . " is not a supported parameter",false,true);
       }
     }
 
     //Combination validation
     if ((isset($query->latitude) && !isset($query->longitude)) || (isset($query->longitude) && !isset($query->latitude))) {
-      $this->error(self::BAD_REQUEST, 'must provide both latitude and longitude',true);
+      $this->error(self::BAD_REQUEST, 'must provide both latitude and longitude',false,true);
     }
     if (isset($query->startTime) && isset($query->endTime) && $query->startTime > $query->endTime) {
-      $this->error(self::BAD_REQUEST, 'starttime must be less than endtime',true);
+      $this->error(self::BAD_REQUEST, 'starttime must be less than endtime',false,true);
     }
     if (isset($query->minUpdateTime) && isset($query->maxUpdateTime) && $query->minUpdateTime > $query->maxUpdateTime) {
-      $this->error(self::BAD_REQUEST, 'minupdatetime must be less than maxupdatetime',true);
+      $this->error(self::BAD_REQUEST, 'minupdatetime must be less than maxupdatetime',false,true);
     }
     if (isset($query->minLatitude) && isset($query->maxLatitude) && $query->minLatitude > $query->maxLatitude) {
-      $this->error(self::BAD_REQUEST, 'minlatitude must be less than maxlatitude',true);
+      $this->error(self::BAD_REQUEST, 'minlatitude must be less than maxlatitude',false,true);
     }
     if (isset($query->minLongitude) && isset($query->maxLongitude) && $query->minLongitude > $query->maxLongitude) {
-      $this->error(self::BAD_REQUEST, 'minlongitude must be less than maxlongitude',true);
+      $this->error(self::BAD_REQUEST, 'minlongitude must be less than maxlongitude',false,true);
     }
     if (isset($query->minLongitude) && isset($query->maxLongitude) && ($query->maxLongitude - $query->minLongitude) > 360) {
-      $this->error(self::BAD_REQUEST, 'Searches cannot span more than 360 degrees of longitude.',true);
+      $this->error(self::BAD_REQUEST, 'Searches cannot span more than 360 degrees of longitude.',false,true);
     }
     if (isset($query->minMagnitude) && isset($query->maxMagnitude) && $query->minMagnitude > $query->maxMagnitude) {
-      $this->error(self::BAD_REQUEST, 'minmagnitude must be less than maxmagnitude');
+      $this->error(self::BAD_REQUEST, 'minmagnitude must be less than maxmagnitude',false,true);
     }
 
     return $query;

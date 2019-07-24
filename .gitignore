@@ -8,3 +8,4 @@ src/conf/config.ini*
 src/conf/httpd.conf
 src/lib/sql/install_mysql.sql
 generate_summary_sql.sh
+manage_container

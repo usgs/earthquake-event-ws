@@ -46,6 +46,8 @@ $FDSN_PATH = $CONFIG['FDSN_PATH'];
 // version is replaced using package.json version by grunt copy task
 $FDSN_VERSION = '{{VERSION}}';
 
+$PROD_PATH = $CONFIG['PROD_PATH'];
+
 $MAPLIST_PATH = $CONFIG['MAPLIST_PATH'];
 
 $DEFAULT_MAXEVENTAGE = isset($CONFIG['DEFAULT_MAXEVENTAGE']) ?
@@ -87,8 +89,7 @@ if ( ($server_port == 80 && ($server_protocol == 'http://' || $forwarded_https))
 // by default searches and feeds are local
 $FDSN_HOST = '';
 $FEED_HOST = '';
+$PROD_HOST = '';
 $FEED_URL = $FEED_HOST . $FEED_PATH;
 $FDSN_URL = $FDSN_HOST . $FDSN_PATH;
-
-//Placeholder for eventual Product URL
-$PRODUCT_URL = "/product.php";
+$PROD_URL = $PROD_HOST . $PROD_PATH;

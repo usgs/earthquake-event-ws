@@ -17,14 +17,27 @@ WORKDIR /earthquake-event-ws
 USER usgs-user
 RUN /bin/bash --login -c "\
     npm install -g grunt-cli && \
+    grunt builddev && \
     grunt builddist \
     "
 
 FROM ${FROM_IMAGE}
 
 COPY --from=buildenv \
+    /earthquake-event-ws/node_modules/hazdev-template/dist/ \
+    /var/www/apps/hazdev-template/
+
+COPY --from=buildenv \
     /earthquake-event-ws/.build/src/ \
     /var/www/apps/earthquake-event-ws/
+
+COPY --from=buildenv \
+    /earthquake-event-ws/src/lib/docker_template_config.php \
+    /var/www/html/_config.inc.php
+
+COPY --from=buildenv \
+    /earthquake-event-ws/src/lib/docker_template_httpd.conf \
+    /etc/httpd/conf.d/hazdev-template.conf
 
 # Configure the application and install it:
 #   - Run pre-install for application (generating httpd.conf)

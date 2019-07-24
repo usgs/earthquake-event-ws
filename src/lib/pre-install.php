@@ -29,10 +29,13 @@ $HTTPD_CONF_FILE = $CONF_DIR . DIRECTORY_SEPARATOR . 'httpd.conf';
 
 $FEED_PATH = $CONFIG['FEED_PATH'] . '/' . $CONFIG['API_VERSION'];
 $FDSN_PATH = $CONFIG['FDSN_PATH'];
+$PROD_PATH = $CONFIG['PROD_PATH'];
 $SEARCH_PATH = $CONFIG['SEARCH_PATH'];
 
 $storage_directory = $CONFIG['storage_directory'];
 $storage_url = $CONFIG['storage_url'];
+
+$OFFSITE_HOST = $CONFIG['OFFSITE_HOST'];
 
 
 
@@ -87,12 +90,27 @@ RewriteRule ^' . $FDSN_PATH . '/query\.([^/]*)$ ' . $FEED_PATH .
 RewriteRule ^' . $FDSN_PATH . '/([^/]*)$ ' . $FEED_PATH .
     '/fdsn.php?method=$1 [L,QSA,PT]
 
+# product webservice
+RewriteRule ^' . $PROD_PATH . '$ ' . $PROD_PATH . '/ [R=301,L]
+RewriteRule ^' . $PROD_PATH . '/query(.*)$ ' . $FEED_PATH .
+    '/product.php?$1 [L,QSA,PT]
+RewriteRule ^' . $PROD_PATH . '/$ ' . $FEED_PATH .
+    '/product.php [L,PT]
+
 Alias ' . $FEED_PATH . ' ' . $HTDOCS_DIR . '
-Alias ' . $storage_url . ' ' . $storage_directory . '
+
+# An offsite host is ' . (($OFFSITE_HOST == null) ? 'not ' : '') . 'configured. Temporarily hard coding localhost
+' . (($OFFSITE_HOST == null) ? 'Alias ' . $storage_url . ' ' . $storage_directory : 'Redirect localhost:9060' . $storage_url . '/(.*) http://' . $OFFSITE_HOST . $storage_url) . '/$1
 
 <Directory ' . $HTDOCS_DIR . '>
-  Order allow,deny
-  Allow from all
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Allow from all
+  </IfModule>
+
+  <IfModule mod_authz_core.c>
+    Require all granted
+  </IfModule>
 </Directory>
 
 <Directory ' . $storage_directory . '>
@@ -154,6 +172,23 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
 </Location>
 
 <Location ' . $FDSN_PATH . '/>
+  # only allow GET access (and OPTIONS for CORS) (apache 2.2)
+  <IfModule !mod_authz_core.c>
+    <LimitExcept GET OPTIONS>
+      Order allow,deny
+      Deny from all
+    </LimitExcept>
+  </IfModule>
+
+  #apache 2.4
+  <IfModule mod_authz_core.c>
+    <LimitExcept GET OPTIONS>
+      Require all denied
+    </LimitExcept>
+  </IfModule>
+</Location>
+
+<Location ' . $PROD_PATH . '/>
   # only allow GET access (and OPTIONS for CORS) (apache 2.2)
   <IfModule !mod_authz_core.c>
     <LimitExcept GET OPTIONS>

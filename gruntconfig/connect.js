@@ -58,6 +58,14 @@ var rewrites = [
     from: '^' + iniConfig.FDSN_PATH + '/([^/?]*)\\??(.*)$',
     to: '/fdsn.php?method=$1&$2'
   },
+  {
+    from: '^' + iniConfig.PROD_PATH + '/query?(.*)$',
+    to: '/product.php?$1'
+  },
+  {
+    from: '^' + iniConfig.PROD_PATH + '/(.*)$',
+    to: '/product.php?'
+  },
 
   // Other mount path stuff
   {

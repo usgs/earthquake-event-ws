@@ -566,7 +566,7 @@ class FDSNEventWebService extends WebService {
   }
 
   //Overridden error handling
-  public function error($code,$message,$isDetail=false) {
+  public function error($code,$message,$isDetail=false, $isProduct=false) {
     global $APP_DIR;
 
     //Do redirect if needed

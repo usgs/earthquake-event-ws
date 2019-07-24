@@ -46,7 +46,7 @@ class WebService {
   }
 
   //Error handling
-  public function error($code, $message, $isDetail = false) {
+  public function error($code, $message, $isDetail = false, $isProductWebservice=false) {
     global $APP_DIR;
 
     // only cache errors for 60 seconds
@@ -58,7 +58,7 @@ class WebService {
       // For geojson requests, user wants 'jsonerror' output
       $this->jsonError($code, $message, $isDetail);
     } else {
-      $this->httpError($code, $message);
+      $this->httpError($code, $message,$isProductWebservice);
     }
   }
 
@@ -128,9 +128,9 @@ class WebService {
 
     global $HOST_URL_PREFIX;
     global $FDSN_PATH;
-    global $PRODUCT_URL;
+    global $PROD_URL;
 
-    $docsExtension = ($isProductWebservice) ? $PRODUCT_URL : $FDSN_PATH;
+    $docsExtension = ($isProductWebservice) ? $PROD_URL : $FDSN_PATH;
 
     // error message for 400 or 500
     header('Content-type: text/plain');
