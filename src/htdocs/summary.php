@@ -185,7 +185,7 @@ if ($networkLink) {
 // serve summary feed
 $service = new FDSNEventWebService($fdsnIndex);
 // increase limit for summary feeds
-$service->serviceLimit = 30000;
+$service->serviceLimit = 100000;
 try {
   $service->handleSummaryQuery($query);
 } catch (Exception $e) {
