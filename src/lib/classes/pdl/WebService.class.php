@@ -39,7 +39,7 @@ class WebService {
     
     $this->index = $index;
 
-    $this->serviceLimit = $CONFIG['MAX_SEARCH'];
+    $this->serviceLimit = 10;
 
     global $FDSN_VERSION;
     $this->version = $FDSN_VERSION;

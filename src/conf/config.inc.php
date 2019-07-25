@@ -33,6 +33,8 @@ $EVENT_PATH = $CONFIG['EVENT_PATH'];
 
 $MAX_SEARCH = array_key_exists('MAX_SEARCH', $CONFIG) ?
     $CONFIG['MAX_SEARCH'] : null;
+$PROD_MAX_SEARCH = array_key_exists('PROD_MAX_SEARCH', $CONFIG) ?
+    $CONFIG['MAX_SEARCH'] : null;
 
 $API_VERSION = $CONFIG['API_VERSION'];
 

@@ -15,7 +15,10 @@ class ProductWebService extends WebService {
    *    The ProductIndex used to search for products and query the database
    */
   public function __construct($index, $url) {
+    global $CONFIG;
     parent::__construct($index);
+
+    $this->serviceLimit = array_key_exists('PROD_MAX_SEARCH', $CONFIG) ? $CONFIG['PROD_MAX_SEARCH'] : 1000;
 
     $this->url = $url;
   }

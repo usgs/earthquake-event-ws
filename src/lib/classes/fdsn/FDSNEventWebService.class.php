@@ -25,6 +25,8 @@ class FDSNEventWebService extends WebService {
       $redirectMaxEventAge=self::DEFAULT_REDIRECT_MAX_EVENT_AGE) {
     parent::__construct($index);
 
+    $this->serviceLimit = array_key_exists('MAX_SEARCH',$CONFIG) ? $CONFIG['MAX_SEARCH'] : 20000;
+
     $this->CONFLICT_DETAILS = 'The requested event has been deleted. To ' .
         'see information for deleted events, perform a search and use the ' .
         '"includedeleted" option.';
