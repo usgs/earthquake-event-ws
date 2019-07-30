@@ -39,7 +39,7 @@ class WebService {
     
     $this->index = $index;
 
-    $this->serviceLimit = 10;
+    $this->serviceLimit = 10; //Placeholder for subclasses
 
     global $FDSN_VERSION;
     $this->version = $FDSN_VERSION;
