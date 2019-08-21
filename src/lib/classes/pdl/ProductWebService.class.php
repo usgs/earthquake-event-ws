@@ -8,17 +8,15 @@ class ProductWebService extends WebService {
   public $index;
 
   private $url;
-  private $lastRequest;
 
   /**
    * @param $index {ProductIndex}
    *    The ProductIndex used to search for products and query the database
    */
-  public function __construct($index, $url) {
-    global $CONFIG;
+  public function __construct($index, $CONFIG, $url) {
     parent::__construct($index);
 
-    $this->serviceLimit = array_key_exists('PROD_MAX_SEARCH', $CONFIG) ? $CONFIG['PROD_MAX_SEARCH'] : 1000;
+    $this->serviceLimit = array_key_exists('PRODUCT_MAX_SEARCH', $CONFIG) ? $CONFIG['PRODUCT_MAX_SEARCH'] : 1000;
 
     $this->url = $url;
   }
@@ -32,7 +30,6 @@ class ProductWebService extends WebService {
    * */
   public function query($params) {
     $query = $this->parseQuery($params);
-    $this->lastRequest = $params;
 
     if (isset($query->source) && isset($query->type) && isset($query->code)) {
       $this->handleDetailQuery($query);
@@ -107,7 +104,7 @@ class ProductWebService extends WebService {
     $productId = $this->index->getProductIdByQuery($query);
 
     //Get product from storage
-    $product;
+    $product = null;
     if (isset($productId)) {
       $product = $storage->getProduct(ProductId::parse($productId));
     }
@@ -117,21 +114,21 @@ class ProductWebService extends WebService {
       $this->error(self::NOT_FOUND,self::$statusMessage[self::NOT_FOUND],true,true);
     }
 
+    //Check if product has been modified
+    $MODIFIED = $product->getID()->getUpdateTime();
+    if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) > $MODIFIED) {
+      header('HTTP/1.0 304 Not Modified');
+      exit;
+    }
+
     //Send caching headers
-    $MODIFIED;
     $CACHE_MAXAGE;
     if ($query->updateTime == null) {
       //If updateTime not included, cache for a minute
-      $MODIFIED = $product->getID()->getUpdateTime();
       $CACHE_MAXAGE = 60;
-
-      //Check if product has been modified
-      if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) > $MODIFIED) {
-        header('HTTP/1.0 304 Not Modified');
-        exit;
-      }
     } else {
-      $CACHE_MAXAGE = 60*60*24*365; //Cache for a year if updateTime included
+      //Cache for a year if updateTime included
+      $CACHE_MAXAGE = 60*60*24*365;
     }
     include $APP_DIR . '/lib/cache.inc.php';
 
@@ -175,34 +172,34 @@ class ProductWebService extends WebService {
         $query->startTime = $this->validateTime($name,$value);
       } elseif ($name == 'endtime' || $name == 'endTime') {
         $query->endTime = $this->validateTime($name,$value);
-      } elseif ($name == "latitude") {
+      } elseif ($name == 'latitude') {
         $query->latitude = $this->validateFloat($name,$value,-90,90);
-      } elseif ($name == "longitude") {
+      } elseif ($name == 'longitude') {
         $query->longitude = $this->validateFloat($name,$value,-180,180);
-      } elseif ($name == "maxlatitude" || $name == "maxLatitude") {
+      } elseif ($name == 'maxlatitude' || $name == 'maxLatitude') {
         $query->maxLatitude = $this->validateFloat($name,$value,-90,90);
-      } elseif ($name == "minlatitude" || $name == "minLatitude") {
+      } elseif ($name == 'minlatitude' || $name == 'minLatitude') {
         $query->minLatitude = $this->validateFloat($name,$value,-90,90);
-      } elseif ($name == "maxlongitude" || $name == "maxLongitude") {
+      } elseif ($name == 'maxlongitude' || $name == 'maxLongitude') {
         $query->maxLongitude = $this->validateFloat($name,$value,-360,360);
-      } elseif ($name == "minlongitude" || $name == "minLongitude") {
+      } elseif ($name == 'minlongitude' || $name == 'minLongitude') {
         $query->minLongitude = $this->validateFloat($name,$value,-360,360);
-      } elseif ($name == "minmagnitude" || $name == "minMagnitude") {
-        $query->minMagnitude = $this->validateFloat($name,$value,0,10);
-      } elseif ($name == "maxmagnitude" || $name == "maxMagnitude") {
-        $query->maxMagnitude = $this->validateFloat($name,$value,0,10);
-      } elseif ($name == "includedeleted" || $name == "includeDeleted") {
+      } elseif ($name == 'minmagnitude' || $name == 'minMagnitude') {
+        $query->minMagnitude = $this->validateFloat($name,$value);
+      } elseif ($name == 'maxmagnitude' || $name == 'maxMagnitude') {
+        $query->maxMagnitude = $this->validateFloat($name,$value);
+      } elseif ($name == 'includedeleted' || $name == 'includeDeleted') {
         $query->includeDeleted = $this->validateBoolean($name,$value);
-      } elseif ($name == "includesuperseded" || $name == "includeSuperseded") {
+      } elseif ($name == 'includesuperseded' || $name == 'includeSuperseded') {
         $query->includeSuperseded = $this->validateBoolean($name,$value);
-      } elseif ($name == "orderby" || $name=="orderBy") {
+      } elseif ($name == 'orderby' || $name=='orderBy') {
         $query->orderBy = $value;
-      } elseif ($name == "limit") {
+      } elseif ($name == 'limit') {
         $query->limit = $this->validateInteger($name,$value,0);
-      } elseif ($name == "offset") {
+      } elseif ($name == 'offset') {
         $query->offset = $this->validateInteger($name,$value,0);
       } else {
-        $this->error(self::BAD_REQUEST, $name . " is not a supported parameter",false,true);
+        $this->error(self::BAD_REQUEST, $name . ' is not a supported parameter',false,true);
       }
     }
 

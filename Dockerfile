@@ -16,6 +16,7 @@ WORKDIR /earthquake-event-ws
 # Build project
 USER usgs-user
 RUN /bin/bash --login -c "\
+    npm install && \
     npm install -g grunt-cli && \
     grunt builddev && \
     grunt builddist \

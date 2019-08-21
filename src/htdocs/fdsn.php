@@ -14,7 +14,7 @@ if (!isset($TEMPLATE)) {
     $CACHE_MAXAGE = 60;
     include $APP_DIR . '/lib/cache.inc.php';
 
-    $service = new FDSNEventWebService($fdsnIndex);
+    $service = new FDSNEventWebService($fdsnIndex, $CONFIG);
     $usage = false;
 
     $method = param('method');

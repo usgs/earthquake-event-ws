@@ -29,7 +29,7 @@ $HTTPD_CONF_FILE = $CONF_DIR . DIRECTORY_SEPARATOR . 'httpd.conf';
 
 $FEED_PATH = $CONFIG['FEED_PATH'] . '/' . $CONFIG['API_VERSION'];
 $FDSN_PATH = $CONFIG['FDSN_PATH'];
-$PROD_PATH = $CONFIG['PROD_PATH'];
+$PRODUCT_PATH = $CONFIG['PRODUCT_PATH'];
 $SEARCH_PATH = $CONFIG['SEARCH_PATH'];
 
 $storage_directory = $CONFIG['storage_directory'];
@@ -91,10 +91,10 @@ RewriteRule ^' . $FDSN_PATH . '/([^/]*)$ ' . $FEED_PATH .
     '/fdsn.php?method=$1 [L,QSA,PT]
 
 # product webservice
-RewriteRule ^' . $PROD_PATH . '$ ' . $PROD_PATH . '/ [R=301,L]
-RewriteRule ^' . $PROD_PATH . '/query$ ' . $FEED_PATH .
+RewriteRule ^' . $PRODUCT_PATH . '$ ' . $PRODUCT_PATH . '/ [R=301,L]
+RewriteRule ^' . $PRODUCT_PATH . '/query$ ' . $FEED_PATH .
     '/product.php [L,QSA,PT]
-RewriteRule ^' . $PROD_PATH . '/$ ' . $FEED_PATH .
+RewriteRule ^' . $PRODUCT_PATH . '/$ ' . $FEED_PATH .
     '/product.php [L,PT]
 
 Alias ' . $FEED_PATH . ' ' . $HTDOCS_DIR . '
@@ -192,7 +192,7 @@ Alias ' . $FEED_PATH . ' ' . $HTDOCS_DIR . '
   </IfModule>
 </Location>
 
-<Location ' . $PROD_PATH . '/>
+<Location ' . $PRODUCT_PATH . '/>
   # only allow GET access (and OPTIONS for CORS) (apache 2.2)
   <IfModule !mod_authz_core.c>
     <LimitExcept GET OPTIONS>

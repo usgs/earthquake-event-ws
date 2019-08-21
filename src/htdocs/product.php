@@ -13,7 +13,7 @@ if (!isset($TEMPLATE)) {
     include $APP_DIR . "/lib/cache.inc.php";
 
     //Create service and query
-    $service = new ProductWebService($index, $HOST_URL_PREFIX . $PROD_URL . "/query");
+    $service = new ProductWebService($index, $CONFIG, $HOST_URL_PREFIX . $PRODUCT_URL . "/query");
 
     //Query service if paramaters are provided, else load page
     if (!empty($_GET)){
@@ -43,18 +43,18 @@ if (!isset($TEMPLATE)) {
 
 <h2 id="url">URL</h2>
 <p>
-  <?php echo $HOST_URL_PREFIX . $PROD_URL;?>/query
+  <?php echo $HOST_URL_PREFIX . $PRODUCT_URL;?>/query
 </p>
 
 <h2 id="examples">Examples</h2>
 <ul>
     <li>
-      <a href="<?php echo $HOST_URL_PREFIX . $PROD_URL; ?>/query?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updateTime=1557943644040">
-            <?php echo $HOST_URL_PREFIX . $PROD_URL; ?>/query?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updateTime=1557943644040</a>
+      <a href="<?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updateTime=1557943644040">
+            <?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updateTime=1557943644040</a>
     </li>
     <li>
-      <a href="<?php echo $HOST_URL_PREFIX . $PROD_URL; ?>/query?minupdatetime=07-01-2019&amp;maxupdatetime=07-02-2019&amp;minlongitude=-109&amp;maxlongitude=-102&amp;minlatitude=37&amp;maxlatitude=41">
-            <?php echo $HOST_URL_PREFIX . $PROD_URL; ?>/query?minupdatetime=07-01-2019&amp;maxupdatetime=07-02-2019&amp;minlongitude=-109&amp;maxlongitude=-102&amp;minlatitude=37&amp;maxlatitude=41</a>
+      <a href="<?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?minupdatetime=07-01-2019&amp;maxupdatetime=07-02-2019&amp;minlongitude=-109&amp;maxlongitude=-102&amp;minlatitude=37&amp;maxlatitude=41">
+            <?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?minupdatetime=07-01-2019&amp;maxupdatetime=07-02-2019&amp;minlongitude=-109&amp;maxlongitude=-102&amp;minlatitude=37&amp;maxlatitude=41</a>
     </li>
 </ul>
 

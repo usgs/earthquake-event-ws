@@ -59,7 +59,7 @@ var rewrites = [
     to: '/fdsn.php?method=$1&$2'
   },
   {
-    from: '^' + iniConfig.PROD_PATH + '/$',
+    from: '^' + iniConfig.PRODUCT_PATH + '/$',
     to: '/product.php'
   },
 

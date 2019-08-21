@@ -33,8 +33,8 @@ $EVENT_PATH = $CONFIG['EVENT_PATH'];
 
 $MAX_SEARCH = array_key_exists('MAX_SEARCH', $CONFIG) ?
     $CONFIG['MAX_SEARCH'] : null;
-$PROD_MAX_SEARCH = array_key_exists('PROD_MAX_SEARCH', $CONFIG) ?
-    $CONFIG['MAX_SEARCH'] : null;
+$PRODUCT_MAX_SEARCH = array_key_exists('PROUCTD_MAX_SEARCH', $CONFIG) ?
+    $CONFIG['PRODUCT_MAX_SEARCH'] : null;
 
 $API_VERSION = $CONFIG['API_VERSION'];
 
@@ -48,7 +48,7 @@ $FDSN_PATH = $CONFIG['FDSN_PATH'];
 // version is replaced using package.json version by grunt copy task
 $FDSN_VERSION = '{{VERSION}}';
 
-$PROD_PATH = $CONFIG['PROD_PATH'];
+$PRODUCT_PATH = $CONFIG['PRODUCT_PATH'];
 
 $MAPLIST_PATH = $CONFIG['MAPLIST_PATH'];
 
@@ -91,7 +91,7 @@ if ( ($server_port == 80 && ($server_protocol == 'http://' || $forwarded_https))
 // by default searches and feeds are local
 $FDSN_HOST = '';
 $FEED_HOST = '';
-$PROD_HOST = '';
+$PRODUCT_HOST = '';
 $FEED_URL = $FEED_HOST . $FEED_PATH;
 $FDSN_URL = $FDSN_HOST . $FDSN_PATH;
-$PROD_URL = $PROD_HOST . $PROD_PATH;
+$PRODUCT_URL = $PRODUCT_HOST . $PRODUCT_PATH;

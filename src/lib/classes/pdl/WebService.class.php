@@ -35,8 +35,6 @@ class WebService {
    *    ProductIndex used to query database, perform searches
    */
   public function __construct($index) {
-    global $CONFIG;
-    
     $this->index = $index;
 
     $this->serviceLimit = 10; //Placeholder for subclasses
@@ -128,9 +126,9 @@ class WebService {
 
     global $HOST_URL_PREFIX;
     global $FDSN_PATH;
-    global $PROD_URL;
+    global $PRODUCT_URL;
 
-    $docsExtension = ($isProductWebservice) ? $PROD_URL : $FDSN_PATH;
+    $docsExtension = ($isProductWebservice) ? $PRODUCT_URL : $FDSN_PATH;
 
     // error message for 400 or 500
     header('Content-type: text/plain');

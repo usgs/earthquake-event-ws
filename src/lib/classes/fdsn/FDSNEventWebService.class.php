@@ -21,8 +21,9 @@ class FDSNEventWebService extends WebService {
    *.     Max age of event in seconds, before automatically redirecting;
    *.     Only used when $redirect is true.
    */
-  public function __construct($index, $redirect=false,
+  public function __construct($index, $CONFIG, $redirect=false,
       $redirectMaxEventAge=self::DEFAULT_REDIRECT_MAX_EVENT_AGE) {
+    
     parent::__construct($index);
 
     $this->serviceLimit = array_key_exists('MAX_SEARCH',$CONFIG) ? $CONFIG['MAX_SEARCH'] : 20000;
