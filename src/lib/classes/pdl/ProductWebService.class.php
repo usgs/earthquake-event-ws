@@ -160,39 +160,39 @@ class ProductWebService extends WebService {
         $query->type = $value;
       } elseif ($name == 'code') {
         $query->code = $value;
-      } elseif ($name == 'updatetime' || $name == 'updateTime') {
+      } elseif ($name == 'updatetime') {
         $query->updateTime = $this->validateFloat($name,$value); //Not validated for time so you can easily use known updatetime
-      } elseif ($name == 'maxupdatetime' || $name == 'maxUpdateTime') {
+      } elseif ($name == 'maxupdatetime') {
         $query->maxUpdateTime = $this->validateTime($name,$value);
-      } elseif ($name == 'minupdatetime' || $name == 'minUpdateTime') {
+      } elseif ($name == 'minupdatetime') {
         $query->minUpdateTime = $this->validateTime($name,$value);
       } elseif ($name == 'time') {
         $query->time = $this->validateTime($name,$value);
-      } elseif ($name == 'starttime' || $name == 'startTime') {
+      } elseif ($name == 'starttime') {
         $query->startTime = $this->validateTime($name,$value);
-      } elseif ($name == 'endtime' || $name == 'endTime') {
+      } elseif ($name == 'endtime') {
         $query->endTime = $this->validateTime($name,$value);
       } elseif ($name == 'latitude') {
         $query->latitude = $this->validateFloat($name,$value,-90,90);
       } elseif ($name == 'longitude') {
         $query->longitude = $this->validateFloat($name,$value,-180,180);
-      } elseif ($name == 'maxlatitude' || $name == 'maxLatitude') {
+      } elseif ($name == 'maxlatitude') {
         $query->maxLatitude = $this->validateFloat($name,$value,-90,90);
-      } elseif ($name == 'minlatitude' || $name == 'minLatitude') {
+      } elseif ($name == 'minlatitude') {
         $query->minLatitude = $this->validateFloat($name,$value,-90,90);
-      } elseif ($name == 'maxlongitude' || $name == 'maxLongitude') {
+      } elseif ($name == 'maxlongitude') {
         $query->maxLongitude = $this->validateFloat($name,$value,-360,360);
-      } elseif ($name == 'minlongitude' || $name == 'minLongitude') {
+      } elseif ($name == 'minlongitude') {
         $query->minLongitude = $this->validateFloat($name,$value,-360,360);
-      } elseif ($name == 'minmagnitude' || $name == 'minMagnitude') {
+      } elseif ($name == 'minmagnitude') {
         $query->minMagnitude = $this->validateFloat($name,$value);
-      } elseif ($name == 'maxmagnitude' || $name == 'maxMagnitude') {
+      } elseif ($name == 'maxmagnitude') {
         $query->maxMagnitude = $this->validateFloat($name,$value);
-      } elseif ($name == 'includedeleted' || $name == 'includeDeleted') {
+      } elseif ($name == 'includedeleted') {
         $query->includeDeleted = $this->validateBoolean($name,$value);
-      } elseif ($name == 'includesuperseded' || $name == 'includeSuperseded') {
+      } elseif ($name == 'includesuperseded') {
         $query->includeSuperseded = $this->validateBoolean($name,$value);
-      } elseif ($name == 'orderby' || $name=='orderBy') {
+      } elseif ($name == 'orderby') {
         $query->orderBy = $value;
       } elseif ($name == 'limit') {
         $query->limit = $this->validateInteger($name,$value,0);
