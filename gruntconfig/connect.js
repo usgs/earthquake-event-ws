@@ -62,6 +62,10 @@ var rewrites = [
     from: '^' + iniConfig.PRODUCT_PATH + '/$',
     to: '/product.php'
   },
+  {
+    from: '^' + iniConfig.PRODUCT_PATH + '/query\\??(.*)$',
+    to: '/product.php?$1'
+  },
 
   // Other mount path stuff
   {

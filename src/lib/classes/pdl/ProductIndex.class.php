@@ -1963,7 +1963,24 @@ class ProductIndex {
     $sql = substr($sql,0,-2);
     $sql .= ")";
 
-    //echo $sql;
+    return array($sql,$productIdArray);
+  }
+
+  private function buildProductLinkSql($productIdArray) {
+    $sql = sprintf("
+      SELECT psl.%s, psl.%s, psl.%s FROM %s psl WHERE psl.%s IN(
+    ",
+    self::SUMMARY_LINK_ID,
+    self::SUMMARY_LINK_RELATION,
+    self::SUMMARY_LINK_URL,
+    self::SUMMARY_LINK_TABLE,
+    self::SUMMARY_LINK_ID
+    );
+    for ($index = 0; $index < sizeof($productIdArray); $index++) {
+      $sql .= "?, ";
+    }
+    $sql = substr($sql, 0, -2);
+    $sql .= ")";
 
     return array($sql,$productIdArray);
   }
@@ -2031,6 +2048,26 @@ class ProductIndex {
       $properties[$propertyArr['name']] = $propertyArr['value'];
 
       $productSummaries[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]]->setProperties($properties);
+    }
+
+    //Execute links sql statement
+    $linkSearch = $this->buildProductLinkSql($productIndexIds);
+    $linkStatement = $this->connection->prepare($linkSearch[0]);
+    if ($linkStatement->execute($linkSearch[1]) == false) {
+      throw new Exception($linkStatement->errorInfo()[2]);
+      exit;
+    }
+    $linkResults = $linkStatement->fetchAll(PDO::FETCH_ASSOC);
+
+    //Set links for pertinent summaries
+    foreach ($linkResults as $id=>$linkArr) {
+      //Grab current links list
+      $links = $productSummaries[$linkArr[self::SUMMARY_LINK_ID]]->getLinks();
+      //Add new links
+      $links[$linkArr['relation']] = $linkArr['url'];
+      //echo "Adding relation " . $linkArr['relation'] . " with URL " . $linkArr['url'] . " to product " . $linkArr[self::SUMMARY_LINK_ID];
+
+      $productSummaries[$linkArr[self::SUMMARY_LINK_ID]]->setLinks($links);
     }
 
     return $productSummaries;
