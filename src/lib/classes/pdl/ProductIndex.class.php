@@ -1984,44 +1984,12 @@ class ProductIndex {
     }
     $productResults = $productStatement->fetchAll(PDO::FETCH_ASSOC);
 
-    //Execute properties sql statement
+    //Generate product summary array
+    $productSummaries = array();
     $productIndexIds = array();
-    foreach ($productResults as $product) {
-      $productIndexIds[] = $product[self::SUMMARY_PRODUCT_INDEX_ID];
-    }
-    $propertySearch = $this->buildProductPropertySql($productIndexIds);
-    $propertyStatement = $this->connection->prepare($propertySearch[0]);
-    if ($propertyStatement->execute($propertySearch[1]) == false) {
-      throw new Exception($propertyStatement->errorInfo()[2]);
-      exit;
-    }
-    $propertyResults = $propertyStatement->fetchAll(PDO::FETCH_ASSOC);
-
-    //Add properties to new summary array
-    $summaryArray = array();
-    foreach ($propertyResults as $id=>$propertyArr) {
-      //Create productSummary indexed such that we can find it later
-      if (!isset($summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]])) {
-        $summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]] = new ProductSummary();
-      }
-
-      //Grab current properties list
-      $properties = $summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]]->getProperties();
-      
-      //Add new properties
-      $properties[$propertyArr['name']] = $propertyArr['value'];
-
-      $summaryArray[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]]->setProperties($properties);
-    }
-
-    //Build Summary Array
     foreach ($productResults as $id=>$product) {
       $summary = new ProductSummary();
-      if (isset($summaryArray[$product[self::SUMMARY_PRODUCT_INDEX_ID]])) {
-        $summary = $summaryArray[$product[self::SUMMARY_PRODUCT_INDEX_ID]];
-      }
 
-      //Populate summary with results
       $summary->setIndexId($product[self::SUMMARY_PRODUCT_INDEX_ID]);
       $summary->setId(ProductId::parse($product[self::SUMMARY_PRODUCT_ID]));
       
@@ -2041,10 +2009,31 @@ class ProductIndex {
 
       $summary->setPreferredWeight($product[self::SUMMARY_PREFERRED]);
 
-      $summaryArray[$product[self::SUMMARY_PRODUCT_INDEX_ID]] = $summary;
+      //Add to product summaries, record id for property search
+      $productSummaries[$summary->getIndexId()] = $summary;
+      $productIndexIds[] = $summary->getIndexId();
     }
-    
-    return $summaryArray;
+
+    //Execute properties sql statement
+    $propertySearch = $this->buildProductPropertySql($productIndexIds);
+    $propertyStatement = $this->connection->prepare($propertySearch[0]);
+    if ($propertyStatement->execute($propertySearch[1]) == false) {
+      throw new Exception($propertyStatement->errorInfo()[2]);
+      exit;
+    }
+    $propertyResults = $propertyStatement->fetchAll(PDO::FETCH_ASSOC);
+
+    //Set properties for pertinent summaries
+    foreach ($propertyResults as $id=>$propertyArr) {
+      //Grab current properties list
+      $properties = $productSummaries[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]]->getProperties();
+      //Add new properties
+      $properties[$propertyArr['name']] = $propertyArr['value'];
+
+      $productSummaries[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]]->setProperties($properties);
+    }
+
+    return $productSummaries;
   }
 
 }
