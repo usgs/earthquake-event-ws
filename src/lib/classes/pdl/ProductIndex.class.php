@@ -1957,11 +1957,8 @@ class ProductIndex {
       self::SUMMARY_PROPERTY_ID,
       self::SUMMARY_PRODUCT_INDEX_ID
     );
-    for ($index = 0; $index < sizeof($productIdArray); $index++) {
-      $sql .= "?, ";
-    }
-    $sql = substr($sql,0,-2);
-    $sql .= ")";
+    $sql .= implode(',',
+      array_fill(0,count($productIdArray), '?')) . ')';
 
     return array($sql,$productIdArray);
   }
@@ -1976,11 +1973,8 @@ class ProductIndex {
     self::SUMMARY_LINK_TABLE,
     self::SUMMARY_LINK_ID
     );
-    for ($index = 0; $index < sizeof($productIdArray); $index++) {
-      $sql .= "?, ";
-    }
-    $sql = substr($sql, 0, -2);
-    $sql .= ")";
+    $sql .= implode(',',
+      array_fill(0,count($productIdArray), '?')) . ')';
 
     return array($sql,$productIdArray);
   }
@@ -2042,12 +2036,10 @@ class ProductIndex {
 
     //Set properties for pertinent summaries
     foreach ($propertyResults as $id=>$propertyArr) {
-      //Grab current properties list
-      $properties = $productSummaries[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]]->getProperties();
-      //Add new properties
-      $properties[$propertyArr['name']] = $propertyArr['value'];
-
-      $productSummaries[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]]->setProperties($properties);
+      //Add property
+      $productSummaries[$propertyArr[self::SUMMARY_PRODUCT_INDEX_ID]]->addProperty(
+        $propertyArr['name'],
+        $propertyArr['value']);
     }
 
     //Execute links sql statement
@@ -2059,15 +2051,10 @@ class ProductIndex {
     }
     $linkResults = $linkStatement->fetchAll(PDO::FETCH_ASSOC);
 
-    //Set links for pertinent summaries
     foreach ($linkResults as $id=>$linkArr) {
-      //Grab current links list
-      $links = $productSummaries[$linkArr[self::SUMMARY_LINK_ID]]->getLinks();
-      //Add new links
-      $links[$linkArr['relation']] = $linkArr['url'];
-      //echo "Adding relation " . $linkArr['relation'] . " with URL " . $linkArr['url'] . " to product " . $linkArr[self::SUMMARY_LINK_ID];
-
-      $productSummaries[$linkArr[self::SUMMARY_LINK_ID]]->setLinks($links);
+      $productSummaries[$linkArr[self::SUMMARY_LINK_ID]]->addLink(
+        $linkArr['relation'],
+        $linkArr['url']);
     }
 
     return $productSummaries;
