@@ -604,5 +604,10 @@ class FDSNEventWebService extends WebService {
     //return $km / 111.2;  // What NASA/math thinks 111.19492664455873...
   }
 
+  protected function getUsageUrl() {
+    global $FDSN_PATH;
+    return $FDSN_PATH;
+  }
+
 
 }

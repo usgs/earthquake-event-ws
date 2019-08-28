@@ -44,7 +44,7 @@ class WebService {
   }
 
   //Error handling
-  public function error($code, $message, $isDetail = false, $isProductWebservice=false) {
+  public function error($code, $message, $isDetail = false) {
     global $APP_DIR;
 
     // only cache errors for 60 seconds
@@ -56,7 +56,7 @@ class WebService {
       // For geojson requests, user wants 'jsonerror' output
       $this->jsonError($code, $message, $isDetail);
     } else {
-      $this->httpError($code, $message,$isProductWebservice);
+      $this->httpError($code, $message);
     }
   }
 
@@ -111,7 +111,7 @@ class WebService {
   }
 
   //Error for all other requests
-  public function httpError ($code, $message, $isProductWebservice=false) {
+  public function httpError ($code, $message) {
 
     if (isset(self::$statusMessage[$code])) {
       $codeMessage = ' ' . self::$statusMessage[$code];
@@ -125,10 +125,6 @@ class WebService {
     }
 
     global $HOST_URL_PREFIX;
-    global $FDSN_PATH;
-    global $PRODUCT_URL;
-
-    $docsExtension = ($isProductWebservice) ? $PRODUCT_URL : $FDSN_PATH;
 
     // error message for 400 or 500
     header('Content-type: text/plain');
@@ -137,7 +133,7 @@ class WebService {
       '',
       $message,
       '',
-      'Usage details are available from ' . $HOST_URL_PREFIX . $docsExtension,
+      'Usage details are available from ' . $HOST_URL_PREFIX . $this->getUsageUrl(),
       '',
       'Request:',
       $_SERVER['REQUEST_URI'],
@@ -267,6 +263,13 @@ class WebService {
         ' Valid values are: "' . implode('", "', $enum) . '".');
     }
     return $value;
+  }
+
+  /**
+   * Returns the usage URL for different subclasses. Must be overridden.
+   */
+  protected function getUsageUrl() {
+    return null;
   }
 }
 

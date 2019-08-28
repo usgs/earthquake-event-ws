@@ -238,6 +238,11 @@ class ProductWebService extends WebService {
       '&updateTime=' . $id->getUpdateTime();
   }
 
+  protected function getUsageUrl() {
+    global $PRODUCT_URL;
+    return $PRODUCT_URL;
+  }
+
 }
 
 ?>
