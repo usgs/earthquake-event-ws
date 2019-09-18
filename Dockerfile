@@ -8,6 +8,7 @@ FROM ${BUILD_IMAGE} as buildenv
 # php required for pre-install
 USER root
 RUN yum install -y \
+    bzip2 \
     php
 
 COPY --chown=usgs-user:usgs-user . /earthquake-event-ws
@@ -16,8 +17,9 @@ WORKDIR /earthquake-event-ws
 # Build project
 USER usgs-user
 RUN /bin/bash --login -c "\
-    npm install && \
     npm install -g grunt-cli && \
+    npm install && \
+    php src/lib/pre-install.php --non-interactive && \
     grunt builddev && \
     grunt builddist \
     "
