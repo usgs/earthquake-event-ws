@@ -25,8 +25,12 @@ if (file_exists($TEMPLATE_FUNCTIONS)) {
 
 // read the regular app config
 $APP_DIR = dirname(dirname(__FILE__));
+
 // configuration parameters read from config.ini
-$CONFIG = parse_ini_file($APP_DIR . '/conf/config.ini');
+$CONFIG_INI = parse_ini_file($APP_DIR . '/conf/config.ini');
+// environment overrides config file
+$CONFIG = array_merge($CONFIG_INI, $_ENV);
+
 $APP_NAME = basename($APP_DIR);
 $MOUNT_PATH = $CONFIG['FEED_PATH'];
 $EVENT_PATH = $CONFIG['EVENT_PATH'];
