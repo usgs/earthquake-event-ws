@@ -128,6 +128,14 @@
     'OFFSITE_HOST' => ''
   );
 
+  // allow environment override during container build
+  // command line environment is added $_SERVER
+  foreach ($DEFAULTS as $key=>$value) {
+    if (isset($_SERVER[$key])) {
+      $DEFAULTS[$key] = $_SERVER[$key];
+    }
+  }
+
   // Default action is to configure
   $configure_action = '3';
 
@@ -200,4 +208,5 @@
     }
     system("mv $tmpfile $CONFIG_FILE");
   }
+
 ?>

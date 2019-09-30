@@ -18,35 +18,43 @@ WORKDIR /earthquake-event-ws
 USER usgs-user
 RUN /bin/bash --login -c "\
     npm install -g grunt-cli && \
-    npm install && \
-    php src/lib/pre-install.php --non-interactive && \
+    npm install --no-save && \
+    php src/lib/pre-install.php --non-interactive --skip-db && \
     grunt builddev && \
-    grunt builddist \
+    grunt builddist && \
+    rm dist/conf/config.ini dist/conf/httpd.conf \
     "
+
+USER root
+ENV APP_DIR=/var/www/apps
+
+# Pre-configure template
+RUN /bin/bash --login -c "\
+    mkdir -p ${APP_DIR}/hazdev-template && \
+    cp -r node_modules/hazdev-template/dist/* ${APP_DIR}/hazdev-template/. && \
+    php ${APP_DIR}/hazdev-template/lib/pre-install.php --non-interactive \
+    "
+
+# Pre-configure app
+ENV OFFSITE_HOST=earthquake.usgs.gov
+ENV storage_directory=/data/product
+ENV storage_url=/archive/product
+
+RUN /bin/bash --login -c "\
+    mkdir -p ${APP_DIR}/earthquake-event-ws && \
+    cp -r dist/* ${APP_DIR}/earthquake-event-ws/. && \
+    php ${APP_DIR}/earthquake-event-ws/lib/pre-install.php --non-interactive \
+    "
+
 
 FROM ${FROM_IMAGE}
 
-COPY --from=buildenv \
-    /earthquake-event-ws/node_modules/hazdev-template/dist/ \
-    /var/www/apps/hazdev-template/
+COPY --from=buildenv /var/www/apps/ /var/www/apps/
 
-COPY --from=buildenv \
-    /earthquake-event-ws/.build/src/ \
-    /var/www/apps/earthquake-event-ws/
-
-COPY --from=buildenv \
-    /earthquake-event-ws/src/lib/docker_template_config.php \
-    /var/www/html/_config.inc.php
-
-COPY --from=buildenv \
-    /earthquake-event-ws/src/lib/docker_template_httpd.conf \
-    /etc/httpd/conf.d/hazdev-template.conf
-
-# Configure the application and install it:
-#   - Run pre-install for application (generating httpd.conf)
-#   - Link http configuration
+# configure template and apps
 RUN /bin/bash --login -c "\
-    php /var/www/apps/earthquake-event-ws/lib/pre-install.php --non-interactive --skip-db && \
+    cp /var/www/apps/earthquake-event-ws/htdocs/_config.inc.php /var/www/html/. && \
+    ln -s /var/www/apps/hazdev-template/conf/httpd.conf /etc/httpd/conf.d/hazdev-template.conf && \
     ln -s /var/www/apps/earthquake-event-ws/conf/httpd.conf /etc/httpd/conf.d/earthquake-event-ws.conf \
     "
 
