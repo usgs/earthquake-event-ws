@@ -32,6 +32,7 @@ BEGIN
   DECLARE shakemap_id INT DEFAULT -1;
   DECLARE geoserve_id INT DEFAULT -1;
   DECLARE significance_id INT DEFAULT -1;
+  DECLARE name_id INT DEFAULT -1;
   DECLARE l_latitude DOUBLE;
   DECLARE l_longitude DOUBLE;
   DECLARE summary_type VARCHAR(255);
@@ -53,7 +54,8 @@ BEGIN
       'shakemap', 'shakemap-scenario',
       'dyfi', 'dyfi-scenario',
       'geoserve', 'geoserve-scenario',
-      'significance', 'significance-scenario'
+      'significance', 'significance-scenario',
+      'earthquake-name', 'earthquake-name-scenario'
     );
 
   -- used to look up event location for region name
@@ -85,6 +87,8 @@ BEGIN
     ELSEIF summary_type = 'geoserve-scenario' THEN SET geoserve_id = summary_id;
     ELSEIF summary_type = 'significance' THEN SET significance_id = summary_id;
     ELSEIF summary_type = 'significance-scenario' THEN SET significance_id = summary_id;
+    ELSEIF summary_type = 'earthquake-name' THEN SET name_id = summary_id;
+    ELSEIF summary_type = 'earthquake-name-scenario' THEN SET name_id = summary_id;
     END IF;
   END LOOP cur_summary_products_loop;
 
@@ -112,19 +116,26 @@ BEGIN
     END IF;
   END IF;
 
+  -- load event title
+  IF name_id <> -1 THEN
+    CALL getProductProperty(name_id, 'title', out_region);
+  END IF;
+
   -- load origin properties
   IF origin_id <> -1 THEN
     CALL getProductProperty(origin_id, 'magnitude', out_magnitude);
     CALL getProductProperty(origin_id, 'magnitude-type', out_magnitude_type);
-    CALL getProductProperty(origin_id, 'title', out_region);
     CALL getProductProperty(origin_id, 'azimuthal-gap', out_azimuthal_gap);
     CALL getProductProperty(origin_id, 'review-status', out_review_status);
     CALL getProductProperty(origin_id, 'event-type', out_event_type);
-    CALL getProductProperty(origin_id, 'num-stations-used',
-  out_num_stations_used);
-    CALL getProductProperty(origin_id, 'minimum-distance',
-  out_minimum_distance);
+    CALL getProductProperty(origin_id, 'num-stations-used', out_num_stations_used);
+    CALL getProductProperty(origin_id, 'minimum-distance', out_minimum_distance);
     CALL getProductProperty(origin_id, 'standard-error', out_standard_error);
+
+    IF out_region IS NULL THEN
+      CALL getProductProperty(origin_id, 'title', out_region);
+    END IF;
+
     IF out_event_type IS NULL THEN
       SET out_event_type = 'earthquake';
     END IF;
