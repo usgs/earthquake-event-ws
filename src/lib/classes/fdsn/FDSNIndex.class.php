@@ -305,13 +305,7 @@ class FDSNIndex {
     }
 
     // latest version of product
-    $where[] = ' NOT EXISTS (' .
-        'SELECT * FROM productSummary' .
-        ' WHERE source=ps.source' .
-        ' AND type=ps.type' .
-        ' AND code=ps.code' .
-        ' AND updateTime>ps.updateTime' .
-        ')';
+    $where[] = ' ps.is_current = 1';
 
     // limit join to most preferred origin product for event
     $where[] = ' NOT EXISTS (' .
@@ -330,13 +324,7 @@ class FDSNIndex {
         ' OR (mp.preferred=ps.preferred and mp.updateTime>ps.updateTime)' .
       ')' .
       // and is the latest version of itself
-      ' AND NOT EXISTS (' .
-        'select * from productSummary' .
-        ' where source=mp.source' .
-        ' and type=mp.type' .
-        ' and code=mp.code' .
-        ' and updateTime>mp.updateTime' .
-      ')' .
+      ' AND mp.is_current = 1' .
     ')';
 
     if ($query->catalog !== null) {
@@ -563,13 +551,7 @@ class FDSNIndex {
 
         $from .= ' JOIN productSummary contributed on (e.id=contributed.eventid)';
         // latest version of product
-        $where[] = ' NOT EXISTS (' .
-            'SELECT * FROM productSummary' .
-            ' WHERE source=contributed.source' .
-            ' AND type=contributed.type' .
-            ' AND code=contributed.code' .
-            ' AND updateTime>contributed.updateTime' .
-            ')';
+        $where[] = ' contributed.is_current = 1';
         // and not deleted
         if (!$query->includedeleted && !$query->includesuperseded) {
           $where[] = "upper(contributed.status) <> 'DELETE'";

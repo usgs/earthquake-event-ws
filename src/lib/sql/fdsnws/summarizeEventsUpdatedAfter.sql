@@ -23,6 +23,8 @@ BEGIN
       CLOSE cur_eventids;
       LEAVE cur_eventids_loop;
     END IF;
+    -- update is_current before following procedures
+    CALL summarizeProductSummaryIsCurrent(l_eventid);
     -- call summarize stored procedures with eventid
     CALL updateEventSummary(l_eventid);
     CALL summarizeEventProducts(l_eventid);

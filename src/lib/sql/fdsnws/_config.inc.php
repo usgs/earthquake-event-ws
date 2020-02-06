@@ -6,6 +6,7 @@
 $files = array(
   'on_event_update_trigger.remove.sql', // Removes the trigger. Re-added later.
   'indexes.sql',
+  'summarizeProductSummaryIsCurrent.sql',
   'currentProducts.sql',
   'preferredProduct.sql',
   'getEventIdBySourceAndCode.sql',

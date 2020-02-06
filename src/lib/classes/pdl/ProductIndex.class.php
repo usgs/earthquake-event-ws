@@ -1220,80 +1220,19 @@ class ProductIndex {
     // resultType = ProductIndexQuery::*_WITH_DELETE variation.
 
     if ($resultType == ProductIndexQuery::RESULT_TYPE_CURRENT) {
-      $clause = sprintf("product.%s != 'DELETE' AND NOT EXISTS (
-          SELECT
-            ps.%s
-          FROM
-            %s ps
-          WHERE
-            ps.%s = product.%s AND
-            ps.%s = product.%s AND
-            ps.%s = product.%s AND
-            ps.%s > product.%s
-          )",
-          self::SUMMARY_STATUS,
-          self::SUMMARY_PRODUCT_INDEX_ID, self::SUMMARY_TABLE,
-          self::SUMMARY_TYPE, self::SUMMARY_TYPE, self::SUMMARY_SOURCE,
-          self::SUMMARY_SOURCE, self::SUMMARY_CODE, self::SUMMARY_CODE,
-          self::SUMMARY_UPDATE_TIME, self::SUMMARY_UPDATE_TIME
-        );
+      $clause = sprintf("product.%s != 'DELETE' AND product.is_current = 1",
+          self::SUMMARY_STATUS);
     } else if ( // Same as above, but now include deleted products
         $resultType == ProductIndexQuery::RESULT_TYPE_CURRENT_WITH_DELETE) {
-      $clause = sprintf("NOT EXISTS (
-          SELECT
-            ps.%s
-          FROM
-            %s ps
-          WHERE
-            ps.%s = product.%s AND
-            ps.%s = product.%s AND
-            ps.%s = product.%s AND
-            ps.%s > product.%s
-          )",
-          self::SUMMARY_PRODUCT_INDEX_ID, self::SUMMARY_TABLE,
-          self::SUMMARY_TYPE, self::SUMMARY_TYPE, self::SUMMARY_SOURCE,
-          self::SUMMARY_SOURCE, self::SUMMARY_CODE, self::SUMMARY_CODE,
-          self::SUMMARY_UPDATE_TIME, self::SUMMARY_UPDATE_TIME
-        );
+      $clause = "product.is_current = 1";
     } else if ($resultType == ProductIndexQuery::RESULT_TYPE_SUPERSEDED) {
       // If they only want superseded products, make a slightly different
       // clause that has a subquery
-      $clause = sprintf("product.%s != 'DELETE' AND EXISTS (
-          SELECT
-            %s
-          FROM
-            %s ps
-          WHERE
-            ps.%s = product.%s AND
-            ps.%s = product.%s AND
-            ps.%s = product.%s AND
-            ps.%s > product.%s
-          )",
-          self::SUMMARY_STATUS,
-          self::SUMMARY_PRODUCT_INDEX_ID, self::SUMMARY_TABLE,
-          self::SUMMARY_TYPE, self::SUMMARY_TYPE, self::SUMMARY_SOURCE,
-          self::SUMMARY_SOURCE, self::SUMMARY_CODE, self::SUMMARY_CODE,
-          self::SUMMARY_UPDATE_TIME, self::SUMMARY_UPDATE_TIME
-        );
+      $clause = sprintf("product.%s != 'DELETE' AND product.is_current = 0",
+          self::SUMMARY_STATUS);
     } else if ( // Same as above, but now include deleted products
         $resultType == ProductIndexQuery::RESULT_TYPE_SUPERSEDED_WITH_DELETE) {
-      $clause = sprintf("EXISTS (
-          SELECT
-            %s
-          FROM
-            %s ps
-          WHERE
-            ps.%s = product.%s AND
-            ps.%s = product.%s AND
-            ps.%s = product.%s AND
-            ps.%s > product.%s
-          )",
-          self::SUMMARY_STATUS,
-          self::SUMMARY_PRODUCT_INDEX_ID, self::SUMMARY_TABLE,
-          self::SUMMARY_TYPE, self::SUMMARY_TYPE, self::SUMMARY_SOURCE,
-          self::SUMMARY_SOURCE, self::SUMMARY_CODE, self::SUMMARY_CODE,
-          self::SUMMARY_UPDATE_TIME, self::SUMMARY_UPDATE_TIME
-        );
+      $clause = "product.is_current = 0";
     }
 
     return $clause;
