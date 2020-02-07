@@ -19,7 +19,7 @@ class FDSNIndex {
     $rs = $this->pdo->query(
         'select distinct eventSource ' .
         'from productSummary ' .
-        "where eventSource is not null and eventSource != '' " .
+        "where eventSource is not null and eventSource <> '' " .
         'order by eventSource');
     $catalogs = array();
     while ($row = $rs->fetch()) {
@@ -48,8 +48,8 @@ class FDSNIndex {
       'from ( ' .
         'select distinct type, status ' .
         'from productSummary ' .
-        "where type is not null and type != '' and " .
-        "status is not null and status != 'DELETE' " .
+        "where type is not null and type <> '' and " .
+        "status is not null and status <> 'DELETE' " .
       ') types ' .
       'order by types.type');
     $producttypes = array();
@@ -64,7 +64,7 @@ class FDSNIndex {
     $rs = $this->pdo->query(
       'select distinct event_type ' .
       'from originSummary ' .
-      "where event_type is not null and event_type != '' " .
+      "where event_type is not null and event_type <> '' " .
       'order by event_type');
     $eventtypes = array();
     while ($row = $rs->fetch()) {
@@ -78,7 +78,7 @@ class FDSNIndex {
     $rs = $this->pdo->query(
       'select distinct magnitude_type ' .
       'from originSummary ' .
-      "where magnitude_type is not null and magnitude_type != '' " .
+      "where magnitude_type is not null and magnitude_type <> '' " .
       'order by magnitude_type');
     $magnitudetypes = array();
     while ($row = $rs->fetch()) {

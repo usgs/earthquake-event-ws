@@ -1220,7 +1220,7 @@ class ProductIndex {
     // resultType = ProductIndexQuery::*_WITH_DELETE variation.
 
     if ($resultType == ProductIndexQuery::RESULT_TYPE_CURRENT) {
-      $clause = sprintf("product.%s != 'DELETE' AND product.is_current = 1",
+      $clause = sprintf("product.%s <> 'DELETE' AND product.is_current = 1",
           self::SUMMARY_STATUS);
     } else if ( // Same as above, but now include deleted products
         $resultType == ProductIndexQuery::RESULT_TYPE_CURRENT_WITH_DELETE) {
@@ -1228,7 +1228,7 @@ class ProductIndex {
     } else if ($resultType == ProductIndexQuery::RESULT_TYPE_SUPERSEDED) {
       // If they only want superseded products, make a slightly different
       // clause that has a subquery
-      $clause = sprintf("product.%s != 'DELETE' AND product.is_current = 0",
+      $clause = sprintf("product.%s <> 'DELETE' AND product.is_current = 0",
           self::SUMMARY_STATUS);
     } else if ( // Same as above, but now include deleted products
         $resultType == ProductIndexQuery::RESULT_TYPE_SUPERSEDED_WITH_DELETE) {
