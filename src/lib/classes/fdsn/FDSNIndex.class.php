@@ -493,7 +493,7 @@ class FDSNIndex {
       if ($query->eventtype !== null) {
         $types = array();
         foreach ($query->eventtype as $eventtype) {
-          $types[] = 'upper(os.event_type) = upper(?)';
+          $types[] = 'os.event_type = lower(?)';
           $params[] =  $eventtype;
         }
         $where[] = "( " . implode(" OR ", $types) . " )";
@@ -534,7 +534,7 @@ class FDSNIndex {
         if ($query->alertlevel === '*') {
           $where[] = "(es.alertlevel <> '' AND es.alertlevel IS NOT NULL)";
         } else {
-          $where[] = 'upper(es.alertlevel) = upper(?)';
+          $where[] = 'es.alertlevel = lower(?)';
           $params[] = $query->alertlevel;
         }
       }
