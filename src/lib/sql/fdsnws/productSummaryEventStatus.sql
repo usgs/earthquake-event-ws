@@ -17,9 +17,6 @@ CREATE PROCEDURE updateProductSummaryEventStatus(IN in_eventid INT)
 BEGIN
   DECLARE preferredId INT;
 
-  -- run in a transaction
-  START TRANSACTION;
-
   -- remove existing summary status
   DELETE FROM productSummaryEventStatus WHERE eventId = in_eventid;
 
@@ -52,10 +49,6 @@ BEGIN
   SET eventPreferred = 1
   WHERE eventId = in_eventid
   AND productSummaryId = preferredId;
-
-  -- done
-  COMMIT;
-
 END;
 //
 delimiter ;
@@ -91,7 +84,11 @@ BEGIN
       LEAVE cur_events_loop;
     END IF;
 
+    -- run in a transaction
+    START TRANSACTION;
     CALL updateProductSummaryEventStatus(eventid);
+    COMMIT;
+
   END LOOP cur_events_loop;
 
   COMMIT;
