@@ -10,3 +10,4 @@ src/lib/sql/install_mysql.sql
 generate_summary_sql.sh
 manage_container
 test.php
+data/
