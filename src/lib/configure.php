@@ -32,11 +32,7 @@
         $secure=false, $unknown=false) {
       global $NO_PROMPT;
 
-      if ($NO_PROMPT) {
-        return $default;
-      }
-
-      if ($unknown) {
+      if (!$NO_PROMPT && $unknown) {
         // Warn user about an unknown configuration option being used.
         print "\nThis next option ($option) is not a well-known " .
               "configuration option and\nmay not get used. You may still " .
@@ -50,11 +46,14 @@
       if ($default == null) { $default = '<none>'; }
       $help = ($comment !== null && $comment != '') ? $comment : $option;
 
-      // Prompt for and read the configuration option value
-      printf("%s [%s]: ", $help, $default);
-      if ($secure) {system('stty -echo');}
-      $value = trim(fgets(STDIN));
-      if ($secure) {system('stty echo'); print "\n";}
+      $value = '';
+      if (!$NO_PROMPT) {
+        // Prompt for and read the configuration option value
+        printf("%s [%s]: ", $help, $default);
+        if ($secure) {system('stty -echo');}
+        $value = trim(fgets(STDIN));
+        if ($secure) {system('stty echo'); print "\n";}
+      }
 
       // Check the input
       if ($value == '' && $default != '<none>') { $value = $default; }
