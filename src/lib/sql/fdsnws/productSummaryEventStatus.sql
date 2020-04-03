@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS productSummaryEventStatus (
   FOREIGN KEY (productSummaryId) REFERENCES productSummary(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+
 delimiter //
 DROP PROCEDURE IF EXISTS updateProductSummaryEventStatus //
 CREATE PROCEDURE updateProductSummaryEventStatus(IN in_eventid INT)
@@ -56,26 +57,26 @@ delimiter ;
 
 delimiter //
 DROP PROCEDURE IF EXISTS summarizeProductSummaryEventStatus //
-CREATE PROCEDURE summarizeProductSummaryEventStatus()
+CREATE PROCEDURE summarizeProductSummaryEventStatus(
+  IN in_starttime BIGINT,
+  IN in_endtime BIGINT
+)
   MODIFIES SQL DATA
 BEGIN
   DECLARE eventid INT;
-
   DECLARE done INT DEFAULT 0;
+
   DECLARE cur_events CURSOR FOR
     SELECT DISTINCT e.id
     FROM event e
-    JOIN preferredProduct ps ON (ps.eventid = e.id)
-    LEFT JOIN productSummaryEventStatus pses ON (pses.eventId = e.id)
+    JOIN productSummary ps ON (ps.eventid = e.id)
     WHERE ps.type in ('origin', 'origin-scenario')
-    AND (
-      pses.eventUpdated IS NULL
-      OR pses.eventUpdated < e.updated
-    )
-    LIMIT 100000;
+    AND e.eventTime >= in_starttime and e.eventTime < in_endtime;
 
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
-  -- loop over all events, updating eventSummary table
+
+  -- loop over all events, updating productSummaryEventStatus table
+  START TRANSACTION;
   OPEN cur_events;
   cur_events_loop: LOOP
     FETCH cur_events INTO eventid;
@@ -84,14 +85,10 @@ BEGIN
       LEAVE cur_events_loop;
     END IF;
 
-    -- run in a transaction
-    START TRANSACTION;
     CALL updateProductSummaryEventStatus(eventid);
-    COMMIT;
-
   END LOOP cur_events_loop;
-
   COMMIT;
+
 END;
 //
 delimiter ;
