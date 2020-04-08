@@ -1,0 +1,28 @@
+version: '3'
+services:
+  ws:
+    container_name: earthquake-event-ws
+    build: .
+    ports:
+      - '80:80'
+    environment:
+      db_hostname: database:3306
+      db_name: product_index
+      db_read_user: web
+      db_read_pass: readonly
+    volumes:
+      - ./data/storage:/data/product
+    links:
+      - 'db:database'
+  db:
+    container_name: pdl-index
+    image: 'mysql:5.6'
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: 'product_index'
+      MYSQL_USER: 'web'
+      MYSQL_PASSWORD: 'readonly'
+      MYSQL_ROOT_PASSWORD: 'root-password'
+    volumes:
+      - ./data/mysql:/var/lib/mysql
