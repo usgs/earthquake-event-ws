@@ -6,7 +6,7 @@ services:
     ports:
       - '80:80'
     environment:
-      db_hostname: database:3306
+      db_hostname: database
       db_name: product_index
       db_read_user: web
       db_read_pass: readonly
