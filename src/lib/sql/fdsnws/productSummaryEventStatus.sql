@@ -30,7 +30,7 @@ BEGIN
       ps.id as productSummaryId,
       0 as eventPreferred
     FROM event e
-    JOIN preferredProduct ps ON (ps.eventid = e.id)
+    JOIN currentProducts ps ON (ps.eventid = e.id)
     WHERE e.id = in_eventid
     AND ps.type in ('origin', 'origin-scenario');
 
