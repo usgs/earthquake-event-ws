@@ -32,18 +32,18 @@ BEGIN
     FROM event e
     JOIN currentProducts ps ON (ps.eventid = e.id)
     WHERE e.id = in_eventid
-    AND upper(ps.status) <> 'DELETE'
     AND ps.type in ('origin', 'origin-scenario');
 
   -- find preferred origin
-  SELECT id into preferredId FROM productSummary
-  WHERE eventid = in_eventid
-  AND id IN (
+  SELECT id into preferredId FROM productSummary ps
+  WHERE ps.eventid = in_eventid
+  AND upper(ps.status) <> 'DELETE'
+  AND ps.id IN (
     SELECT productSummaryId
     FROM productSummaryEventStatus
     WHERE eventId = in_eventid
   )
-  ORDER BY preferred DESC, updateTime DESC
+  ORDER BY ps.preferred DESC, ps.updateTime DESC
   LIMIT 1;
 
   -- set preferred origin
