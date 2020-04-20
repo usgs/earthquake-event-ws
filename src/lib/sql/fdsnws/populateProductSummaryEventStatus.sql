@@ -1,7 +1,7 @@
 
 delimiter //
-DROP PROCEDURE IF EXISTS recreateProductSummaryEventStatus //
-CREATE PROCEDURE recreateProductSummaryEventStatus(
+DROP PROCEDURE IF EXISTS populateProductSummaryEventStatus //
+CREATE PROCEDURE populateProductSummaryEventStatus(
 )
   MODIFIES SQL DATA
 BEGIN
@@ -33,4 +33,4 @@ END;
 delimiter ;
 
 
-CALL recreateProductSummaryEventStatus();
+CALL populateProductSummaryEventStatus();
