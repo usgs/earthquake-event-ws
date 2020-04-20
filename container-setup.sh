@@ -22,4 +22,4 @@ sql_query "source /var/lib/mysql/install_mysql.sql;"
 
 # set up PDL user
 sql_query "CREATE USER '${PDL_DB_USER}' IDENTIFIED BY '${PDL_DB_PASSWORD}';"
-sql_query "GRANT SELECT ON ${DB_NAME}.* TO '${PDL_DB_USER}';"
+sql_query "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${PDL_DB_USER}';"

@@ -95,7 +95,7 @@ class ProductIndex {
   const SUMMARY_LINK_URL = "url";
   const SUMMARY_CURRENT_TABLE = "currentProducts";
   const SUMMARY_EXTENT_TABLE = "extentSummary";
-  const SUMMARY_EXTENT_INDEX_ID = "productid";
+  const SUMMARY_EXTENT_INDEX_ID = "productSummaryIndexId";
   const SUMMARY_EXTENT_START_TIME = "starttime";
   const SUMMARY_EXTENT_END_TIME = "endtime";
   const SUMMARY_EXTENT_MAX_LATITUDE = "maximum_latitude";

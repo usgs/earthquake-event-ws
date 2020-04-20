@@ -235,7 +235,7 @@ class ProductWebService extends WebService {
       'source=' . $id->getSource() . 
       '&type=' . $id->getType() . 
       '&code=' . $id->getCode() . 
-      '&updateTime=' . $id->getUpdateTime();
+      '&updatetime=' . $id->getUpdateTime();
   }
 
   protected function getUsageUrl() {
