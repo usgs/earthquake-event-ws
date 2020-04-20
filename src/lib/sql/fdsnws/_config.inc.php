@@ -18,6 +18,7 @@ $files = array(
   'getEventIds.sql',
   'getEventSummary.sql',
   'productSummaryEventStatus.sql',
+  'populateProductSummaryEventStatus.sql',
   'updateEventSummary.sql',
   'recreateEventSummary.sql',
   'summary_sql.php',
