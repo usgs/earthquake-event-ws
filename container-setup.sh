@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # container config
-WS_CONTAINER="earthquake-event-ws"
-DB_CONTAINER="pdl-index"
+WS_CONTAINER=${WS_CONTAINER:-"earthquake-event-ws"}
+DB_CONTAINER=${DB_CONTAINER:-"pdl-index"}
 # database config
-DB_NAME="product_index"
-DB_USER="root" #to be used by this script
-DB_PASSWORD="root-password"
-PDL_DB_USER="user"
-PDL_DB_PASSWORD="password"
+DB_NAME=${DB_NAME:-"product_index"}
+DB_USER=${DB_USER:-"root"} #to be used by this script
+DB_PASSWORD=${DB_PASSWORD:-"root-password"}
+PDL_DB_USER=${PDL_DB_USER:-"user"} #to be used by pdl
+PDL_DB_PASSWORD=${PDL_DB_PASSWORD:-"password"}
 
 sql_query() {
     docker exec ${DB_CONTAINER} mysql -u${DB_USER} -p${DB_PASSWORD} ${DB_NAME} -e "${1}"
