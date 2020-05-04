@@ -6,7 +6,7 @@ CREATE TABLE feplus (
   e VARCHAR(255),
   h VARCHAR(255),
   area INT,
-  shape POLYGON,
+  shape GEOMETRY,
   feregion INT,
   priority INT,
   dataset VARCHAR(255)

@@ -8,7 +8,7 @@ CREATE PROCEDURE get_feregion(
   OUT out_e VARCHAR(255),
   OUT out_h VARCHAR(255),
   OUT out_area INT,
-  OUT out_shape POLYGON,
+  OUT out_shape GEOMETRY,
   OUT out_feregion INT,
   OUT out_priority INT,
   OUT out_dataset VARCHAR(255)
