@@ -16,7 +16,7 @@ BEGIN
   DECLARE l_e VARCHAR(255);
   DECLARE l_h VARCHAR(255);
   DECLARE l_area INT;
-  DECLARE l_shape POLYGON;
+  DECLARE l_shape GEOMETRY;
   DECLARE l_feregion INT;
   DECLARE l_priority INT;
   DECLARE l_dataset VARCHAR(255);

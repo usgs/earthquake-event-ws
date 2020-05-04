@@ -1,6 +1,6 @@
 delimiter //
 DROP FUNCTION IF EXISTS point_in_one_polygon//
-CREATE FUNCTION point_in_one_polygon(p POINT, poly POLYGON) RETURNS INT(1)
+CREATE FUNCTION point_in_one_polygon(p POINT, poly GEOMETRY) RETURNS INT(1)
 COMMENT 'Should be combined with MBRContains as a prefilter'
 -- This function is based on myWithin which can be found at:
 --     http://forums.mysql.com/read.php?23,366732,366732
