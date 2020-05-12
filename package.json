@@ -33,7 +33,7 @@
     "grunt-postcss": "0.7.1",
     "hazdev-leaflet": "0.2.3",
     "hazdev-location-view": "0.4.3",
-    "hazdev-template": "1.1.6",
+    "hazdev-template": "1.3.2",
     "hazdev-webutils": "0.1.9",
     "http-rewrite-middleware": "0.1.6",
     "ini": "1.3.4",

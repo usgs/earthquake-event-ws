@@ -115,7 +115,7 @@ class ProductSummary {
       'status' => $this->getStatus(),
       //'trackerURL' => $this->getTrackerURL(),
       'properties' => $this->getProperties(),
-      'links' => $this->getLinks(),
+      'links' => $this->formatLinks(),
 
       // these come from product properties, already included above
       //'eventsource' => $this->getEventSource(),
@@ -232,6 +232,29 @@ class ProductSummary {
       }
     }
     return $this->product;
+  }
+
+  public function addLink($relation, $url) {
+    $this->links[$relation][] = $url;
+  }
+
+  public function addProperty($name, $value) {
+    $this->properties[$name] = $value;
+  }
+
+  public function formatLinks() {
+    if ($this->links == null) {
+      return $this->links;
+    }
+
+    $formattedLinks = array();
+    foreach ($this->links as $relation=>$urls) {
+      foreach ($urls as $url) {
+        $formattedLinks[] = array('relation' => $relation, 'url' => $url);
+      }
+    }
+
+    return $formattedLinks;
   }
 
 }

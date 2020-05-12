@@ -85,6 +85,7 @@ class ProductStorage {
     // THIS IS THE NEW STYLE OF LOADING CONTENTS
     $contents = array();
     $foundURLContent = false;
+    $productBaseURL = $this->getProductURL($product->getId());
     foreach ($parsed->content as $content) {
       // convert to milliseconds
       $content_time = strtotime(strval($content['modified']));
@@ -97,7 +98,7 @@ class ProductStorage {
       if (isset($content['href'])) {
         $file = str_replace("file:", "", strval($content['href']));
         $c->setFile($file);
-        $c->setURL(str_replace($this->baseDirectory, $this->baseURL, $file));
+        $c->setURL($productBaseURL . '/' . $content['path']);
         $foundURLContent = true;
       } else if ($content['encoded']) {
         $c->setBytes(base64_decode(strval($content)));

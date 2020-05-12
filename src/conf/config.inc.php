@@ -25,14 +25,20 @@ if (file_exists($TEMPLATE_FUNCTIONS)) {
 
 // read the regular app config
 $APP_DIR = dirname(dirname(__FILE__));
+
 // configuration parameters read from config.ini
-$CONFIG = parse_ini_file($APP_DIR . '/conf/config.ini');
+$CONFIG_INI = parse_ini_file($APP_DIR . '/conf/config.ini');
+// environment overrides config file
+$CONFIG = array_merge($CONFIG_INI, $_ENV);
+
 $APP_NAME = basename($APP_DIR);
 $MOUNT_PATH = $CONFIG['FEED_PATH'];
 $EVENT_PATH = $CONFIG['EVENT_PATH'];
 
 $MAX_SEARCH = array_key_exists('MAX_SEARCH', $CONFIG) ?
     $CONFIG['MAX_SEARCH'] : null;
+$PRODUCT_MAX_SEARCH = array_key_exists('PRODUCT_MAX_SEARCH', $CONFIG) ?
+    $CONFIG['PRODUCT_MAX_SEARCH'] : null;
 
 $API_VERSION = $CONFIG['API_VERSION'];
 
@@ -45,6 +51,8 @@ $SEARCH_PATH = $CONFIG['SEARCH_PATH'];
 $FDSN_PATH = $CONFIG['FDSN_PATH'];
 // version is replaced using package.json version by grunt copy task
 $FDSN_VERSION = '{{VERSION}}';
+
+$PRODUCT_PATH = $CONFIG['PRODUCT_PATH'];
 
 $MAPLIST_PATH = $CONFIG['MAPLIST_PATH'];
 
@@ -87,5 +95,7 @@ if ( ($server_port == 80 && ($server_protocol == 'http://' || $forwarded_https))
 // by default searches and feeds are local
 $FDSN_HOST = '';
 $FEED_HOST = '';
+$PRODUCT_HOST = '';
 $FEED_URL = $FEED_HOST . $FEED_PATH;
 $FDSN_URL = $FDSN_HOST . $FDSN_PATH;
+$PRODUCT_URL = $PRODUCT_HOST . $PRODUCT_PATH;

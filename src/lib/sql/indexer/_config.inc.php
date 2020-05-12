@@ -7,5 +7,6 @@ $files = array(
   'event.sql',
   'productSummary.sql',
   'productSummaryLink.sql',
-  'productSummaryProperty.sql'
+  'productSummaryProperty.sql',
+  'extentSummary.sql'
 );

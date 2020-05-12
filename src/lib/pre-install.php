@@ -29,10 +29,13 @@ $HTTPD_CONF_FILE = $CONF_DIR . DIRECTORY_SEPARATOR . 'httpd.conf';
 
 $FEED_PATH = $CONFIG['FEED_PATH'] . '/' . $CONFIG['API_VERSION'];
 $FDSN_PATH = $CONFIG['FDSN_PATH'];
+$PRODUCT_PATH = $CONFIG['PRODUCT_PATH'];
 $SEARCH_PATH = $CONFIG['SEARCH_PATH'];
 
 $storage_directory = $CONFIG['storage_directory'];
 $storage_url = $CONFIG['storage_url'];
+
+$OFFSITE_HOST = $CONFIG['OFFSITE_HOST'];
 
 
 
@@ -51,7 +54,6 @@ $HTTPD_CONF = '
 ### PRODUCT SEARCH APP
 
 RewriteEngine on
-
 
 
 ## EQ Search URL Hijacking
@@ -88,17 +90,56 @@ RewriteRule ^' . $FDSN_PATH . '/query\.([^/]*)$ ' . $FEED_PATH .
 RewriteRule ^' . $FDSN_PATH . '/([^/]*)$ ' . $FEED_PATH .
     '/fdsn.php?method=$1 [L,QSA,PT]
 
+# product webservice
+RewriteRule ^' . $PRODUCT_PATH . '$ ' . $PRODUCT_PATH . '/ [R=301,L]
+RewriteRule ^' . $PRODUCT_PATH . '/query$ ' . $FEED_PATH .
+    '/product.php [L,QSA,PT]
+RewriteRule ^' . $PRODUCT_PATH . '/$ ' . $FEED_PATH .
+    '/product.php [L,PT]
+
 Alias ' . $FEED_PATH . ' ' . $HTDOCS_DIR . '
-Alias ' . $storage_url . ' ' . $storage_directory . '
+
+# An offsite host is ' . (($OFFSITE_HOST == null) ? 'not ' : '') . 'configured.
+' . (
+    ($OFFSITE_HOST == null)
+    ? 'Alias ' . $storage_url . ' ' . $storage_directory
+    : 'RewriteRule ^' . $storage_url . '(.*)$ https://' . $OFFSITE_HOST . $storage_url . '$1 [L,R=302]'
+) . '
 
 <Directory ' . $HTDOCS_DIR . '>
-  Order allow,deny
-  Allow from all
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Allow from all
+  </IfModule>
+
+  <IfModule mod_authz_core.c>
+    Require all granted
+  </IfModule>
 </Directory>
 
 <Directory ' . $storage_directory . '>
-  Order allow,deny
-  Allow from all
+  #if running apache 2.2
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Allow from all
+
+    # only allow GET access (and OPTIONS for CORS)
+    <LimitExcept GET OPTIONS>
+      Order allow,deny
+      Deny from all
+    </LimitExcept>
+  </IfModule>
+
+  #if running apache 2.4
+  <IfModule mod_authz_core.c>
+    Require all granted
+
+    # only allow GET access (and OPTIONS for CORS)
+    <LimitExcept GET OPTIONS>
+      Require all denied
+    </LimitExcept>
+  </IfModule>
+
   ExpiresActive on
   ExpiresDefault "access plus 10 years"
 
@@ -106,12 +147,6 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
   <IfModule mod_php5.c>
     php_flag engine off
   </IfModule>
-
-  # only allow GET access (and OPTIONS for CORS)
-  <LimitExcept GET OPTIONS>
-    Order allow,deny
-    Deny from all
-  </LimitExcept>
 
   # block query strings
   RewriteCond %{QUERY_STRING} ^.+
@@ -124,19 +159,54 @@ Alias ' . $storage_url . ' ' . $storage_directory . '
   ExpiresActive on
   ExpiresDefault "access plus 1 days"
 
-  # only allow GET access (and OPTIONS for CORS)
-  <LimitExcept GET OPTIONS>
-    Order allow,deny
-    Deny from all
-  </LimitExcept>
+  # only allow GET access (and OPTIONS for CORS) (apache 2.2)
+  <IfModule !mod_authz_core.c>
+    <LimitExcept GET OPTIONS>
+      Order allow,deny
+      Deny from all
+    </LimitExcept>
+  </IfModule>
+
+  #apache 2.4
+  <IfModule mod_authz_core.c>
+    <LimitExcept GET OPTIONS>
+      Require all denied
+    </LimitExcept>
+  </IfModule>
 </Location>
 
 <Location ' . $FDSN_PATH . '/>
-  # only allow GET access (and OPTIONS for CORS)
-  <LimitExcept GET OPTIONS>
-    Order allow,deny
-    Deny from all
-  </LimitExcept>
+  # only allow GET access (and OPTIONS for CORS) (apache 2.2)
+  <IfModule !mod_authz_core.c>
+    <LimitExcept GET OPTIONS>
+      Order allow,deny
+      Deny from all
+    </LimitExcept>
+  </IfModule>
+
+  #apache 2.4
+  <IfModule mod_authz_core.c>
+    <LimitExcept GET OPTIONS>
+      Require all denied
+    </LimitExcept>
+  </IfModule>
+</Location>
+
+<Location ' . $PRODUCT_PATH . '/>
+  # only allow GET access (and OPTIONS for CORS) (apache 2.2)
+  <IfModule !mod_authz_core.c>
+    <LimitExcept GET OPTIONS>
+      Order allow,deny
+      Deny from all
+    </LimitExcept>
+  </IfModule>
+
+  #apache 2.4
+  <IfModule mod_authz_core.c>
+    <LimitExcept GET OPTIONS>
+      Require all denied
+    </LimitExcept>
+  </IfModule>
 </Location>
 ';
 

@@ -58,6 +58,14 @@ var rewrites = [
     from: '^' + iniConfig.FDSN_PATH + '/([^/?]*)\\??(.*)$',
     to: '/fdsn.php?method=$1&$2'
   },
+  {
+    from: '^' + iniConfig.PRODUCT_PATH + '/$',
+    to: '/product.php'
+  },
+  {
+    from: '^' + iniConfig.PRODUCT_PATH + '/query\\??(.*)$',
+    to: '/product.php?$1'
+  },
 
   // Other mount path stuff
   {
@@ -156,6 +164,7 @@ var connect = {
         middlewares.unshift(
           corsMiddleware,
           rewriteMiddleware,
+          proxyMiddleware,
           mountPHP(options.base[0])
         );
         return middlewares;

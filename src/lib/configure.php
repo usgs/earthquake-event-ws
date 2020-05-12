@@ -32,11 +32,7 @@
         $secure=false, $unknown=false) {
       global $NO_PROMPT;
 
-      if ($NO_PROMPT) {
-        return $default;
-      }
-
-      if ($unknown) {
+      if (!$NO_PROMPT && $unknown) {
         // Warn user about an unknown configuration option being used.
         print "\nThis next option ($option) is not a well-known " .
               "configuration option and\nmay not get used. You may still " .
@@ -50,11 +46,14 @@
       if ($default == null) { $default = '<none>'; }
       $help = ($comment !== null && $comment != '') ? $comment : $option;
 
-      // Prompt for and read the configuration option value
-      printf("%s [%s]: ", $help, $default);
-      if ($secure) {system('stty -echo');}
-      $value = trim(fgets(STDIN));
-      if ($secure) {system('stty echo'); print "\n";}
+      $value = '';
+      if (!$NO_PROMPT) {
+        // Prompt for and read the configuration option value
+        printf("%s [%s]: ", $help, $default);
+        if ($secure) {system('stty -echo');}
+        $value = trim(fgets(STDIN));
+        if ($secure) {system('stty echo'); print "\n";}
+      }
 
       // Check the input
       if ($value == '' && $default != '<none>') { $value = $default; }
@@ -77,6 +76,7 @@
     'FEED_PATH' => 'Absolute URL root path for feed content',
     'FDSN_PATH' => 'Absolute URL root path for fdsn event webservice',
     'MAPLIST_PATH' => 'Absolute URL for map/list search results',
+    'PRODUCT_PATH' => 'Absolute URL root path for product content',
 
     // Indexer storage
     'storage_directory' => 'Product content storage directory',
@@ -105,6 +105,7 @@
     'FEED_PATH' => '/earthquakes/feed',
     'FDSN_PATH' => '/fdsnws/event/1',
     'MAPLIST_PATH' => '/earthquakes/map',
+    'PRODUCT_PATH' => '/ws/product',
 
     // Indexer storage
     'storage_directory' => '',
@@ -125,6 +126,14 @@
 
     'OFFSITE_HOST' => ''
   );
+
+  // allow environment override during container build
+  // command line environment is added $_SERVER
+  foreach ($DEFAULTS as $key=>$value) {
+    if (isset($_SERVER[$key])) {
+      $DEFAULTS[$key] = $_SERVER[$key];
+    }
+  }
 
   // Default action is to configure
   $configure_action = '3';
@@ -198,4 +207,5 @@
     }
     system("mv $tmpfile $CONFIG_FILE");
   }
+
 ?>
