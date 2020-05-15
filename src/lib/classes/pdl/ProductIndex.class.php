@@ -1723,7 +1723,7 @@ class ProductIndex {
     );
 
     //get table
-    $sql .= sprintf(" FROM %s ps ",self::SUMMARY_TABLE);
+    $sql .= sprintf(" FROM %s ps ", isset($query->includeSuperseded)?self::SUMMARY_TABLE:self::CURRENT_TABLE);
 
     if (isset($query->time) || isset($query->latitude) || isset($query->longitude)) {
       //Do right join with extentSummary table
@@ -1868,6 +1868,7 @@ class ProductIndex {
 
     $sql .= 'WHERE ' . implode(' AND ', $where);
 
+    /* not needed when using currentProducts
     //Do WHERE for superseded
     if (!isset($query->includeSuperseded) || $query->includeSuperseded == false) {
       $sql .= sprintf(" AND NOT EXISTS (
@@ -1886,7 +1887,7 @@ class ProductIndex {
         self::SUMMARY_CODE,
         self::SUMMARY_UPDATE_TIME,
         self::SUMMARY_UPDATE_TIME);
-    }
+    }*/
 
     //Do ordering
     $sql .= " ORDER BY ";
