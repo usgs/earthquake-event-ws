@@ -1848,46 +1848,27 @@ class ProductIndex {
       }
     } elseif (isset($query->maxLongitude)) {
       //If only set a max on longitude
-      if ($query->maxLongitude > 180) $query->maxLongitude -= 360;
+      if ($query->maxLongitude > 180) {
+        $query->maxLongitude -= 360;
+      }
       $where[] = 'ps.' . self::SUMMARY_EVENT_LONGITUDE . '<=?';
       $params[] = $query->maxLongitude;
     } elseif (isset($query->minLongitude)) {
       //If only set a min on longitude
-      if ($query->minLongitude < -180) $query->minLongitude += 360;
+      if ($query->minLongitude < -180) {
+        $query->minLongitude += 360;
+      }
       $where[] = 'ps.' . self::SUMMARY_EVENT_LONGITUDE . '>=?';
       $params[] = $query->minLongitude;
     }
 
     //deleted
-    if (isset($query->includeDeleted)) {
-      if (!($query->includeDeleted)) {
-        $where[] = 'ps.' . self::SUMMARY_STATUS . '<>?';
-        $params[] = 'DELETE';
-      }
+    if ($query->includeDeleted === false) {
+      $where[] = 'ps.' . self::SUMMARY_STATUS . '<>?';
+      $params[] = 'DELETE';
     }
 
     $sql .= 'WHERE ' . implode(' AND ', $where);
-
-    /* not needed when using currentProducts
-    //Do WHERE for superseded
-    if (!isset($query->includeSuperseded) || $query->includeSuperseded == false) {
-      $sql .= sprintf(" AND NOT EXISTS (
-        SELECT * FROM %s 
-        WHERE %s=ps.%s 
-        AND %s=ps.%s 
-        AND %s=ps.%s 
-        AND %s>ps.%s
-        )",
-        self::SUMMARY_TABLE,
-        self::SUMMARY_SOURCE,
-        self::SUMMARY_SOURCE,
-        self::SUMMARY_TYPE,
-        self::SUMMARY_TYPE,
-        self::SUMMARY_CODE,
-        self::SUMMARY_CODE,
-        self::SUMMARY_UPDATE_TIME,
-        self::SUMMARY_UPDATE_TIME);
-    }*/
 
     //Do ordering
     $sql .= " ORDER BY ";
@@ -2031,7 +2012,6 @@ class ProductIndex {
     $propertyStatement = $this->connection->prepare($propertySearch[0]);
     if ($propertyStatement->execute($propertySearch[1]) == false) {
       throw new Exception($propertyStatement->errorInfo()[2]);
-      exit;
     }
     $propertyResults = $propertyStatement->fetchAll(PDO::FETCH_ASSOC);
 
@@ -2048,7 +2028,6 @@ class ProductIndex {
     $linkStatement = $this->connection->prepare($linkSearch[0]);
     if ($linkStatement->execute($linkSearch[1]) == false) {
       throw new Exception($linkStatement->errorInfo()[2]);
-      exit;
     }
     $linkResults = $linkStatement->fetchAll(PDO::FETCH_ASSOC);
 
