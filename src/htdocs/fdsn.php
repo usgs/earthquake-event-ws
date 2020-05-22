@@ -590,10 +590,11 @@ if (!isset($TEMPLATE)) {
       </tr>
       <tr id="includedeleted">
         <td><code>includedeleted</code></td>
-        <td>Boolean</td>
+        <td>Boolean, or "only"</td>
         <td>false</td>
         <td>
           Specify if deleted products and events should be included.
+          The value <code>only</code> returns only deleted events.
 
           <p>
           <small>

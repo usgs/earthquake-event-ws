@@ -529,6 +529,11 @@ class FDSNIndex {
         $where[] = "( " . implode(" OR ", $types) . " )";
       }
 
+      if ($query->eventstatus !== null) {
+        $where[] = "upper(e.status) = upper(?)";
+        $params[] = $query->eventstatus;
+      }
+
       if ($query->reviewstatus !== null) {
         if ($query->reviewstatus == 'automatic') {
           $where[] = "(upper(os.review_status) = upper(?) OR os.review_status='')";
