@@ -23,7 +23,7 @@ class FDSNEventWebService extends WebService {
    */
   public function __construct($index, $redirect=false,
       $redirectMaxEventAge=self::DEFAULT_REDIRECT_MAX_EVENT_AGE) {
-    
+
     parent::__construct($index);
 
     global $CONFIG;
@@ -428,7 +428,12 @@ class FDSNEventWebService extends WebService {
       } else if ($name ==='nodata') {
         $query->nodata = $this->validateEnumerated($name, $value, array(204, 404));
       } else if ($name === 'includedeleted') {
-        $query->includedeleted = $this->validateBoolean($name, $value);
+        if ($value === 'only') {
+          $query->includedeleted = true;
+          $query->eventstatus = 'DELETE';
+        } else {
+          $query->includedeleted = $this->validateBoolean($name, $value);
+        }
       } else if ($name === 'includesuperseded') {
         $query->includesuperseded = $this->validateBoolean($name, $value);
       } else if ($name ==='jsonerror') {

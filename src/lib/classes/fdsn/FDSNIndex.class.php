@@ -159,6 +159,24 @@ class FDSNIndex {
         $row['event_type'] = str_replace('_',' ', $row['event_type']);
         $event = utf8_encode_array($row);
 
+        if (
+          $event['eventStatus'] === 'DELETE'
+          && (
+            !$event['eventLatitude']
+            || !$event['eventLongitude']
+            || !$event['eventTime']
+          )
+        ) {
+          // deleted origins usually do not include details,
+          // use "preferred" event attributes for context
+          $event['eventLatitude'] = $event['preferredLatitude'];
+          $event['eventLongitude'] = $event['preferredLongitude'];
+          $event['eventTime'] = $event['preferredEventTime'];
+          // and these don't hurt
+          $event['eventDepth'] = $event['preferredDepth'];
+          $event['eventMagnitude'] = $event['preferredMagnitude'];
+        }
+
         if ($objects) {
           $event = new EventSummary();
           $event->eventIndexId = $row['eventid'];
@@ -509,6 +527,11 @@ class FDSNIndex {
           $params[] =  $eventtype;
         }
         $where[] = "( " . implode(" OR ", $types) . " )";
+      }
+
+      if ($query->eventstatus !== null) {
+        $where[] = "upper(e.status) = upper(?)";
+        $params[] = $query->eventstatus;
       }
 
       if ($query->reviewstatus !== null) {

@@ -76,6 +76,8 @@ class FDSNQuery {
 
   public $includedeleted = false;
   public $includesuperseded = false;
+  // event status for includedeleted=only
+  public $eventstatus = null;
 
   // formatting parameters
 
