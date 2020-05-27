@@ -1723,7 +1723,7 @@ class ProductIndex {
     );
 
     //get table
-    $sql .= sprintf(" FROM %s ps ", isset($query->includeSuperseded)?self::SUMMARY_TABLE:self::CURRENT_TABLE);
+    $sql .= sprintf(" FROM %s ps ", isset($query->includeSuperseded) && $query->includeSuperseded ? self::SUMMARY_TABLE : self::CURRENT_TABLE);
 
     if (isset($query->time) || isset($query->latitude) || isset($query->longitude)) {
       //Do right join with extentSummary table
@@ -1863,7 +1863,7 @@ class ProductIndex {
     }
 
     //deleted
-    if ($query->includeDeleted === false) {
+    if (isset($query->includeDeleted) && !$query->includeDeleted) {
       $where[] = 'ps.' . self::SUMMARY_STATUS . '<>?';
       $params[] = 'DELETE';
     }
