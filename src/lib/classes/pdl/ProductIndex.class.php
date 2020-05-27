@@ -1723,7 +1723,7 @@ class ProductIndex {
     );
 
     //get table
-    $sql .= sprintf(" FROM %s ps ", $query->includeSuperseded ? self::SUMMARY_TABLE : self::CURRENT_TABLE);
+    $sql .= sprintf(" FROM %s ps ", $query->includeSuperseded ? self::SUMMARY_TABLE : self::SUMMARY_CURRENT_TABLE);
 
     if (isset($query->time) || isset($query->latitude) || isset($query->longitude)) {
       //Do right join with extentSummary table
