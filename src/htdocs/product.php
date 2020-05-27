@@ -49,12 +49,12 @@ if (!isset($TEMPLATE)) {
 <h2 id="examples">Examples</h2>
 <ul>
     <li>
-      <a href="<?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updateTime=1557943644040">
-            <?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updateTime=1557943644040</a>
+      <a href="<?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updatetime=1557943644040">
+            <?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updatetime=1557943644040</a>
     </li>
     <li>
-      <a href="<?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?minupdatetime=07-01-2019&amp;maxupdatetime=07-02-2019&amp;minlongitude=-109&amp;maxlongitude=-102&amp;minlatitude=37&amp;maxlatitude=41">
-            <?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?minupdatetime=07-01-2019&amp;maxupdatetime=07-02-2019&amp;minlongitude=-109&amp;maxlongitude=-102&amp;minlatitude=37&amp;maxlatitude=41</a>
+      <a href="<?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?minupdatetime=2019-07-01&amp;maxupdatetime=2019-07-02&amp;minlongitude=-109&amp;maxlongitude=-102&amp;minlatitude=37&amp;maxlatitude=41">
+            <?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?minupdatetime=2019-07-01&amp;maxupdatetime=2019-07-02&amp;minlongitude=-109&amp;maxlongitude=-102&amp;minlatitude=37&amp;maxlatitude=41</a>
     </li>
 </ul>
 
@@ -218,13 +218,13 @@ These parameters should be submitted as key=value pairs using the HTTP GET metho
       <tr>
         <td><code>minmagnitude</code></td>
         <td>Decimal, [0,10]</td>
-        <td>0</td>
+        <td>null</td>
         <td>Lower bound on associated magnitude during search.</td>
       </tr>
       <tr>
         <td><code>maxmagnitude</code></td>
         <td>Decimal, [0,10]</td>
-        <td>10</td>
+        <td>null</td>
         <td>Upper bound on associated magnitude during search.</td>
       </tr>
     </tbody>

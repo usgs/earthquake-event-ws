@@ -3,6 +3,7 @@
 .sass-cache
 dist
 node_modules
+data
 *.sublime-workspace
 src/conf/config.ini*
 src/conf/httpd.conf
