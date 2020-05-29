@@ -15,6 +15,7 @@ var KNOWN_CATALOGS = {
   'ak': 'AK - Alaska Earthquake Information Center',
   'at': 'AT - National Tsunami Warning Center',
   'ci': 'CI - California Institute of Technology',
+  'ew': 'EW - ShakeAlert®',
   'hv': 'HV - Hawaiian Volcano Observatory',
   'iscgem': 'ISC-GEM',
   'ld': 'LD - Lamont-Doherty Cooperative Seismographic Network',
@@ -33,6 +34,7 @@ var KNOWN_CONTRIBUTORS = {
   'ak': 'AK - Alaska Earthquake Information Center',
   'at': 'AT - National Tsunami Warning Center',
   'ci': 'CI - California Institute of Technology',
+  'ew': 'EW - ShakeAlert®',
   'hv': 'HV - Hawaiian Volcano Observatory',
   'ld': 'LD - Lamont-Doherty Cooperative Seismographic Network',
   'mb': 'MB - Montana Bureau of Mines and Geology',
@@ -118,7 +120,8 @@ var KNOWN_PRODUCT_TYPES = {
   'finite-fault': 'Finite Fault',
   'dyfi': 'DYFI?',
   'cap': 'CAP',
-  'associate': 'Associate'
+  'associate': 'Associate',
+  'shake-alert': 'ShakeAlert®'
 };
 
 
