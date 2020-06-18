@@ -151,7 +151,7 @@ class ProductIndex {
    * Connect to the database using a PDO object and create some prepared statements.
    */
   public function connect( $hostname, $user, $pass, $database, $driver = "mysql" ) {
-    $dsn = sprintf("%s:host=%s;dbname=%s", $driver, $hostname, $database);
+    $dsn = sprintf("%s:host=%s;dbname=%s;charset=utf8", $driver, $hostname, $database);
     try {
       $this->connection = new PDO($dsn, $user, $pass);
     } catch (PDOException $e) {
