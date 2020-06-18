@@ -1,7 +1,7 @@
 delimiter //
 DROP PROCEDURE IF EXISTS getProductProperty//
 CREATE PROCEDURE getProductProperty(IN in_productid INT,
-  IN in_name VARCHAR(255), OUT out_value TEXT)
+  IN in_name VARCHAR(255), OUT out_value TEXT CHARACTER SET 'utf8')
   READS SQL DATA
 BEGIN
   DECLARE done INT DEFAULT 0;
