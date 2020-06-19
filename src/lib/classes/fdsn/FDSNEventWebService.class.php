@@ -64,15 +64,18 @@ class FDSNEventWebService extends WebService {
     $count = $this->index->getEventCount($query);
     if ($count === 0) {
 
-      // Verify this is not just a query for purely deleted events with a
-      // specific event id
-      if (!$query->includedeleted &
-        !$query->includesuperseded && $query->eventid !== null) {
-        $query->includedeleted = true;
+      // handleSummaryQuery is used for event detail queries with certain formats
+      // if an event was not found because it was deleted, serve a conflict response
+      if (
+        !$query->includedeleted
+        && $query->includesuperseded
+        && $query->eventid !== null
+        ) {
+          $query->includedeleted = true;
 
-        if ($this->index->getEventCount($query) !== 0) {
-          $this->error(self::CONFLICT, $this->CONFLICT_DETAILS,
-              $query->eventid);
+          if ($this->index->getEventCount($query) !== 0) {
+            $this->error(self::CONFLICT, $this->CONFLICT_DETAILS,
+                $query->eventid);
         }
       }
 
