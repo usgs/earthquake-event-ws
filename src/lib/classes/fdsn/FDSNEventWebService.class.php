@@ -68,7 +68,7 @@ class FDSNEventWebService extends WebService {
       // if an event was not found because it was deleted, serve a conflict response
       if (
         !$query->includedeleted
-        && $query->includesuperseded
+        && !$query->includesuperseded
         && $query->eventid !== null
         ) {
           $query->includedeleted = true;
