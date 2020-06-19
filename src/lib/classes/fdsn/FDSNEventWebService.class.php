@@ -75,7 +75,7 @@ class FDSNEventWebService extends WebService {
 
         if ($this->index->getEventCount($query) !== 0) {
           $this->error(self::CONFLICT, $this->CONFLICT_DETAILS,
-          $query->eventid);
+              $query->eventid);
         }
       }
 
