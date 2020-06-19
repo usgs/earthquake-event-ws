@@ -149,7 +149,7 @@
 
 
   echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-  echo '<kml xmlns="http://earth.google.com/kml/2.0">' .
+  echo '<kml xmlns="http://www.opengis.net/kml/2.2">' .
     '<NetworkLinkControl>' .
       '<minRefreshPeriod>60</minRefreshPeriod>' .
       '<linkName>' . $kmlfeed->getEventTitle($summary) . '</linkName>' .

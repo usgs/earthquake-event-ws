@@ -8,6 +8,8 @@ if (isset($_SERVER['REQUEST_METHOD']) &&
 
 // use UTC timezone for date parsing/formatting
 date_default_timezone_set("UTC");
+// Fix for a json_encode serialization error
+ini_set('serialize_precision', '-1');
 
 $TEMPLATE_FUNCTIONS = $_SERVER['DOCUMENT_ROOT'] . '/template/static/functions.inc.php';
 if (file_exists($TEMPLATE_FUNCTIONS)) {

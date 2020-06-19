@@ -8,7 +8,7 @@
           Minimum
         </label>
         <input type="number" step="any" name="minmagnitude" id="minmagnitude"
-            min="-1" max="10" step="0.1" value="2.5"
+            min="-10" max="10" step="0.1" value="2.5"
             aria-labelledby="magnitude magnitude-minmagnitude"/>
       </li>
       <li>
@@ -16,7 +16,7 @@
           Maximum
         </label>
         <input type="number" step="any" name="maxmagnitude" id="maxmagnitude"
-            min="-1" max="10" step="0.1" value=""
+            min="-10" max="10" step="0.1" value=""
             aria-labelledby="magnitude magnitude-maxmagnitude"/>
       </li>
     </ul>

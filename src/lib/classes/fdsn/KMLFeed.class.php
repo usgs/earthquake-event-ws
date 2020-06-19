@@ -29,7 +29,7 @@ class KMLFeed extends AbstractFeed {
     $feedUrl = $HOST_URL_PREFIX . htmlentities($_SERVER['REQUEST_URI']);
 
     $header = '<?xml version="1.0" encoding="UTF-8"?>
-<kml xmlns="http://earth.google.com/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom" xml:lang="en-US">
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom" xml:lang="en-US">
 <NetworkLinkControl>
   <minRefreshPeriod>60</minRefreshPeriod>
 </NetworkLinkControl>
