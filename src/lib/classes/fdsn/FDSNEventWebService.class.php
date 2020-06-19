@@ -64,8 +64,10 @@ class FDSNEventWebService extends WebService {
     $count = $this->index->getEventCount($query);
     if ($count === 0) {
 
-      // Verify this is not just a query for purely deleted events
-      if (!$query->includedeleted && !$query->includesuperseded) {
+      // Verify this is not just a query for purely deleted events with a
+      // specific event id
+      if (!$query->includedeleted &
+        !$query->includesuperseded && $query->eventid !== null) {
         $query->includedeleted = true;
 
         if ($this->index->getEventCount($query) !== 0) {
