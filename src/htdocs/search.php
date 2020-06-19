@@ -55,7 +55,7 @@ if (!isset($TEMPLATE)) {
           </li>
           <li>
             <a href="https://github.com/usgs/devcorner">
-              Developer\'s Corner - Library of functions and wrapper scripts for
+              Developer&rsquo;s Corner - Library of functions and wrapper scripts for
               accessing and using tools for the NEIC\'s ComCat data
             </a>
           </li>
