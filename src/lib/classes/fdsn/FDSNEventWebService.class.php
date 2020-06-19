@@ -70,12 +70,12 @@ class FDSNEventWebService extends WebService {
         !$query->includedeleted
         && !$query->includesuperseded
         && $query->eventid !== null
-        ) {
-          $query->includedeleted = true;
+      ) {
+        $query->includedeleted = true;
 
-          if ($this->index->getEventCount($query) !== 0) {
-            $this->error(self::CONFLICT, $this->CONFLICT_DETAILS,
-                $query->eventid);
+        if ($this->index->getEventCount($query) !== 0) {
+          $this->error(self::CONFLICT, $this->CONFLICT_DETAILS,
+          $query->eventid);
         }
       }
 
