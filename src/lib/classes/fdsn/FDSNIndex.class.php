@@ -156,7 +156,7 @@ class FDSNIndex {
         }
 
         $row['event_type'] = str_replace('_',' ', $row['event_type']);
-        $event = $row;
+        $event = utf8_encode_array($row);
 
         if (
           $event['eventStatus'] === 'DELETE'
