@@ -1,7 +1,7 @@
 <?php
 
 
-header('Content-type: application/json');
+header('Content-type: application/json; charset=utf-8');
 if( $event == null ) {
   header('HTTP/1.0 404 Not Found');
   print '{"message": "Event not found."}';

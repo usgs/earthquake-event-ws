@@ -1,7 +1,7 @@
 <?php
 
 
-header('Content-type: text/javascript');
+header('Content-type: text/javascript; charset=utf-8');
 if ($event == null) {
   header('HTTP/1.0 404 Not Found');
   print 'eqfeed_callback({"message": "Event not found."})';
@@ -75,6 +75,6 @@ if (!isset($callback)) {
   $callback = 'eqfeed_callback';
 }
 echo $callback . '(';
-$json = str_replace('\/', '/', safe_json_encode($array));
+$json = safe_json_encode($array);
 echo preg_replace('/"(time|indexTime|updated|updateTime|lastModified)":"(-?[\d]+)"/', '"$1":$2', $json);
 echo ');';
