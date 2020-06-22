@@ -133,7 +133,7 @@ foreach ($productsToSummarize as $summaryName => $info) {
   echo 'CREATE TABLE ' . $tableName . ' (' .
     implode(',', $tableColumns) . ',' .
     implode(',', $tableIndexes) .
-  ') ENGINE=INNODB;' . "\n";
+  ') ENGINE=INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;' . "\n";
 
   echo '-- procedure' . "\n";
   echo 'delimiter //' . "\n";

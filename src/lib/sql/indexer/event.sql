@@ -15,6 +15,6 @@ CREATE TABLE IF NOT EXISTS event  (
 
   KEY eventLatLonIdx (latitude, longitude),
   KEY eventTimeLatLonIdx (eventTime, latitude, longitude)
-) ENGINE=INNODB;
+) ENGINE=INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 -- Note :: Additional may indexes added by FDSN later

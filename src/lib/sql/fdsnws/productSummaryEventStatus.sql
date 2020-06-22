@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS productSummaryEventStatus (
   KEY preferredEventProductIndex (eventId, eventPreferred),
   FOREIGN KEY (eventId) REFERENCES event(id) ON DELETE CASCADE,
   FOREIGN KEY (productSummaryId) REFERENCES productSummary(id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
 delimiter //

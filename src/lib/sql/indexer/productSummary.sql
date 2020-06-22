@@ -25,6 +25,6 @@ CREATE TABLE IF NOT EXISTS productSummary(
   KEY summaryTimeLatLonIdx (eventTime, eventLatitude, eventLongitude),
   KEY preferredEventProductIndex (eventId, type, preferred, updateTime),
   KEY productIdIndex (productId)
-) ENGINE = INNODB;
+) ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 -- Note :: Additional may indexes added by FDSN later

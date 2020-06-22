@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS extentSummary(
     maximum_latitude DOUBLE DEFAULT NULL,
     minimum_longitude DOUBLE DEFAULT NULL,
     maximum_longitude DOUBLE DEFAULT NULL
-) ENGINE = INNODB;
+) ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;

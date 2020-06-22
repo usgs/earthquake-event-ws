@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS productSummaryLink (
   url TEXT,
   FOREIGN KEY (productSummaryIndexId) REFERENCES productSummary(id)
     ON DELETE CASCADE
-) ENGINE=INNODB;
+) ENGINE=INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
