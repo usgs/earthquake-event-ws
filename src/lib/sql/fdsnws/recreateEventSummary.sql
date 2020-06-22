@@ -22,7 +22,7 @@ BEGIN
       event_type VARCHAR(255),
       azimuthal_gap DOUBLE,
       magnitude_type VARCHAR(255),
-      region VARCHAR(255) CHARACTER SET 'utf8',
+      region VARCHAR(255),
       types TEXT,
       eventids TEXT,
       eventsources TEXT,
