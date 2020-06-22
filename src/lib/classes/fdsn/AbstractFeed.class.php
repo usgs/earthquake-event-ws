@@ -11,7 +11,7 @@ abstract class AbstractFeed {
 
 
   // functions to be overridden by subclasses
-  public function getMimeType() { return 'text/plain'; }
+  public function getMimeType() { return 'text/plain; charset=utf-8'; }
   public abstract function getHeader ($query);
   public abstract function getEntry ($event);
   public abstract function getFooter ();

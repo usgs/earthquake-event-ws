@@ -79,7 +79,7 @@ class GeoJSONFeed extends AbstractFeed {
       $metadata['count'] = $query->resultCount;
     }
 
-    $json = str_replace('\/', '/', safe_json_encode($metadata));
+    $json = safe_json_encode($metadata);
 
     // data is an array of entries
     $header .= '{"type":"FeatureCollection",' .
@@ -166,7 +166,7 @@ class GeoJSONFeed extends AbstractFeed {
       'id' => $id
     );
 
-    $json = str_replace('\/', '/', safe_json_encode($array));
+    $json = safe_json_encode($array);
     $entry .= preg_replace('/"(time|updated)":"(-?[\d]+)"/', '"$1":$2', $json);
 
     return $entry;

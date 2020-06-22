@@ -219,7 +219,7 @@ class FDSNEventWebService extends WebService {
       header('Content-type: application/json');
     }
 
-    echo str_replace('\/', '/', safe_json_encode($information));
+    echo safe_json_encode($information);
 
     if (isset($_GET['callback'])) {
       echo ');';
