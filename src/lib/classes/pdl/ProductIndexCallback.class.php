@@ -32,7 +32,6 @@ class JSONProductIndexCallback extends ProductIndexCallback {
     }
 
     $json = safe_json_encode($summary->toArray());
-    $json = str_replace('\\/', '/', $json);
     print $json;
   }
 
