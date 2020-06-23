@@ -22,7 +22,7 @@ BEGIN
       event_type VARCHAR(255),
       azimuthal_gap DOUBLE,
       magnitude_type VARCHAR(255),
-      region VARCHAR(255) CHARACTER SET 'utf8',
+      region VARCHAR(255),
       types TEXT,
       eventids TEXT,
       eventsources TEXT,
@@ -56,7 +56,7 @@ BEGIN
       INDEX(num_stations_used),
       INDEX(minimum_distance),
       INDEX(standard_error)
-    ) ENGINE = InnoDB;
+    ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
   -- loop over all events, updating eventSummary table
   OPEN cur_events;

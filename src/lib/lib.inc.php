@@ -95,7 +95,7 @@
      * @throws Exception when unable to json encode.
      */
     function safe_json_encode($value){
-      $encoded = json_encode($value);
+      $encoded = json_encode($value, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
       $lastError = json_last_error();
       switch ($lastError) {
         case JSON_ERROR_NONE:

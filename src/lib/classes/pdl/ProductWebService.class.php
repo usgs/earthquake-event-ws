@@ -23,10 +23,10 @@ class ProductWebService extends WebService {
 
   /**
    * Forward-facing query
-   * 
+   *
    * @param $params {Array}
    *    Parameters passed through $_GET
-   *  
+   *
    * */
   public function query($params) {
     $query = $this->parseQuery($params);
@@ -41,7 +41,7 @@ class ProductWebService extends WebService {
 
   /**
    * Gets all products satisfying query
-   * 
+   *
    * @param $query {ProductQuery}
    *    The ProductQuery storing necessary query information for table search
    */
@@ -57,7 +57,7 @@ class ProductWebService extends WebService {
           'search limit of ' . $this->serviceLimit . '. Modify the search ' .
           'to match fewer products.',false,true);
     }
-    
+
     //Query based on parameters
     $summaryArr = $this->index->getProductSummaryArray($query);
 
@@ -84,7 +84,6 @@ class ProductWebService extends WebService {
     //Output
     header('Content-type: application/json');
     $json = safe_json_encode(array("metadata"=>$metadata, "products"=>$productArr));
-    $json = str_replace('\/', '/', $json);
     echo $json;
 
     exit;
@@ -92,7 +91,7 @@ class ProductWebService extends WebService {
 
   /**
    * Gets product from ProductIndex, encodes into GeoJSON
-   * 
+   *
    * @param $query {ProductQuery}
    *    The ProductQuery storing necessary query information for table search
    */
@@ -138,12 +137,12 @@ class ProductWebService extends WebService {
     echo $json;
 
     exit;
-    
+
   }
 
   /**
    * Constructs query object based on parameters in $_GET
-   * 
+   *
    * @param $params {Array}
    *    Parameters passed through $_GET
    */
@@ -231,10 +230,10 @@ class ProductWebService extends WebService {
 
   protected function getDetailUrl($product) {
     $id = $product->getId();
-    return $this->url . '?' . 
-      'source=' . $id->getSource() . 
-      '&type=' . $id->getType() . 
-      '&code=' . $id->getCode() . 
+    return $this->url . '?' .
+      'source=' . $id->getSource() .
+      '&type=' . $id->getType() .
+      '&code=' . $id->getCode() .
       '&updatetime=' . $id->getUpdateTime();
   }
 

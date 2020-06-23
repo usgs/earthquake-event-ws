@@ -6,7 +6,7 @@ if($event == null ) {
   return;
 }
 
-header('Content-Type: application/vnd.google-earth.kml+xml');
+header('Content-Type: application/vnd.google-earth.kml+xml; charset=utf-8');
 header('Content-Disposition: attachment; filename="' . $query->eventid . '.kml"');
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 echo '<kml xmlns="http://www.opengis.net/kml/2.2">' .

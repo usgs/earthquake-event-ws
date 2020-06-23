@@ -1,7 +1,7 @@
 <?php
 
 
-header('Content-type: application/json');
+header('Content-type: application/json; charset=utf-8');
 if ($event == null) {
   header('HTTP/1.0 404 Not Found');
   print '{"message": "Event not found."}';
@@ -70,5 +70,5 @@ $array = array(
 
 $array['properties']['products'] = $event_array['products'];
 
-$json = str_replace('\/', '/', safe_json_encode($array));
+$json = safe_json_encode($array);
 echo preg_replace('/"(time|indexTime|updated|updateTime|lastModified)":"(-?[\d]+)"/', '"$1":$2', $json);

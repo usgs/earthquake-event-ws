@@ -11,10 +11,14 @@ Getting Started
 This application supports local installations for a simplified development
 environment. In order to set up a local installation of this application you
 will require access to an active product index. If you do not have access to an
-existing product index, you can [set up a local MySQL product index instance](https://ehppdl1.cr.usgs.gov/).
+existing product index, you can
+[set up a local MySQL product index instance](https://ehppdl1.cr.usgs.gov/).
+
+> The tables in the product index should be UTF-8 encoded to support event
+> titles in feed outputs.
 
 Once you have access to a product index, you can follow these steps to set up
-a local development environemnt.
+a local development environment.
 
 1. [Use git to clone the earthquake-event-ws from git repository](docs/git.md).
 2. [Install needed dependencies](docs/deps.md).

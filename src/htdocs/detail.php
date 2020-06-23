@@ -56,7 +56,7 @@ try {
       'properties' => null
     );
     echo preg_replace('/"(generated)":"([\d]+)"/', '"$1":$2',
-        str_replace('\/', '/', safe_json_encode($response)));
+        safe_json_encode($response));
 
     if ($format === 'geojsonp') {
       echo ');';

@@ -8,7 +8,7 @@ CREATE PROCEDURE getEventSummary(
   OUT out_event_type TEXT,
   OUT out_azimuthal_gap DOUBLE,
   OUT out_magnitude_type TEXT,
-  OUT out_region TEXT CHARACTER SET 'utf8',
+  OUT out_region TEXT,
   OUT out_producttypes TEXT,
   OUT out_eventids TEXT,
   OUT out_eventsources TEXT,
