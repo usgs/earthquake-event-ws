@@ -3,6 +3,15 @@ functions used by the FeedApp. The majority of these files contain a single
 table/view/etc... definition and are relatively straightforward. The
 documentation below describes the functionality of non-straightforward files.
 
+In order to display unicode characters correctly (primarily in place names),
+character sets are explicitly defined throughout the project. Specifically,
+for each table, the utf8 character set must be defined:
+
+    CREATE TABLE (...) [OPTIONS] CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+This behavior is already present in the below schema; however, any additional
+tables must reflect the above.
+
 
 ## create_mysql_installer.php
 Creates a SQL script (install_mysql.sql) with all the required SQL statements
