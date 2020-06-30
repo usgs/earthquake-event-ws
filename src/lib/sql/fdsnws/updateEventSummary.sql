@@ -9,7 +9,7 @@ BEGIN
   DECLARE event_type TEXT;
   DECLARE azimuthal_gap DOUBLE;
   DECLARE magnitude_type TEXT;
-  DECLARE region TEXT CHARACTER SET utf8;
+  DECLARE region TEXT;
   DECLARE types TEXT;
   DECLARE eventids TEXT;
   DECLARE eventsources TEXT;
