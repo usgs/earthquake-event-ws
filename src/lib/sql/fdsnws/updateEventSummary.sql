@@ -4,16 +4,16 @@ CREATE PROCEDURE updateEventSummary(IN in_eventid INT)
   MODIFIES SQL DATA
 BEGIN
   DECLARE maxmmi DOUBLE;
-  DECLARE alertlevel TEXT;
-  DECLARE review_status TEXT;
-  DECLARE event_type TEXT;
+  DECLARE alertlevel TEXT CHARACTER SET utf8;
+  DECLARE review_status TEXT CHARACTER SET utf8;
+  DECLARE event_type TEXT CHARACTER SET utf8;
   DECLARE azimuthal_gap DOUBLE;
-  DECLARE magnitude_type TEXT;
-  DECLARE region TEXT;
-  DECLARE types TEXT;
-  DECLARE eventids TEXT;
-  DECLARE eventsources TEXT;
-  DECLARE productsources TEXT;
+  DECLARE magnitude_type TEXT CHARACTER SET utf8;
+  DECLARE region TEXT CHARACTER SET utf8;
+  DECLARE types TEXT CHARACTER SET utf8;
+  DECLARE eventids TEXT CHARACTER SET utf8;
+  DECLARE eventsources TEXT CHARACTER SET utf8;
+  DECLARE productsources TEXT CHARACTER SET utf8;
   DECLARE tsunami INT;
   DECLARE offset INT;
   DECLARE num_responses INT;
