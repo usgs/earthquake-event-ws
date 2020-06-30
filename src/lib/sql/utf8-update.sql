@@ -5,7 +5,7 @@
 -- replicated to the "slave" instance via the statement based
 -- replication strategy.
 
-SET NAMES utf8
+SET NAMES utf8;
 
 -- Database character set
 ALTER DATABASE product_index
