@@ -2007,6 +2007,7 @@ class ProductIndex {
       $productIndexIds[] = $summary->getIndexId();
     }
 
+    // the following queries break (and are also unnecessary) if no products found
     if (count($productSummaries) == 0) {
       return $productSummaries;
     }
