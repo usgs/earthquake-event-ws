@@ -3,7 +3,7 @@
     "name": "earthquake-event-ws",
     "organization": "U.S. Geological Survey",
     "description": "Web service for querying ComCat.",
-    "version": "v1.10.1",
+    "version": "v1.10.2",
     "status": "Production",
     "permissions": {
       "usageType": "openSource",
@@ -28,7 +28,7 @@
       "email": "jmfee@usgs.gov"
     },
     "date": {
-      "metadataLastUpdated": "2020-05-29"
+      "metadataLastUpdated": "2020-07-06"
     }
   }
 ]
