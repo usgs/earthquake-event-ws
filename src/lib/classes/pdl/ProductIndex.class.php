@@ -2007,6 +2007,10 @@ class ProductIndex {
       $productIndexIds[] = $summary->getIndexId();
     }
 
+    if (count($productSummaries) == 0) {
+      return $productSummaries;
+    }
+
     //Execute properties sql statement
     $propertySearch = $this->buildProductPropertySql($productIndexIds);
     $propertyStatement = $this->connection->prepare($propertySearch[0]);
