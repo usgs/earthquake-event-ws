@@ -3,7 +3,7 @@
     "name": "earthquake-event-ws",
     "organization": "U.S. Geological Survey",
     "description": "Web service for querying ComCat.",
-    "version": "v1.10.2",
+    "version": "v1.10.3",
     "status": "Production",
     "permissions": {
       "usageType": "openSource",
