@@ -72,7 +72,7 @@ class ProductWebService extends WebService {
     $metadata['url'] = $HOST_URL_PREFIX . $_SERVER['REQUEST_URI'];
     $metadata['status'] = 200;
     $metadata['api'] = $this->version;
-    $metadata['count'] = $count;
+    $metadata['count'] = count($summaryArr);
 
     //Cache for 60 seconds regardless of age
     $CACHE_MAXAGE = 60;
