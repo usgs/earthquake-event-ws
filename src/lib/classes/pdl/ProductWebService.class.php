@@ -50,17 +50,20 @@ class ProductWebService extends WebService {
     global $HOST_URL_PREFIX;
 
     //Make sure count to be returned is not over the maximum
-    $count = 0;
-    if (isset($query->limit) && $query->limit < $this->serviceLimit) {
-      $count = $query->limit;
+    if (isset($query->limit)) {
+      if ($query->limit > $this->serviceLimit) {
+        $this->error(self::BAD_REQUEST, "Specified limit of " . $query->limit .
+            ' products exceeds search limit of ' . $this->serviceLimit .
+            '. Modify the search ' . 'to match fewer products.',false,true);
+      }
     } else {
       $count = $this->index->getProductCount($query);
-    }
-    if ($count > $this->serviceLimit){
-      //Toss error (robbed from FDSNEventWebService for consistency)
-      $this->error(self::BAD_REQUEST, $count . ' matching products exceeds ' .
-          'search limit of ' . $this->serviceLimit . '. Modify the search ' .
-          'to match fewer products.',false,true);
+      if ($count > $this->serviceLimit){
+        //Toss error (robbed from FDSNEventWebService for consistency)
+        $this->error(self::BAD_REQUEST, $count . ' matching products exceeds ' .
+            'search limit of ' . $this->serviceLimit . '. Modify the search ' .
+            'to match fewer products.',false,true);
+      }
     }
 
     //Query based on parameters
