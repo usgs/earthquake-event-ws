@@ -50,7 +50,12 @@ class ProductWebService extends WebService {
     global $HOST_URL_PREFIX;
 
     //Make sure count to be returned is not over the maximum
-    $count = $this->index->getProductCount($query);
+    $count = 0;
+    if (isset($query->limit) && $query->limit < $this->serviceLimit) {
+      $count = $query->limit;
+    } else {
+      $count = $this->index->getProductCount($query);
+    }
     if ($count > $this->serviceLimit){
       //Toss error (robbed from FDSNEventWebService for consistency)
       $this->error(self::BAD_REQUEST, $count . ' matching products exceeds ' .
