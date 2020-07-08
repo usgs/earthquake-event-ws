@@ -231,13 +231,6 @@ class FDSNIndex {
     //free resources
     $statement->closeCursor();
 
-    // Properly report what would match
-    if ($query->limit !== null) {
-      $count = min(intval($count[0]), intval($query->limit));
-    } else {
-      $count = intval($count[0]);
-    }
-
     return $count;
   }
 
