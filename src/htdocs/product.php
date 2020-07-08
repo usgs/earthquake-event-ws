@@ -53,8 +53,8 @@ if (!isset($TEMPLATE)) {
             <?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?source=us&amp;type=geoserve&amp;code=us70003l6p&amp;updatetime=1557943644040</a>
     </li>
     <li>
-      <a href="<?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?minupdatetime=2019-07-01&amp;maxupdatetime=2019-07-02&amp;minlongitude=-109&amp;maxlongitude=-102&amp;minlatitude=37&amp;maxlatitude=41">
-            <?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?minupdatetime=2019-07-01&amp;maxupdatetime=2019-07-02&amp;minlongitude=-109&amp;maxlongitude=-102&amp;minlatitude=37&amp;maxlatitude=41</a>
+      <a href="<?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?minupdatetime=2019-07-01&amp;maxupdatetime=2019-07-02&amp;minlongitude=-109&amp;maxlongitude=-102&amp;minlatitude=37&amp;maxlatitude=41&amp;includesuperseded=true">
+            <?php echo $HOST_URL_PREFIX . $PRODUCT_URL; ?>/query?minupdatetime=2019-07-01&amp;maxupdatetime=2019-07-02&amp;minlongitude=-109&amp;maxlongitude=-102&amp;minlatitude=37&amp;maxlatitude=41&amp;includesuperseded=true</a>
     </li>
 </ul>
 

@@ -20,6 +20,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('builddist', [
+    'builddev',
     'clean:dist',
     'copy:dist',
     'postcss:dist',
@@ -48,7 +49,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('dist', [
-    'builddev',
     'builddist',
 
     'configureProxies:dist',

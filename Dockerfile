@@ -20,7 +20,6 @@ USER usgs-user
 RUN /bin/bash --login -c "\
     npm install --no-save && \
     php src/lib/pre-install.php --non-interactive --skip-db && \
-    grunt builddev && \
     grunt builddist && \
     rm dist/conf/config.ini dist/conf/httpd.conf \
     "

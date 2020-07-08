@@ -1868,7 +1868,10 @@ class ProductIndex {
       $params[] = 'DELETE';
     }
 
-    $sql .= 'WHERE ' . implode(' AND ', $where);
+    if (count($where) != 0) {
+      $sql .= 'WHERE ' . implode(' AND ', $where);
+    }
+
 
     //Do ordering
     $sql .= " ORDER BY ";
@@ -1918,10 +1921,6 @@ class ProductIndex {
     $statement->execute($search[1]);
 
     $count = intval($statement->fetch()[0]);
-
-    if (isset($query->limit) && $count > $query->limit) {
-      return $query->limit;
-    }
 
     return $count;
   }

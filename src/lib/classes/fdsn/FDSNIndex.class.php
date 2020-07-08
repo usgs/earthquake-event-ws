@@ -212,7 +212,7 @@ class FDSNIndex {
 
   public function getEventCount($query) {
     // build sql
-    $where = $this->getWhere($query, true);
+    $where = $this->getWhere($query);
     $sql = 'select count(*) from (select distinct ps.* ' . $where['sql'] . ') x';
 
     //prepare statement
@@ -227,16 +227,10 @@ class FDSNIndex {
 
     // get result
     $count = $statement->fetch();
+    $count = intval($count[0]);
 
     //free resources
     $statement->closeCursor();
-
-    // Properly report what would match
-    if ($query->limit !== null) {
-      $count = min(intval($count[0]), intval($query->limit));
-    } else {
-      $count = intval($count[0]);
-    }
 
     return $count;
   }

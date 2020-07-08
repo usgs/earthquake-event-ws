@@ -50,12 +50,20 @@ class ProductWebService extends WebService {
     global $HOST_URL_PREFIX;
 
     //Make sure count to be returned is not over the maximum
-    $count = $this->index->getProductCount($query);
-    if ($count > $this->serviceLimit){
-      //Toss error (robbed from FDSNEventWebService for consistency)
-      $this->error(self::BAD_REQUEST, $count . ' matching products exceeds ' .
-          'search limit of ' . $this->serviceLimit . '. Modify the search ' .
-          'to match fewer products.',false,true);
+    if (isset($query->limit)) {
+      if ($query->limit > $this->serviceLimit) {
+        $this->error(self::BAD_REQUEST, "Specified limit of " . $query->limit .
+            ' products exceeds search limit of ' . $this->serviceLimit .
+            '. Modify the search ' . 'to match fewer products.',false,true);
+      }
+    } else {
+      $count = $this->index->getProductCount($query);
+      if ($count > $this->serviceLimit){
+        //Toss error (robbed from FDSNEventWebService for consistency)
+        $this->error(self::BAD_REQUEST, $count . ' matching products exceeds ' .
+            'search limit of ' . $this->serviceLimit . '. Modify the search ' .
+            'to match fewer products.',false,true);
+      }
     }
 
     //Query based on parameters
@@ -67,7 +75,7 @@ class ProductWebService extends WebService {
     $metadata['url'] = $HOST_URL_PREFIX . $_SERVER['REQUEST_URI'];
     $metadata['status'] = 200;
     $metadata['api'] = $this->version;
-    $metadata['count'] = $count;
+    $metadata['count'] = count($summaryArr);
 
     //Cache for 60 seconds regardless of age
     $CACHE_MAXAGE = 60;
