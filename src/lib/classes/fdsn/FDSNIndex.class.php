@@ -227,6 +227,7 @@ class FDSNIndex {
 
     // get result
     $count = $statement->fetch();
+    $count = intval($count[0]);
 
     //free resources
     $statement->closeCursor();
