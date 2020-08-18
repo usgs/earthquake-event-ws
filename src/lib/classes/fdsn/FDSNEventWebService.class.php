@@ -52,7 +52,11 @@ class FDSNEventWebService extends WebService {
   public function query() {
     $query = $this->parseQuery();
 
-    if ($query->eventid === null || $query->format === 'csv') {
+    if ($query->eventid === null
+        // these formats always use summary
+        || $query->format === 'csv'
+        || $query->format === 'text'
+    ) {
       $this->handleSummaryQuery($query);
     } else {
       $this->handleDetailQuery($query);
