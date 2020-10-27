@@ -1,12 +1,14 @@
-Earthquake Event Webservice
-===========================
+> **THIS PROJECT HAS BEEN ARCHIVED**
+>
+> Please see [https://code.usgs.gov/ghsc/hazdev/earthquake-event-ws](https://code.usgs.gov/ghsc/hazdev/earthquake-event-ws)
+
+# Earthquake Event Webservice
 
 An [FDSN](https://www.fdsn.org/webservices/FDSN-WS-Specifications-1.1.pdf)
 compatible web service and data feeds for seismic event data from the U.S.
 Geological Survey.
 
-Getting Started
----------------
+## Getting Started
 
 This application supports local installations for a simplified development
 environment. In order to set up a local installation of this application you
@@ -22,5 +24,5 @@ a local development environment.
 
 1. [Use git to clone the earthquake-event-ws from git repository](docs/git.md).
 2. [Install needed dependencies](docs/deps.md).
-3. Run ```src/lib/pre-install``` from the install directory.
-4. Run ```grunt``` from the install directory.
+3. Run `src/lib/pre-install` from the install directory.
+4. Run `grunt` from the install directory.
